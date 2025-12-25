@@ -1,22 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
+        "image": "shopify://shop_images/people-wearing-finysyt-leather-jackets.png",
         "height": "full",
         "title": "LEATHER JACKETS",
         "link_1_text": "MEN",
+        "link_1_url": "",
         "link_1_underline": true,
         "link_2_text": "WOMEN",
+        "link_2_url": "",
         "link_2_underline": true
       }
     },
     "welcome": {
       "type": "welcome",
-      "settings": {
-        "title": "WELCOME TO FINEYST",
-        "text": "<p>Discover the finest collection of premium leather jackets, handcrafted with attention to detail and designed to make a statement. Each piece in our collection represents the perfect blend of classic style and modern sophistication.</p>"
-      },
       "blocks": {
         "feature_1": {
           "type": "feature",
@@ -51,13 +59,25 @@
           }
         }
       },
-      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"]
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
+      "settings": {
+        "title": "WELCOME TO FINEYST",
+        "text": "<p>Discover the finest collection of premium leather jackets, handcrafted with attention to detail and designed to make a statement. Each piece in our collection represents the perfect blend of classic style and modern sophistication.</p>",
+        "button_text": "",
+        "button_url": ""
+      }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
         "title": "BESTSELLING JACKETS",
         "subtitle": "Our most popular styles that never go out of fashion",
+        "collection": "",
         "products_count": 4,
         "show_view_all": true,
         "view_all_text": "View All"
@@ -70,18 +90,26 @@
           "type": "category",
           "settings": {
             "title": "Men's Jackets",
-            "link_text": "Shop Now"
+            "link_text": "Shop Now",
+            "link_url": ""
           }
         },
         "category_2": {
           "type": "category",
           "settings": {
             "title": "Women's Jackets",
-            "link_text": "Shop Now"
+            "link_text": "Shop Now",
+            "link_url": ""
           }
         }
       },
-      "block_order": ["category_1", "category_2"]
+      "block_order": [
+        "category_1",
+        "category_2"
+      ],
+      "settings": {
+        "title": ""
+      }
     }
   },
   "order": [
@@ -91,4 +119,3 @@
     "categories"
   ]
 }
-
