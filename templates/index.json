@@ -29,31 +29,41 @@
         "category_1": {
           "type": "category",
           "settings": {
-            "title": "LEATHER JACKETS"
+            "image": "shopify://shop_images/Mens-Biker.webp",
+            "title": "LEATHER JACKETS",
+            "link_url": "shopify://collections/leather-jackets"
           }
         },
         "category_2": {
           "type": "category",
           "settings": {
-            "title": "PUFFER JACKETS"
+            "image": "shopify://shop_images/Mens-Puffer.webp",
+            "title": "PUFFER JACKETS",
+            "link_url": "shopify://collections/puffer-jackets"
           }
         },
         "category_3": {
           "type": "category",
           "settings": {
-            "title": "DENIM JACKETS"
+            "image": "shopify://shop_images/Mens-denim.webp",
+            "title": "DENIM JACKETS",
+            "link_url": ""
           }
         },
         "category_4": {
           "type": "category",
           "settings": {
-            "title": "SUEDE JACKETS"
+            "image": "shopify://shop_images/mens-suede.webp",
+            "title": "SUEDE JACKETS",
+            "link_url": ""
           }
         },
         "category_5": {
           "type": "category",
           "settings": {
-            "title": "AVIATOR JACKETS"
+            "image": "shopify://shop_images/mens-aviator.webp",
+            "title": "AVIATOR JACKETS",
+            "link_url": "shopify://collections/aviator-jackets"
           }
         }
       },
@@ -67,7 +77,9 @@
       "settings": {
         "title": "WELCOME TO FINEYST",
         "tagline": "Your Destination for Timeless, Custom, and Everyday Leather Jackets",
-        "active_gender": "men"
+        "active_gender": "men",
+        "men_url": "",
+        "women_url": ""
       }
     },
     "featured_collection": {
