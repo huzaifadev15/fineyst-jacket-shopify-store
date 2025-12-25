@@ -154,13 +154,11 @@
   border-radius: 50%;
 }
 
-/* Sub Navigation (Categories) */
+/* Sub Navigation (Categories) - Now in Navbar */
 .sub-navigation {
-  position: absolute;
-  top: 9rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sub-navigation__inner {

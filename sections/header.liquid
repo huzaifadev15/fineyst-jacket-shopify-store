@@ -87,22 +87,6 @@
       </button>
     </div>
   </div>
-
-  <!-- Sub Navigation (Categories) -->
-  {%- if section.settings.show_sub_nav and section.settings.sub_menu != blank -%}
-    <div class="sub-navigation">
-      <nav class="sub-navigation__inner" aria-label="Category navigation">
-        {%- for link in section.settings.sub_menu.links -%}
-          <a 
-            href="{{ link.url }}" 
-            class="sub-navigation__link{% if link.current %} is-active{% endif %}"
-          >
-            {{ link.title }}
-          </a>
-        {%- endfor -%}
-      </nav>
-    </div>
-  {%- endif -%}
 </header>
 
 <!-- Mobile Menu -->

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initProductGallery();
   initQuantityButtons();
   initAddToCart();
+  initWelcomeCarousel();
 });
 
 /* Header Scroll Behavior */
@@ -286,4 +287,58 @@ document.addEventListener('change', function(e) {
     window.history.replaceState({}, '', url);
   }
 });
+
+/* Welcome Section Carousel */
+function initWelcomeCarousel() {
+  const carousel = document.querySelector('[data-carousel]');
+  if (!carousel) return;
+
+  const track = carousel.querySelector('[data-carousel-track]');
+  const prevBtn = document.querySelector('[data-carousel-prev]');
+  const nextBtn = document.querySelector('[data-carousel-next]');
+  
+  if (!track || !prevBtn || !nextBtn) return;
+
+  const cards = track.querySelectorAll('.welcome-section__category-card');
+  if (cards.length === 0) return;
+
+  let currentIndex = 0;
+  const cardWidth = cards[0].offsetWidth + 32; // card width + gap
+
+  function updateCarousel() {
+    const translateX = -currentIndex * cardWidth;
+    track.style.transform = `translateX(${translateX}px)`;
+    
+    // Update button states
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex >= cards.length - 5; // Show 5 cards at a time
+  }
+
+  prevBtn.addEventListener('click', function() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarousel();
+    }
+  });
+
+  nextBtn.addEventListener('click', function() {
+    const maxIndex = Math.max(0, cards.length - 5);
+    if (currentIndex < maxIndex) {
+      currentIndex++;
+      updateCarousel();
+    }
+  });
+
+  // Handle window resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      updateCarousel();
+    }, 250);
+  });
+
+  // Initialize
+  updateCarousel();
+}
 
