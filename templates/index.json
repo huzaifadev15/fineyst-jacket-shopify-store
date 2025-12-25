@@ -26,50 +26,48 @@
     "welcome": {
       "type": "welcome",
       "blocks": {
-        "feature_1": {
-          "type": "feature",
+        "category_1": {
+          "type": "category",
           "settings": {
-            "icon": "shipping",
-            "title": "Free Shipping",
-            "text": "On orders over $200"
+            "title": "LEATHER JACKETS"
           }
         },
-        "feature_2": {
-          "type": "feature",
+        "category_2": {
+          "type": "category",
           "settings": {
-            "icon": "quality",
-            "title": "Premium Quality",
-            "text": "Genuine leather guaranteed"
+            "title": "PUFFER JACKETS"
           }
         },
-        "feature_3": {
-          "type": "feature",
+        "category_3": {
+          "type": "category",
           "settings": {
-            "icon": "returns",
-            "title": "Easy Returns",
-            "text": "30-day return policy"
+            "title": "DENIM JACKETS"
           }
         },
-        "feature_4": {
-          "type": "feature",
+        "category_4": {
+          "type": "category",
           "settings": {
-            "icon": "secure",
-            "title": "Secure Payment",
-            "text": "100% secure checkout"
+            "title": "SUEDE JACKETS"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "title": "AVIATOR JACKETS"
           }
         }
       },
       "block_order": [
-        "feature_1",
-        "feature_2",
-        "feature_3",
-        "feature_4"
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5"
       ],
       "settings": {
         "title": "WELCOME TO FINEYST",
-        "text": "<p>Discover the finest collection of premium leather jackets, handcrafted with attention to detail and designed to make a statement. Each piece in our collection represents the perfect blend of classic style and modern sophistication.</p>",
-        "button_text": "",
-        "button_url": ""
+        "tagline": "Your Destination for Timeless, Custom, and Everyday Leather Jackets",
+        "active_gender": "men"
       }
     },
     "featured_collection": {
