@@ -1,0 +1,360 @@
+<section class="reviews-section">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="reviews-section__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subtitle != blank -%}
+      <p class="reviews-section__subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    <div class="reviews-section__carousels">
+      <!-- First Row -->
+      <div class="reviews-section__carousel-wrapper">
+        <div class="reviews-section__carousel" data-reviews-carousel>
+          <div class="reviews-section__carousel-track reviews-section__carousel-track--row1" data-reviews-track>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'review' -%}
+                <div class="reviews-section__card" {{ block.shopify_attributes }}>
+                  <div class="reviews-section__card-header">
+                    {%- if block.settings.avatar != blank -%}
+                      <div class="reviews-section__avatar">
+                        <img
+                          src="{{ block.settings.avatar | image_url: width: 80 }}"
+                          alt="{{ block.settings.name }}"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- else -%}
+                      <div class="reviews-section__avatar">
+                        <div class="reviews-section__avatar-placeholder">
+                          {{ block.settings.name | slice: 0, 1 }}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    <div class="reviews-section__card-info">
+                      <h3 class="reviews-section__name">{{ block.settings.name }}</h3>
+                      <div class="reviews-section__rating">
+                        {%- assign rating = block.settings.rating | default: 5 -%}
+                        {%- for i in (1..5) -%}
+                          {%- if i <= rating -%}
+                            <svg class="reviews-section__star reviews-section__star--filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- else -%}
+                            <svg class="reviews-section__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      <div class="reviews-section__verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                          <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Verified buyer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="reviews-section__text">{{ block.settings.review }}</p>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- comment -%} Duplicate cards for infinite loop {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'review' -%}
+                <div class="reviews-section__card">
+                  <div class="reviews-section__card-header">
+                    {%- if block.settings.avatar != blank -%}
+                      <div class="reviews-section__avatar">
+                        <img
+                          src="{{ block.settings.avatar | image_url: width: 80 }}"
+                          alt="{{ block.settings.name }}"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- else -%}
+                      <div class="reviews-section__avatar">
+                        <div class="reviews-section__avatar-placeholder">
+                          {{ block.settings.name | slice: 0, 1 }}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    <div class="reviews-section__card-info">
+                      <h3 class="reviews-section__name">{{ block.settings.name }}</h3>
+                      <div class="reviews-section__rating">
+                        {%- assign rating = block.settings.rating | default: 5 -%}
+                        {%- for i in (1..5) -%}
+                          {%- if i <= rating -%}
+                            <svg class="reviews-section__star reviews-section__star--filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- else -%}
+                            <svg class="reviews-section__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      <div class="reviews-section__verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                          <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Verified buyer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="reviews-section__text">{{ block.settings.review }}</p>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Row -->
+      <div class="reviews-section__carousel-wrapper">
+        <div class="reviews-section__carousel" data-reviews-carousel>
+          <div class="reviews-section__carousel-track reviews-section__carousel-track--row2" data-reviews-track>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'review' -%}
+                <div class="reviews-section__card">
+                  <div class="reviews-section__card-header">
+                    {%- if block.settings.avatar != blank -%}
+                      <div class="reviews-section__avatar">
+                        <img
+                          src="{{ block.settings.avatar | image_url: width: 80 }}"
+                          alt="{{ block.settings.name }}"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- else -%}
+                      <div class="reviews-section__avatar">
+                        <div class="reviews-section__avatar-placeholder">
+                          {{ block.settings.name | slice: 0, 1 }}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    <div class="reviews-section__card-info">
+                      <h3 class="reviews-section__name">{{ block.settings.name }}</h3>
+                      <div class="reviews-section__rating">
+                        {%- assign rating = block.settings.rating | default: 5 -%}
+                        {%- for i in (1..5) -%}
+                          {%- if i <= rating -%}
+                            <svg class="reviews-section__star reviews-section__star--filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- else -%}
+                            <svg class="reviews-section__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      <div class="reviews-section__verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                          <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Verified buyer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="reviews-section__text">{{ block.settings.review }}</p>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- comment -%} Duplicate cards for infinite loop {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'review' -%}
+                <div class="reviews-section__card">
+                  <div class="reviews-section__card-header">
+                    {%- if block.settings.avatar != blank -%}
+                      <div class="reviews-section__avatar">
+                        <img
+                          src="{{ block.settings.avatar | image_url: width: 80 }}"
+                          alt="{{ block.settings.name }}"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- else -%}
+                      <div class="reviews-section__avatar">
+                        <div class="reviews-section__avatar-placeholder">
+                          {{ block.settings.name | slice: 0, 1 }}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    <div class="reviews-section__card-info">
+                      <h3 class="reviews-section__name">{{ block.settings.name }}</h3>
+                      <div class="reviews-section__rating">
+                        {%- assign rating = block.settings.rating | default: 5 -%}
+                        {%- for i in (1..5) -%}
+                          {%- if i <= rating -%}
+                            <svg class="reviews-section__star reviews-section__star--filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- else -%}
+                            <svg class="reviews-section__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      <div class="reviews-section__verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                          <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Verified buyer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="reviews-section__text">{{ block.settings.review }}</p>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Reviews",
+  "tag": "section",
+  "class": "reviews-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "OUR PRODUCTS BACKED BY INCREDIBLE REVIEWS"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Verified Feedback from Authentic Customers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Emma R."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review Text",
+          "default": "Love the look and feel of this jacket. I just wish there were more lightweight options for spring."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "name": "Emma R.",
+            "rating": 4,
+            "review": "Love the look and feel of this jacket. I just wish there were more lightweight options for spring."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "David L.",
+            "rating": 5,
+            "review": "The craftsmanship on this jacket is next level. The inner lining and zipper quality really stand out."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Jessica M.",
+            "rating": 5,
+            "review": "I've received compliments every time I wear this jacket. It's stylish, functional, and feels luxurious."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Robert K.",
+            "rating": 5,
+            "review": "Had a sizing issue and the support team was incredibly helpful with the exchange. Love my new jacket!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Olivia P.",
+            "rating": 4,
+            "review": "The jacket is cozy and perfect for chilly mornings. Only downside is it runs slightly big."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "James H.",
+            "rating": 5,
+            "review": "This is hands down the best jacket I've ever owned. Sleek design and it pairs well with everything."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Alex M.",
+            "rating": 5,
+            "review": "Outstanding quality and craftsmanship. The jacket exceeded my expectations in every way!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Sophia L.",
+            "rating": 4,
+            "review": "Elegant design and very comfortable to wear. Would love to see more color options in this style."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Ryan K.",
+            "rating": 5,
+            "review": "Perfect jacket for both casual outings and more dressed-up looks. Super versatile."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

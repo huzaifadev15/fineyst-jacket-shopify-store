@@ -1,0 +1,143 @@
+<section class="faq-section">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="faq-section__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="faq-section__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'question' -%}
+          <div class="faq-section__item {% if forloop.first %}faq-section__item--active{% endif %}" data-faq-id="{{ block.id }}" {{ block.shopify_attributes }}>
+            <button type="button" class="faq-section__question" data-faq-toggle data-faq-id="{{ block.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+              <span class="faq-section__question-text">{{ block.settings.question }}</span>
+              <span class="faq-section__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-section__answer" data-faq-answer="{{ block.id }}">
+              <div class="faq-section__answer-content">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "faq-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "FREQUENTLY ASKED QUESTIONS"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a 30-day return policy for all unworn items in their original condition with tags attached. Returns are processed within 14 business days of receipt.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy for all unworn items in their original condition with tags attached. Returns are processed within 14 business days of receipt.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>Once your order ships, you'll receive a tracking number via email. You can use this number to track your package on our website or the carrier's website.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location. Please check our shipping page for more details.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How do I care for my garments?",
+            "answer": "<p>Please follow the care instructions on the label. Most of our leather jackets should be cleaned by a professional leather cleaner. Avoid machine washing.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer size exchanges?",
+            "answer": "<p>Yes, we offer free size exchanges within 30 days of purchase. Items must be unworn and in original condition with tags attached.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Can I modify my order after placing it?",
+            "answer": "<p>If your order hasn't been processed yet, please contact our customer service team immediately. We'll do our best to accommodate your request.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer gift wrapping?",
+            "answer": "<p>Yes, we offer premium gift wrapping services. You can select this option during checkout for an additional fee.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept all major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay. All transactions are secure and encrypted.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact customer service?",
+            "answer": "<p>You can reach us via email at support@fineyst.com, through our live chat, or by phone at 1-800-FINEYST. Our team is available Monday-Friday, 9am-6pm EST.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you have a loyalty program?",
+            "answer": "<p>Yes! Join our loyalty program to earn points on every purchase. Points can be redeemed for discounts on future orders.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

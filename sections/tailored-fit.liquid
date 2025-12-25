@@ -1,0 +1,154 @@
+<section class="tailored-fit-section">
+  <div class="container">
+    <div class="tailored-fit-section__grid">
+      <!-- Left Side - Content -->
+      <div class="tailored-fit-section__content">
+        <div class="tailored-fit-section__nav">
+          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--prev" data-tailored-prev aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+        </div>
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="tailored-fit-section__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="tailored-fit-section__description">{{ section.settings.description }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.features_heading != blank -%}
+          <h3 class="tailored-fit-section__features-heading">{{ section.settings.features_heading }}</h3>
+        {%- endif -%}
+
+        <ul class="tailored-fit-section__features-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'feature' and block.settings.text != blank -%}
+              <li class="tailored-fit-section__feature" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        <!-- Pagination Dots -->
+        <div class="tailored-fit-section__pagination">
+          <span class="tailored-fit-section__dot tailored-fit-section__dot--active"></span>
+          <span class="tailored-fit-section__dot"></span>
+          <span class="tailored-fit-section__dot"></span>
+        </div>
+      </div>
+
+      <!-- Right Side - Workshop Image -->
+      <div class="tailored-fit-section__visual">
+        {%- if section.settings.workshop_image != blank -%}
+          <div class="tailored-fit-section__image">
+            <img
+              src="{{ section.settings.workshop_image | image_url: width: 1200 }}"
+              srcset="
+                {{ section.settings.workshop_image | image_url: width: 800 }} 800w,
+                {{ section.settings.workshop_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.workshop_image | image_url: width: 1600 }} 1600w
+              "
+              sizes="33vw"
+              alt="Leather Jacket Workshop"
+              loading="lazy"
+            >
+          </div>
+        {%- else -%}
+          <div class="tailored-fit-section__image">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+
+        <div class="tailored-fit-section__nav-right">
+          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--next" data-tailored-next aria-label="Next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tailored Fit",
+  "tag": "section",
+  "class": "tailored-fit-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "TAILORED FIT"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Whether you're buying a ready-to-wear bomber or designing a custom jacket from scratch, you're investing in precision-crafted fit."
+    },
+    {
+      "type": "text",
+      "id": "features_heading",
+      "label": "Features Heading",
+      "default": "KEY FEATURES:"
+    },
+    {
+      "type": "image_picker",
+      "id": "workshop_image",
+      "label": "Workshop Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Standard sizes available"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tailored Fit",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Standard sizes available"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Made-to-measure options"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Perfect fit guarantee"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Custom sizing consultations"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

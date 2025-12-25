@@ -1,0 +1,159 @@
+<section class="mens-womens-section">
+  <div class="mens-womens-section__grid">
+    <!-- Men's Section -->
+    <div class="mens-womens-section__half mens-womens-section__half--men">
+      <div class="mens-womens-section__image">
+        {%- if section.settings.mens_image != blank -%}
+          <img
+            src="{{ section.settings.mens_image | image_url: width: 1200 }}"
+            srcset="
+              {{ section.settings.mens_image | image_url: width: 800 }} 800w,
+              {{ section.settings.mens_image | image_url: width: 1200 }} 1200w,
+              {{ section.settings.mens_image | image_url: width: 1600 }} 1600w
+            "
+            sizes="50vw"
+            alt="{{ section.settings.mens_image.alt | default: section.settings.mens_title }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="mens-womens-section__overlay"></div>
+      <div class="mens-womens-section__content">
+        {%- if section.settings.mens_title != blank -%}
+          <h2 class="mens-womens-section__title">{{ section.settings.mens_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.mens_description != blank -%}
+          <p class="mens-womens-section__description">{{ section.settings.mens_description }}</p>
+        {%- endif -%}
+        {%- if section.settings.mens_button_text != blank -%}
+          <a href="{{ section.settings.mens_button_url | default: '#' }}" class="mens-womens-section__button">
+            {{ section.settings.mens_button_text }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Women's Section -->
+    <div class="mens-womens-section__half mens-womens-section__half--women">
+      <div class="mens-womens-section__image">
+        {%- if section.settings.womens_image != blank -%}
+          <img
+            src="{{ section.settings.womens_image | image_url: width: 1200 }}"
+            srcset="
+              {{ section.settings.womens_image | image_url: width: 800 }} 800w,
+              {{ section.settings.womens_image | image_url: width: 1200 }} 1200w,
+              {{ section.settings.womens_image | image_url: width: 1600 }} 1600w
+            "
+            sizes="50vw"
+            alt="{{ section.settings.womens_image.alt | default: section.settings.womens_title }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="mens-womens-section__overlay"></div>
+      <div class="mens-womens-section__content">
+        {%- if section.settings.womens_title != blank -%}
+          <h2 class="mens-womens-section__title">{{ section.settings.womens_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.womens_description != blank -%}
+          <p class="mens-womens-section__description">{{ section.settings.womens_description }}</p>
+        {%- endif -%}
+        {%- if section.settings.womens_button_text != blank -%}
+          <a href="{{ section.settings.womens_button_url | default: '#' }}" class="mens-womens-section__button">
+            {{ section.settings.womens_button_text }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Men's & Women's Jackets",
+  "tag": "section",
+  "class": "mens-womens-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Men's Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "mens_image",
+      "label": "Men's Image"
+    },
+    {
+      "type": "text",
+      "id": "mens_title",
+      "label": "Men's Title",
+      "default": "MEN'S LEATHER JACKET"
+    },
+    {
+      "type": "textarea",
+      "id": "mens_description",
+      "label": "Men's Description",
+      "default": "Crafted for the modern warrior, each jacket embodies strength, style and sophistication with premium leather that ages beautifully with every adventure."
+    },
+    {
+      "type": "text",
+      "id": "mens_button_text",
+      "label": "Men's Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "mens_button_url",
+      "label": "Men's Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Women's Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "womens_image",
+      "label": "Women's Image"
+    },
+    {
+      "type": "text",
+      "id": "womens_title",
+      "label": "Women's Title",
+      "default": "WOMEN'S LEATHER JACKET"
+    },
+    {
+      "type": "textarea",
+      "id": "womens_description",
+      "label": "Women's Description",
+      "default": "Elegance redefined. From boardroom power moves to weekend adventures, our women's collection celebrates confidence with every curve and contour."
+    },
+    {
+      "type": "text",
+      "id": "womens_button_text",
+      "label": "Women's Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "womens_button_url",
+      "label": "Women's Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Men's & Women's Jackets"
+    }
+  ]
+}
+{% endschema %}
+

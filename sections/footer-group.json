@@ -1,0 +1,109 @@
+{
+    "type": "footer",
+    "name": "Footer group",
+    "sections": {
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "mens_links": {
+            "type": "link",
+            "settings": {
+              "title": "MENS",
+              "link_text_1": "Men's Leather Jackets",
+              "link_url_1": "/collections/mens-leather-jackets",
+              "link_text_2": "Men's Jackets",
+              "link_url_2": "/collections/mens-jackets",
+              "link_text_3": "Men's Letterman Jackets",
+              "link_url_3": "/collections/mens-letterman-jackets",
+              "link_text_4": "Men's Denim Jackets",
+              "link_url_4": "/collections/mens-denim-jackets",
+              "link_text_5": "View All",
+              "link_url_5": "/collections/mens"
+            }
+          },
+          "womens_links": {
+            "type": "link",
+            "settings": {
+              "title": "WOMENS",
+              "link_text_1": "Women's Leather Jackets",
+              "link_url_1": "/collections/womens-leather-jackets",
+              "link_text_2": "Women's Puffer Jackets",
+              "link_url_2": "/collections/womens-puffer-jackets",
+              "link_text_3": "Women's Denim Jackets",
+              "link_url_3": "/collections/womens-denim-jackets",
+              "link_text_4": "Women's Suede Jackets",
+              "link_url_4": "/collections/womens-suede-jackets",
+              "link_text_5": "View All",
+              "link_url_5": "/collections/womens"
+            }
+          },
+          "brand_links": {
+            "type": "link",
+            "settings": {
+              "title": "BRAND",
+              "link_text_1": "Blogs",
+              "link_url_1": "/blogs/news",
+              "link_text_2": "About Us",
+              "link_url_2": "/pages/about-us",
+              "link_text_3": "Shop",
+              "link_url_3": "/collections/all"
+            }
+          },
+          "support_links": {
+            "type": "link",
+            "settings": {
+              "title": "SUPPORT",
+              "link_text_1": "FAQs",
+              "link_url_1": "/pages/faqs",
+              "link_text_2": "Contact Us",
+              "link_url_2": "/pages/contact",
+              "link_text_3": "Size Guide",
+              "link_url_3": "/pages/size-guide",
+              "link_text_4": "Track My Order",
+              "link_url_4": "/pages/track-order"
+            }
+          },
+          "policies_links": {
+            "type": "link",
+            "settings": {
+              "title": "POLICIES",
+              "link_text_1": "Privacy Policy",
+              "link_url_1": "/policies/privacy-policy",
+              "link_text_2": "Refund Policy",
+              "link_url_2": "/policies/refund-policy",
+              "link_text_3": "Shipping Policy",
+              "link_url_3": "/policies/shipping-policy",
+              "link_text_4": "Terms of Services",
+              "link_url_4": "/policies/terms-of-service"
+            }
+          }
+        },
+        "block_order": [
+          "mens_links",
+          "womens_links",
+          "brand_links",
+          "support_links",
+          "policies_links"
+        ],
+        "settings": {
+          "tagline": "timeless design. Your destination for luxury.",
+          "address": "122 Henderson Rd, Sandy Creek, NY 13145, USA",
+          "phone": "Call +1 (888) 840-0885",
+          "email": "info@fineystjackets.com",
+          "social_instagram": "#",
+          "social_facebook": "#",
+          "social_twitter": "#",
+          "social_pinterest": "#",
+          "newsletter_title": "Subscribe to Our Newsletter",
+          "newsletter_description": "Get exclusive offers, design tips, and industry news",
+          "newsletter_placeholder": "Your email address",
+          "newsletter_button_text": "Subscribe",
+          "logo": null
+        }
+      }
+    },
+    "order": [
+      "footer"
+    ]
+  }
+  

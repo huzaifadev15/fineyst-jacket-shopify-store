@@ -1,0 +1,117 @@
+<section class="hand-picked-section" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="hand-picked-section__header">
+      <h2 class="hand-picked-section__title">{{ section.settings.title }}</h2>
+      <div class="hand-picked-section__gender-nav">
+        <button class="hand-picked-section__gender-link active" data-gender-filter="men">MEN</button>
+        <span class="hand-picked-section__divider">/</span>
+        <button class="hand-picked-section__gender-link" data-gender-filter="women">WOMEN</button>
+      </div>
+    </div>
+
+    <div class="hand-picked-section__carousel-wrapper">
+      <div class="hand-picked-section__carousel-nav">
+        <button class="hand-picked-section__carousel-btn hand-picked-section__carousel-btn--prev" aria-label="Previous">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="hand-picked-section__carousel-btn hand-picked-section__carousel-btn--next" aria-label="Next">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="hand-picked-section__carousel">
+        <div class="hand-picked-section__carousel-track" data-gender="men">
+          {%- assign men_collection = collections[section.settings.men_collection] -%}
+          {%- if men_collection != blank -%}
+            {%- for product in men_collection.products limit: section.settings.products_to_show -%}
+              <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+                {% render 'product-card', product: product, show_badges: false, show_actions: false %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..5) -%}
+              <div class="hand-picked-section__product{% if i == 3 %} is-center{% endif %}">
+                <div class="product-card product-card--placeholder">
+                  <div class="product-card__image">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                  <div class="product-card__info">
+                    <h3 class="product-card__title">Sample Product {{ i }}</h3>
+                    <p class="product-card__price">$199.00</p>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        <div class="hand-picked-section__carousel-track" data-gender="women" style="display: none;">
+          {%- assign women_collection = collections[section.settings.women_collection] -%}
+          {%- if women_collection != blank -%}
+            {%- for product in women_collection.products limit: section.settings.products_to_show -%}
+              <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+                {% render 'product-card', product: product, show_badges: false, show_actions: false %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..5) -%}
+              <div class="hand-picked-section__product{% if i == 3 %} is-center{% endif %}">
+                <div class="product-card product-card--placeholder">
+                  <div class="product-card__image">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                  <div class="product-card__info">
+                    <h3 class="product-card__title">Sample Product {{ i }}</h3>
+                    <p class="product-card__price">$199.00</p>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hand-Picked Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "HAND-PICKED FOR YOU"
+    },
+    {
+      "type": "collection",
+      "id": "men_collection",
+      "label": "Men's Collection"
+    },
+    {
+      "type": "collection",
+      "id": "women_collection",
+      "label": "Women's Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 5,
+      "label": "Products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hand-Picked Products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,165 @@
+<section class="usa-fulfillment-section">
+  <div class="container">
+    <div class="usa-fulfillment-section__grid">
+      <!-- Left Side - Content -->
+      <div class="usa-fulfillment-section__content">
+        <div class="usa-fulfillment-section__nav">
+          <button type="button" class="usa-fulfillment-section__nav-btn usa-fulfillment-section__nav-btn--prev" data-fulfillment-prev aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+        </div>
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="usa-fulfillment-section__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="usa-fulfillment-section__description">{{ section.settings.description }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.features_heading != blank -%}
+          <h3 class="usa-fulfillment-section__features-heading">{{ section.settings.features_heading }}</h3>
+        {%- endif -%}
+
+        <ul class="usa-fulfillment-section__features-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'feature' and block.settings.text != blank -%}
+              <li class="usa-fulfillment-section__feature" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        <!-- Pagination Dots -->
+        <div class="usa-fulfillment-section__pagination">
+          <span class="usa-fulfillment-section__dot"></span>
+          <span class="usa-fulfillment-section__dot usa-fulfillment-section__dot--active"></span>
+          <span class="usa-fulfillment-section__dot"></span>
+        </div>
+      </div>
+
+      <!-- Right Side - Map Visualization -->
+      <div class="usa-fulfillment-section__visual">
+        {%- if section.settings.map_image != blank -%}
+          <div class="usa-fulfillment-section__map">
+            <img
+              src="{{ section.settings.map_image | image_url: width: 1200 }}"
+              srcset="
+                {{ section.settings.map_image | image_url: width: 800 }} 800w,
+                {{ section.settings.map_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.map_image | image_url: width: 1600 }} 1600w
+              "
+              sizes="50vw"
+              alt="USA Fulfillment Map"
+              loading="lazy"
+            >
+          </div>
+        {%- else -%}
+          <div class="usa-fulfillment-section__map">
+            <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" class="usa-fulfillment-section__map-svg">
+              <!-- USA Map Placeholder -->
+              <rect width="800" height="500" fill="#1a1a2e"/>
+              <text x="400" y="250" text-anchor="middle" fill="#fff" font-size="24" font-family="Arial">USA Map</text>
+            </svg>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.box_image != blank -%}
+          <div class="usa-fulfillment-section__box">
+            <img
+              src="{{ section.settings.box_image | image_url: width: 400 }}"
+              alt="Shipping Box"
+              loading="lazy"
+            >
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "USA Fulfillment",
+  "tag": "section",
+  "class": "usa-fulfillment-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "USA FULFILLMENT"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Fast, reliable shipping with hassle-free returns. We stand behind every jacket we make with comprehensive customer support."
+    },
+    {
+      "type": "text",
+      "id": "features_heading",
+      "label": "Features Heading",
+      "default": "KEY FEATURES:"
+    },
+    {
+      "type": "image_picker",
+      "id": "map_image",
+      "label": "Map Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_image",
+      "label": "Shipping Box Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Free shipping"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "USA Fulfillment",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Free shipping"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "24-48 hour processing"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "14-day easy returns"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Dedicated customer support"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

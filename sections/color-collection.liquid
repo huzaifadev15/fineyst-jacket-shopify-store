@@ -1,0 +1,120 @@
+<section class="color-collection-section" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="color-collection-section__header">
+      <h2 class="color-collection-section__title">{{ section.settings.title }}</h2>
+      <p class="color-collection-section__subtitle">{{ section.settings.subtitle }}</p>
+      <div class="color-collection-section__nav">
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--prev" aria-label="Previous">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--next" aria-label="Next">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="color-collection-section__carousel">
+      <div class="color-collection-section__carousel-track">
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link }}" class="color-collection-section__card" {{ block.shopify_attributes }}>
+            <div class="color-collection-section__card-image">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.title }}" loading="lazy">
+              {%- else -%}
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="color-collection-section__card-overlay">
+              <h3 class="color-collection-section__card-title">{{ block.settings.title }}</h3>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Color Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "OUR COLOR COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find the perfect shade to match your style"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "color_category",
+      "name": "Color Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Black Jackets"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Color Collection",
+      "blocks": [
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "Black Jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "Brown Jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "Tan Jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "Blue Jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "Red Jackets"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

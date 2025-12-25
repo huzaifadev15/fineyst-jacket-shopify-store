@@ -1,0 +1,70 @@
+<section class="about-section">
+  <div class="container">
+    <div class="about-section__header">
+      <h2 class="about-section__title">ABOUT <span class="about-section__title-underline">FINEYST</span></h2>
+      <p class="about-section__subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="about-section__card">
+      <h3 class="about-section__story-heading">{{ section.settings.story_heading }}</h3>
+      <p class="about-section__paragraph">{{ section.settings.paragraph_1 }}</p>
+      <p class="about-section__paragraph">{{ section.settings.paragraph_2 }}</p>
+      <p class="about-section__paragraph">{{ section.settings.paragraph_3 }}</p>
+      <a href="{{ section.settings.link_url }}" class="about-section__link">{{ section.settings.link_text }} →</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Fineyst",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Crafting premium leather jackets with timeless elegance"
+    },
+    {
+      "type": "text",
+      "id": "story_heading",
+      "label": "Story Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_1",
+      "label": "Paragraph 1",
+      "default": "Founded with a passion for exceptional craftsmanship, Fineyst has been creating premium leather jackets that combine timeless design with modern sophistication."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Paragraph 2",
+      "default": "Each piece is meticulously crafted using the finest materials and traditional techniques passed down through generations of skilled artisans."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_3",
+      "label": "Paragraph 3",
+      "default": "Our commitment to quality ensures that every Fineyst jacket is not just a garment, but an investment in enduring style that will last for years to come."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Discover our full story"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Fineyst"
+    }
+  ]
+}
+{% endschema %}

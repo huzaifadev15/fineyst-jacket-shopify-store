@@ -1,0 +1,124 @@
+<section class="premium-materials-section" data-section-id="{{ section.id }}">
+  <div class="premium-materials-section__container">
+    <button class="premium-materials-section__nav-btn premium-materials-section__nav-btn--prev" aria-label="Previous">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    
+    <div class="premium-materials-section__grid">
+      <div class="premium-materials-section__content">
+        <h2 class="premium-materials-section__title">{{ section.settings.title }}</h2>
+        <p class="premium-materials-section__description">{{ section.settings.description }}</p>
+        
+        <div class="premium-materials-section__features">
+          <h3 class="premium-materials-section__features-heading">{{ section.settings.features_heading }}</h3>
+          <ul class="premium-materials-section__features-list">
+            {%- for block in section.blocks -%}
+              <li class="premium-materials-section__feature" {{ block.shopify_attributes }}>
+                <span class="premium-materials-section__feature-icon">✓</span>
+                {{ block.settings.text }}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        
+        <div class="premium-materials-section__pagination">
+          <span class="premium-materials-section__pagination-dot active"></span>
+          <span class="premium-materials-section__pagination-dot"></span>
+          <span class="premium-materials-section__pagination-dot"></span>
+        </div>
+      </div>
+      
+      <div class="premium-materials-section__visual">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.title }}" class="premium-materials-section__image">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+    </div>
+    
+    <button class="premium-materials-section__nav-btn premium-materials-section__nav-btn--next" aria-label="Next">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Premium Materials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "PREMIUM MATERIALS"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We source only the finest materials from around the world to create jackets that stand the test of time."
+    },
+    {
+      "type": "text",
+      "id": "features_heading",
+      "label": "Features Heading",
+      "default": "Key Features"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Premium full-grain leather"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Materials",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Premium full-grain leather"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "YKK zippers for durability"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Soft quilted lining"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Hand-stitched details"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

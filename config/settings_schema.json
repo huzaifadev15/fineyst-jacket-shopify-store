@@ -1,137 +1,137 @@
 [
-  {
-    "name": "theme_info",
-    "theme_name": "Fineyst Jackets",
-    "theme_version": "1.0.0",
-    "theme_author": "Fineyst",
-    "theme_documentation_url": "https://fineyst.com",
-    "theme_support_url": "https://fineyst.com/support"
-  },
-  {
-    "name": "Logo",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image"
-      },
-      {
-        "type": "range",
-        "id": "logo_width",
-        "min": 50,
-        "max": 300,
-        "step": 10,
-        "default": 180,
-        "unit": "px",
-        "label": "Logo width"
-      }
-    ]
-  },
-  {
-    "name": "Colors",
-    "settings": [
-      {
-        "type": "color",
-        "id": "color_primary",
-        "label": "Primary color",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "color",
-        "id": "color_secondary",
-        "label": "Secondary color",
-        "default": "#8B4513"
-      },
-      {
-        "type": "color",
-        "id": "color_accent",
-        "label": "Accent color",
-        "default": "#c9a962"
-      },
-      {
-        "type": "color",
-        "id": "color_background",
-        "label": "Background color",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "color_text",
-        "label": "Text color",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "color",
-        "id": "color_header_bg",
-        "label": "Header background",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "color",
-        "id": "color_header_text",
-        "label": "Header text color",
-        "default": "#ffffff"
-      }
-    ]
-  },
-  {
-    "name": "Typography",
-    "settings": [
-      {
-        "type": "font_picker",
-        "id": "font_heading",
-        "default": "oswald_n4",
-        "label": "Heading font"
-      },
-      {
-        "type": "font_picker",
-        "id": "font_body",
-        "default": "assistant_n4",
-        "label": "Body font"
-      }
-    ]
-  },
-  {
-    "name": "Social media",
-    "settings": [
-      {
-        "type": "text",
-        "id": "social_facebook",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "text",
-        "id": "social_instagram",
-        "label": "Instagram URL"
-      },
-      {
-        "type": "text",
-        "id": "social_twitter",
-        "label": "Twitter/X URL"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest",
-        "label": "Pinterest URL"
-      }
-    ]
-  },
-  {
-    "name": "Chat Widget",
-    "settings": [
-      {
-        "type": "checkbox",
-        "id": "show_chat_widget",
-        "label": "Show chat widget",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "chat_widget_text",
-        "label": "Chat button text",
-        "default": "CHAT NOW"
-      }
-    ]
-  }
-]
-
+    {
+      "name": "theme_info",
+      "theme_name": "Fineyst Jackets",
+      "theme_version": "1.0.0",
+      "theme_author": "Fineyst",
+      "theme_documentation_url": "https://fineyst.com",
+      "theme_support_url": "https://fineyst.com/support"
+    },
+    {
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 50,
+          "max": 300,
+          "step": 10,
+          "default": 180,
+          "unit": "px",
+          "label": "Logo width"
+        }
+      ]
+    },
+    {
+      "name": "Colors",
+      "settings": [
+        {
+          "type": "color",
+          "id": "color_primary",
+          "label": "Primary color",
+          "default": "#1a1a1a"
+        },
+        {
+          "type": "color",
+          "id": "color_secondary",
+          "label": "Secondary color",
+          "default": "#8B4513"
+        },
+        {
+          "type": "color",
+          "id": "color_accent",
+          "label": "Accent color",
+          "default": "#c9a962"
+        },
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text color",
+          "default": "#1a1a1a"
+        },
+        {
+          "type": "color",
+          "id": "color_header_bg",
+          "label": "Header background",
+          "default": "#1a1a1a"
+        },
+        {
+          "type": "color",
+          "id": "color_header_text",
+          "label": "Header text color",
+          "default": "#ffffff"
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "settings": [
+        {
+          "type": "font_picker",
+          "id": "font_heading",
+          "default": "oswald_n4",
+          "label": "Heading font"
+        },
+        {
+          "type": "font_picker",
+          "id": "font_body",
+          "default": "assistant_n4",
+          "label": "Body font"
+        }
+      ]
+    },
+    {
+      "name": "Social media",
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_facebook",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "social_instagram",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "text",
+          "id": "social_twitter",
+          "label": "Twitter/X URL"
+        },
+        {
+          "type": "text",
+          "id": "social_pinterest",
+          "label": "Pinterest URL"
+        }
+      ]
+    },
+    {
+      "name": "Chat Widget",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_chat_widget",
+          "label": "Show chat widget",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "chat_widget_text",
+          "label": "Chat button text",
+          "default": "CHAT NOW"
+        }
+      ]
+    }
+  ]
+  

@@ -26,7 +26,7 @@
     "welcome": {
       "type": "welcome",
       "blocks": {
-        "category_1": {
+        "category_men_1": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/Mens-Biker.webp",
@@ -34,7 +34,7 @@
             "link_url": "shopify://collections/leather-jackets"
           }
         },
-        "category_2": {
+        "category_men_2": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/Mens-Puffer.webp",
@@ -42,7 +42,7 @@
             "link_url": "shopify://collections/puffer-jackets"
           }
         },
-        "category_3": {
+        "category_men_3": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/Mens-denim.webp",
@@ -50,7 +50,7 @@
             "link_url": ""
           }
         },
-        "category_4": {
+        "category_men_4": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/mens-suede.webp",
@@ -58,7 +58,7 @@
             "link_url": ""
           }
         },
-        "category_5": {
+        "category_men_5": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/mens-aviator.webp",
@@ -68,11 +68,16 @@
         }
       },
       "block_order": [
-        "category_1",
-        "category_2",
-        "category_3",
-        "category_4",
-        "category_5"
+        "category_men_1",
+        "category_men_2",
+        "category_men_3",
+        "category_men_4",
+        "category_men_5",
+        "category_women_1",
+        "category_women_2",
+        "category_women_3",
+        "category_women_4",
+        "category_women_5"
       ],
       "settings": {
         "title": "WELCOME TO FINEYST",
@@ -82,50 +87,312 @@
         "women_url": ""
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "mens_womens_jackets": {
+      "type": "mens-womens-jackets",
       "settings": {
-        "title": "BESTSELLING JACKETS",
-        "subtitle": "Our most popular styles that never go out of fashion",
-        "collection": "",
-        "products_count": 4,
-        "show_view_all": true,
-        "view_all_text": "View All"
+        "mens_title": "MEN'S JACKETS",
+        "mens_button_text": "SHOP NOW",
+        "womens_title": "WOMEN'S JACKETS",
+        "womens_button_text": "SHOP NOW"
       }
     },
-    "categories": {
-      "type": "categories",
+    "hand_picked": {
+      "type": "hand-picked",
+      "settings": {
+        "title": "HAND-PICKED FOR YOU",
+        "products_count": 8
+      }
+    },
+    "color_collection": {
+      "type": "color-collection",
       "blocks": {
-        "category_1": {
-          "type": "category",
+        "color_1": {
+          "type": "color_category",
           "settings": {
-            "title": "Men's Jackets",
-            "link_text": "Shop Now",
-            "link_url": ""
+            "title": "BLACK JACKETS"
           }
         },
-        "category_2": {
-          "type": "category",
+        "color_2": {
+          "type": "color_category",
           "settings": {
-            "title": "Women's Jackets",
-            "link_text": "Shop Now",
-            "link_url": ""
+            "title": "BROWN JACKETS"
+          }
+        },
+        "color_3": {
+          "type": "color_category",
+          "settings": {
+            "title": "RED JACKETS"
+          }
+        },
+        "color_4": {
+          "type": "color_category",
+          "settings": {
+            "title": "WHITE JACKETS"
+          }
+        },
+        "color_5": {
+          "type": "color_category",
+          "settings": {
+            "title": "PINK JACKETS"
+          }
+        }
+      },
+      "block_order": ["color_1", "color_2", "color_3", "color_4", "color_5"],
+      "settings": {
+        "title": "OUR COLOR COLLECTION",
+        "subtitle": "Discover our exclusive range of premium jackets across different styles."
+      }
+    },
+    "about": {
+      "type": "about",
+      "settings": {
+        "title": "ABOUT FINEYST",
+        "subtitle": "Premium streetwear that speaks your language",
+        "story_heading": "• OUR STORY",
+        "paragraph_1": "Fineyst is a premium streetwear destination that brings together the best of contemporary urban style, sustainable practices, and exceptional customer experience.",
+        "paragraph_2": "Founded with a passion for authentic street culture, we've grown from a small local brand to a recognized name in streetwear fashion. Our carefully curated collections feature exclusive designs and limited-edition collaborations with artists and designers, ensuring that our customers always have access to unique, high-quality streetwear that makes a statement.",
+        "paragraph_3": "What sets Fineyst apart is our unwavering commitment to quality, authenticity, and customer satisfaction. We believe that streetwear should be both expressive and responsibly made.",
+        "link_text": "Discover our full story",
+        "link_url": ""
+      }
+    },
+    "premium_materials": {
+      "type": "premium-materials",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "text": "Ethically sourced full-grain leather"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "text": "Premium lambskin and suede options"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "text": "Distressed finishes for authentic look"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "text": "Quality tested for durability"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {
+        "title": "PREMIUM MATERIALS",
+        "description": "We don't mass-produce. We craft. Every FINEYST jacket starts with ethically sourced full-grain leather, precision cuts, and hours of artisan detail.",
+        "features_heading": "KEY FEATURES:"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy for all unworn items in their original condition with tags attached. Returns are processed within 14 business days of receipt.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>Once your order ships, you'll receive a tracking number via email. You can use this number to track your package on our website or the carrier's website.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location. Please check our shipping page for more details.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "How do I care for my garments?",
+            "answer": "<p>Please follow the care instructions on the label. Most of our leather jackets should be cleaned by a professional leather cleaner. Avoid machine washing.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer size exchanges?",
+            "answer": "<p>Yes, we offer free size exchanges within 30 days of purchase. Items must be unworn and in original condition with tags attached.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "Can I modify my order after placing it?",
+            "answer": "<p>If your order hasn't been processed yet, please contact our customer service team immediately. We'll do our best to accommodate your request.</p>"
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer gift wrapping?",
+            "answer": "<p>Yes, we offer premium gift wrapping services. You can select this option during checkout for an additional fee.</p>"
+          }
+        },
+        "question_8": {
+          "type": "question",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept all major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay. All transactions are secure and encrypted.</p>"
+          }
+        },
+        "question_9": {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact customer service?",
+            "answer": "<p>You can reach us via email at support@fineyst.com, through our live chat, or by phone at 1-800-FINEYST. Our team is available Monday-Friday, 9am-6pm EST.</p>"
+          }
+        },
+        "question_10": {
+          "type": "question",
+          "settings": {
+            "question": "Do you have a loyalty program?",
+            "answer": "<p>Yes! Join our loyalty program to earn points on every purchase. Points can be redeemed for discounts on future orders.</p>"
           }
         }
       },
       "block_order": [
-        "category_1",
-        "category_2"
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7",
+        "question_8",
+        "question_9",
+        "question_10"
       ],
       "settings": {
-        "title": ""
+        "title": "FREQUENTLY ASKED QUESTIONS"
+      }
+    },
+    "latest_insights": {
+      "type": "latest-insights",
+      "settings": {
+        "title": "LATEST INSIGHTS",
+        "description": "Discover our latest articles, insights, and stories that matter. Stay informed with our expert perspectives on industry trends and innovations.",
+        "button_text": "VIEW ALL ARTICLES",
+        "button_url": ""
+      }
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "name": "Emma R.",
+            "rating": 4,
+            "review": "Love the look and feel of this jacket. I just wish there were more lightweight options for spring."
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "name": "David L.",
+            "rating": 5,
+            "review": "The craftsmanship on this jacket is next level. The inner lining and zipper quality really stand out."
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "name": "Jessica M.",
+            "rating": 5,
+            "review": "I've received compliments every time I wear this jacket. It's stylish, functional, and feels luxurious."
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "name": "Robert K.",
+            "rating": 5,
+            "review": "Had a sizing issue and the support team was incredibly helpful with the exchange. Love my new jacket!"
+          }
+        },
+        "review_5": {
+          "type": "review",
+          "settings": {
+            "name": "Olivia P.",
+            "rating": 4,
+            "review": "The jacket is cozy and perfect for chilly mornings. Only downside is it runs slightly big."
+          }
+        },
+        "review_6": {
+          "type": "review",
+          "settings": {
+            "name": "James H.",
+            "rating": 5,
+            "review": "This is hands down the best jacket I've ever owned. Sleek design and it pairs well with everything."
+          }
+        },
+        "review_7": {
+          "type": "review",
+          "settings": {
+            "name": "Alex M.",
+            "rating": 5,
+            "review": "Outstanding quality and craftsmanship. The jacket exceeded my expectations in every way!"
+          }
+        },
+        "review_8": {
+          "type": "review",
+          "settings": {
+            "name": "Sophia L.",
+            "rating": 4,
+            "review": "Elegant design and very comfortable to wear. Would love to see more color options in this style."
+          }
+        },
+        "review_9": {
+          "type": "review",
+          "settings": {
+            "name": "Ryan K.",
+            "rating": 5,
+            "review": "Perfect jacket for both casual outings and more dressed-up looks. Super versatile."
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5",
+        "review_6",
+        "review_7",
+        "review_8",
+        "review_9"
+      ],
+      "settings": {
+        "title": "OUR PRODUCTS BACKED BY INCREDIBLE REVIEWS",
+        "subtitle": "Verified Feedback from Authentic Customers"
       }
     }
   },
   "order": [
     "hero",
     "welcome",
-    "featured_collection",
-    "categories"
+    "mens_womens_jackets",
+    "hand_picked",
+    "color_collection",
+    "about",
+    "premium_materials",
+    "faq",
+    "latest_insights",
+    "reviews"
   ]
 }

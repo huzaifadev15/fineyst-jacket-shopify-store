@@ -1,0 +1,60 @@
+<section class="latest-insights-section">
+  <div class="container">
+    <div class="latest-insights-section__content">
+      {%- if section.settings.title != blank -%}
+        <h2 class="latest-insights-section__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="latest-insights-section__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank -%}
+        <a href="{{ section.settings.button_url | default: '#' }}" class="latest-insights-section__button">
+          {{ section.settings.button_text }}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Latest Insights",
+  "tag": "section",
+  "class": "latest-insights-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "LATEST INSIGHTS"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover our latest articles, insights, and stories that matter. Stay informed with our expert perspectives on industry trends and innovations."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "VIEW ALL ARTICLES"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Insights"
+    }
+  ]
+}
+{% endschema %}

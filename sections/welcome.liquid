@@ -18,12 +18,12 @@
 
       <!-- MEN/WOMEN Navigation -->
       <div class="welcome-section__gender-nav">
-        <a href="{{ section.settings.men_url | default: '/collections/mens' }}" class="welcome-section__gender-link{% if section.settings.active_gender == 'men' %} is-active{% endif %}">
+        <button type="button" class="welcome-section__gender-link is-active" data-gender-filter="men">
           MEN
-        </a>
-        <a href="{{ section.settings.women_url | default: '/collections/womens' }}" class="welcome-section__gender-link{% if section.settings.active_gender == 'women' %} is-active{% endif %}">
+        </button>
+        <button type="button" class="welcome-section__gender-link" data-gender-filter="women">
           WOMEN
-        </a>
+        </button>
       </div>
     </div>
 
@@ -46,7 +46,7 @@
         <div class="welcome-section__carousel" data-carousel>
           <div class="welcome-section__carousel-track" data-carousel-track>
             {%- for block in section.blocks -%}
-              <div class="welcome-section__category-card" {{ block.shopify_attributes }}>
+              <div class="welcome-section__category-card" data-gender="{{ block.settings.gender | default: 'men' }}" {{ block.shopify_attributes }}>
                 <a href="{{ block.settings.link_url | default: '#' }}" class="welcome-section__category-link">
                   {%- if block.settings.image != blank -%}
                     <div class="welcome-section__category-image">
@@ -139,6 +139,17 @@
           "type": "url",
           "id": "link_url",
           "label": "Category Link URL"
+        },
+        {
+          "type": "select",
+          "id": "gender",
+          "label": "Gender",
+          "options": [
+            { "value": "men", "label": "Men" },
+            { "value": "women", "label": "Women" },
+            { "value": "both", "label": "Both" }
+          ],
+          "default": "men"
         }
       ]
     }
