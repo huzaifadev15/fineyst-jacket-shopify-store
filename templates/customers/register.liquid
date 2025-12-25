@@ -1,0 +1,176 @@
+{% comment %}
+  Customer registration template
+{% endcomment %}
+
+{% style %}
+  .auth-page {
+    padding: 14rem 0 8rem;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-container {
+    max-width: 50rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .auth-form {
+    background: #fff;
+    padding: 4rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+
+  .auth-form__title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .auth-form__group {
+    margin-bottom: 2rem;
+  }
+
+  .auth-form__label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .auth-form__input {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    font-size: 1.5rem;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+  }
+
+  .auth-form__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .auth-form__submit {
+    width: 100%;
+    padding: 1.6rem;
+    margin-top: 1rem;
+  }
+
+  .auth-form__footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #eee;
+  }
+
+  .auth-form__link {
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+  }
+
+  .auth-form__link:hover {
+    text-decoration: underline;
+  }
+
+  .form-errors {
+    background: #fff0f0;
+    border: 1px solid #ffcccc;
+    color: #e63946;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+  }
+
+  .auth-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .auth-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<div class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-form">
+        <h1 class="auth-form__title">Create Account</h1>
+
+        {% form 'create_customer' %}
+          {% if form.errors %}
+            <div class="form-errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+
+          <div class="auth-form__row">
+            <div class="auth-form__group">
+              <label for="FirstName" class="auth-form__label">First Name</label>
+              <input 
+                type="text" 
+                id="FirstName" 
+                name="customer[first_name]" 
+                class="auth-form__input"
+                required
+              >
+            </div>
+
+            <div class="auth-form__group">
+              <label for="LastName" class="auth-form__label">Last Name</label>
+              <input 
+                type="text" 
+                id="LastName" 
+                name="customer[last_name]" 
+                class="auth-form__input"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="auth-form__group">
+            <label for="Email" class="auth-form__label">Email</label>
+            <input 
+              type="email" 
+              id="Email" 
+              name="customer[email]" 
+              class="auth-form__input"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="auth-form__group">
+            <label for="Password" class="auth-form__label">Password</label>
+            <input 
+              type="password" 
+              id="Password" 
+              name="customer[password]" 
+              class="auth-form__input"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary auth-form__submit">
+            Create Account
+          </button>
+
+          <div class="auth-form__footer">
+            <p style="font-size: 1.4rem;">
+              Already have an account? <a href="{{ routes.account_login_url }}" class="auth-form__link">Sign in</a>
+            </p>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,31 @@
+{
+  "current": {
+    "color_primary": "#1a1a1a",
+    "color_secondary": "#8B4513",
+    "color_accent": "#c9a962",
+    "color_background": "#ffffff",
+    "color_text": "#1a1a1a",
+    "color_header_bg": "#1a1a1a",
+    "color_header_text": "#ffffff",
+    "show_chat_widget": true,
+    "chat_widget_text": "CHAT NOW",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": [
+      "hero",
+      "welcome",
+      "featured-collection",
+      "categories",
+      "testimonials"
+    ]
+  }
+}
+

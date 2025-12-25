@@ -1,0 +1,165 @@
+{%- style -%}
+  .search-main {
+    padding: 12rem 0 8rem;
+  }
+
+  .search-main__header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .search-main__title {
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 3rem;
+  }
+
+  .search-form {
+    max-width: 60rem;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .search-form__input {
+    flex: 1;
+    padding: 1.6rem 2rem;
+    font-size: 1.6rem;
+    border: 2px solid var(--color-primary);
+  }
+
+  .search-form__submit {
+    padding: 1.6rem 3rem;
+  }
+
+  .search-results__count {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 4rem;
+  }
+
+  .search-results__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .search-empty__text {
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 1200px) {
+    .search-results__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .search-results__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .search-results__grid {
+      grid-template-columns: 1fr;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    .search-form {
+      flex-direction: column;
+    }
+  }
+{%- endstyle -%}
+
+<section class="search-main">
+  <div class="container">
+    <header class="search-main__header">
+      <h1 class="search-main__title">
+        {%- if search.performed -%}
+          Search Results
+        {%- else -%}
+          Search Our Store
+        {%- endif -%}
+      </h1>
+
+      <form action="{{ routes.search_url }}" method="get" class="search-form">
+        <input 
+          type="search" 
+          name="q" 
+          class="search-form__input"
+          placeholder="Search for jackets..."
+          value="{{ search.terms | escape }}"
+          aria-label="Search"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="submit" class="btn btn--primary search-form__submit">
+          Search
+        </button>
+      </form>
+    </header>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <p class="search-results__count">
+          Found {{ search.results_count }} {{ search.results_count | pluralize: 'result', 'results' }} for "{{ search.terms }}"
+        </p>
+
+        {%- paginate search.results by 12 -%}
+          <div class="search-results__grid">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', product: item %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="collection-pagination" aria-label="Pagination">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="collection-pagination__link">&larr;</a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="collection-pagination__link">{{ part.title }}</a>
+                {%- else -%}
+                  <span class="collection-pagination__link{% if part.title == paginate.current_page %} is-current{% endif %}">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="collection-pagination__link">&rarr;</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <div class="search-empty">
+          <p class="search-empty__text">No results found for "{{ search.terms }}"</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
+            Browse All Products
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Page",
+  "tag": "section",
+  "class": "search-section",
+  "settings": []
+}
+{% endschema %}
+

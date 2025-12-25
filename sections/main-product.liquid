@@ -1,0 +1,344 @@
+{%- style -%}
+  .product-main {
+    padding: 10rem 0 8rem;
+  }
+
+  .product-main__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .product-gallery {
+    position: sticky;
+    top: 10rem;
+  }
+
+  .product-gallery__main {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: #f5f5f5;
+  }
+
+  .product-gallery__main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-gallery__thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .product-gallery__thumb {
+    aspect-ratio: 1;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    background: #f5f5f5;
+  }
+
+  .product-gallery__thumb.is-active,
+  .product-gallery__thumb:hover {
+    opacity: 1;
+  }
+
+  .product-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-info__vendor {
+    font-size: 1.2rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .product-info__title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-info__price {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .product-info__price--compare {
+    font-size: 1.8rem;
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+
+  .product-info__price--sale {
+    color: #e63946;
+  }
+
+  .product-info__description {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .product-form {
+    margin-bottom: 3rem;
+  }
+
+  .product-form__option {
+    margin-bottom: 2rem;
+  }
+
+  .product-form__label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .product-form__select {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    font-size: 1.5rem;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .product-form__quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    width: fit-content;
+  }
+
+  .product-form__quantity-btn {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .product-form__quantity-btn:hover {
+    background: #f5f5f5;
+  }
+
+  .product-form__quantity-input {
+    width: 6rem;
+    height: 5rem;
+    text-align: center;
+    border: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  .product-form__submit {
+    width: 100%;
+    padding: 1.8rem;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+  }
+
+  .product-meta {
+    padding-top: 3rem;
+    border-top: 1px solid #eee;
+  }
+
+  .product-meta__item {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-meta__label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .product-main__grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+
+    .product-gallery {
+      position: static;
+    }
+  }
+{%- endstyle -%}
+
+<section class="product-main">
+  <div class="container">
+    <div class="product-main__grid">
+      <!-- Product Gallery -->
+      <div class="product-gallery">
+        <div class="product-gallery__main" data-product-main-image>
+          {%- if product.featured_image != blank -%}
+            <img
+              src="{{ product.featured_image | image_url: width: 800 }}"
+              alt="{{ product.featured_image.alt | default: product.title }}"
+              id="ProductMainImage"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="product-gallery__thumbs">
+            {%- for image in product.images -%}
+              <button 
+                class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                data-thumb
+                data-image-url="{{ image | image_url: width: 800 }}"
+                data-image-alt="{{ image.alt | default: product.title }}"
+              >
+                <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt | default: product.title }}">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        {%- if product.vendor -%}
+          <p class="product-info__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="product-info__title">{{ product.title }}</h1>
+
+        <div class="product-info__price" data-product-price>
+          {%- if product.compare_at_price > product.price -%}
+            <span class="product-info__price--compare">{{ product.compare_at_price | money }}</span>
+            <span class="product-info__price--sale">{{ product.price | money }}</span>
+          {%- else -%}
+            <span>{{ product.price | money }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="product-info__description">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+
+        {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="product-form__option">
+                <label class="product-form__label" for="Option-{{ option.name | handleize }}">
+                  {{ option.name }}
+                </label>
+                <select 
+                  class="product-form__select" 
+                  id="Option-{{ option.name | handleize }}"
+                  name="options[{{ option.name }}]"
+                  data-option-select
+                >
+                  {%- for value in option.values -%}
+                    <option 
+                      value="{{ value }}"
+                      {% if option.selected_value == value %}selected{% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <div class="product-form__option">
+            <label class="product-form__label" for="Quantity">Quantity</label>
+            <div class="product-form__quantity">
+              <button type="button" class="product-form__quantity-btn" data-quantity-minus>−</button>
+              <input 
+                type="number" 
+                class="product-form__quantity-input" 
+                id="Quantity"
+                name="quantity" 
+                value="1" 
+                min="1"
+                data-quantity-input
+              >
+              <button type="button" class="product-form__quantity-btn" data-quantity-plus>+</button>
+            </div>
+          </div>
+
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+
+          <button 
+            type="submit" 
+            class="btn btn--primary product-form__submit"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            {%- if product.available -%}
+              Add to Cart
+            {%- else -%}
+              Sold Out
+            {%- endif -%}
+          </button>
+        {%- endform -%}
+
+        <div class="product-meta">
+          {%- if product.sku != blank -%}
+            <p class="product-meta__item">
+              <span class="product-meta__label">SKU:</span>
+              <span>{{ product.selected_or_first_available_variant.sku }}</span>
+            </p>
+          {%- endif -%}
+          {%- if product.type != blank -%}
+            <p class="product-meta__item">
+              <span class="product-meta__label">Type:</span>
+              <span>{{ product.type }}</span>
+            </p>
+          {%- endif -%}
+          {%- if product.tags.size > 0 -%}
+            <p class="product-meta__item">
+              <span class="product-meta__label">Tags:</span>
+              <span>{{ product.tags | join: ', ' }}</span>
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="ProductJson">
+  {{ product | json }}
+</script>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "tag": "section",
+  "class": "product-page-section",
+  "settings": []
+}
+{% endschema %}
+

@@ -1,0 +1,18 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "show_sub_nav": true,
+        "sub_menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}
+

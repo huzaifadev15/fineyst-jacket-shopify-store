@@ -1,0 +1,133 @@
+{% comment %}
+  Customer addresses template
+{% endcomment %}
+
+{% style %}
+  .addresses-page {
+    padding: 12rem 0 8rem;
+  }
+
+  .addresses-page__header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .addresses-page__title {
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+  }
+
+  .addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .address-card {
+    background: #f8f8f8;
+    padding: 3rem;
+    position: relative;
+  }
+
+  .address-card--default::before {
+    content: 'Default';
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--color-primary);
+    color: #fff;
+    padding: 0.4rem 1rem;
+  }
+
+  .address-card__name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .address-card__details {
+    font-size: 1.5rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .address-card__actions {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .address-card__action {
+    font-size: 1.3rem;
+    color: var(--color-secondary);
+  }
+
+  .address-card__action:hover {
+    text-decoration: underline;
+  }
+
+  .address-card__action--delete {
+    color: #e63946;
+  }
+
+  .add-address-btn {
+    display: block;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .addresses-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<div class="addresses-page">
+  <div class="container">
+    <header class="addresses-page__header">
+      <h1 class="addresses-page__title">My Addresses</h1>
+      <a href="{{ routes.account_url }}" class="btn btn--secondary">Back to Account</a>
+    </header>
+
+    {% if customer.addresses.size > 0 %}
+      <div class="addresses-grid">
+        {% for address in customer.addresses %}
+          <div class="address-card{% if address == customer.default_address %} address-card--default{% endif %}">
+            <p class="address-card__name">{{ address.name }}</p>
+            <div class="address-card__details">
+              <p>{{ address.address1 }}</p>
+              {% if address.address2 != blank %}
+                <p>{{ address.address2 }}</p>
+              {% endif %}
+              <p>{{ address.city }}, {{ address.province_code }} {{ address.zip }}</p>
+              <p>{{ address.country }}</p>
+              {% if address.phone != blank %}
+                <p>{{ address.phone }}</p>
+              {% endif %}
+            </div>
+            <div class="address-card__actions">
+              <a href="{{ address.url }}/edit" class="address-card__action">Edit</a>
+              {% unless address == customer.default_address %}
+                <a href="{{ address.url }}" class="address-card__action address-card__action--delete" data-confirm="Are you sure you wish to delete this address?" data-method="delete">Delete</a>
+              {% endunless %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="text-align: center; margin-bottom: 3rem;">No addresses saved yet.</p>
+    {% endif %}
+
+    <a href="{{ routes.account_addresses_url }}/new" class="btn btn--primary add-address-btn">
+      Add New Address
+    </a>
+  </div>
+</div>
+

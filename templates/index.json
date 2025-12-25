@@ -1,0 +1,94 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "height": "full",
+        "title": "LEATHER JACKETS",
+        "link_1_text": "MEN",
+        "link_1_underline": true,
+        "link_2_text": "WOMEN",
+        "link_2_underline": true
+      }
+    },
+    "welcome": {
+      "type": "welcome",
+      "settings": {
+        "title": "WELCOME TO FINEYST",
+        "text": "<p>Discover the finest collection of premium leather jackets, handcrafted with attention to detail and designed to make a statement. Each piece in our collection represents the perfect blend of classic style and modern sophistication.</p>"
+      },
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "text": "On orders over $200"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "quality",
+            "title": "Premium Quality",
+            "text": "Genuine leather guaranteed"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "returns",
+            "title": "Easy Returns",
+            "text": "30-day return policy"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure Payment",
+            "text": "100% secure checkout"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"]
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "BESTSELLING JACKETS",
+        "subtitle": "Our most popular styles that never go out of fashion",
+        "products_count": 4,
+        "show_view_all": true,
+        "view_all_text": "View All"
+      }
+    },
+    "categories": {
+      "type": "categories",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "Men's Jackets",
+            "link_text": "Shop Now"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Women's Jackets",
+            "link_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": ["category_1", "category_2"]
+    }
+  },
+  "order": [
+    "hero",
+    "welcome",
+    "featured_collection",
+    "categories"
+  ]
+}
+

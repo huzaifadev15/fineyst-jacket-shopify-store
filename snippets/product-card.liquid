@@ -1,0 +1,149 @@
+{%- comment -%}
+  Product Card Snippet
+  Renders a product card with image, title, price, and quick actions
+
+  Usage:
+  {% render 'product-card', product: product %}
+
+  Parameters:
+  - product: (required) The product object
+  - show_vendor: (optional) Show product vendor, default: false
+  - show_badges: (optional) Show sale/new badges, default: true
+{%- endcomment -%}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: false
+  assign show_badges = show_badges | default: true
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = product.featured_image
+-%}
+
+<div class="product-card" data-product-id="{{ product.id }}">
+  <div class="product-card__image">
+    <a href="{{ product.url }}" aria-label="{{ product.title }}">
+      {%- if featured_image != blank -%}
+        <img
+          src="{{ featured_image | image_url: width: 600 }}"
+          srcset="
+            {{ featured_image | image_url: width: 400 }} 400w,
+            {{ featured_image | image_url: width: 600 }} 600w,
+            {{ featured_image | image_url: width: 800 }} 800w
+          "
+          sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
+          alt="{{ featured_image.alt | default: product.title }}"
+          loading="lazy"
+          width="{{ featured_image.width }}"
+          height="{{ featured_image.height }}"
+        >
+        {%- if product.images[1] != blank -%}
+          <img
+            class="product-card__image-hover"
+            src="{{ product.images[1] | image_url: width: 600 }}"
+            alt="{{ product.images[1].alt | default: product.title }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+
+    {%- if show_badges -%}
+      <div class="product-card__badges">
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+          <span class="product-card__badge product-card__badge--sale">-{{ savings }}%</span>
+        {%- endif -%}
+        {%- if product.available == false -%}
+          <span class="product-card__badge product-card__badge--soldout">Sold Out</span>
+        {%- elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
+          <span class="product-card__badge product-card__badge--new">New</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="product-card__actions">
+      <button 
+        type="button" 
+        class="product-card__action" 
+        aria-label="Add to wishlist"
+        data-wishlist-add="{{ product.id }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <button 
+        type="button" 
+        class="product-card__action" 
+        aria-label="Quick view"
+        data-quick-view="{{ product.handle }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+      {%- if product.available -%}
+        <button 
+          type="button" 
+          class="product-card__action" 
+          aria-label="Add to cart"
+          data-add-to-cart="{{ current_variant.id }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-card__content">
+    {%- if show_vendor and product.vendor -%}
+      <p class="product-card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+    
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="product-card__price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
+        <span class="product-card__price--sale">{{ product.price | money }}</span>
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-card__image-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .product-card:hover .product-card__image-hover {
+    opacity: 1;
+  }
+
+  .product-card__badge--soldout {
+    background: #666;
+    color: #fff;
+  }
+
+  .product-card__vendor {
+    font-size: 1.2rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+</style>
+

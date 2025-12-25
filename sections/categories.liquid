@@ -1,0 +1,112 @@
+<section class="categories-section">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <div class="section__header">
+        <h2 class="section__title">{{ section.settings.title }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="categories-section__grid">
+      {%- for block in section.blocks -%}
+        <div class="category-card" {{ block.shopify_attributes }}>
+          <div class="category-card__image">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 800 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 600 }} 600w,
+                  {{ block.settings.image | image_url: width: 800 }} 800w,
+                  {{ block.settings.image | image_url: width: 1000 }} 1000w
+                "
+                sizes="(max-width: 768px) 100vw, 50vw"
+                alt="{{ block.settings.title | default: block.settings.image.alt }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="category-card__overlay"></div>
+          <div class="category-card__content">
+            {%- if block.settings.title != blank -%}
+              <h3 class="category-card__title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.link_text != blank -%}
+              <a href="{{ block.settings.link_url }}" class="category-card__link">
+                {{ block.settings.link_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories",
+  "tag": "section",
+  "class": "categories-section-wrapper",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Men's Jackets"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Men's Jackets",
+            "link_text": "Shop Now"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Women's Jackets",
+            "link_text": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

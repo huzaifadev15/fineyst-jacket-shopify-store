@@ -1,0 +1,177 @@
+{% comment %}
+  Customer login template
+{% endcomment %}
+
+{% style %}
+  .auth-page {
+    padding: 14rem 0 8rem;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-container {
+    max-width: 50rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .auth-form {
+    background: #fff;
+    padding: 4rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+
+  .auth-form__title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .auth-form__group {
+    margin-bottom: 2rem;
+  }
+
+  .auth-form__label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .auth-form__input {
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+    font-size: 1.5rem;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+  }
+
+  .auth-form__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .auth-form__submit {
+    width: 100%;
+    padding: 1.6rem;
+    margin-top: 1rem;
+  }
+
+  .auth-form__footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #eee;
+  }
+
+  .auth-form__link {
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+  }
+
+  .auth-form__link:hover {
+    text-decoration: underline;
+  }
+
+  .form-errors {
+    background: #fff0f0;
+    border: 1px solid #ffcccc;
+    color: #e63946;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+  }
+{% endstyle %}
+
+<div class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-form" id="CustomerLoginForm">
+        <h1 class="auth-form__title">Login</h1>
+
+        {% form 'customer_login' %}
+          {% if form.errors %}
+            <div class="form-errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+
+          <div class="auth-form__group">
+            <label for="CustomerEmail" class="auth-form__label">Email</label>
+            <input 
+              type="email" 
+              id="CustomerEmail" 
+              name="customer[email]" 
+              class="auth-form__input"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="auth-form__group">
+            <label for="CustomerPassword" class="auth-form__label">Password</label>
+            <input 
+              type="password" 
+              id="CustomerPassword" 
+              name="customer[password]" 
+              class="auth-form__input"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary auth-form__submit">
+            Sign In
+          </button>
+
+          <div class="auth-form__footer">
+            <a href="#RecoverForm" class="auth-form__link" onclick="document.getElementById('RecoverForm').style.display='block'; document.getElementById('CustomerLoginForm').style.display='none'; return false;">
+              Forgot your password?
+            </a>
+            <p style="margin-top: 1.5rem; font-size: 1.4rem;">
+              Don't have an account? <a href="{{ routes.account_register_url }}" class="auth-form__link">Create one</a>
+            </p>
+          </div>
+        {% endform %}
+      </div>
+
+      <div class="auth-form" id="RecoverForm" style="display: none;">
+        <h1 class="auth-form__title">Reset Password</h1>
+
+        {% form 'recover_customer_password' %}
+          {% if form.posted_successfully? %}
+            <p style="text-align: center; color: green; margin-bottom: 2rem;">
+              We've sent you an email with a link to update your password.
+            </p>
+          {% endif %}
+
+          <div class="auth-form__group">
+            <label for="RecoverEmail" class="auth-form__label">Email</label>
+            <input 
+              type="email" 
+              id="RecoverEmail" 
+              name="email" 
+              class="auth-form__input"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary auth-form__submit">
+            Submit
+          </button>
+
+          <div class="auth-form__footer">
+            <a href="#CustomerLoginForm" class="auth-form__link" onclick="document.getElementById('CustomerLoginForm').style.display='block'; document.getElementById('RecoverForm').style.display='none'; return false;">
+              Back to Login
+            </a>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+

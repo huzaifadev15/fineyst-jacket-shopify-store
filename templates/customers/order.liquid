@@ -1,0 +1,225 @@
+{% comment %}
+  Customer order details template
+{% endcomment %}
+
+{% style %}
+  .order-page {
+    padding: 12rem 0 8rem;
+  }
+
+  .order-page__header {
+    margin-bottom: 4rem;
+  }
+
+  .order-page__title {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .order-page__meta {
+    font-size: 1.5rem;
+    color: #666;
+  }
+
+  .order-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+
+  .order-items {
+    background: #f8f8f8;
+    padding: 3rem;
+  }
+
+  .order-item {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .order-item:last-child {
+    border-bottom: none;
+  }
+
+  .order-item__image {
+    width: 10rem;
+    height: 12rem;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .order-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .order-item__title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .order-item__variant {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .order-item__price {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .order-summary {
+    background: #f8f8f8;
+    padding: 3rem;
+    height: fit-content;
+  }
+
+  .order-summary__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .order-summary__row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+  }
+
+  .order-summary__row--total {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ddd;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+
+  .order-addresses {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .order-address {
+    background: #f8f8f8;
+    padding: 2.5rem;
+  }
+
+  .order-address__title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    color: #888;
+  }
+
+  .order-address__details {
+    font-size: 1.5rem;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 900px) {
+    .order-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .order-addresses {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<div class="order-page">
+  <div class="container">
+    <header class="order-page__header">
+      <a href="{{ routes.account_url }}" style="font-size: 1.4rem; color: var(--color-secondary); margin-bottom: 2rem; display: inline-block;">← Back to Account</a>
+      <h1 class="order-page__title">Order {{ order.name }}</h1>
+      <p class="order-page__meta">
+        Placed on {{ order.created_at | date: "%B %d, %Y at %I:%M %p" }}
+      </p>
+    </header>
+
+    <div class="order-grid">
+      <div class="order-items">
+        {% for line_item in order.line_items %}
+          <div class="order-item">
+            <div class="order-item__image">
+              {% if line_item.image %}
+                <img src="{{ line_item.image | image_url: width: 200 }}" alt="{{ line_item.title }}">
+              {% endif %}
+            </div>
+            <div class="order-item__details">
+              <h3 class="order-item__title">{{ line_item.title }}</h3>
+              {% unless line_item.variant.title == 'Default Title' %}
+                <p class="order-item__variant">{{ line_item.variant.title }}</p>
+              {% endunless %}
+              <p class="order-item__price">{{ line_item.final_price | money }} × {{ line_item.quantity }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="order-summary">
+        <h2 class="order-summary__title">Order Summary</h2>
+        
+        <div class="order-summary__row">
+          <span>Subtotal</span>
+          <span>{{ order.line_items_subtotal_price | money }}</span>
+        </div>
+
+        {% for discount in order.discounts %}
+          <div class="order-summary__row">
+            <span>Discount ({{ discount.code }})</span>
+            <span>-{{ discount.savings | money }}</span>
+          </div>
+        {% endfor %}
+
+        {% for shipping_method in order.shipping_methods %}
+          <div class="order-summary__row">
+            <span>Shipping ({{ shipping_method.title }})</span>
+            <span>{{ shipping_method.price | money }}</span>
+          </div>
+        {% endfor %}
+
+        <div class="order-summary__row">
+          <span>Tax</span>
+          <span>{{ order.tax_price | money }}</span>
+        </div>
+
+        <div class="order-summary__row order-summary__row--total">
+          <span>Total</span>
+          <span>{{ order.total_price | money }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-addresses">
+      <div class="order-address">
+        <h3 class="order-address__title">Shipping Address</h3>
+        <div class="order-address__details">
+          {{ order.shipping_address | format_address }}
+        </div>
+      </div>
+
+      <div class="order-address">
+        <h3 class="order-address__title">Billing Address</h3>
+        <div class="order-address__details">
+          {{ order.billing_address | format_address }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

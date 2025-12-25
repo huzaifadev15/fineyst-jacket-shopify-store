@@ -1,0 +1,170 @@
+{% comment %}
+  Customer account template
+{% endcomment %}
+
+{% style %}
+  .account-page {
+    padding: 12rem 0 8rem;
+  }
+
+  .account-page__header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .account-page__title {
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .account-page__grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+  }
+
+  .account-sidebar {
+    background: #f8f8f8;
+    padding: 3rem;
+  }
+
+  .account-sidebar__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  .account-sidebar__nav a {
+    display: block;
+    padding: 1.2rem 0;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #eee;
+    transition: color 0.3s ease;
+  }
+
+  .account-sidebar__nav a:hover {
+    color: var(--color-secondary);
+  }
+
+  .account-content__section {
+    margin-bottom: 4rem;
+  }
+
+  .account-content__section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  .orders-table th {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .address-card {
+    background: #f8f8f8;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .account-page__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<div class="account-page">
+  <div class="container">
+    <header class="account-page__header">
+      <h1 class="account-page__title">My Account</h1>
+      <p>Welcome back, {{ customer.first_name }}!</p>
+    </header>
+
+    <div class="account-page__grid">
+      <aside class="account-sidebar">
+        <h2 class="account-sidebar__title">Account Navigation</h2>
+        <nav class="account-sidebar__nav">
+          <a href="{{ routes.account_url }}">Order History</a>
+          <a href="{{ routes.account_addresses_url }}">Addresses</a>
+          <a href="{{ routes.account_logout_url }}">Logout</a>
+        </nav>
+      </aside>
+
+      <div class="account-content">
+        <section class="account-content__section">
+          <h2 class="account-content__section-title">Order History</h2>
+          
+          {% if customer.orders.size > 0 %}
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Payment Status</th>
+                  <th>Fulfillment</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders %}
+                  <tr>
+                    <td>
+                      <a href="{{ order.customer_url }}">{{ order.name }}</a>
+                    </td>
+                    <td>{{ order.created_at | date: "%B %d, %Y" }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.fulfillment_status_label | default: 'Unfulfilled' }}</td>
+                    <td>{{ order.total_price | money }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p>You haven't placed any orders yet.</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary" style="margin-top: 2rem;">Start Shopping</a>
+          {% endif %}
+        </section>
+
+        <section class="account-content__section">
+          <h2 class="account-content__section-title">Default Address</h2>
+          
+          {% if customer.default_address %}
+            <div class="address-card">
+              <p>{{ customer.default_address.name }}</p>
+              <p>{{ customer.default_address.address1 }}</p>
+              {% if customer.default_address.address2 != blank %}
+                <p>{{ customer.default_address.address2 }}</p>
+              {% endif %}
+              <p>{{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}</p>
+              <p>{{ customer.default_address.country }}</p>
+            </div>
+            <a href="{{ routes.account_addresses_url }}" class="btn btn--secondary">Manage Addresses</a>
+          {% else %}
+            <p>No default address saved.</p>
+            <a href="{{ routes.account_addresses_url }}" class="btn btn--primary" style="margin-top: 2rem;">Add Address</a>
+          {% endif %}
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+

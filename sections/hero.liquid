@@ -1,0 +1,161 @@
+{%- style -%}
+  #Hero-{{ section.id }} {
+    {%- if section.settings.height == 'full' -%}
+      height: 100vh;
+    {%- elsif section.settings.height == 'large' -%}
+      height: 90vh;
+    {%- elsif section.settings.height == 'medium' -%}
+      height: 70vh;
+    {%- else -%}
+      height: 50vh;
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<section id="Hero-{{ section.id }}" class="hero">
+  <div class="hero__media">
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+    {%- elsif section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        srcset="
+          {{ section.settings.image | image_url: width: 768 }} 768w,
+          {{ section.settings.image | image_url: width: 1200 }} 1200w,
+          {{ section.settings.image | image_url: width: 1600 }} 1600w,
+          {{ section.settings.image | image_url: width: 1920 }} 1920w
+        "
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | default: section.settings.title }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+
+  <div class="hero__overlay"></div>
+
+  <div class="hero__content container">
+    {%- if section.settings.title != blank -%}
+      <h1 class="hero__title">{{ section.settings.title }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.link_1_text != blank or section.settings.link_2_text != blank -%}
+      <div class="hero__links">
+        {%- if section.settings.link_1_text != blank -%}
+          <a 
+            href="{{ section.settings.link_1_url }}" 
+            class="hero__link{% if section.settings.link_1_underline %} hero__link--underline{% endif %}"
+          >
+            {{ section.settings.link_1_text }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.link_2_text != blank -%}
+          <a 
+            href="{{ section.settings.link_2_url }}" 
+            class="hero__link{% if section.settings.link_2_underline %} hero__link--underline{% endif %}"
+          >
+            {{ section.settings.link_2_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "hero-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video (optional)"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "options": [
+        { "value": "small", "label": "Small (50vh)" },
+        { "value": "medium", "label": "Medium (70vh)" },
+        { "value": "large", "label": "Large (90vh)" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "LEATHER JACKETS"
+    },
+    {
+      "type": "header",
+      "content": "Link 1"
+    },
+    {
+      "type": "text",
+      "id": "link_1_text",
+      "label": "Link text",
+      "default": "MEN"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_1_underline",
+      "label": "Show underline",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Link 2"
+    },
+    {
+      "type": "text",
+      "id": "link_2_text",
+      "label": "Link text",
+      "default": "WOMEN"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_2_underline",
+      "label": "Show underline",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "settings": {
+        "title": "LEATHER JACKETS",
+        "link_1_text": "MEN",
+        "link_2_text": "WOMEN"
+      }
+    }
+  ]
+}
+{% endschema %}
+

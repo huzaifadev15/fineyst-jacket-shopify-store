@@ -1,0 +1,164 @@
+<header class="site-header" data-header>
+  <div class="site-header__inner">
+    <!-- Logo -->
+    <div class="site-header__logo">
+      <a href="{{ routes.root_url }}" class="site-header__logo-link">
+        {%- if settings.logo != blank -%}
+          <img 
+            src="{{ settings.logo | image_url: width: settings.logo_width }}"
+            alt="{{ shop.name }}"
+            width="{{ settings.logo_width }}"
+            loading="eager"
+          >
+        {%- else -%}
+          <span class="site-header__logo-text">
+            <span>FINEYST</span> JACKETS
+          </span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="site-header__nav" aria-label="Main navigation">
+      <ul class="site-header__nav-list">
+        {%- for link in section.settings.menu.links -%}
+          <li class="site-header__nav-item{% if link.links != blank %} has-dropdown{% endif %}">
+            <a 
+              href="{{ link.url }}" 
+              class="site-header__nav-link"
+              {% if link.current %} aria-current="page"{% endif %}
+            >
+              {{ link.title }}
+            </a>
+            {%- if link.links != blank -%}
+              <div class="site-header__dropdown">
+                {%- for childlink in link.links -%}
+                  <a href="{{ childlink.url }}" class="site-header__dropdown-link">
+                    {{ childlink.title }}
+                  </a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="site-header__actions">
+      <!-- Account -->
+      <a href="{{ routes.account_url }}" class="site-header__action" aria-label="Account">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+
+      <!-- Search -->
+      <button type="button" class="site-header__action" aria-label="Search" data-search-toggle>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+
+      <!-- Wishlist -->
+      <a href="/pages/wishlist" class="site-header__action" aria-label="Wishlist">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </a>
+
+      <!-- Cart -->
+      <a href="{{ routes.cart_url }}" class="site-header__action" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button type="button" class="site-header__menu-toggle" aria-label="Menu" data-menu-toggle>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sub Navigation (Categories) -->
+  {%- if section.settings.show_sub_nav and section.settings.sub_menu != blank -%}
+    <div class="sub-navigation">
+      <nav class="sub-navigation__inner" aria-label="Category navigation">
+        {%- for link in section.settings.sub_menu.links -%}
+          <a 
+            href="{{ link.url }}" 
+            class="sub-navigation__link{% if link.current %} is-active{% endif %}"
+          >
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      </nav>
+    </div>
+  {%- endif -%}
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" data-mobile-menu>
+  <nav>
+    <ul class="mobile-menu__nav-list">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          <a href="{{ link.url }}" class="mobile-menu__nav-link">
+            {{ link.title }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if section.settings.sub_menu != blank -%}
+      <div class="mobile-menu__sub-nav">
+        <p class="mobile-menu__sub-title">Shop by Category</p>
+        <ul class="mobile-menu__sub-list">
+          {%- for link in section.settings.sub_menu.links -%}
+            <li>
+              <a href="{{ link.url }}" class="mobile-menu__sub-link">
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </nav>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sub_nav",
+      "label": "Show category sub-navigation",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "sub_menu",
+      "label": "Category menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
+

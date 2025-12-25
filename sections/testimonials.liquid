@@ -1,0 +1,125 @@
+<section class="testimonials-section">
+  <div class="container">
+    <div class="testimonials-section__header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="testimonials-section__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+
+    <div class="testimonials-slider">
+      {%- for block in section.blocks -%}
+        <div class="testimonial" {{ block.shopify_attributes }}{% if forloop.index > 1 %} style="display:none;"{% endif %} data-testimonial>
+          <div class="testimonial__stars">
+            {%- for i in (1..5) -%}
+              {%- if i <= block.settings.rating -%}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              {%- else -%}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <p class="testimonial__text">"{{ block.settings.text }}"</p>
+          <p class="testimonial__author">— {{ block.settings.author }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.blocks.size > 1 -%}
+<script>
+  (function() {
+    const testimonials = document.querySelectorAll('[data-testimonial]');
+    if (testimonials.length <= 1) return;
+
+    let currentIndex = 0;
+    
+    setInterval(() => {
+      testimonials[currentIndex].style.display = 'none';
+      currentIndex = (currentIndex + 1) % testimonials.length;
+      testimonials[currentIndex].style.display = 'block';
+    }, 5000);
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "testimonials-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "WHAT OUR CUSTOMERS SAY"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Rating"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testimonial text",
+          "default": "The quality of this leather jacket exceeded my expectations. It fits perfectly and looks even better in person. Highly recommend!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name",
+          "default": "John D."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The quality of this leather jacket exceeded my expectations. It fits perfectly and looks even better in person. Highly recommend!",
+            "author": "John D."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Best jacket I've ever owned. The craftsmanship is impeccable and the leather smell is divine. Worth every penny!",
+            "author": "Sarah M."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Fast shipping, amazing quality, and excellent customer service. Fineyst has earned a customer for life!",
+            "author": "Michael R."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
