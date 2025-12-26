@@ -55,7 +55,11 @@
             "link_text_2": "About Us",
             "link_url_2": "/pages/about-us",
             "link_text_3": "Shop",
-            "link_url_3": "/collections/all"
+            "link_url_3": "/collections/all",
+            "link_text_4": "",
+            "link_url_4": "",
+            "link_text_5": "",
+            "link_url_5": ""
           }
         },
         "support_links": {
@@ -69,7 +73,9 @@
             "link_text_3": "Size Guide",
             "link_url_3": "/pages/size-guide",
             "link_text_4": "Track My Order",
-            "link_url_4": "/pages/track-order"
+            "link_url_4": "/pages/track-order",
+            "link_text_5": "",
+            "link_url_5": ""
           }
         },
         "policies_links": {
@@ -83,7 +89,9 @@
             "link_text_3": "Shipping Policy",
             "link_url_3": "/policies/shipping-policy",
             "link_text_4": "Terms of Services",
-            "link_url_4": "/policies/terms-of-service"
+            "link_url_4": "shopify://pages/terms-of-service",
+            "link_text_5": "",
+            "link_url_5": ""
           }
         }
       },
