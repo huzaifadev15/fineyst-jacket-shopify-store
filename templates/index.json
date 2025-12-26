@@ -101,6 +101,7 @@
         "category_women_4": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/women-suede.webp",
             "title": "SUEDE JACKETS",
             "link_url": "shopify://collections/womens-suede-jackets",
             "gender": "women"
