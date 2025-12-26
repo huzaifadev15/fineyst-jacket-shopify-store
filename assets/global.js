@@ -296,9 +296,13 @@
     const carousel = document.querySelector('[data-carousel]');
     if (!carousel) return;
   
+    // Find the wrapper that contains both carousel and navigation buttons
+    const wrapper = carousel.closest('.welcome-section__carousel-wrapper');
+    if (!wrapper) return;
+  
     const track = carousel.querySelector('[data-carousel-track]');
-    const prevBtn = document.querySelector('[data-carousel-prev]');
-    const nextBtn = document.querySelector('[data-carousel-next]');
+    const prevBtn = wrapper.querySelector('[data-carousel-prev]');
+    const nextBtn = wrapper.querySelector('[data-carousel-next]');
     const genderFilters = document.querySelectorAll('[data-gender-filter]');
     
     if (!track || !prevBtn || !nextBtn) return;
@@ -321,6 +325,9 @@
       const allCards = Array.from(track.querySelectorAll('.welcome-section__category-card'));
       visibleCards = [];
       
+      // Normalize gender value (lowercase, trimmed)
+      const normalizedGender = (gender || 'men').toLowerCase().trim();
+      
       // Add fade out effect
       allCards.forEach(card => {
         card.style.transition = 'opacity 0.3s ease';
@@ -329,10 +336,11 @@
       
       setTimeout(() => {
         allCards.forEach(card => {
-          const cardGender = card.getAttribute('data-gender') || 'men';
+          // Normalize card gender value (lowercase, trimmed)
+          const cardGender = (card.getAttribute('data-gender') || 'men').toLowerCase().trim();
           
           // Show card if it matches the selected gender or is set to 'both'
-          if (cardGender === gender || cardGender === 'both') {
+          if (cardGender === normalizedGender || cardGender === 'both') {
             card.style.display = '';
             visibleCards.push(card);
             // Fade in with delay
@@ -368,7 +376,7 @@
     genderFilters.forEach(btn => {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
-        const gender = this.getAttribute('data-gender-filter');
+        const gender = (this.getAttribute('data-gender-filter') || 'men').toLowerCase().trim();
         
         // Update active state
         genderFilters.forEach(b => b.classList.remove('is-active'));
@@ -416,22 +424,28 @@
     const carousel = document.querySelector('[data-handpicked-carousel]');
     if (!carousel) return;
   
-    const track = carousel.querySelector('[data-handpicked-track]');
-    const prevBtn = document.querySelector('[data-handpicked-prev]');
-    const nextBtn = document.querySelector('[data-handpicked-next]');
+    // Find the wrapper that contains both carousel and navigation buttons
+    const wrapper = carousel.closest('.hand-picked-section__carousel-wrapper');
+    if (!wrapper) return;
+  
+    const tracks = carousel.querySelectorAll('[data-handpicked-track]');
+    const prevBtn = wrapper.querySelector('[data-handpicked-prev]');
+    const nextBtn = wrapper.querySelector('[data-handpicked-next]');
     const genderFilters = document.querySelectorAll('[data-handpicked-gender]');
     
-    if (!track || !prevBtn || !nextBtn) return;
+    if (!tracks.length || !prevBtn || !nextBtn) return;
   
     let currentIndex = 0;
     let currentGender = 'men';
+    let currentTrack = null;
     let visibleProducts = [];
   
     function getProductWidth() {
+      if (!currentTrack) return 0;
       // Use the base width (non-center product) for calculations
-      const firstProduct = track.querySelector('.hand-picked-section__product:not([style*="display: none"]):not(.is-center)');
+      const firstProduct = currentTrack.querySelector('.hand-picked-section__product:not(.is-center)');
       if (!firstProduct) {
-        const anyProduct = track.querySelector('.hand-picked-section__product:not([style*="display: none"])');
+        const anyProduct = currentTrack.querySelector('.hand-picked-section__product');
         if (!anyProduct) return 0;
         // If all are center, use center width
         const style = window.getComputedStyle(anyProduct);
@@ -447,25 +461,23 @@
   
     function filterByGender(gender) {
       currentGender = gender;
-      const allProducts = Array.from(track.querySelectorAll('.hand-picked-section__product'));
-      visibleProducts = [];
       
-      allProducts.forEach(product => {
-        const productGender = product.getAttribute('data-gender') || 'men';
-        
-        if (productGender === gender) {
-          product.style.display = '';
-          product.style.opacity = '0';
-          setTimeout(() => {
-            product.style.opacity = '1';
-          }, 10);
-          visibleProducts.push(product);
+      // Find and show the appropriate track
+      tracks.forEach(track => {
+        const trackGender = track.getAttribute('data-gender');
+        if (trackGender === gender) {
+          track.style.display = '';
+          currentTrack = track;
         } else {
-          product.style.display = 'none';
-          product.style.opacity = '0';
+          track.style.display = 'none';
         }
       });
-  
+      
+      if (!currentTrack) return;
+      
+      // Get all products from the visible track
+      visibleProducts = Array.from(currentTrack.querySelectorAll('.hand-picked-section__product'));
+      
       currentIndex = 0;
       setTimeout(() => {
         updateCarousel();
@@ -473,6 +485,8 @@
     }
   
     function updateCarousel() {
+      if (!currentTrack) return;
+      
       // Remove center class from all products
       visibleProducts.forEach(product => {
         product.classList.remove('is-center');
@@ -493,7 +507,7 @@
       
       const productWidth = getProductWidth();
       const translateX = -currentIndex * productWidth;
-      track.style.transform = `translateX(${translateX}px)`;
+      currentTrack.style.transform = `translateX(${translateX}px)`;
       
       const visibleCount = visibleProducts.length;
       const maxVisible = Math.min(5, visibleCount);
@@ -557,9 +571,13 @@
     const carousel = document.querySelector('[data-color-carousel]');
     if (!carousel) return;
   
+    // Find the section that contains both carousel and navigation buttons
+    const section = carousel.closest('.color-collection-section');
+    if (!section) return;
+  
     const track = carousel.querySelector('[data-color-track]');
-    const prevBtn = document.querySelector('[data-color-prev]');
-    const nextBtn = document.querySelector('[data-color-next]');
+    const prevBtn = section.querySelector('[data-color-prev]');
+    const nextBtn = section.querySelector('[data-color-next]');
     
     if (!track || !prevBtn || !nextBtn) return;
   

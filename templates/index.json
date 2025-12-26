@@ -26,6 +26,15 @@
     "welcome": {
       "type": "welcome",
       "blocks": {
+        "category_Q9mUnG": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/mens-varsity.webp",
+            "title": "VARSITY",
+            "link_url": "",
+            "gender": "men"
+          }
+        },
         "category_men_1": {
           "type": "category",
           "settings": {
@@ -74,7 +83,7 @@
         "category_women_1": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Womens-Biker.webp",
+            "image": "shopify://shop_images/women-leather.webp",
             "title": "LEATHER JACKETS",
             "link_url": "shopify://collections/womens-leather-jackets",
             "gender": "women"
@@ -83,7 +92,7 @@
         "category_women_2": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Womens-Puffer.webp",
+            "image": "shopify://shop_images/women-puffer.webp",
             "title": "PUFFER JACKETS",
             "link_url": "shopify://collections/womens-puffer-jackets",
             "gender": "women"
@@ -92,7 +101,7 @@
         "category_women_3": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Womens-denim.webp",
+            "image": "shopify://shop_images/women-denim.webp",
             "title": "DENIM JACKETS",
             "link_url": "shopify://collections/womens-denim-jackets",
             "gender": "women"
@@ -101,7 +110,7 @@
         "category_women_4": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/womens-suede.webp",
+            "image": "shopify://shop_images/women-suede.webp",
             "title": "SUEDE JACKETS",
             "link_url": "shopify://collections/womens-suede-jackets",
             "gender": "women"
@@ -110,7 +119,7 @@
         "category_women_5": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/womens-aviator.webp",
+            "image": "shopify://shop_images/women-aviator.webp",
             "title": "AVIATOR JACKETS",
             "link_url": "shopify://collections/womens-aviator-jackets",
             "gender": "women"
@@ -118,6 +127,7 @@
         }
       },
       "block_order": [
+        "category_Q9mUnG",
         "category_men_1",
         "category_men_2",
         "category_men_3",
@@ -132,7 +142,7 @@
       "settings": {
         "title": "WELCOME TO FINEYST",
         "tagline": "Your Destination for Timeless, Custom, and Everyday Leather Jackets",
-        "active_gender": "men",
+        "active_gender": "women",
         "men_url": "",
         "women_url": ""
       }
@@ -141,15 +151,22 @@
       "type": "mens-womens-jackets",
       "settings": {
         "mens_title": "MEN'S JACKETS",
+        "mens_description": "Crafted for the modern warrior, each jacket embodies strength, style and sophistication with premium leather that ages beautifully with every adventure.",
         "mens_button_text": "SHOP NOW",
+        "mens_button_url": "",
         "womens_title": "WOMEN'S JACKETS",
-        "womens_button_text": "SHOP NOW"
+        "womens_description": "Elegance redefined. From boardroom power moves to weekend adventures, our women's collection celebrates confidence with every curve and contour.",
+        "womens_button_text": "SHOP NOW",
+        "womens_button_url": ""
       }
     },
     "hand_picked": {
       "type": "hand-picked",
       "settings": {
-        "title": "HAND-PICKED FOR YOU"
+        "title": "HAND-PICKED FOR YOU",
+        "men_collection": "",
+        "women_collection": "",
+        "products_to_show": 5
       }
     },
     "color_collection": {
@@ -158,31 +175,36 @@
         "color_1": {
           "type": "color_category",
           "settings": {
-            "title": "BLACK JACKETS"
+            "title": "BLACK JACKETS",
+            "link": ""
           }
         },
         "color_2": {
           "type": "color_category",
           "settings": {
-            "title": "BROWN JACKETS"
+            "title": "BROWN JACKETS",
+            "link": ""
           }
         },
         "color_3": {
           "type": "color_category",
           "settings": {
-            "title": "RED JACKETS"
+            "title": "RED JACKETS",
+            "link": ""
           }
         },
         "color_4": {
           "type": "color_category",
           "settings": {
-            "title": "WHITE JACKETS"
+            "title": "WHITE JACKETS",
+            "link": ""
           }
         },
         "color_5": {
           "type": "color_category",
           "settings": {
-            "title": "PINK JACKETS"
+            "title": "PINK JACKETS",
+            "link": ""
           }
         }
       },

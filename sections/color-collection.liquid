@@ -10,12 +10,12 @@
 
     <div class="color-collection-section__carousel-header" style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
       <div class="color-collection-section__nav">
-        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--prev" style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Previous">
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--prev" data-color-prev style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Previous">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
-        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--next" style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Next">
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--next" data-color-next style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Next">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -23,8 +23,8 @@
       </div>
     </div>
 
-    <div class="color-collection-section__carousel" style="width: 100%; overflow: hidden;">
-      <div class="color-collection-section__carousel-track">
+    <div class="color-collection-section__carousel" data-color-carousel style="width: 100%; overflow: hidden;">
+      <div class="color-collection-section__carousel-track" data-color-track>
         {%- for block in section.blocks -%}
           <a href="{{ block.settings.link }}" class="color-collection-section__card" style="min-width: 350px; height: 450px;" {{ block.shopify_attributes }}>
             <div class="color-collection-section__card-image">
