@@ -15,7 +15,13 @@
   assign show_vendor = show_vendor | default: false
   assign show_badges = show_badges | default: true
   assign current_variant = product.selected_or_first_available_variant
-  assign featured_image = product.featured_image
+  if product.featured_image != blank
+    assign featured_image = product.featured_image
+  elsif product.images.first != blank
+    assign featured_image = product.images.first
+  else
+    assign featured_image = blank
+  endif
 -%}
 
 <div class="product-card" data-product-id="{{ product.id }}">
@@ -54,9 +60,20 @@
           {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
           <span class="product-card__badge product-card__badge--sale">-{{ savings }}%</span>
         {%- endif -%}
-        {%- if product.available == false -%}
+        {%- liquid
+          if product.available == false
+            assign show_soldout = true
+          else
+            assign product_timestamp = product.created_at | date: '%s' | plus: 0
+            assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000 | plus: 0
+            if product_timestamp > thirty_days_ago
+              assign show_new = true
+            endif
+          endif
+        -%}
+        {%- if show_soldout -%}
           <span class="product-card__badge product-card__badge--soldout">Sold Out</span>
-        {%- elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
+        {%- elsif show_new -%}
           <span class="product-card__badge product-card__badge--new">New</span>
         {%- endif -%}
       </div>

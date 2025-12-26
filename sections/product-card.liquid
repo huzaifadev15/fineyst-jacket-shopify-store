@@ -15,7 +15,13 @@
   assign show_vendor = show_vendor | default: false
   assign show_badges = show_badges | default: true
   assign current_variant = product.selected_or_first_available_variant
-  assign featured_image = product.featured_image
+  if product.featured_image != blank
+    assign featured_image = product.featured_image
+  elsif product.images.first != blank
+    assign featured_image = product.images.first
+  else
+    assign featured_image = blank
+  endif
 -%}
 
 <div class="product-card" data-product-id="{{ product.id }}">
