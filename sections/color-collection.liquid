@@ -1,29 +1,35 @@
 <section class="color-collection-section" data-section-id="{{ section.id }}">
+  <div class="color-collection-section__background">
+    <div class="color-collection-section__overlay"></div>
+  </div>
   <div class="container">
     <div class="color-collection-section__header">
       <h2 class="color-collection-section__title">{{ section.settings.title }}</h2>
       <p class="color-collection-section__subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="color-collection-section__carousel-header" style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
       <div class="color-collection-section__nav">
-        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--prev" aria-label="Previous">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--prev" style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Previous">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
-        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--next" aria-label="Next">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button class="color-collection-section__nav-btn color-collection-section__nav-btn--next" style="background: white; color: black; width: 50px; height: 50px; padding: 12px;" aria-label="Next">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
         </button>
       </div>
     </div>
 
-    <div class="color-collection-section__carousel">
+    <div class="color-collection-section__carousel" style="width: 100%; overflow: hidden;">
       <div class="color-collection-section__carousel-track">
         {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link }}" class="color-collection-section__card" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link }}" class="color-collection-section__card" style="min-width: 350px; height: 450px;" {{ block.shopify_attributes }}>
             <div class="color-collection-section__card-image">
               {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.title }}" loading="lazy">
+                <img src="{{ block.settings.image | image_url: width: 500 }}" alt="{{ block.settings.title }}" loading="lazy">
               {%- else -%}
                 {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
@@ -52,7 +58,7 @@
       "type": "text",
       "id": "subtitle",
       "label": "Subtitle",
-      "default": "Find the perfect shade to match your style"
+      "default": "Discover our exclusive range of premium jackets across different styles."
     }
   ],
   "blocks": [
@@ -64,7 +70,7 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Black Jackets"
+          "default": "BLACK JACKETS"
         },
         {
           "type": "image_picker",
@@ -86,31 +92,57 @@
         {
           "type": "color_category",
           "settings": {
-            "title": "Black Jackets"
+            "title": "BLACK JACKETS",
+            "link": "/collections/womens-black-leather-jackets"
           }
         },
         {
           "type": "color_category",
           "settings": {
-            "title": "Brown Jackets"
+            "title": "BROWN JACKETS",
+            "link": "/collections/mens-brown-leather-jacket"
           }
         },
         {
           "type": "color_category",
           "settings": {
-            "title": "Tan Jackets"
+            "title": "RED JACKETS",
+            "link": "/collections/womens-red-leather-jackets"
           }
         },
         {
           "type": "color_category",
           "settings": {
-            "title": "Blue Jackets"
+            "title": "WHITE JACKETS",
+            "link": "/collections/mens-white-leather-jackets"
           }
         },
         {
           "type": "color_category",
           "settings": {
-            "title": "Red Jackets"
+            "title": "PINK JACKETS",
+            "link": "/collections/womens-pink-leather-jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "BLUE JACKETS",
+            "link": "/collections/womens-blue-puffer-jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "GREEN JACKETS",
+            "link": "/collections/womens-green-biker-leather-jackets"
+          }
+        },
+        {
+          "type": "color_category",
+          "settings": {
+            "title": "YELLOW JACKETS",
+            "link": "/collections/mens-yellow-varsity-jackets"
           }
         }
       ]
