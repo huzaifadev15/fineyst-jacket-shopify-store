@@ -31,7 +31,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-varsity.webp",
             "title": "VARSITY",
-            "link_url": "",
+            "link_url": "shopify://collections/mens-varsity-jackets",
             "gender": "men"
           }
         },
