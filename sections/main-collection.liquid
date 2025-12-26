@@ -1,20 +1,46 @@
 {%- style -%}
   .collection-main {
-    padding: 4rem 0 8rem;
+    padding: 2rem 0 8rem;
+    position: relative;
   }
 
+  /* Toolbar */
   .collection-toolbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 4rem;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+  }
+
+  .collection-toolbar__button {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+  }
+
+  .collection-toolbar__button:hover {
+    background: #000;
+  }
+
+  .collection-toolbar__button svg {
+    width: 16px;
+    height: 16px;
   }
 
   .collection-toolbar__count {
     font-size: 1.4rem;
     color: #666;
+    margin-left: auto;
   }
 
   .collection-toolbar__sort {
@@ -23,17 +49,36 @@
     gap: 1rem;
   }
 
-  .collection-toolbar__sort-label {
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-
   .collection-toolbar__sort-select {
     padding: 1rem 3rem 1rem 1.5rem;
     font-size: 1.4rem;
     border: 1px solid #ddd;
     background: #fff;
     cursor: pointer;
+    min-width: 180px;
+  }
+
+  /* What's my size button */
+  .collection-size-button {
+    position: fixed;
+    right: 2rem;
+    bottom: 10rem;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .collection-size-button:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   .collection-grid {
@@ -78,6 +123,13 @@
     .collection-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .collection-size-button {
+      right: 1rem;
+      bottom: 8rem;
+      padding: 1rem 1.5rem;
+      font-size: 1.2rem;
+    }
   }
 
   @media (max-width: 600px) {
@@ -90,32 +142,56 @@
     .collection-toolbar {
       flex-direction: column;
       gap: 1.5rem;
-      align-items: flex-start;
+      align-items: stretch;
+    }
+
+    .collection-toolbar__count {
+      margin-left: 0;
     }
   }
 {%- endstyle -%}
 
 <section class="collection-main">
   <div class="container">
+    <!-- Toolbar -->
     <div class="collection-toolbar">
-      <p class="collection-toolbar__count">
-        {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
-      </p>
+      <button type="button" class="collection-toolbar__button" data-category-dropdown>
+        {{ collection.title }}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
       
-      <div class="collection-toolbar__sort">
-        <label class="collection-toolbar__sort-label" for="SortBy">Sort by:</label>
-        <select class="collection-toolbar__sort-select" id="SortBy" data-sort-select>
-          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-          <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
-          <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
-          <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
-          <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
-          <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
-          <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
-          <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Date, Old to New</option>
-          <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Date, New to Old</option>
-        </select>
-      </div>
+      <button type="button" class="collection-toolbar__button" data-filter-toggle>
+        Filter
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="21" x2="4" y2="14"/>
+          <line x1="4" y1="10" x2="4" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12" y2="3"/>
+          <line x1="20" y1="21" x2="20" y2="16"/>
+          <line x1="20" y1="12" x2="20" y2="3"/>
+          <line x1="1" y1="14" x2="7" y2="14"/>
+          <line x1="9" y1="8" x2="15" y2="8"/>
+          <line x1="17" y1="16" x2="23" y2="16"/>
+        </svg>
+      </button>
+      
+      <select class="collection-toolbar__sort-select" id="SortBy" data-sort-select>
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
+        <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Most Popular</option>
+        <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+        <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
+        <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
+        <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
+        <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Date, Old to New</option>
+        <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Date, New to Old</option>
+      </select>
+
+      <p class="collection-toolbar__count">
+        Showing {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+      </p>
     </div>
 
     {%- paginate collection.products by section.settings.products_per_page -%}
@@ -156,6 +232,11 @@
       {%- endif -%}
     {%- endpaginate -%}
   </div>
+
+  <!-- What's my size button -->
+  <button type="button" class="collection-size-button" data-size-button>
+    What's my size?
+  </button>
 </section>
 
 <script>
@@ -166,6 +247,24 @@
         const url = new URL(window.location.href);
         url.searchParams.set('sort_by', this.value);
         window.location.href = url.toString();
+      });
+    }
+
+    // Filter toggle (placeholder)
+    const filterToggle = document.querySelector('[data-filter-toggle]');
+    if (filterToggle) {
+      filterToggle.addEventListener('click', function() {
+        // Add filter functionality here
+        alert('Filter functionality coming soon!');
+      });
+    }
+
+    // Size button (placeholder)
+    const sizeButton = document.querySelector('[data-size-button]');
+    if (sizeButton) {
+      sizeButton.addEventListener('click', function() {
+        // Add size guide functionality here
+        alert('Size guide coming soon!');
       });
     }
   });
@@ -195,7 +294,7 @@
       "default": 4,
       "label": "Columns"
     }
-  ]
+  ],
 }
 {% endschema %}
 

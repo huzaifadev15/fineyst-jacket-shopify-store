@@ -1,0 +1,502 @@
+{%- style -%}
+  .collection-category-carousel-section {
+    padding: 12rem 0 4rem;
+    background: #fff;
+    margin-bottom: 2rem;
+    margin-top: 0;
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .collection-category-carousel-section__wrapper {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .collection-category-carousel-section__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    width: 4.5rem;
+    height: 4.5rem;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .collection-category-carousel-section__nav:hover {
+    background: #f5f5f5;
+    border-color: #000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .collection-category-carousel-section__nav--prev {
+    left: 1rem;
+  }
+
+  .collection-category-carousel-section__nav--next {
+    right: 1rem;
+  }
+
+  .collection-category-carousel-section__nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .collection-category-carousel-section__nav svg {
+    width: 20px;
+    height: 20px;
+    color: #333;
+  }
+
+  .collection-category-carousel-section__track-wrapper {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .collection-category-carousel-section__track {
+    display: flex;
+    gap: 3rem;
+    transition: transform 0.5s ease;
+    padding: 0;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    will-change: transform;
+  }
+
+  .collection-category-carousel-section__item {
+    flex: 0 0 auto;
+    width: 150px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .collection-category-carousel-section__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+  }
+
+  .collection-category-carousel-section__link:hover {
+    transform: translateY(-5px);
+  }
+
+  .collection-category-carousel-section__image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: #f5f5f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .collection-category-carousel-section__item.is-active .collection-category-carousel-section__image {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    border: 3px solid #000;
+  }
+
+  .collection-category-carousel-section__link:hover .collection-category-carousel-section__image {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .collection-category-carousel-section__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection-category-carousel-section__label {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .collection-category-carousel-section__item.is-active .collection-category-carousel-section__label {
+    font-weight: 600;
+    color: #000;
+  }
+
+  @media (max-width: 1400px) {
+    .collection-category-carousel-section__wrapper {
+      padding: 0 5rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .collection-category-carousel-section {
+      padding: 10rem 0 3rem;
+    }
+
+    .collection-category-carousel-section__item {
+      width: 120px;
+    }
+
+    .collection-category-carousel-section__wrapper {
+      padding: 0 4rem;
+    }
+
+    .collection-category-carousel-section__track {
+      gap: 2rem;
+      padding: 0;
+    }
+
+    .collection-category-carousel-section__label {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .collection-category-carousel-section {
+      padding: 8rem 0 2rem;
+    }
+
+    .collection-category-carousel-section__item {
+      width: 100px;
+    }
+
+    .collection-category-carousel-section__wrapper {
+      padding: 0 4rem;
+    }
+
+    .collection-category-carousel-section__track {
+      gap: 1.5rem;
+      padding: 0;
+    }
+
+    .collection-category-carousel-section__nav {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    .collection-category-carousel-section__label {
+      font-size: 1rem;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign has_blocks = false
+  if section.blocks.size > 0
+    assign has_blocks = true
+  endif
+
+  assign related_collections_count = 0
+  unless has_blocks
+    for related_collection in collections
+      unless related_collection.handle == 'all' or related_collection.handle == 'frontpage' or related_collection.handle == collection.handle
+        assign related_collections_count = related_collections_count | plus: 1
+        if related_collections_count >= 6
+          break
+        endif
+      endunless
+    endfor
+  endunless
+-%}
+
+{%- if has_blocks or related_collections_count > 0 -%}
+  <section class="collection-category-carousel-section">
+    <div class="collection-category-carousel-section__wrapper">
+      <button type="button" class="collection-category-carousel-section__nav collection-category-carousel-section__nav--prev" data-category-carousel-prev aria-label="Previous">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <button type="button" class="collection-category-carousel-section__nav collection-category-carousel-section__nav--next" data-category-carousel-next aria-label="Next">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+      <div class="collection-category-carousel-section__track-wrapper">
+        <div class="collection-category-carousel-section__track" data-category-carousel-track>
+        {%- if has_blocks -%}
+          {%- for block in section.blocks -%}
+            <div class="collection-category-carousel-section__item{% if block.settings.collection_handle == collection.handle %} is-active{% endif %}" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.collection_url | default: '#' }}" class="collection-category-carousel-section__link">
+                <div class="collection-category-carousel-section__image">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.title }}" loading="lazy">
+                  {%- else -%}
+                    {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                <div class="collection-category-carousel-section__label">{{ block.settings.title }}</div>
+              </a>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign count = 0 -%}
+          {%- for related_collection in collections -%}
+            {%- unless related_collection.handle == 'all' or related_collection.handle == 'frontpage' or related_collection.handle == collection.handle -%}
+              {%- if count < 6 -%}
+                <div class="collection-category-carousel-section__item{% if related_collection.handle == collection.handle %} is-active{% endif %}">
+                  <a href="{{ related_collection.url }}" class="collection-category-carousel-section__link">
+                    <div class="collection-category-carousel-section__image">
+                      {%- if related_collection.image != blank -%}
+                        <img src="{{ related_collection.image | image_url: width: 300 }}" alt="{{ related_collection.title }}" loading="lazy">
+                      {%- elsif related_collection.products.first != blank and related_collection.products.first.featured_image != blank -%}
+                        <img src="{{ related_collection.products.first.featured_image | image_url: width: 300 }}" alt="{{ related_collection.title }}" loading="lazy">
+                      {%- else -%}
+                        {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="collection-category-carousel-section__label">{{ related_collection.title }}</div>
+                  </a>
+                </div>
+                {%- assign count = count | plus: 1 -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      function initCarousel() {
+        const track = document.querySelector('[data-category-carousel-track]');
+        const prevBtn = document.querySelector('[data-category-carousel-prev]');
+        const nextBtn = document.querySelector('[data-category-carousel-next]');
+        const wrapper = track ? track.closest('.collection-category-carousel-section__track-wrapper') : null;
+        
+        if (!track || !prevBtn || !nextBtn || !wrapper) {
+          console.log('Carousel elements not found');
+          return;
+        }
+
+        let scrollPosition = 0;
+        const trackElement = track;
+
+        function getScrollAmount() {
+          // Get the first item to calculate scroll amount
+          const firstItem = trackElement.querySelector('.collection-category-carousel-section__item');
+          if (firstItem) {
+            const itemWidth = firstItem.offsetWidth;
+            const gap = 30; // 3rem = 30px (assuming 1rem = 10px)
+            return itemWidth + gap;
+          }
+          return 200; // fallback
+        }
+
+        function updateButtons() {
+          const trackWidth = trackElement.scrollWidth;
+          const wrapperWidth = wrapper.offsetWidth;
+          const maxScroll = Math.max(0, trackWidth - wrapperWidth);
+          
+          // Always show buttons, just disable them if needed
+          prevBtn.style.display = 'flex';
+          nextBtn.style.display = 'flex';
+          
+          // Only disable if content doesn't overflow
+          if (trackWidth <= wrapperWidth) {
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            prevBtn.style.opacity = '0.3';
+            nextBtn.style.opacity = '0.3';
+            return;
+          }
+          
+          prevBtn.style.opacity = scrollPosition <= 0 ? '0.5' : '1';
+          prevBtn.disabled = scrollPosition <= 0;
+          
+          nextBtn.style.opacity = scrollPosition >= maxScroll - 1 ? '0.5' : '1';
+          nextBtn.disabled = scrollPosition >= maxScroll - 1;
+        }
+
+        function scrollCarousel(direction) {
+          const trackWidth = trackElement.scrollWidth;
+          const wrapperWidth = wrapper.offsetWidth;
+          const maxScroll = Math.max(0, trackWidth - wrapperWidth);
+          const scrollAmount = getScrollAmount();
+          
+          if (direction === 'next') {
+            scrollPosition = Math.min(maxScroll, scrollPosition + scrollAmount);
+          } else {
+            scrollPosition = Math.max(0, scrollPosition - scrollAmount);
+          }
+          
+          trackElement.style.transform = `translateX(-${scrollPosition}px)`;
+          updateButtons();
+        }
+
+        prevBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          scrollCarousel('prev');
+        });
+
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          scrollCarousel('next');
+        });
+
+        // Initial button state - wait for images to load
+        function initialize() {
+          setTimeout(function() {
+            updateButtons();
+          }, 300);
+        }
+
+        // Wait for all images to load
+        const images = trackElement.querySelectorAll('img');
+        let imagesLoaded = 0;
+        if (images.length === 0) {
+          initialize();
+        } else {
+          images.forEach(function(img) {
+            if (img.complete) {
+              imagesLoaded++;
+            } else {
+              img.addEventListener('load', function() {
+                imagesLoaded++;
+                if (imagesLoaded === images.length) {
+                  initialize();
+                }
+              });
+              img.addEventListener('error', function() {
+                imagesLoaded++;
+                if (imagesLoaded === images.length) {
+                  initialize();
+                }
+              });
+            }
+          });
+          if (imagesLoaded === images.length) {
+            initialize();
+          }
+        }
+        
+        // Update on window resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            scrollPosition = 0;
+            trackElement.style.transform = 'translateX(0)';
+            updateButtons();
+          }, 250);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCarousel);
+      } else {
+        initCarousel();
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Category Carousel",
+  "tag": "section",
+  "class": "collection-category-carousel-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Category Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Image"
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Collection URL"
+        },
+        {
+          "type": "text",
+          "id": "collection_handle",
+          "label": "Collection Handle",
+          "info": "Used to highlight active collection (e.g., mens-leather-bomber-jackets)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Carousel",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Men's Leather Bomber Jackets",
+            "collection_handle": "mens-leather-bomber-jackets"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mens Brown Bomber Jackets",
+            "collection_handle": "mens-brown-bomber-jackets"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mens Black Bomber Jackets",
+            "collection_handle": "mens-black-bomber-jackets"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mens Green Bomber Jackets",
+            "collection_handle": "mens-green-bomber-jackets"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mens Red Bomber Jackets",
+            "collection_handle": "mens-red-bomber-jackets"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Mens White Bomber Jackets",
+            "collection_handle": "mens-white-bomber-jackets"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

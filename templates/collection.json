@@ -1,5 +1,9 @@
 {
   "sections": {
+    "category_carousel": {
+      "type": "collection-category-carousel",
+      "settings": {}
+    },
     "banner": {
       "type": "collection-banner",
       "settings": {}
@@ -13,6 +17,7 @@
     }
   },
   "order": [
+    "category_carousel",
     "banner",
     "main"
   ]
