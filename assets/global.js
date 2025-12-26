@@ -321,21 +321,34 @@
       const allCards = Array.from(track.querySelectorAll('.welcome-section__category-card'));
       visibleCards = [];
       
+      // Add fade out effect
       allCards.forEach(card => {
-        const cardGender = card.getAttribute('data-gender') || 'men';
-        
-        // Show card if it matches the selected gender or is set to 'both'
-        if (cardGender === gender || cardGender === 'both') {
-          card.style.display = '';
-          visibleCards.push(card);
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.transition = 'opacity 0.3s ease';
+        card.style.opacity = '0';
       });
+      
+      setTimeout(() => {
+        allCards.forEach(card => {
+          const cardGender = card.getAttribute('data-gender') || 'men';
+          
+          // Show card if it matches the selected gender or is set to 'both'
+          if (cardGender === gender || cardGender === 'both') {
+            card.style.display = '';
+            visibleCards.push(card);
+            // Fade in with delay
+            setTimeout(() => {
+              card.style.opacity = '1';
+            }, 50);
+          } else {
+            card.style.display = 'none';
+            card.style.opacity = '0';
+          }
+        });
 
-      // Reset carousel position
-      currentIndex = 0;
-      updateCarousel();
+        // Reset carousel position
+        currentIndex = 0;
+        updateCarousel();
+      }, 150);
     }
   
     function updateCarousel() {
