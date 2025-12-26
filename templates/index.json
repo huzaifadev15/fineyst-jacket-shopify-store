@@ -72,12 +72,7 @@
         "category_men_2",
         "category_men_3",
         "category_men_4",
-        "category_men_5",
-        "category_women_1",
-        "category_women_2",
-        "category_women_3",
-        "category_women_4",
-        "category_women_5"
+        "category_men_5"
       ],
       "settings": {
         "title": "WELCOME TO FINEYST",
@@ -99,8 +94,7 @@
     "hand_picked": {
       "type": "hand-picked",
       "settings": {
-        "title": "HAND-PICKED FOR YOU",
-        "products_count": 8
+        "title": "HAND-PICKED FOR YOU"
       }
     },
     "color_collection": {
@@ -137,7 +131,13 @@
           }
         }
       },
-      "block_order": ["color_1", "color_2", "color_3", "color_4", "color_5"],
+      "block_order": [
+        "color_1",
+        "color_2",
+        "color_3",
+        "color_4",
+        "color_5"
+      ],
       "settings": {
         "title": "OUR COLOR COLLECTION",
         "subtitle": "Discover our exclusive range of premium jackets across different styles."
@@ -146,7 +146,6 @@
     "about": {
       "type": "about",
       "settings": {
-        "title": "ABOUT FINEYST",
         "subtitle": "Premium streetwear that speaks your language",
         "story_heading": "• OUR STORY",
         "paragraph_1": "Fineyst is a premium streetwear destination that brings together the best of contemporary urban style, sustainable practices, and exceptional customer experience.",
@@ -184,7 +183,12 @@
           }
         }
       },
-      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
       "settings": {
         "title": "PREMIUM MATERIALS",
         "description": "We don't mass-produce. We craft. Every FINEYST jacket starts with ethically sourced full-grain leather, precision cuts, and hours of artisan detail.",

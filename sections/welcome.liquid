@@ -10,20 +10,117 @@
         <p class="welcome-section__tagline">{{ section.settings.tagline }}</p>
       {%- endif -%}
 
-      <div class="welcome-section__chevron">
+      <div class="welcome-section__chevron" data-welcome-toggle onclick="this.classList.toggle('is-rotated'); document.querySelector('[data-welcome-content]').classList.toggle('is-visible');">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
           <polyline points="6 9 12 15 18 9"/>
         </svg>
       </div>
+    </div>
 
-      <!-- MEN/WOMEN Navigation -->
-      <div class="welcome-section__gender-nav">
-        <button type="button" class="welcome-section__gender-link is-active" data-gender-filter="men">
-          MEN
-        </button>
-        <button type="button" class="welcome-section__gender-link" data-gender-filter="women">
-          WOMEN
-        </button>
+    <!-- FAQ Section (Hidden by default) -->
+    <div class="welcome-section__faq" data-welcome-content>
+      <div class="welcome-section__faq-content">
+        <p class="welcome-section__faq-text">
+          At FINEYST, we craft authentic leather jackets with real cowhide, lambskin, goatskin, and suede—built for durability, comfort, and lasting style. <a href="#" class="welcome-section__faq-link">Read more</a>
+        </p>
+        
+        <h3 class="welcome-section__faq-title">THINGS TO KNOW ABOUT LEATHER JACKETS</h3>
+        
+        <div class="welcome-section__faq-list">
+          <div class="welcome-section__faq-item" id="faq-item-1">
+            <button class="welcome-section__faq-question" type="button" onclick="var item = this.closest('.welcome-section__faq-item'); var allItems = document.querySelectorAll('.welcome-section__faq-item'); allItems.forEach(function(i) { if(i !== item) { i.classList.remove('is-active'); i.querySelector('button').setAttribute('aria-expanded', 'false'); } }); item.classList.toggle('is-active'); this.setAttribute('aria-expanded', item.classList.contains('is-active') ? 'true' : 'false');" aria-expanded="false">
+              <span>WHY ARE LEATHER JACKETS EXPENSIVE?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="welcome-section__faq-answer">
+              <div class="welcome-section__faq-answer-content">
+                <p>A real leather jacket is more than a garment — it's an investment. Here's why prices vary:</p>
+                <ul>
+                  <li><strong>High-Quality Leather:</strong> Full-grain cowhide and lambskin are premium hides that last for years, age beautifully, and offer unmatched strength and texture.</li>
+                  <li><strong>Skilled Craftsmanship:</strong> Our jackets are handmade by expert artisans using traditional methods — precision cutting, reinforced stitching, and detailed finishing.</li>
+                  <li><strong>Time - Intensive Production:</strong> From ethical sourcing to tanning to construction, each jacket takes time — especially for complex or custom pieces.</li>
+                  <li><strong>Hardware & Lining Quality:</strong> We only use durable zippers, breathable linings, and solid inner structure — because longevity matters.</li>
+                  <li><strong>Brand Transparency:</strong> Unlike fast fashion, we don't cut corners — FINEYST prioritizes real leather, ethical labor, and transparent practices.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="welcome-section__faq-item" id="faq-item-2">
+            <button class="welcome-section__faq-question" type="button" onclick="var item = this.closest('.welcome-section__faq-item'); var allItems = document.querySelectorAll('.welcome-section__faq-item'); allItems.forEach(function(i) { if(i !== item) { i.classList.remove('is-active'); i.querySelector('button').setAttribute('aria-expanded', 'false'); } }); item.classList.toggle('is-active'); this.setAttribute('aria-expanded', item.classList.contains('is-active') ? 'true' : 'false');" aria-expanded="false">
+              <span>WHAT'S THE BEST LEATHER FOR JACKETS?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="welcome-section__faq-answer">
+              <div class="welcome-section__faq-answer-content">
+                <p>It depends on the fit, feel, and use case:</p>
+                <ul>
+                  <li><strong>Cowhide:</strong> Rugged, weather-resistant, ideal for biker and bomber jackets.</li>
+                  <li><strong>Lambskin:</strong> Lightweight, buttery soft, best for fitted and everyday wear.</li>
+                  <li><strong>Goatskin:</strong> Durable and flexible with a pebbled finish.</li>
+                  <li><strong>Suede:</strong> Smooth, matte texture for streetwear or vintage aesthetics.</li>
+                  <li><strong>Distressed & Washed Leathers:</strong> Adds character and edge with worn-in looks.</li>
+                </ul>
+                <p>At FINEYST, we use only full-grain hides — no PU or bonded leather. Every jacket is made to endure.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="welcome-section__faq-item" id="faq-item-3">
+            <button class="welcome-section__faq-question" type="button" onclick="var item = this.closest('.welcome-section__faq-item'); var allItems = document.querySelectorAll('.welcome-section__faq-item'); allItems.forEach(function(i) { if(i !== item) { i.classList.remove('is-active'); i.querySelector('button').setAttribute('aria-expanded', 'false'); } }); item.classList.toggle('is-active'); this.setAttribute('aria-expanded', item.classList.contains('is-active') ? 'true' : 'false');" aria-expanded="false">
+              <span>WHAT STYLE IS RIGHT FOR YOU?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="welcome-section__faq-answer">
+              <div class="welcome-section__faq-answer-content">
+                <p>Our range covers both classic and modern looks:</p>
+                <ul>
+                  <li><strong>Biker Jackets:</strong> Asymmetrical zip, attitude built in</li>
+                  <li><strong>Bomber Jackets:</strong> Heritage aviation meets everyday comfort</li>
+                  <li><strong>Racer Jackets:</strong> Minimalist, close-cut, versatile</li>
+                  <li><strong>Trench & Long Coats:</strong> Full-coverage, structured silhouettes</li>
+                  <li><strong>Cropped, Oversized, Custom:</strong> Fashion-forward and personalized</li>
+                </ul>
+                <p>We make jackets for men, women, and all body types — because leather belongs to everyone.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="welcome-section__faq-item" id="faq-item-4">
+            <button class="welcome-section__faq-question" type="button" onclick="var item = this.closest('.welcome-section__faq-item'); var allItems = document.querySelectorAll('.welcome-section__faq-item'); allItems.forEach(function(i) { if(i !== item) { i.classList.remove('is-active'); i.querySelector('button').setAttribute('aria-expanded', 'false'); } }); item.classList.toggle('is-active'); this.setAttribute('aria-expanded', item.classList.contains('is-active') ? 'true' : 'false');" aria-expanded="false">
+              <span>POPULAR COLORS WE OFFER</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="welcome-section__faq-answer">
+              <div class="welcome-section__faq-answer-content">
+                <ul>
+                  <li><strong>Black:</strong> Always in, forever iconic</li>
+                  <li><strong>Brown & Tan:</strong> Timeless and rugged</li>
+                  <li><strong>Burgundy / Red / Olive:</strong> For standout personalities</li>
+                  <li><strong>Two-tone / Distressed:</strong> Vintage feel, modern attitude</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- MEN/WOMEN Navigation -->
+        <div class="welcome-section__gender-nav">
+          <button type="button" class="welcome-section__gender-link is-active" data-gender-filter="men">
+            MEN
+          </button>
+          <button type="button" class="welcome-section__gender-link" data-gender-filter="women">
+            WOMEN
+          </button>
+        </div>
       </div>
     </div>
 
