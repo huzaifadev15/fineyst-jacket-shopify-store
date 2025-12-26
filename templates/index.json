@@ -26,6 +26,15 @@
     "welcome": {
       "type": "welcome",
       "blocks": {
+        "category_Q9mUnG": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/mens-varsity.webp",
+            "title": "VARSITY",
+            "link_url": "",
+            "gender": "men"
+          }
+        },
         "category_men_1": {
           "type": "category",
           "settings": {
@@ -118,6 +127,7 @@
         }
       },
       "block_order": [
+        "category_Q9mUnG",
         "category_men_1",
         "category_men_2",
         "category_men_3",
