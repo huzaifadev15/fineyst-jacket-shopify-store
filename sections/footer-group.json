@@ -75,13 +75,13 @@
           "settings": {
             "title": "POLICIES",
             "link_text_1": "Privacy Policy",
-            "link_url_1": "/policies/privacy-policy",
+            "link_url_1": "/pages/privacy-policy",
             "link_text_2": "Refund Policy",
-            "link_url_2": "/policies/refund-policy",
+            "link_url_2": "/pages/refund-policy",
             "link_text_3": "Shipping Policy",
-            "link_url_3": "/policies/shipping-policy",
+            "link_url_3": "/pages/shipping-policy",
             "link_text_4": "Terms of Services",
-            "link_url_4": "shopify://pages/terms-of-service",
+            "link_url_4": "/pages/terms-of-service",
             "link_text_5": "",
             "link_url_5": ""
           }
