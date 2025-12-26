@@ -76,7 +76,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-aviator.webp",
             "title": "AVIATOR JACKETS",
-            "link_url": "shopify://collections/aviator-jackets",
+            "link_url": "shopify://collections/mens-aviator-jackets",
             "gender": "men"
           }
         },
