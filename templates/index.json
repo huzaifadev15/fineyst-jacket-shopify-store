@@ -83,6 +83,7 @@
         "category_women_2": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/women-puffer.webp",
             "title": "PUFFER JACKETS",
             "link_url": "shopify://collections/womens-puffer-jackets",
             "gender": "women"
