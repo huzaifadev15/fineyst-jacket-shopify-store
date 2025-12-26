@@ -110,6 +110,7 @@
         "category_women_5": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/women-aviator.webp",
             "title": "AVIATOR JACKETS",
             "link_url": "shopify://collections/womens-aviator-jackets",
             "gender": "women"
