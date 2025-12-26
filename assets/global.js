@@ -327,24 +327,15 @@
         // Show card if it matches the selected gender or is set to 'both'
         if (cardGender === gender || cardGender === 'both') {
           card.style.display = '';
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.opacity = '1';
-          }, 10);
           visibleCards.push(card);
         } else {
           card.style.display = 'none';
-          card.style.opacity = '0';
         }
       });
-  
+
       // Reset carousel position
       currentIndex = 0;
-      
-      // Wait for display changes to take effect
-      setTimeout(() => {
-        updateCarousel();
-      }, 50);
+      updateCarousel();
     }
   
     function updateCarousel() {

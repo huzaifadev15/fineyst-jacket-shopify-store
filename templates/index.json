@@ -31,7 +31,8 @@
           "settings": {
             "image": "shopify://shop_images/Mens-Biker.webp",
             "title": "LEATHER JACKETS",
-            "link_url": "shopify://collections/leather-jackets"
+            "link_url": "shopify://collections/leather-jackets",
+            "gender": "men"
           }
         },
         "category_men_2": {
@@ -39,7 +40,8 @@
           "settings": {
             "image": "shopify://shop_images/Mens-Puffer.webp",
             "title": "PUFFER JACKETS",
-            "link_url": "shopify://collections/puffer-jackets"
+            "link_url": "shopify://collections/puffer-jackets",
+            "gender": "men"
           }
         },
         "category_men_3": {
@@ -47,7 +49,8 @@
           "settings": {
             "image": "shopify://shop_images/Mens-denim.webp",
             "title": "DENIM JACKETS",
-            "link_url": ""
+            "link_url": "",
+            "gender": "men"
           }
         },
         "category_men_4": {
@@ -55,7 +58,8 @@
           "settings": {
             "image": "shopify://shop_images/mens-suede.webp",
             "title": "SUEDE JACKETS",
-            "link_url": ""
+            "link_url": "",
+            "gender": "men"
           }
         },
         "category_men_5": {
@@ -63,7 +67,53 @@
           "settings": {
             "image": "shopify://shop_images/mens-aviator.webp",
             "title": "AVIATOR JACKETS",
-            "link_url": "shopify://collections/aviator-jackets"
+            "link_url": "shopify://collections/aviator-jackets",
+            "gender": "men"
+          }
+        },
+        "category_women_1": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Mens-Biker.webp",
+            "title": "LEATHER JACKETS",
+            "link_url": "shopify://collections/leather-jackets",
+            "gender": "women"
+          }
+        },
+        "category_women_2": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Mens-Puffer.webp",
+            "title": "PUFFER JACKETS",
+            "link_url": "shopify://collections/puffer-jackets",
+            "gender": "women"
+          }
+        },
+        "category_women_3": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Mens-denim.webp",
+            "title": "DENIM JACKETS",
+            "link_url": "",
+            "gender": "women"
+          }
+        },
+        "category_women_4": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/mens-suede.webp",
+            "title": "SUEDE JACKETS",
+            "link_url": "",
+            "gender": "women"
+          }
+        },
+        "category_women_5": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/mens-aviator.webp",
+            "title": "AVIATOR JACKETS",
+            "link_url": "shopify://collections/aviator-jackets",
+            "gender": "women"
           }
         }
       },
@@ -72,7 +122,12 @@
         "category_men_2",
         "category_men_3",
         "category_men_4",
-        "category_men_5"
+        "category_men_5",
+        "category_women_1",
+        "category_women_2",
+        "category_women_3",
+        "category_women_4",
+        "category_women_5"
       ],
       "settings": {
         "title": "WELCOME TO FINEYST",

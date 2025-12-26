@@ -385,13 +385,6 @@
 .welcome-section__category-card {
   flex: 0 0 calc(20% - 1.6rem);
   min-width: 0;
-  transition: opacity 0.4s ease, transform 0.3s ease;
-  opacity: 1;
-}
-
-.welcome-section__category-card[style*="display: none"] {
-  display: none !important;
-  opacity: 0;
 }
 
 .welcome-section__category-link {
