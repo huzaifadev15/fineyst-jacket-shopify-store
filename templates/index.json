@@ -92,6 +92,7 @@
         "category_women_3": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/women-denim.webp",
             "title": "DENIM JACKETS",
             "link_url": "shopify://collections/womens-denim-jackets",
             "gender": "women"
