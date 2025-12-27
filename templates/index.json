@@ -150,10 +150,12 @@
     "mens_womens_jackets": {
       "type": "mens-womens-jackets",
       "settings": {
+        "mens_image": "shopify://shop_images/boy_tablet_image.png",
         "mens_title": "MEN'S JACKETS",
         "mens_description": "Crafted for the modern warrior, each jacket embodies strength, style and sophistication with premium leather that ages beautifully with every adventure.",
         "mens_button_text": "SHOP NOW",
         "mens_button_url": "",
+        "womens_image": "shopify://shop_images/tablet-image.jpg",
         "womens_title": "WOMEN'S JACKETS",
         "womens_description": "Elegance redefined. From boardroom power moves to weekend adventures, our women's collection celebrates confidence with every curve and contour.",
         "womens_button_text": "SHOP NOW",
