@@ -1,15 +1,86 @@
-{%- if recommendations.products_count > 0 -%}
-<section class="featured-collection">
+{%- style -%}
+  .product-recommendations {
+    padding: 6rem 0;
+    background: #f5f5f5;
+  }
+
+  .product-recommendations__header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .product-recommendations__title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #000;
+  }
+
+  .product-recommendations__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+  }
+
+  @media (max-width: 1200px) {
+    .product-recommendations__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .product-recommendations__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .product-recommendations__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign products_to_show = section.settings.products_count | default: 4
+  assign has_recommendations = false
+  assign products_list = blank
+  
+  if recommendations.products_count > 0
+    assign has_recommendations = true
+    assign products_list = recommendations.products
+  elsif collection and collection.products_count > 1
+    assign has_recommendations = true
+    assign products_list = collection.products
+  elsif product.collections.size > 0
+    assign first_collection = product.collections.first
+    if first_collection.products_count > 1
+      assign has_recommendations = true
+      assign products_list = first_collection.products
+    endif
+  endif
+-%}
+
+{%- if has_recommendations -%}
+<section class="product-recommendations" data-product-recommendations>
   <div class="container">
-    <div class="featured-collection__header">
+    <div class="product-recommendations__header">
       {%- if section.settings.title != blank -%}
-        <h2 class="featured-collection__title">{{ section.settings.title }}</h2>
+        <h2 class="product-recommendations__title">{{ section.settings.title }}</h2>
       {%- endif -%}
     </div>
 
-    <div class="featured-collection__grid">
-      {%- for product in recommendations.products limit: section.settings.products_count -%}
-        {% render 'product-card', product: product %}
+    <div class="product-recommendations__grid">
+      {%- assign product_count = 0 -%}
+      {%- for product_item in products_list -%}
+        {%- unless product_item.id == product.id -%}
+          {%- if product_count < products_to_show -%}
+            {% render 'product-card', product: product_item %}
+            {%- assign product_count = product_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endunless -%}
       {%- endfor -%}
     </div>
   </div>
@@ -25,7 +96,7 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "You May Also Like"
+      "default": "You'll Also Love"
     },
     {
       "type": "range",

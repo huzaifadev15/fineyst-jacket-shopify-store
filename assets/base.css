@@ -103,9 +103,9 @@ h4, .h4 {
 /* Container */
 .container {
   width: 100%;
-  max-width: 144rem;
+  /* max-width: 144rem; */
   margin: 0 auto;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
 }
 
 .container--narrow {
