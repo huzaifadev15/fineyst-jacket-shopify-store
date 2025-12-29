@@ -162,12 +162,6 @@
     }
   }
 
-  @media (min-width: 1024px) {
-    .signature-styles-section__half--men .signature-styles-section__image {
-      object-position: 0%;
-    }
-  }
-
   .signature-styles-section__half--women .signature-styles-section__image {
     object-position: 100%;
   }
@@ -432,6 +426,8 @@
                 alt="{{ section.settings.mens_image.alt | default: section.settings.mens_title }}"
                 loading="lazy"
                 class="signature-styles-section__image"
+                width="1200"
+                height="1600"
               >
             {%- else -%}
               <img
@@ -439,6 +435,8 @@
                 alt="Men's Leather Jacket"
                 class="signature-styles-section__image"
                 loading="lazy"
+                width="1200"
+                height="1600"
               >
             {%- endif -%}
           </div>
@@ -550,6 +548,8 @@
                 loading="lazy"
                 class="signature-styles-section__image"
                 id="women-image"
+                width="1200"
+                height="1600"
               >
             {%- else -%}
               <img
@@ -558,6 +558,8 @@
                 class="signature-styles-section__image"
                 id="women-image"
                 loading="lazy"
+                width="1200"
+                height="1600"
               >
             {%- endif -%}
           </div>
