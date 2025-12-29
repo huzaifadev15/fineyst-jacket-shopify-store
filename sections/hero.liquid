@@ -1,14 +1,47 @@
 {%- style -%}
   #Hero-{{ section.id }} {
     {%- if section.settings.height == 'full' -%}
-      height: 100vh;
+      height: 80vh;
     {%- elsif section.settings.height == 'large' -%}
-      height: 90vh;
-    {%- elsif section.settings.height == 'medium' -%}
       height: 70vh;
-    {%- else -%}
+    {%- elsif section.settings.height == 'medium' -%}
       height: 50vh;
+    {%- else -%}
+      height: 40vh;
     {%- endif -%}
+    position: relative;
+    overflow: hidden;
+  }
+  #Hero-{{ section.id }} .hero__media img {
+    object-position: top;
+    transform: translateY(-9rem);
+    height: calc(100% + 10rem);
+    width: 100%;
+    object-fit: cover;
+  }
+  #Hero-{{ section.id }} .hero__content {
+    position: absolute;
+    bottom: 0rem;
+    left: 0;
+    z-index: 2;
+  }
+  #Hero-{{ section.id }} .hero__content-bottom {
+    padding: 2rem;
+    max-width: 500px;
+  }
+  #Hero-{{ section.id }} .hero__title {
+    margin-bottom: 1rem;
+    font-family: 'Averta', sans-serif;
+    font-weight: 900;
+    font-size: 5rem;
+    white-space: nowrap;
+  }
+  #Hero-{{ section.id }} .hero__links {
+    display: flex;
+    gap: 2rem;
+  }
+  #Hero-{{ section.id }} .hero__link {
+    font-size: 3rem;
   }
 {%- endstyle -%}
 
@@ -38,30 +71,32 @@
   <div class="hero__overlay"></div>
 
   <div class="hero__content container">
-    {%- if section.settings.title != blank -%}
-      <h1 class="hero__title">{{ section.settings.title }}</h1>
-    {%- endif -%}
+    <div class="hero__content-bottom">
+      {%- if section.settings.title != blank -%}
+        <h1 class="hero__title">{{ section.settings.title }}</h1>
+      {%- endif -%}
 
-    {%- if section.settings.link_1_text != blank or section.settings.link_2_text != blank -%}
-      <div class="hero__links">
-        {%- if section.settings.link_1_text != blank -%}
-          <a 
-            href="{{ section.settings.link_1_url }}" 
-            class="hero__link{% if section.settings.link_1_underline %} hero__link--underline{% endif %}"
-          >
-            {{ section.settings.link_1_text }}
-          </a>
-        {%- endif -%}
-        {%- if section.settings.link_2_text != blank -%}
-          <a 
-            href="{{ section.settings.link_2_url }}" 
-            class="hero__link{% if section.settings.link_2_underline %} hero__link--underline{% endif %}"
-          >
-            {{ section.settings.link_2_text }}
-          </a>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
+      {%- if section.settings.link_1_text != blank or section.settings.link_2_text != blank -%}
+        <div class="hero__links">
+          {%- if section.settings.link_1_text != blank -%}
+            <a 
+              href="{{ section.settings.link_1_url }}" 
+              class="hero__link{% if section.settings.link_1_underline %} hero__link--underline{% endif %}"
+            >
+              {{ section.settings.link_1_text }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.link_2_text != blank -%}
+            <a 
+              href="{{ section.settings.link_2_url }}" 
+              class="hero__link{% if section.settings.link_2_underline %} hero__link--underline{% endif %}"
+            >
+              {{ section.settings.link_2_text }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </section>
 

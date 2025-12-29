@@ -11,7 +11,7 @@
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  margin-top: 7rem; /* Space for fixed header */
+  margin-top: 0;
 }
 
 .hero__media {
@@ -113,9 +113,11 @@
 .welcome-section__title {
   font-size: clamp(2.4rem, 4vw, 4rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
-  color: var(--color-text);
+  color: #2B2B2B;
 }
 
 .welcome-section__tagline {
@@ -858,7 +860,9 @@
 .color-collection-section__title {
   font-size: clamp(2.4rem, 4vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
   color: #fff;
 }
@@ -1018,9 +1022,25 @@
 .about-section__title {
   font-size: clamp(2.4rem, 4vw, 4rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
-  color: var(--color-text);
+  color: #2B2B2B;
+}
+
+.about-section__title-underline {
+  position: relative;
+}
+
+.about-section__title-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #000;
 }
 
 .about-section__title-word {
@@ -2145,12 +2165,14 @@
 }
 
 .faq-section__title {
-  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   text-align: center;
   margin-bottom: 3rem;
-  color: var(--color-text);
+  color: #2B2B2B;
 }
 
 .faq-section__grid {
@@ -2295,10 +2317,12 @@
 .latest-insights-section__title {
   font-size: clamp(2.4rem, 4vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   margin-bottom: 2rem;
-  color: var(--color-text);
+  color: #2B2B2B;
 }
 
 .latest-insights-section__description {
@@ -2365,7 +2389,9 @@
 .reviews-section__title {
   font-size: clamp(2.4rem, 4vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: 'Averta', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 1rem;
@@ -2597,6 +2623,12 @@
   margin-top: 0;
 }
 
+.site-footer .container {
+  max-width: 160rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
 .site-footer__grid {
   display: grid;
   grid-template-columns: 2fr 5fr;
@@ -2819,6 +2851,7 @@
 
 .site-footer__newsletter-input {
   flex: 1;
+  max-width: 25rem;
   padding: 1.2rem 1.5rem;
   border: 1px solid #ddd;
   background: #fff;

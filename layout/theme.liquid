@@ -58,7 +58,7 @@
       --color-accent: {{ settings.color_accent }};
       --color-background: {{ settings.color_background }};
       --color-text: {{ settings.color_text }};
-      --color-header-bg: {{ settings.color_header_bg }};
+      --color-header-bg: #2B2B2B;
       --color-header-text: {{ settings.color_header_text }};
     }
   {% endstyle %}
@@ -76,6 +76,8 @@
   </a>
 
   {% sections 'header-group' %}
+
+  {% section 'capsule-nav' %}
 
   <main id="MainContent" class="main-content" role="main" tabindex="-1">
     {{ content_for_layout }}
