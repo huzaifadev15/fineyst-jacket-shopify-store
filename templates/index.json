@@ -219,6 +219,31 @@
           "type": "color_category",
           "settings": {
             "title": "PINK JACKETS",
+            "image": "shopify://shop_images/collection-5.webp",
+            "link": ""
+          }
+        },
+        "color_category_pXY9C4": {
+          "type": "color_category",
+          "settings": {
+            "title": "BLUE JACKETS",
+            "image": "shopify://shop_images/collection-6.webp",
+            "link": ""
+          }
+        },
+        "color_category_MydGN3": {
+          "type": "color_category",
+          "settings": {
+            "title": "GREEN JACKETS",
+            "image": "shopify://shop_images/collection-7.webp",
+            "link": ""
+          }
+        },
+        "color_category_yPPcVW": {
+          "type": "color_category",
+          "settings": {
+            "title": "YELLOW JACKETS",
+            "image": "shopify://shop_images/collection-8.webp",
             "link": ""
           }
         }
@@ -228,7 +253,10 @@
         "color_2",
         "color_3",
         "color_4",
-        "color_5"
+        "color_5",
+        "color_category_pXY9C4",
+        "color_category_MydGN3",
+        "color_category_yPPcVW"
       ],
       "settings": {
         "title": "OUR COLOR COLLECTION",
