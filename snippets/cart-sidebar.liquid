@@ -1,0 +1,63 @@
+<div class="cart-sidebar" data-cart-sidebar>
+  <!-- Overlay -->
+  <div class="cart-sidebar__overlay" data-cart-sidebar-overlay></div>
+  
+  <!-- Sidebar Content -->
+  <div class="cart-sidebar__content">
+    <!-- Header -->
+    <div class="cart-sidebar__header">
+      <h2 class="cart-sidebar__title">MY SHOPPING CART</h2>
+      <div class="cart-sidebar__header-actions">
+        <a href="{{ routes.cart_url }}" class="cart-sidebar__details-link">SEE DETAILS</a>
+        <button type="button" class="cart-sidebar__close" data-cart-sidebar-close aria-label="Close cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Banner -->
+    <div class="cart-sidebar__banner" data-cart-sidebar-banner style="display: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span>GOOD CHOICE! Your item was added to the shopping cart.</span>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="cart-sidebar__items" data-cart-sidebar-items>
+      <!-- Items will be dynamically loaded here -->
+    </div>
+
+    <!-- Empty Cart Message -->
+    <div class="cart-sidebar__empty" data-cart-sidebar-empty style="display: none;">
+      <p>Your cart is empty</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Continue Shopping</a>
+    </div>
+
+    <!-- Order Overview -->
+    <div class="cart-sidebar__overview" data-cart-sidebar-overview>
+      <div class="cart-sidebar__overview-row">
+        <span>Subtotal</span>
+        <span data-cart-sidebar-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+    </div>
+
+    <!-- Checkout Actions -->
+    <div class="cart-sidebar__actions">
+      <form action="{{ routes.cart_url }}" method="post" data-cart-sidebar-form>
+        <button type="submit" name="checkout" class="btn btn--primary btn--block cart-sidebar__checkout">
+          CHECKOUT
+        </button>
+      </form>
+      <p class="cart-sidebar__express-text">Express checkout options</p>
+      <div class="cart-sidebar__dynamic-checkout" data-cart-sidebar-dynamic-checkout>
+        <!-- Dynamic checkout buttons will be rendered here -->
+      </div>
+    </div>
+  </div>
+</div>
+
