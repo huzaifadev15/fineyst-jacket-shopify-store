@@ -20,15 +20,15 @@
           "settings": {
             "title": "MENS",
             "link_text_1": "Men's Leather Jackets",
-            "link_url_1": "/collections/mens-leather-jackets",
+            "link_url_1": "shopify://collections/mens-leather-jackets",
             "link_text_2": "Men's Jackets",
-            "link_url_2": "/collections/mens-jackets",
+            "link_url_2": "shopify://collections/mens-jackets",
             "link_text_3": "Men's Letterman Jackets",
-            "link_url_3": "/collections/mens-letterman-jackets",
+            "link_url_3": "shopify://collections/mens-letterman-jackets",
             "link_text_4": "Men's Denim Jackets",
-            "link_url_4": "/collections/mens-denim-jackets",
+            "link_url_4": "shopify://collections/mens-denim-jackets",
             "link_text_5": "View All",
-            "link_url_5": "/collections/mens"
+            "link_url_5": "shopify://collections"
           }
         },
         "womens_links": {
@@ -36,15 +36,15 @@
           "settings": {
             "title": "WOMENS",
             "link_text_1": "Women's Leather Jackets",
-            "link_url_1": "/collections/womens-leather-jackets",
+            "link_url_1": "shopify://collections/womens-leather-jackets",
             "link_text_2": "Women's Puffer Jackets",
-            "link_url_2": "/collections/womens-puffer-jackets",
+            "link_url_2": "shopify://collections/womens-puffer-jackets",
             "link_text_3": "Women's Denim Jackets",
-            "link_url_3": "/collections/womens-denim-jackets",
+            "link_url_3": "shopify://collections/womens-denim-jackets",
             "link_text_4": "Women's Suede Jackets",
-            "link_url_4": "/collections/womens-suede-jackets",
+            "link_url_4": "shopify://collections/womens-suede-jackets",
             "link_text_5": "View All",
-            "link_url_5": "/collections/womens"
+            "link_url_5": "shopify://collections"
           }
         },
         "brand_links": {
@@ -52,11 +52,11 @@
           "settings": {
             "title": "BRAND",
             "link_text_1": "Blogs",
-            "link_url_1": "/blogs/news",
+            "link_url_1": "shopify://pages/blogs",
             "link_text_2": "About Us",
-            "link_url_2": "/pages/about-us",
+            "link_url_2": "shopify://pages/about-us",
             "link_text_3": "Shop",
-            "link_url_3": "/collections/all",
+            "link_url_3": "shopify://collections/all",
             "link_text_4": "",
             "link_url_4": "",
             "link_text_5": "",
@@ -68,13 +68,13 @@
           "settings": {
             "title": "SUPPORT",
             "link_text_1": "FAQs",
-            "link_url_1": "/pages/faqs",
+            "link_url_1": "shopify://pages/faqs",
             "link_text_2": "Contact Us",
-            "link_url_2": "/pages/contact",
+            "link_url_2": "shopify://pages/contact-us",
             "link_text_3": "Size Guide",
-            "link_url_3": "/pages/size-guide",
+            "link_url_3": "shopify://pages/size-guide",
             "link_text_4": "Track My Order",
-            "link_url_4": "/pages/track-order",
+            "link_url_4": "shopify://pages/track-order",
             "link_text_5": "",
             "link_url_5": ""
           }
@@ -84,13 +84,13 @@
           "settings": {
             "title": "POLICIES",
             "link_text_1": "Privacy Policy",
-            "link_url_1": "/pages/privacy-policy",
+            "link_url_1": "shopify://pages/privacy-policy",
             "link_text_2": "Refund Policy",
-            "link_url_2": "/pages/refund-policy",
+            "link_url_2": "shopify://pages/refund-policy",
             "link_text_3": "Shipping Policy",
-            "link_url_3": "/pages/shipping-policy",
+            "link_url_3": "shopify://pages/shipping-policy",
             "link_text_4": "Terms of Services",
-            "link_url_4": "/pages/terms-of-service",
+            "link_url_4": "shopify://pages/terms-of-services",
             "link_text_5": "",
             "link_url_5": ""
           }
@@ -108,10 +108,10 @@
         "address": "122 Henderson Rd, Sandy Creek, NY 13145, USA",
         "phone": "Call +1 (888) 840-0885",
         "email": "info@fineystjackets.com",
-        "social_instagram": "#",
-        "social_facebook": "#",
-        "social_twitter": "#",
-        "social_pinterest": "#",
+        "social_instagram": "https://www.instagram.com/fineystjackets/",
+        "social_facebook": "https://www.facebook.com/fineystjackets/",
+        "social_twitter": "https://x.com/fineystjackets/",
+        "social_pinterest": "https://www.pinterest.com/fineystjackets/",
         "newsletter_title": "Subscribe to Our Newsletter",
         "newsletter_description": "Get exclusive offers, design tips, and industry news",
         "newsletter_placeholder": "Your email address",
