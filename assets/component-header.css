@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 3rem;
-  height: 7rem;
+  height: 6rem;
 }
 
 /* Logo */
@@ -59,7 +59,7 @@
 .site-header__nav-list {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 6rem;
 }
 
 .site-header__nav-item {
@@ -70,10 +70,10 @@
   display: block;
   padding: 1rem 0;
   color: var(--color-header-text);
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-family: 'avertaBold', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0em;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
@@ -237,10 +237,10 @@
   display: block;
   padding: 1.5rem 0;
   color: var(--color-header-text);
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-family: 'avertaBold', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: 0em;
   text-transform: uppercase;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
