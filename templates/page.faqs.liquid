@@ -3,24 +3,24 @@ layout: theme
 ---
 
 {%- style -%}
-  .faq-page {
+   .faq-page {
     min-height: 100vh;
     background: #fff;
   }
-  
+
   .faq-hero {
     background: #eaeaea;
     padding: 12rem 0 8rem;
     margin-bottom: 4rem;
     border-bottom: 1px solid #000;
   }
-  
+
   .faq-hero__content {
     max-width: 120rem;
     margin: 0 auto;
     text-align: center;
   }
-  
+
   .faq-hero__title {
     font-family: avertaDefault, "avertaDefault Fallback", Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -31,25 +31,25 @@ layout: theme
     margin-bottom: 3rem;
     color: #171717;
   }
-  
+
   .faq-hero__subtitle {
     font-size: 2rem;
     color: #000;
     max-width: 40rem;
     margin: 0 auto;
   }
-  
+
   .faq-content {
     max-width: 120rem;
     margin: 0 auto 6rem;
     padding: 0 2rem;
   }
-  
+
   .faq-search {
     position: relative;
     margin-bottom: 4rem;
   }
-  
+
   .faq-search__icon {
     position: absolute;
     left: 1rem;
@@ -59,7 +59,7 @@ layout: theme
     width: 1.6rem;
     height: 1.6rem;
   }
-  
+
   .faq-search__input {
     width: 100%;
     padding: 1.5rem 1.5rem 1.5rem 5rem;
@@ -69,12 +69,12 @@ layout: theme
     background: #fff;
     text-indent: 2rem;
   }
-  
+
   .faq-search__input:focus {
     outline: none;
     border-color: #000;
   }
-  
+
   .faq-categories {
     display: flex;
     justify-content: center;
@@ -82,12 +82,12 @@ layout: theme
     padding-bottom: 1rem;
     margin-bottom: 4rem;
   }
-  
+
   .faq-categories__list {
     display: flex;
     gap: 1.5rem;
   }
-  
+
   .faq-category {
     display: flex;
     flex-direction: column;
@@ -103,24 +103,24 @@ layout: theme
     transition: all 0.2s ease;
     text-decoration: none;
   }
-  
+
   .faq-category:hover,
   .faq-category--active {
     background: #2b2b2b;
     color: #fff;
   }
-  
+
   .faq-category__icon {
     margin-bottom: 1rem;
     width: 2rem;
     height: 2rem;
   }
-  
+
   .faq-category__label {
     font-size: 1.4rem;
     font-weight: 500;
   }
-  
+
   .faq-section__title {
     font-family: avertaDefault, "avertaDefault Fallback", Arial, Helvetica, sans-serif;
     font-size: clamp(2.4rem, 4vw, 4rem);
@@ -130,11 +130,11 @@ layout: theme
     color: #171717;
     letter-spacing: 0;
   }
-  
+
   .faq-group {
     margin-bottom: 6rem;
   }
-  
+
   .faq-group__title {
     font-family: avertaDefault, "avertaDefault Fallback", Arial, Helvetica, sans-serif;
     font-size: 2.4rem;
@@ -143,13 +143,13 @@ layout: theme
     color: #171717;
     letter-spacing: 0;
   }
-  
+
   .faq-items {
     display: flex;
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .faq-item {
     position: relative;
     background: #fff;
@@ -158,7 +158,7 @@ layout: theme
     border: 1px solid #000;
     overflow: hidden;
   }
-  
+
   .faq-item::before {
     content: '';
     position: absolute;
@@ -168,7 +168,7 @@ layout: theme
     width: 4px;
     background: #000;
   }
-  
+
   .faq-item__question {
     display: flex;
     justify-content: space-between;
@@ -183,7 +183,7 @@ layout: theme
     font-weight: 500;
     color: #000;
   }
-  
+
   .faq-item__icon {
     display: flex;
     align-items: center;
@@ -196,48 +196,48 @@ layout: theme
     transition: all 0.3s ease;
     flex-shrink: 0;
   }
-  
+
   .faq-item__icon svg {
     width: 1.6rem;
     height: 1.6rem;
     transition: transform 0.3s ease;
   }
-  
+
   .faq-item--open .faq-item__icon {
     background: #2b2b2b;
     color: #fff;
   }
-  
+
   .faq-item--open .faq-item__icon svg {
     transform: rotate(0deg);
   }
-  
+
   .faq-item__icon svg {
     transform: rotate(180deg);
   }
-  
+
   .faq-item__answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
-  
+
   .faq-item--open .faq-item__answer {
     max-height: 50rem;
   }
-  
+
   .faq-item__answer-content {
     padding: 0 2.5rem 2.5rem;
     color: #666;
     font-size: 1.6rem;
     line-height: 1.6;
   }
-  
+
   .no-results {
     text-align: center;
     padding: 6rem 0;
   }
-  
+
   .no-results__title {
     font-family: avertaDefault, "avertaDefault Fallback", Arial, Helvetica, sans-serif;
     font-size: 2rem;
@@ -246,31 +246,31 @@ layout: theme
     color: #171717;
     letter-spacing: 0;
   }
-  
+
   .no-results__text {
     color: #666;
     font-size: 1.6rem;
   }
-  
+
   @media (max-width: 768px) {
     .faq-hero {
       padding: 8rem 0 6rem;
     }
-    
+
     .faq-categories__list {
       gap: 1rem;
     }
-    
+
     .faq-category {
       min-width: 8rem;
       padding: 1.2rem 1.5rem;
     }
-    
+
     .faq-item__question {
       padding: 2rem;
       font-size: 1.4rem;
     }
-    
+
     .faq-item__answer-content {
       padding: 0 2rem 2rem;
       font-size: 1.4rem;
@@ -807,7 +807,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const faqItems = document.querySelectorAll('.faq-item');
   const noResults = document.getElementById('no-results');
   let activeCategory = 'all';
-
   // FAQ Item Toggle
   faqItems.forEach(item => {
     const button = item.querySelector('.faq-item__question');
@@ -825,7 +824,6 @@ document.addEventListener('DOMContentLoaded', function() {
       item.classList.toggle('faq-item--open', !isOpen);
     });
   });
-
   // Category Filter
   categoryButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -839,30 +837,24 @@ document.addEventListener('DOMContentLoaded', function() {
       filterFAQs();
     });
   });
-
   // Search Filter
   searchInput.addEventListener('input', () => {
     filterFAQs();
   });
-
   function filterFAQs() {
     const searchQuery = searchInput.value.toLowerCase();
     let hasVisibleItems = false;
-
     faqGroups.forEach(group => {
       const groupCategory = group.dataset.category;
       const groupItems = group.querySelectorAll('.faq-item');
       let hasVisibleGroupItems = false;
-
       // Check if group should be visible based on category
       const categoryMatch = activeCategory === 'all' || groupCategory === activeCategory;
-
       if (categoryMatch) {
         groupItems.forEach(item => {
           const question = item.dataset.question.toLowerCase();
           const answer = item.dataset.answer.toLowerCase();
           const searchMatch = !searchQuery || question.includes(searchQuery) || answer.includes(searchQuery);
-
           if (searchMatch) {
             item.style.display = 'block';
             hasVisibleGroupItems = true;
@@ -871,13 +863,11 @@ document.addEventListener('DOMContentLoaded', function() {
             item.style.display = 'none';
           }
         });
-
         group.style.display = hasVisibleGroupItems ? 'block' : 'none';
       } else {
         group.style.display = 'none';
       }
     });
-
     // Show/hide no results message
     noResults.style.display = hasVisibleItems ? 'none' : 'block';
   }
