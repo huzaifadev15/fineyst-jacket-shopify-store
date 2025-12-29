@@ -82,7 +82,15 @@
   </main>
 
   {% sections 'footer-group' %}
+  {%- unless template.name == 'cart' -%}
+    {% render 'cart-sidebar' %}
+  {%- endunless -%}
 
+  {% if settings.show_chat_widget %}
+    <div class="chat-widget">
+      <span class="chat-widget__text">{{ settings.chat_widget_text }}</span>
+    </div>
+  {% endif %}
   <script>
     window.shopUrl = '{{ request.origin }}';
     window.routes = {
