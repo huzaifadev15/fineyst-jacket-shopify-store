@@ -19,7 +19,7 @@
           "settings": {
             "title": "MENS",
             "link_text_1": "Men's Leather Jackets",
-            "link_url_1": "shopify://collections/mens-leather-jackets",
+            "link_url_1": "shopify://collections/leather-bomber-jacket-mens",
             "link_text_2": "Men's Jackets",
             "link_url_2": "shopify://collections/mens-jackets",
             "link_text_3": "Men's Letterman Jackets",
@@ -35,7 +35,7 @@
           "settings": {
             "title": "WOMENS",
             "link_text_1": "Women's Leather Jackets",
-            "link_url_1": "shopify://collections/womens-leather-jackets",
+            "link_url_1": "shopify://collections/womens-leather-bomber-jackets",
             "link_text_2": "Women's Puffer Jackets",
             "link_url_2": "shopify://collections/womens-puffer-jackets",
             "link_text_3": "Women's Denim Jackets",
