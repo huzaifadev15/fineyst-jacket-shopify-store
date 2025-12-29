@@ -177,7 +177,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 0.5rem;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     width: max-content;
     will-change: transform;
     position: relative;
@@ -207,19 +207,20 @@
     }
   }
 
-  .hand-picked-section__carousel-track[data-gender="women"] {
+  .hand-picked-section__carousel-track {
     display: none;
+    opacity: 0;
   }
 
-  .hand-picked-section__carousel-track[data-gender="women"].is-active {
+  .hand-picked-section__carousel-track.is-active {
     display: flex;
+    opacity: 1;
   }
 
   .hand-picked-section__product {
     flex-shrink: 0;
     cursor: pointer;
     width: calc(20% - 16px);
-    transition: transform 0.3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -812,36 +813,55 @@
         return maxScroll;
       }
 
-      // Category switching
+      // Category switching with fade transition
       categoryButtons.forEach(function(btn) {
         btn.addEventListener('click', function() {
           var category = this.getAttribute('data-handpicked-category');
           if (category === activeCategory || isTransitioning) return;
           
-          activeCategory = category;
-          scrollPosition = 0; // Reset scroll position
           isTransitioning = true;
-
-          // Update button states
-          categoryButtons.forEach(function(b) {
-            var isActive = b.getAttribute('data-handpicked-category') === category;
-            b.setAttribute('aria-pressed', isActive);
-          });
-
-          // Show/hide tracks
+          
+          // Fade out current track
           tracks.forEach(function(track) {
-            if (track.getAttribute('data-gender') === category) {
-              track.classList.add('is-active');
-            } else {
-              track.classList.remove('is-active');
+            if (track.classList.contains('is-active')) {
+              track.style.opacity = '0';
             }
           });
 
-          // Update scroll position after category switch
           setTimeout(function() {
-            updateScrollPosition();
-            isTransitioning = false;
-          }, 50);
+            // Hide current track and show new one
+            tracks.forEach(function(track) {
+              if (track.getAttribute('data-gender') === category) {
+                track.classList.add('is-active');
+                track.style.opacity = '0';
+              } else {
+                track.classList.remove('is-active');
+              }
+            });
+
+            // Reset scroll position for new category
+            activeCategory = category;
+            scrollPosition = 0;
+
+            // Update button states
+            categoryButtons.forEach(function(b) {
+              var isActive = b.getAttribute('data-handpicked-category') === category;
+              b.setAttribute('aria-pressed', isActive);
+            });
+
+            // Fade in new track
+            requestAnimationFrame(function() {
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack) {
+                activeTrack.style.opacity = '1';
+                updateScrollPosition();
+              }
+              
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 300);
+            });
+          }, 150);
         });
       });
 
@@ -889,6 +909,10 @@
         tracks.forEach(function(track) {
           if (track.getAttribute('data-gender') === activeCategory) {
             track.classList.add('is-active');
+            track.style.opacity = '1';
+          } else {
+            track.classList.remove('is-active');
+            track.style.opacity = '0';
           }
         });
         scrollPosition = 0;
