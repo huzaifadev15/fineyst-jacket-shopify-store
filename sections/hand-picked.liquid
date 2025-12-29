@@ -801,22 +801,40 @@
             
             requestAnimationFrame(function() {
               requestAnimationFrame(function() {
+                // Get wrapper dimensions first (before any transform changes)
+                var wrapperRect = wrapper.getBoundingClientRect();
+                var wrapperCenter = wrapperRect.width / 2;
+                
+                // Get current transform value
+                var currentTransform = track.style.transform || '';
+                var currentOffset = 0;
+                var match = currentTransform.match(/translateX\(([^)]+)\)/);
+                if (match) {
+                  currentOffset = parseFloat(match[1]) || 0;
+                }
+                
+                // Temporarily reset transform to get natural product positions
                 track.style.transform = 'translateX(0px)';
-                void track.offsetHeight; // Force reflow
                 
-                var wrapperWidth = wrapper.getBoundingClientRect().width;
-                var wrapperCenter = wrapperWidth / 2;
+                // Force reflow to ensure layout is updated
+                void track.offsetHeight;
+                void wrapper.offsetHeight;
                 
+                // Get product position relative to track (natural position, no transform)
                 var productLeftInTrack = activeProduct.offsetLeft;
                 var productWidth = activeProduct.offsetWidth;
                 var productCenterInTrack = productLeftInTrack + productWidth / 2;
                 
+                // Get track's natural position relative to wrapper (at transform 0)
                 var trackRect = track.getBoundingClientRect();
-                var wrapperRect = wrapper.getBoundingClientRect();
                 var trackLeftInWrapper = trackRect.left - wrapperRect.left;
                 
+                // Calculate the exact offset needed to center the product
+                // We want: trackLeftInWrapper + productCenterInTrack + offset = wrapperCenter
+                // Therefore: offset = wrapperCenter - trackLeftInWrapper - productCenterInTrack
                 var offset = wrapperCenter - trackLeftInWrapper - productCenterInTrack;
                 
+                // Apply the transform to center the product (CSS transition will animate smoothly)
                 track.style.transform = 'translateX(' + offset + 'px)';
               });
             });
