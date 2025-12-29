@@ -801,25 +801,21 @@
             
             requestAnimationFrame(function() {
               requestAnimationFrame(function() {
-                var wrapperWidth = wrapper.offsetWidth;
-                var wrapperRect = wrapper.getBoundingClientRect();
-                var productRect = activeProduct.getBoundingClientRect();
-                var trackRect = track.getBoundingClientRect();
+                track.style.transform = 'translateX(0px)';
+                void track.offsetHeight; // Force reflow
                 
-                var currentTransform = track.style.transform || 'translateX(0px)';
-                var currentOffset = 0;
-                var match = currentTransform.match(/translateX\(([^)]+)\)/);
-                if (match) {
-                  currentOffset = parseFloat(match[1]) || 0;
-                }
+                var wrapperWidth = wrapper.getBoundingClientRect().width;
+                var wrapperCenter = wrapperWidth / 2;
                 
                 var productLeftInTrack = activeProduct.offsetLeft;
                 var productWidth = activeProduct.offsetWidth;
                 var productCenterInTrack = productLeftInTrack + productWidth / 2;
                 
-                // Calculate how much to move the track to center the product in the wrapper
-                var wrapperCenter = wrapperWidth / 2;
-                var offset = wrapperCenter - productCenterInTrack;
+                var trackRect = track.getBoundingClientRect();
+                var wrapperRect = wrapper.getBoundingClientRect();
+                var trackLeftInWrapper = trackRect.left - wrapperRect.left;
+                
+                var offset = wrapperCenter - trackLeftInWrapper - productCenterInTrack;
                 
                 track.style.transform = 'translateX(' + offset + 'px)';
               });
@@ -914,7 +910,14 @@
           }
         });
         updateCenterProduct();
-      }, 300);
+      }, 100);
+      
+      // Force immediate centering on initial load
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          updateCenterProduct();
+        });
+      });
 
       // Update on window resize
       var resizeTimer;
