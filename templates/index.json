@@ -183,13 +183,6 @@
     "color_collection": {
       "type": "color-collection",
       "blocks": {
-        "color_category_pXY9C4": {
-          "type": "color_category",
-          "settings": {
-            "title": "BLACK JACKETS",
-            "link": ""
-          }
-        },
         "color_1": {
           "type": "color_category",
           "settings": {
@@ -229,15 +222,23 @@
             "image": "shopify://shop_images/collection-5.webp",
             "link": ""
           }
+        },
+        "color_category_pXY9C4": {
+          "type": "color_category",
+          "settings": {
+            "title": "BLUE JACKETS",
+            "image": "shopify://shop_images/collection-6.webp",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "color_category_pXY9C4",
         "color_1",
         "color_2",
         "color_3",
         "color_4",
-        "color_5"
+        "color_5",
+        "color_category_pXY9C4"
       ],
       "settings": {
         "title": "OUR COLOR COLLECTION",
