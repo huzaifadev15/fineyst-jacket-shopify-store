@@ -174,13 +174,12 @@
 
   .hand-picked-section__carousel-track {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     gap: 0.5rem;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     width: max-content;
     will-change: transform;
-    margin: 0 auto;
     position: relative;
   }
 
@@ -219,21 +218,23 @@
   .hand-picked-section__product {
     flex-shrink: 0;
     cursor: pointer;
-    width: calc(23% - 14px);
-    transition: transform 0.3s ease, margin 0.3s ease;
+    width: calc(20% - 16px);
+    transition: transform 0.3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
   }
 
-  .hand-picked-section__product.is-center {
-    transform: scale(1.05) translateY(20px);
-    z-index: 10;
+  @media (min-width: 1024px) {
+    .hand-picked-section__product {
+      width: calc(18% - 18px);
+    }
   }
 
-  .hand-picked-section__product:not(.is-center) {
-    transform: scale(0.85) translateY(10px);
-    opacity: 0.9;
+  @media (min-width: 1280px) {
+    .hand-picked-section__product {
+      width: calc(16% - 20px);
+    }
   }
 
   .hand-picked-section__product-card {
@@ -637,7 +638,7 @@
           <div class="hand-picked-section__carousel-wrapper--desktop">
             <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="men">
               {%- for product in men_collection.products limit: products_limit -%}
-                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}" data-product-index="{{ forloop.index0 }}">
+                <div class="hand-picked-section__product" data-product-index="{{ forloop.index0 }}">
                   <a href="{{ product.url }}">
                     <div class="hand-picked-section__product-card">
                       {%- if product.featured_image -%}
@@ -683,7 +684,7 @@
 
             <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="women">
               {%- for product in women_collection.products limit: products_limit -%}
-                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}" data-product-index="{{ forloop.index0 }}">
+                <div class="hand-picked-section__product" data-product-index="{{ forloop.index0 }}">
                   <a href="{{ product.url }}">
                     <div class="hand-picked-section__product-card">
                       {%- if product.featured_image -%}
@@ -765,81 +766,50 @@
       var mobileWrapper = section.querySelector('[data-handpicked-mobile]');
       
       var activeCategory = 'men';
-      var activeIndex = 2; // Start with index 2 (3rd product) as center
+      var scrollPosition = 0;
       var isTransitioning = false;
 
-      function updateCenterProduct() {
+      function updateScrollPosition() {
         tracks.forEach(function(track) {
           if (!track.classList.contains('is-active')) return;
           
-          var products = track.querySelectorAll('.hand-picked-section__product');
-          if (products.length === 0) return;
-          
-          // Ensure activeIndex is within bounds
-          if (activeIndex >= products.length) {
-            activeIndex = products.length - 1;
-          }
-          if (activeIndex < 0) {
-            activeIndex = 0;
-          }
-          
-          // Remove center class from all products first
-          products.forEach(function(product) {
-            product.classList.remove('is-center');
-          });
-          
-          // Add center class to active product
-          if (products[activeIndex]) {
-            products[activeIndex].classList.add('is-center');
-          }
-          
-          // Center the track to keep the center product in viewport center
-          if (products[activeIndex]) {
-            var activeProduct = products[activeIndex];
-            var wrapper = track.closest('.hand-picked-section__carousel-wrapper--desktop');
-            if (!wrapper) return;
-            
-            requestAnimationFrame(function() {
-              requestAnimationFrame(function() {
-                // Get wrapper dimensions first (before any transform changes)
-                var wrapperRect = wrapper.getBoundingClientRect();
-                var wrapperCenter = wrapperRect.width / 2;
-                
-                // Get current transform value
-                var currentTransform = track.style.transform || '';
-                var currentOffset = 0;
-                var match = currentTransform.match(/translateX\(([^)]+)\)/);
-                if (match) {
-                  currentOffset = parseFloat(match[1]) || 0;
-                }
-                
-                // Temporarily reset transform to get natural product positions
-                track.style.transform = 'translateX(0px)';
-                
-                // Force reflow to ensure layout is updated
-                void track.offsetHeight;
-                void wrapper.offsetHeight;
-                
-                // Get product position relative to track (natural position, no transform)
-                var productLeftInTrack = activeProduct.offsetLeft;
-                var productWidth = activeProduct.offsetWidth;
-                var productCenterInTrack = productLeftInTrack + productWidth / 2;
-                
-                // Get track's natural position relative to wrapper (at transform 0)
-                var trackRect = track.getBoundingClientRect();
-                var trackLeftInWrapper = trackRect.left - wrapperRect.left;
-                
-                // Calculate the exact offset needed to center the product
-                // We want: trackLeftInWrapper + productCenterInTrack + offset = wrapperCenter
-                // Therefore: offset = wrapperCenter - trackLeftInWrapper - productCenterInTrack
-                var offset = wrapperCenter - trackLeftInWrapper - productCenterInTrack;
-                
-                // Apply the transform to center the product (CSS transition will animate smoothly)
-                track.style.transform = 'translateX(' + offset + 'px)';
-              });
-            });
-          }
+          // Apply scroll position
+          track.style.transform = 'translateX(' + scrollPosition + 'px)';
         });
+      }
+
+      function getScrollAmount() {
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack) return 300;
+        
+        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+        if (products.length === 0) return 300;
+        
+        // Calculate scroll amount based on product width + gap
+        // Scroll by approximately 2-3 products at a time for smooth experience
+        var firstProduct = products[0];
+        if (firstProduct) {
+          var productWidth = firstProduct.offsetWidth;
+          var computedStyle = window.getComputedStyle(activeTrack);
+          var gap = parseFloat(computedStyle.gap) || 8;
+          // Scroll by 2.5 products worth for smooth scrolling
+          return (productWidth + gap) * 2.5;
+        }
+        return 300;
+      }
+
+      function getMaxScroll() {
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack) return 0;
+        
+        var wrapper = activeTrack.closest('.hand-picked-section__carousel-wrapper--desktop');
+        if (!wrapper) return 0;
+        
+        var trackWidth = activeTrack.scrollWidth;
+        var wrapperWidth = wrapper.clientWidth;
+        var maxScroll = -(trackWidth - wrapperWidth);
+        
+        return maxScroll;
       }
 
       // Category switching
@@ -849,7 +819,7 @@
           if (category === activeCategory || isTransitioning) return;
           
           activeCategory = category;
-          activeIndex = 2; // Reset to center product
+          scrollPosition = 0; // Reset scroll position
           isTransitioning = true;
 
           // Update button states
@@ -867,34 +837,31 @@
             }
           });
 
-          // Update center product after category switch
+          // Update scroll position after category switch
           setTimeout(function() {
-            updateCenterProduct();
+            updateScrollPosition();
             isTransitioning = false;
           }, 50);
         });
       });
 
-      // Navigation
+      // Navigation - Simple horizontal scroll
       if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
           if (isTransitioning) return;
           
-          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-          if (!activeTrack) return;
-          
-          var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-          if (products.length === 0) return;
-          
           isTransitioning = true;
-          activeIndex = Math.max(0, activeIndex - 1);
-          updateCenterProduct();
+          var scrollAmount = getScrollAmount();
+          var maxScroll = getMaxScroll();
+          
+          scrollPosition = Math.min(0, scrollPosition + scrollAmount);
+          updateScrollPosition();
           
           setTimeout(function() {
             isTransitioning = false;
-          }, 400);
+          }, 500);
         });
       }
 
@@ -904,45 +871,39 @@
           e.stopPropagation();
           if (isTransitioning) return;
           
-          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-          if (!activeTrack) return;
-          
-          var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-          if (products.length === 0) return;
-          
           isTransitioning = true;
-          activeIndex = Math.min(products.length - 1, activeIndex + 1);
-          updateCenterProduct();
+          var scrollAmount = getScrollAmount();
+          var maxScroll = getMaxScroll();
+          
+          scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
+          updateScrollPosition();
           
           setTimeout(function() {
             isTransitioning = false;
-          }, 400);
+          }, 500);
         });
       }
 
-      // Initialize center product on load
+      // Initialize on load
       setTimeout(function() {
         tracks.forEach(function(track) {
           if (track.getAttribute('data-gender') === activeCategory) {
             track.classList.add('is-active');
           }
         });
-        updateCenterProduct();
+        scrollPosition = 0;
+        updateScrollPosition();
       }, 100);
-      
-      // Force immediate centering on initial load
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          updateCenterProduct();
-        });
-      });
 
       // Update on window resize
       var resizeTimer;
       window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
-          updateCenterProduct();
+          // Ensure scroll position is still valid after resize
+          var maxScroll = getMaxScroll();
+          scrollPosition = Math.max(maxScroll, Math.min(0, scrollPosition));
+          updateScrollPosition();
         }, 250);
       });
     }
