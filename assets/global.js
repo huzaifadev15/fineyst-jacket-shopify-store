@@ -9,6 +9,7 @@
     initProductGallery();
     initQuantityButtons();
     initAddToCart();
+    initCartSidebar();
     initWelcomeCarousel();
     initHandPickedCarousel();
     initColorCollectionCarousel();
@@ -124,9 +125,21 @@
     document.addEventListener('click', function(e) {
       const addBtn = e.target.closest('[data-add-to-cart]');
       if (!addBtn) return;
+      
+      // Check if button is disabled
+      if (addBtn.disabled) {
+        return;
+      }
   
       e.preventDefault();
       const variantId = addBtn.dataset.addToCart;
+      
+      // Validate variant ID before proceeding
+      if (!variantId || variantId === 'undefined' || variantId === 'null' || variantId === '') {
+        console.error('Invalid variant ID from button:', variantId);
+        alert('Unable to add this item to cart. Please refresh the page and try again.');
+        return;
+      }
   
       addToCart(variantId, 1);
     });
@@ -147,74 +160,696 @@
   }
   
   function addToCart(variantId, quantity = 1) {
+    // Validate variant ID
+    if (!variantId || variantId === 'undefined' || variantId === 'null') {
+      console.error('Invalid variant ID:', variantId);
+      alert('Please select a product variant before adding to cart.');
+      return;
+    }
+    
+    // Convert variant ID to number if it's a string
+    const numericVariantId = typeof variantId === 'string' ? parseInt(variantId, 10) : variantId;
+    
+    if (isNaN(numericVariantId)) {
+      console.error('Variant ID is not a valid number:', variantId);
+      alert('Invalid product variant. Please try again.');
+      return;
+    }
+    
     const data = {
       items: [{
-        id: variantId,
-        quantity: parseInt(quantity)
+        id: numericVariantId,
+        quantity: parseInt(quantity) || 1
       }]
     };
+    
+    if (!window.routes || !window.routes.cart_add_url) {
+      console.error('Cart routes not defined');
+      alert('Cart system not initialized. Please refresh the page.');
+      return;
+    }
   
     fetch(window.routes.cart_add_url + '.js', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => {
+      // Check if response is ok
+      if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 422) {
+          // Item already in cart or max quantity reached
+          return response.json().then(errorData => {
+            const errorMessage = errorData.description || errorData.message || 'This item is already in your cart at maximum quantity.';
+            
+            // Open cart sidebar and load current cart
+            openCartSidebar();
+            loadCartSidebar();
+            
+            // Show friendly message
+            alert(errorMessage);
+            
+            // Return null to skip the success handler
+            return null;
+          }).catch(() => {
+            // If JSON parse fails, still open cart
+            openCartSidebar();
+            loadCartSidebar();
+            alert('This item is already in your cart at maximum quantity.');
+            return null;
+          });
+        }
+        
+        // Try to get error message from response
+        return response.text().then(text => {
+          let errorMessage = 'Failed to add item to cart';
+          try {
+            const errorData = JSON.parse(text);
+            errorMessage = errorData.description || errorData.message || errorMessage;
+          } catch (e) {
+            // If response isn't JSON, use status text
+            errorMessage = `Failed to add item to cart (${response.status})`;
+          }
+          throw new Error(errorMessage);
+        });
+      }
+      return response.json();
+    })
+    .then(cartData => {
+      // If we got a 422 error, cartData will be null - already handled
+      if (cartData === null) {
+        return; // Error already handled, cart sidebar opened
+      }
+      
+      // Validate cart data
+      if (!cartData) {
+        throw new Error('Invalid response from server');
+      }
+      
+      // Update cart count
       updateCartCount();
-      showCartNotification('Item added to cart!');
+      
+      // Always use the cart data from the add response
+      // Shopify's cart add API returns the full cart object
+      if (cartData && cartData.items && Array.isArray(cartData.items)) {
+        // Use the response data directly
+        console.log('Using cart data from add response:', cartData);
+        renderCartItems(cartData);
+        updateCartSubtotal(cartData);
+        openCartSidebar();
+        showCartSidebarBanner();
+      } else {
+        // Fallback: try to load cart
+        console.log('No cart data in response, fetching cart...');
+        openCartSidebar();
+        setTimeout(() => {
+          loadCartSidebar();
+        }, 500);
+      }
     })
     .catch(error => {
-      console.error('Error:', error);
-      showCartNotification('Failed to add item to cart', 'error');
+      console.error('Error adding to cart:', error);
+      
+      // Don't show alert if we already showed one for 422 error
+      if (error.message && error.message.includes('already in cart')) {
+        // Already handled above
+        return;
+      }
+      
+      // For other errors, try to load cart anyway to show current state
+      loadCartSidebar();
+      openCartSidebar();
+      
+      const errorMessage = error.message || 'Failed to add item to cart. Please try again.';
+      alert(errorMessage);
     });
   }
   
   function updateCartCount() {
+    if (!window.routes || !window.routes.cart_url) {
+      return;
+    }
+    
     fetch(window.routes.cart_url + '.js')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          // Don't update count if cart fetch fails
+          return null;
+        }
+        return response.json();
+      })
       .then(cart => {
-        const countElements = document.querySelectorAll('[data-cart-count]');
-        countElements.forEach(el => {
-          el.textContent = cart.item_count;
-        });
+        if (cart && cart.item_count !== undefined) {
+          const countElements = document.querySelectorAll('[data-cart-count]');
+          countElements.forEach(el => {
+            el.textContent = cart.item_count || 0;
+          });
+        }
+      })
+      .catch(error => {
+        // Silently fail - don't show errors for cart count updates
+        console.error('Error updating cart count:', error);
       });
   }
   
-  function showCartNotification(message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `cart-notification cart-notification--${type}`;
-    notification.innerHTML = `
-      <p>${message}</p>
-      <a href="${window.routes.cart_url}" class="btn btn--white btn--sm">View Cart</a>
-    `;
+  /* Cart Sidebar */
+  function initCartSidebar() {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    if (!sidebar) return;
+
+    // Toggle sidebar from header cart button
+    const cartToggle = document.querySelector('[data-cart-toggle]');
+    if (cartToggle) {
+      cartToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Don't open sidebar on cart page - redirect to cart instead
+        const isCartPage = window.location.pathname.includes('/cart') || window.location.pathname === '/cart';
+        if (isCartPage) {
+          window.location.href = window.routes.cart_url;
+          return;
+        }
+        openCartSidebar();
+      });
+    }
+
+    // Close sidebar handlers
+    const closeBtn = sidebar.querySelector('[data-cart-sidebar-close]');
+    const overlay = sidebar.querySelector('[data-cart-sidebar-overlay]');
     
-    // Add styles
-    notification.style.cssText = `
-      position: fixed;
-      top: 10rem;
-      right: 2rem;
-      background: ${type === 'success' ? 'var(--color-primary)' : '#e63946'};
-      color: #fff;
-      padding: 2rem;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      animation: slideInRight 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    `;
-  
-    document.body.appendChild(notification);
-  
-    // Auto remove after 4 seconds
-    setTimeout(() => {
-      notification.style.animation = 'slideOutRight 0.3s ease forwards';
-      setTimeout(() => notification.remove(), 300);
-    }, 4000);
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeCartSidebar);
+    }
+    
+    if (overlay) {
+      overlay.addEventListener('click', closeCartSidebar);
+    }
+
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sidebar.classList.contains('is-open')) {
+        closeCartSidebar();
+      }
+    });
+
+    // Quantity update handlers
+    sidebar.addEventListener('click', function(e) {
+      const minusBtn = e.target.closest('[data-cart-quantity-minus]');
+      const plusBtn = e.target.closest('[data-cart-quantity-plus]');
+      const removeBtn = e.target.closest('[data-cart-remove]');
+
+      if (minusBtn) {
+        e.preventDefault();
+        const key = minusBtn.dataset.cartQuantityMinus;
+        const input = minusBtn.parentElement.querySelector('[data-cart-quantity-input]');
+        if (input) {
+          const currentQty = parseInt(input.value) || 1;
+          if (currentQty > 1) {
+            updateCartItem(key, currentQty - 1);
+          }
+        }
+      }
+
+      if (plusBtn) {
+        e.preventDefault();
+        const key = plusBtn.dataset.cartQuantityPlus;
+        const input = plusBtn.parentElement.querySelector('[data-cart-quantity-input]');
+        if (input) {
+          const currentQty = parseInt(input.value) || 1;
+          updateCartItem(key, currentQty + 1);
+        }
+      }
+
+      if (removeBtn) {
+        e.preventDefault();
+        const key = removeBtn.dataset.cartRemove;
+        removeCartItem(key);
+      }
+    });
+
+    // Load initial cart (but don't show sidebar)
+    // Cart will be loaded when sidebar opens
+  }
+
+  function openCartSidebar() {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    if (sidebar) {
+      sidebar.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      // Cart items should already be loaded before opening (from addToCart response)
+      // Only load if sidebar items container is empty
+      const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
+      if (!itemsContainer || itemsContainer.children.length === 0) {
+        setTimeout(() => {
+          loadCartSidebar();
+        }, 100);
+      }
+    }
+  }
+
+  function closeCartSidebar() {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    if (sidebar) {
+      sidebar.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function showCartSidebarBanner() {
+    const banner = document.querySelector('[data-cart-sidebar-banner]');
+    if (banner) {
+      banner.style.display = 'flex';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  function formatMoney(cents) {
+    if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+      return Shopify.formatMoney(cents);
+    }
+    // Fallback formatting
+    return 'Rs ' + (cents / 100).toLocaleString('en-IN');
+  }
+
+  // Utility function to escape HTML to prevent XSS
+  function escapeHtml(text) {
+    if (text == null) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function loadCartSidebar() {
+    // Don't load cart sidebar if we're on the cart page itself
+    const isCartPage = window.location.pathname.includes('/cart') || 
+                       window.location.pathname === '/cart' ||
+                       (window.routes && window.location.pathname === window.routes.cart_url.replace(window.shopUrl || '', ''));
+    
+    if (isCartPage) {
+      return;
+    }
+    
+    if (!window.routes || !window.routes.cart_url) {
+      console.error('Cart routes not defined');
+      return;
+    }
+    
+    // Check if cart sidebar exists before trying to load
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    if (!sidebar) {
+      return; // Cart sidebar doesn't exist on this page
+    }
+    
+    // Show loading state
+    const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
+    if (itemsContainer) {
+      itemsContainer.innerHTML = '<p style="padding: 2rem; text-align: center; color: #999;">Loading cart...</p>';
+    }
+    
+    const cartUrl = window.routes.cart_url + '.js';
+    console.log('Loading cart from:', cartUrl);
+    
+    // Simple fetch without complex error handling
+    fetch(cartUrl)
+      .then(response => {
+        if (!response.ok && response.status !== 404) {
+          throw new Error('Cart API returned: ' + response.status);
+        }
+        return response.json().catch(() => {
+          // If JSON parse fails, return empty cart
+          return { items: [], item_count: 0, total_price: 0 };
+        });
+      })
+      .then(cart => {
+        // Ensure cart has required properties
+        if (!cart) cart = { items: [], item_count: 0, total_price: 0 };
+        if (!cart.items) cart.items = [];
+        if (cart.item_count === undefined) cart.item_count = cart.items.length;
+        if (cart.total_price === undefined) cart.total_price = 0;
+        
+        updateCartCount();
+        renderCartItems(cart);
+        updateCartSubtotal(cart);
+      })
+      .catch(error => {
+        console.error('Error loading cart:', error);
+        console.error('Error details:', {
+          message: error.message,
+          stack: error.stack,
+          cartUrl: cartUrl
+        });
+        
+        // Only show error if sidebar is actually open
+        const sidebar = document.querySelector('[data-cart-sidebar]');
+        if (sidebar && sidebar.classList.contains('is-open')) {
+          const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
+          const emptyContainer = sidebar.querySelector('[data-cart-sidebar-empty]');
+          
+          if (itemsContainer) {
+            itemsContainer.innerHTML = '<p style="padding: 2rem; text-align: center; color: #999;">Unable to load cart items. Please try again.</p>';
+          }
+          if (emptyContainer) {
+            emptyContainer.style.display = 'none';
+          }
+          
+          // Hide subtotal on error since it might be stale
+          const subtotalEl = sidebar.querySelector('[data-cart-sidebar-subtotal]');
+          if (subtotalEl) {
+            subtotalEl.textContent = 'Rs 0';
+          }
+        }
+      });
+  }
+
+  function renderCartItems(cart) {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    if (!sidebar) {
+      return; // Sidebar doesn't exist
+    }
+    
+    const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
+    const emptyContainer = sidebar.querySelector('[data-cart-sidebar-empty]');
+    
+    if (!itemsContainer || !emptyContainer) {
+      console.error('Cart sidebar containers not found');
+      return;
+    }
+
+    // Handle empty cart
+    if (!cart || cart.item_count === 0 || !cart.items || cart.items.length === 0) {
+      itemsContainer.innerHTML = '';
+      emptyContainer.style.display = 'flex';
+      return;
+    }
+
+    emptyContainer.style.display = 'none';
+    
+    // Log items for debugging
+    console.log('Rendering', cart.items.length, 'cart items');
+    
+    try {
+      itemsContainer.innerHTML = cart.items.map(item => {
+      const hasComparePrice = item.variant && item.variant.compare_at_price && item.variant.compare_at_price > item.price;
+      const unitPrice = formatMoney(item.price);
+      const comparePrice = hasComparePrice ? formatMoney(item.variant.compare_at_price) : '';
+      const totalPrice = formatMoney(item.line_price);
+      
+      // Extract color and size from variant options
+      let color = '';
+      let size = '';
+      
+      // Shopify cart API provides variant options in item.variant.options array
+      if (item.variant && item.variant.options) {
+        // Typically: options[0] = option1 (often color), options[1] = option2 (often size), etc.
+        if (item.variant.options.length > 0) {
+          color = item.variant.options[0] || '';
+        }
+        if (item.variant.options.length > 1) {
+          size = item.variant.options[1] || '';
+        }
+      }
+      
+      // Fallback to variant title if options not available
+      if (!color && !size && item.variant && item.variant.title && item.variant.title !== 'Default Title') {
+        const variantParts = item.variant.title.split(' / ');
+        if (variantParts.length >= 2) {
+          color = variantParts[0].trim();
+          size = variantParts[1].trim();
+        } else if (variantParts.length === 1) {
+          const value = variantParts[0].trim();
+          const colorKeywords = ['black', 'white', 'grey', 'gray', 'navy', 'blue', 'red', 'green', 'brown', 'beige', 'tan', 'grey', 'leather'];
+          if (colorKeywords.some(keyword => value.toLowerCase().includes(keyword))) {
+            color = value;
+          } else {
+            size = value;
+          }
+        }
+      }
+      
+      // Check properties for color/size
+      if (item.properties && Object.keys(item.properties).length > 0) {
+        Object.keys(item.properties).forEach(key => {
+          const lowerKey = key.toLowerCase();
+          const value = item.properties[key];
+          if (lowerKey.includes('color') && !color && value) {
+            color = value;
+          }
+          if (lowerKey.includes('size') && !size && value) {
+            size = value;
+          }
+        });
+      }
+
+      // Handle image URL - Shopify cart API returns image as a URL string
+      // The image might be a full URL or a relative path
+      let imageUrl = '';
+      if (item.image) {
+        if (typeof item.image === 'string') {
+          // Handle protocol-relative URLs (//cdn.shopify.com/...)
+          if (item.image.startsWith('//')) {
+            imageUrl = `https:${item.image}`;
+          } 
+          // Handle absolute URLs
+          else if (item.image.startsWith('http://') || item.image.startsWith('https://')) {
+            imageUrl = item.image;
+          }
+          // Handle relative URLs - prepend shop domain
+          else if (item.image.startsWith('/')) {
+            imageUrl = window.shopUrl + item.image;
+          }
+          // Otherwise use as-is
+          else {
+            imageUrl = item.image;
+          }
+        } 
+        // If image is an object with url property
+        else if (item.image.url) {
+          const url = item.image.url;
+          if (url.startsWith('//')) {
+            imageUrl = `https:${url}`;
+          } else if (url.startsWith('http://') || url.startsWith('https://')) {
+            imageUrl = url;
+          } else if (url.startsWith('/')) {
+            imageUrl = window.shopUrl + url;
+          } else {
+            imageUrl = url;
+          }
+        }
+      }
+      
+      // Fallback: try featured_image or product image
+      if (!imageUrl) {
+        const fallbackImage = item.featured_image || (item.product && item.product.featured_image);
+        if (fallbackImage) {
+          if (typeof fallbackImage === 'string') {
+            imageUrl = fallbackImage.startsWith('//') ? `https:${fallbackImage}` : 
+                      fallbackImage.startsWith('/') ? (window.shopUrl + fallbackImage) : fallbackImage;
+          }
+        }
+      }
+      
+      // Use the global escapeHtml function (defined above)
+      const productTitle = escapeHtml(item.product ? item.product.title : item.title);
+      const itemUrl = item.url || (item.product ? `/products/${item.product.handle}` : '#');
+      const colorText = color ? escapeHtml(color) : '';
+      const sizeText = size ? escapeHtml(size) : '';
+      
+      return `
+        <div class="cart-sidebar-item" data-cart-item-key="${item.key}">
+          <div class="cart-sidebar-item__image-wrapper">
+            ${imageUrl ? `<img 
+              src="${escapeHtml(imageUrl)}" 
+              alt="${escapeHtml(item.title || productTitle)}" 
+              class="cart-sidebar-item__image"
+              onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=\\'cart-sidebar-item__image\\' style=\\'background: #f5f5f5;\\'></div>';"
+            >` : '<div class="cart-sidebar-item__image" style="background: #f5f5f5;"></div>'}
+            <button type="button" class="cart-sidebar-item__wishlist" aria-label="Add to wishlist">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="cart-sidebar-item__content">
+            <div class="cart-sidebar-item__header">
+              <h3 class="cart-sidebar-item__title">
+                <a href="${escapeHtml(itemUrl)}">${productTitle}</a>
+              </h3>
+              <button type="button" class="cart-sidebar-item__remove" data-cart-remove="${item.key}" aria-label="Remove item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+            ${colorText ? `<p class="cart-sidebar-item__variant">Color: ${colorText}</p>` : ''}
+            ${sizeText ? `<p class="cart-sidebar-item__variant">Size: ${sizeText}</p>` : ''}
+            <div class="cart-sidebar-item__quantity">
+              <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-minus="${item.key}">−</button>
+              <input 
+                type="number" 
+                class="cart-sidebar-item__quantity-input" 
+                value="${item.quantity}" 
+                min="1"
+                data-cart-quantity-input
+                readonly
+              >
+              <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-plus="${item.key}">+</button>
+            </div>
+            <div class="cart-sidebar-item__pricing">
+              <div class="cart-sidebar-item__unit-price">
+                ${hasComparePrice ? `<span class="cart-sidebar-item__unit-price--compare">${comparePrice}</span>` : ''}
+                <span class="cart-sidebar-item__unit-price--sale">${unitPrice}</span>
+              </div>
+              <div class="cart-sidebar-item__total-price">Total Price: ${totalPrice}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      }).join('');
+      
+      console.log('Cart items rendered successfully');
+    } catch (renderError) {
+      console.error('Error rendering cart items:', renderError);
+      itemsContainer.innerHTML = '<p style="padding: 2rem; text-align: center; color: #999;">Error displaying cart items. Please refresh the page.</p>';
+    }
+  }
+
+  function updateCartSubtotal(cart) {
+    const subtotalEl = document.querySelector('[data-cart-sidebar-subtotal]');
+    if (subtotalEl) {
+      subtotalEl.textContent = formatMoney(cart.total_price);
+    }
+    
+    // Update dynamic checkout buttons
+    updateDynamicCheckoutButtons(cart);
+  }
+
+  function updateDynamicCheckoutButtons(cart) {
+    const dynamicCheckoutContainer = document.querySelector('[data-cart-sidebar-dynamic-checkout]');
+    if (!dynamicCheckoutContainer) return;
+    
+    if (cart.item_count === 0) {
+      dynamicCheckoutContainer.innerHTML = '';
+      return;
+    }
+
+    // Create form structure for Shopify dynamic checkout
+    // Shopify's dynamic checkout buttons require a form with cart items
+    let formHTML = '<form action="' + window.routes.cart_url + '" method="post" class="cart-sidebar__dynamic-form">';
+    
+    // Add hidden inputs for each cart item (required for dynamic checkout)
+    cart.items.forEach(item => {
+      formHTML += '<input type="hidden" name="updates[' + escapeHtml(item.key) + ']" value="' + item.quantity + '">';
+    });
+    
+    formHTML += '<div class="dynamic-checkout__content"></div></form>';
+    
+    dynamicCheckoutContainer.innerHTML = formHTML;
+    
+    // Initialize Shopify dynamic checkout buttons
+    // This will automatically detect and render available express checkout options
+    if (typeof Shopify !== 'undefined') {
+      // Wait a bit for DOM to update, then initialize
+      setTimeout(() => {
+        const form = dynamicCheckoutContainer.querySelector('form');
+        const container = dynamicCheckoutContainer.querySelector('.dynamic-checkout__content');
+        
+        if (form && container) {
+          // Use Shopify's dynamic checkout button API
+          if (Shopify.dynamicPaymentButtons) {
+            Shopify.dynamicPaymentButtons.init();
+          }
+          
+          // Alternative: Create dynamic checkout button manually
+          // Fetch checkout button HTML from cart page
+          fetch(window.routes.cart_url)
+            .then(response => response.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              
+              // Look for dynamic checkout button container
+              const checkoutButtons = doc.querySelector('[data-shopify="dynamic-checkout"], .dynamic-checkout__content, .shopify-payment-button');
+              
+              if (checkoutButtons) {
+                container.innerHTML = checkoutButtons.innerHTML;
+                
+                // Re-execute any scripts in the loaded HTML
+                const scripts = container.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                  const newScript = document.createElement('script');
+                  Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                  });
+                  newScript.textContent = oldScript.textContent;
+                  oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+                
+                // Reinitialize payment buttons
+                if (typeof Shopify !== 'undefined' && Shopify.dynamicPaymentButtons) {
+                  Shopify.dynamicPaymentButtons.init();
+                }
+              }
+            })
+            .catch(error => {
+              console.error('Error loading dynamic checkout buttons:', error);
+            });
+        }
+      }, 100);
+    }
+  }
+
+  function updateCartItem(key, quantity) {
+    if (quantity <= 0) {
+      // Remove item
+      fetch(window.routes.cart_change_url + '.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: key,
+          quantity: 0
+        })
+      })
+      .then(response => response.json())
+      .then(cart => {
+        loadCartSidebar();
+      })
+      .catch(error => {
+        console.error('Error removing cart item:', error);
+        loadCartSidebar(); // Reload anyway to sync
+      });
+    } else {
+      // Update quantity
+      fetch(window.routes.cart_change_url + '.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: key,
+          quantity: quantity
+        })
+      })
+      .then(response => response.json())
+      .then(cart => {
+        loadCartSidebar();
+      })
+      .catch(error => {
+        console.error('Error updating cart:', error);
+        loadCartSidebar(); // Reload anyway to sync
+      });
+    }
+  }
+
+  function removeCartItem(key) {
+    updateCartItem(key, 0);
   }
   
   /* Utility: Slide out animation */
