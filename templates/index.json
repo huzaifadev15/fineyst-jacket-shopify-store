@@ -187,6 +187,7 @@
           "type": "color_category",
           "settings": {
             "title": "BLACK JACKETS",
+            "image": "shopify://shop_images/collection-1.webp",
             "link": ""
           }
         },
@@ -194,6 +195,7 @@
           "type": "color_category",
           "settings": {
             "title": "BROWN JACKETS",
+            "image": "shopify://shop_images/collection-2.webp",
             "link": ""
           }
         },
@@ -201,6 +203,7 @@
           "type": "color_category",
           "settings": {
             "title": "RED JACKETS",
+            "image": "shopify://shop_images/collection-3.webp",
             "link": ""
           }
         },
@@ -208,6 +211,7 @@
           "type": "color_category",
           "settings": {
             "title": "WHITE JACKETS",
+            "image": "shopify://shop_images/collection-4.webp",
             "link": ""
           }
         },
