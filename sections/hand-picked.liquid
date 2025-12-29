@@ -157,6 +157,7 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+    min-height: 0;
   }
 
   @media (min-width: 640px) {
@@ -173,68 +174,73 @@
   }
 
   .hand-picked-section__carousel-track {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    width: max-content;
+    display: flex !important;
+    opacity: 0;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 0.5rem !important;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    width: max-content !important;
     will-change: transform;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 0;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__carousel-track {
-      gap: 0.75rem;
+      gap: 0.75rem !important;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__carousel-track {
-      gap: 1rem;
+      gap: 1rem !important;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__carousel-track {
-      gap: 1.5rem;
+      gap: 1.5rem !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-track {
-      gap: 2rem;
+      gap: 2rem !important;
     }
   }
 
-  .hand-picked-section__carousel-track {
-    display: none;
-    opacity: 0;
-  }
-
   .hand-picked-section__carousel-track.is-active {
-    display: flex;
-    opacity: 1;
+    opacity: 1 !important;
+    position: relative !important;
   }
 
   .hand-picked-section__product {
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
     cursor: pointer;
-    width: calc(20% - 16px);
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
     position: relative;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product {
-      width: calc(18% - 18px);
+      width: 240px !important;
+      min-width: 240px !important;
+      max-width: 240px !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product {
-      width: calc(16% - 20px);
+      width: 260px !important;
+      min-width: 260px !important;
+      max-width: 260px !important;
     }
   }
 
@@ -242,15 +248,33 @@
     position: relative;
     overflow: hidden;
     background: #f3f4f6;
-    aspect-ratio: 280 / 420;
-    width: 100%;
+    width: 100% !important;
+    height: 330px !important;
+    min-height: 330px !important;
+    max-height: 330px !important;
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__product-card {
+      height: 360px !important;
+      min-height: 360px !important;
+      max-height: 360px !important;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__product-card {
+      height: 390px !important;
+      min-height: 390px !important;
+      max-height: 390px !important;
+    }
   }
 
   .hand-picked-section__product-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
   .hand-picked-section__product:hover .hand-picked-section__product-card img {
@@ -258,28 +282,28 @@
   }
 
   .hand-picked-section__product-info {
-    text-align: center;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0 0.25rem;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: visible;
+    text-align: center !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0 0.25rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__product-info {
-      margin-top: 0.75rem;
-      margin-bottom: 1.5rem;
-      padding: 0 0.5rem;
+      margin-top: 0.75rem !important;
+      margin-bottom: 1.5rem !important;
+      padding: 0 0.5rem !important;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__product-info {
-      margin-top: 1rem;
-      margin-bottom: 2rem;
-      padding: 0 0.5rem;
+      margin-top: 1rem !important;
+      margin-bottom: 2rem !important;
+      padding: 0 0.5rem !important;
     }
   }
 
@@ -351,7 +375,7 @@
 
   .hand-picked-section__nav-btn {
     position: absolute;
-    top: 50%;
+    top: calc(2rem + 165px);
     transform: translateY(-50%);
     background: black;
     color: white;
@@ -378,9 +402,16 @@
 
   @media (min-width: 1024px) {
     .hand-picked-section__nav-btn {
+      top: calc(2rem + 180px);
       width: 4.5rem;
       height: 4.5rem;
       padding: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__nav-btn {
+      top: calc(3rem + 195px);
     }
   }
 
@@ -830,6 +861,8 @@
 
           setTimeout(function() {
             // Hide current track and show new one
+            var wrapper = section.querySelector('.hand-picked-section__carousel-wrapper--desktop');
+            
             tracks.forEach(function(track) {
               if (track.getAttribute('data-gender') === category) {
                 track.classList.add('is-active');
@@ -849,17 +882,30 @@
               b.setAttribute('aria-pressed', isActive);
             });
 
-            // Fade in new track
             requestAnimationFrame(function() {
-              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-              if (activeTrack) {
-                activeTrack.style.opacity = '1';
-                updateScrollPosition();
-              }
-              
-              setTimeout(function() {
-                isTransitioning = false;
-              }, 300);
+              requestAnimationFrame(function() {
+                var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+                if (activeTrack && wrapper) {
+                  // Force layout recalculation to ensure accurate dimensions
+                  void activeTrack.offsetHeight;
+                  void wrapper.offsetHeight;
+                  
+                  // Ensure all products in the active track have consistent sizing
+                  var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+                  products.forEach(function(product) {
+                    // Force recalculation of product dimensions
+                    void product.offsetWidth;
+                    void product.offsetHeight;
+                  });
+                  
+                  activeTrack.style.opacity = '1';
+                  updateScrollPosition();
+                }
+                
+                setTimeout(function() {
+                  isTransitioning = false;
+                }, 300);
+              });
             });
           }, 150);
         });
