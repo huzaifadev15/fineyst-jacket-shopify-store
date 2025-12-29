@@ -1,88 +1,779 @@
-<section class="mens-womens-section">
-  <div class="mens-womens-section__grid">
+{%- style -%}
+  .signature-styles-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
+    background: white;
+    position: relative;
+  }
+
+  .signature-styles-section__decorative {
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  .signature-styles-section__decorative-circle {
+    position: absolute;
+    background: #2b2b2b;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .signature-styles-section__decorative-circle--1 {
+    top: 2.5rem;
+    left: 2.5rem;
+    width: 8rem;
+    height: 8rem;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .signature-styles-section__decorative-circle--2 {
+    bottom: 2.5rem;
+    right: 2.5rem;
+    width: 10rem;
+    height: 10rem;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation-delay: 1s;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.05;
+    }
+    50% {
+      opacity: 0.1;
+    }
+  }
+
+  .signature-styles-section__grid {
+    display: flex;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .signature-styles-section__half {
+    flex: 1;
+  }
+
+  .signature-styles-section__card {
+    border: 0;
+    box-shadow: none;
+    overflow: hidden;
+    position: relative;
+    height: 360px;
+    border-radius: 0;
+    margin: 0;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .signature-styles-section__card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__card {
+      height: 500px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__card {
+      height: 700px;
+    }
+  }
+
+  .signature-styles-section__card-inner {
+    position: relative;
+    height: 100%;
+    background: #151B1B;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .signature-styles-section__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .signature-styles-section__dropdown-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 15;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__dropdown-overlay {
+      display: none !important;
+    }
+  }
+
+  .signature-styles-section__dropdown-overlay.is-active {
+    display: block;
+  }
+
+  .signature-styles-section__image-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .signature-styles-section__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .signature-styles-section__card:hover .signature-styles-section__image {
+    transform: scale(1.1);
+  }
+
+  .signature-styles-section__half--men .signature-styles-section__image {
+    object-position: 0%;
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__half--men .signature-styles-section__image-wrapper {
+      right: 0;
+      left: 0;
+      width: 70%;
+    }
+
+    .signature-styles-section__half--men .signature-styles-section__image {
+      width: 100%;
+      object-fit: cover;
+      object-position: left center;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__half--men .signature-styles-section__image {
+      object-position: 0%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__half--men .signature-styles-section__image {
+      object-position: 0%;
+    }
+  }
+
+  .signature-styles-section__half--women .signature-styles-section__image {
+    object-position: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__half--women .signature-styles-section__image {
+      object-position: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__half--women .signature-styles-section__image {
+      object-position: 100%;
+    }
+  }
+
+  .signature-styles-section__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 1.5rem;
+    z-index: 25;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__content {
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__content--men {
+      justify-content: flex-end;
+      padding-bottom: 6rem;
+    }
+
+    .signature-styles-section__content--women {
+      justify-content: flex-start;
+      padding-bottom: 6rem;
+    }
+  }
+
+  .signature-styles-section__content-inner {
+    max-width: 28rem;
+    text-align: center;
+    padding: 0 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__content-inner {
+      text-align: center;
+      max-width: 28rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__content-inner {
+      max-width: 28rem;
+    }
+
+    .signature-styles-section__content-inner--men {
+      padding-right: 5rem;
+    }
+
+    .signature-styles-section__content-inner--women {
+      padding-left: 5rem;
+    }
+  }
+
+  .signature-styles-section__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__title {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__title {
+      font-size: 5rem;
+    }
+  }
+
+  .signature-styles-section__description-wrapper {
+    margin-top: 0.5rem;
+  }
+
+  .signature-styles-section__description-wrapper--men {
+    margin-left: 0.5rem;
+  }
+
+  .signature-styles-section__toggle-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0;
+  }
+
+  .signature-styles-section__toggle-button:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__toggle-button {
+      display: none;
+    }
+  }
+
+  .signature-styles-section__toggle-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .signature-styles-section__description {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.625;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__description {
+      display: block;
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__description {
+      font-size: 1.125rem;
+    }
+  }
+
+  .signature-styles-section__description--mobile {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__description--mobile {
+      display: none;
+    }
+  }
+
+  .signature-styles-section__description--mobile.is-expanded {
+    display: block;
+  }
+
+  .signature-styles-section__description--desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__description--desktop {
+      display: block;
+    }
+  }
+
+  .signature-styles-section__button-wrapper {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .signature-styles-section__button {
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    background: #2b2b2b;
+    border: 1px solid;
+    border-color: currentColor;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .signature-styles-section__button:hover {
+    background: #2b2b2b;
+    transition: background-color 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .signature-styles-section__button {
+      padding: 0.25rem 0.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signature-styles-section__button {
+      padding: 0.5rem 1.5rem;
+    }
+  }
+
+  .signature-styles-section__button-arrow {
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: all 0.4s ease;
+    transform: translateX(0);
+    width: 1rem;
+    height: 1rem;
+    display: none;
+  }
+
+  @media (min-width: 1280px) {
+    .signature-styles-section__button-arrow {
+      display: inline-block;
+    }
+  }
+
+  .signature-styles-section__button:hover .signature-styles-section__button-arrow {
+    opacity: 1;
+    transform: translateX(0.25rem);
+  }
+{%- endstyle -%}
+
+<section class="signature-styles-section">
+  <div class="signature-styles-section__decorative">
+    <div class="signature-styles-section__decorative-circle signature-styles-section__decorative-circle--1"></div>
+    <div class="signature-styles-section__decorative-circle signature-styles-section__decorative-circle--2"></div>
+  </div>
+
+  <div class="signature-styles-section__grid">
     <!-- Men's Section -->
-    <div class="mens-womens-section__half mens-womens-section__half--men">
-      <div class="mens-womens-section__image">
-        {%- if section.settings.mens_image != blank -%}
-          <img
-            src="{{ section.settings.mens_image | image_url: width: 1200 }}"
-            srcset="
-              {{ section.settings.mens_image | image_url: width: 800 }} 800w,
-              {{ section.settings.mens_image | image_url: width: 1200 }} 1200w,
-              {{ section.settings.mens_image | image_url: width: 1600 }} 1600w
-            "
-            sizes="50vw"
-            alt="{{ section.settings.mens_image.alt | default: section.settings.mens_title }}"
-            loading="lazy"
-          >
-        {%- else -%}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
-      </div>
-      <div class="mens-womens-section__overlay"></div>
-      <div class="mens-womens-section__content">
-        {%- if section.settings.mens_title != blank -%}
-          <h2 class="mens-womens-section__title">{{ section.settings.mens_title }}</h2>
-        {%- endif -%}
-        {%- if section.settings.mens_description != blank -%}
-          <p class="mens-womens-section__description">{{ section.settings.mens_description }}</p>
-        {%- endif -%}
-        {%- if section.settings.mens_button_text != blank -%}
-          <a href="{{ section.settings.mens_button_url | default: '#' }}" class="mens-womens-section__button">
-            {{ section.settings.mens_button_text }}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
-          </a>
-        {%- endif -%}
+    <div class="signature-styles-section__half signature-styles-section__half--men">
+      <div class="signature-styles-section__card">
+        <div class="signature-styles-section__card-inner">
+          <div class="signature-styles-section__gradient"></div>
+          <div class="signature-styles-section__dropdown-overlay" id="men-dropdown-overlay"></div>
+          <div class="signature-styles-section__image-wrapper">
+            {%- if section.settings.mens_image != blank -%}
+              <img
+                src="{{ section.settings.mens_image | image_url: width: 1200 }}"
+                srcset="
+                  {{ section.settings.mens_image | image_url: width: 800 }} 800w,
+                  {{ section.settings.mens_image | image_url: width: 1200 }} 1200w,
+                  {{ section.settings.mens_image | image_url: width: 1600 }} 1600w
+                "
+                sizes="50vw"
+                alt="{{ section.settings.mens_image.alt | default: section.settings.mens_title }}"
+                loading="lazy"
+                class="signature-styles-section__image"
+              >
+            {%- else -%}
+              <img
+                src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-product-image.svg"
+                alt="Men's Leather Jacket"
+                class="signature-styles-section__image"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="signature-styles-section__content signature-styles-section__content--men">
+            <div class="signature-styles-section__content-inner signature-styles-section__content-inner--men">
+              <div>
+                <h2 class="signature-styles-section__title">
+                  {%- if section.settings.mens_title != blank -%}
+                    {{ section.settings.mens_title | newline_to_br }}
+                  {%- else -%}
+                    MEN'S<br>LEATHER<br>JACKET
+                  {%- endif -%}
+                </h2>
+              </div>
+              <div class="signature-styles-section__description-wrapper signature-styles-section__description-wrapper--men">
+                {%- assign men_desc = section.settings.mens_description | default: "Crafted for the modern warrior, each jacket embodies strength, style and sophistication with premium leather that ages beautifully with every adventure." -%}
+                {%- assign men_desc_length = men_desc | size -%}
+                {%- if men_desc_length > 70 -%}
+                  <button
+                    type="button"
+                    class="signature-styles-section__toggle-button"
+                    id="men-toggle-button"
+                    aria-label="Toggle description"
+                  >
+                    <svg
+                      class="signature-styles-section__toggle-icon signature-styles-section__toggle-icon--down"
+                      id="men-chevron-down"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    <svg
+                      class="signature-styles-section__toggle-icon signature-styles-section__toggle-icon--up"
+                      id="men-chevron-up"
+                      style="display: none;"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </button>
+                {%- endif -%}
+                <p
+                  class="signature-styles-section__description signature-styles-section__description--mobile"
+                  id="men-description-mobile"
+                >
+                  {{ men_desc }}
+                </p>
+                <p class="signature-styles-section__description signature-styles-section__description--desktop">
+                  {{ men_desc }}
+                </p>
+              </div>
+              <div class="signature-styles-section__button-wrapper">
+                {%- if section.settings.mens_button_text != blank -%}
+                  <a
+                    href="{% if section.settings.mens_button_url != blank %}{{ section.settings.mens_button_url }}{% else %}/collections/leather-bomber-jacket-mens{% endif %}"
+                    class="signature-styles-section__button"
+                  >
+                    <span>{{ section.settings.mens_button_text }}</span>
+                    <svg
+                      class="signature-styles-section__button-arrow"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Women's Section -->
-    <div class="mens-womens-section__half mens-womens-section__half--women">
-      <div class="mens-womens-section__image">
-        {%- if section.settings.womens_image != blank -%}
-          <img
-            src="{{ section.settings.womens_image | image_url: width: 1200 }}"
-            srcset="
-              {{ section.settings.womens_image | image_url: width: 800 }} 800w,
-              {{ section.settings.womens_image | image_url: width: 1200 }} 1200w,
-              {{ section.settings.womens_image | image_url: width: 1600 }} 1600w
-            "
-            sizes="50vw"
-            alt="{{ section.settings.womens_image.alt | default: section.settings.womens_title }}"
-            loading="lazy"
-          >
-        {%- else -%}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
-      </div>
-      <div class="mens-womens-section__overlay"></div>
-      <div class="mens-womens-section__content">
-        {%- if section.settings.womens_title != blank -%}
-          <h2 class="mens-womens-section__title">{{ section.settings.womens_title }}</h2>
-        {%- endif -%}
-        {%- if section.settings.womens_description != blank -%}
-          <p class="mens-womens-section__description">{{ section.settings.womens_description }}</p>
-        {%- endif -%}
-        {%- if section.settings.womens_button_text != blank -%}
-          <a href="{{ section.settings.womens_button_url | default: '#' }}" class="mens-womens-section__button">
-            {{ section.settings.womens_button_text }}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
-          </a>
-        {%- endif -%}
+    <div class="signature-styles-section__half signature-styles-section__half--women">
+      <div class="signature-styles-section__card">
+        <div class="signature-styles-section__card-inner">
+          <div class="signature-styles-section__gradient"></div>
+          <div class="signature-styles-section__dropdown-overlay" id="women-dropdown-overlay"></div>
+          <div class="signature-styles-section__image-wrapper">
+            {%- if section.settings.womens_image != blank -%}
+              <img
+                src="{{ section.settings.womens_image | image_url: width: 1200 }}"
+                srcset="
+                  {{ section.settings.womens_image | image_url: width: 800 }} 800w,
+                  {{ section.settings.womens_image | image_url: width: 1200 }} 1200w,
+                  {{ section.settings.womens_image | image_url: width: 1600 }} 1600w
+                "
+                sizes="50vw"
+                alt="{{ section.settings.womens_image.alt | default: section.settings.womens_title }}"
+                loading="lazy"
+                class="signature-styles-section__image"
+                id="women-image"
+              >
+            {%- else -%}
+              <img
+                src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-product-image.svg"
+                alt="Women's Leather Jacket"
+                class="signature-styles-section__image"
+                id="women-image"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="signature-styles-section__content signature-styles-section__content--women">
+            <div class="signature-styles-section__content-inner signature-styles-section__content-inner--women">
+              <div>
+                <h2 class="signature-styles-section__title">
+                  {%- if section.settings.womens_title != blank -%}
+                    {{ section.settings.womens_title | newline_to_br }}
+                  {%- else -%}
+                    WOMEN'S<br>LEATHER<br>JACKET
+                  {%- endif -%}
+                </h2>
+              </div>
+              <div class="signature-styles-section__description-wrapper">
+                {%- assign women_desc = section.settings.womens_description | default: "Elegance redefined. From boardroom power moves to weekend adventures, our women's collection celebrates confidence with every curve and contour." -%}
+                {%- assign women_desc_length = women_desc | size -%}
+                {%- if women_desc_length > 70 -%}
+                  <button
+                    type="button"
+                    class="signature-styles-section__toggle-button"
+                    id="women-toggle-button"
+                    aria-label="Toggle description"
+                  >
+                    <svg
+                      class="signature-styles-section__toggle-icon signature-styles-section__toggle-icon--down"
+                      id="women-chevron-down"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    <svg
+                      class="signature-styles-section__toggle-icon signature-styles-section__toggle-icon--up"
+                      id="women-chevron-up"
+                      style="display: none;"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </button>
+                {%- endif -%}
+                <p
+                  class="signature-styles-section__description signature-styles-section__description--mobile"
+                  id="women-description-mobile"
+                >
+                  {{ women_desc }}
+                </p>
+                <p class="signature-styles-section__description signature-styles-section__description--desktop">
+                  {{ women_desc }}
+                </p>
+              </div>
+              <div class="signature-styles-section__button-wrapper">
+                {%- if section.settings.womens_button_text != blank -%}
+                  <a
+                    href="{% if section.settings.womens_button_url != blank %}{{ section.settings.womens_button_url }}{% else %}/collections/womens-leather-bomber-jackets{% endif %}"
+                    class="signature-styles-section__button"
+                  >
+                    <span>{{ section.settings.womens_button_text }}</span>
+                    <svg
+                      class="signature-styles-section__button-arrow"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<script>
+  (function() {
+    function initMensWomensSection() {
+      // Men's section toggle
+      var menToggleButton = document.getElementById('men-toggle-button');
+      var menDescriptionMobile = document.getElementById('men-description-mobile');
+      var menDropdownOverlay = document.getElementById('men-dropdown-overlay');
+      var menChevronDown = document.getElementById('men-chevron-down');
+      var menChevronUp = document.getElementById('men-chevron-up');
+      
+      var menExpanded = false;
+      
+      if (menToggleButton && menDescriptionMobile) {
+        menToggleButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          menExpanded = !menExpanded;
+          
+          if (menExpanded) {
+            menDescriptionMobile.classList.add('is-expanded');
+            if (menDropdownOverlay) {
+              menDropdownOverlay.classList.add('is-active');
+            }
+            if (menChevronDown) {
+              menChevronDown.style.display = 'none';
+            }
+            if (menChevronUp) {
+              menChevronUp.style.display = 'block';
+            }
+          } else {
+            menDescriptionMobile.classList.remove('is-expanded');
+            if (menDropdownOverlay) {
+              menDropdownOverlay.classList.remove('is-active');
+            }
+            if (menChevronDown) {
+              menChevronDown.style.display = 'block';
+            }
+            if (menChevronUp) {
+              menChevronUp.style.display = 'none';
+            }
+          }
+        });
+      }
+      
+      // Women's section toggle
+      var womenToggleButton = document.getElementById('women-toggle-button');
+      var womenDescriptionMobile = document.getElementById('women-description-mobile');
+      var womenDropdownOverlay = document.getElementById('women-dropdown-overlay');
+      var womenChevronDown = document.getElementById('women-chevron-down');
+      var womenChevronUp = document.getElementById('women-chevron-up');
+      
+      var womenExpanded = false;
+      
+      if (womenToggleButton && womenDescriptionMobile) {
+        womenToggleButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          womenExpanded = !womenExpanded;
+          
+          if (womenExpanded) {
+            womenDescriptionMobile.classList.add('is-expanded');
+            if (womenDropdownOverlay) {
+              womenDropdownOverlay.classList.add('is-active');
+            }
+            if (womenChevronDown) {
+              womenChevronDown.style.display = 'none';
+            }
+            if (womenChevronUp) {
+              womenChevronUp.style.display = 'block';
+            }
+          } else {
+            womenDescriptionMobile.classList.remove('is-expanded');
+            if (womenDropdownOverlay) {
+              womenDropdownOverlay.classList.remove('is-active');
+            }
+            if (womenChevronDown) {
+              womenChevronDown.style.display = 'block';
+            }
+            if (womenChevronUp) {
+              womenChevronUp.style.display = 'none';
+            }
+          }
+        });
+      }
+      
+      // Responsive image handling for women's section
+      var womenImage = document.getElementById('women-image');
+      
+      if (womenImage) {
+        var defaultSrc = womenImage.src;
+        
+        function handleResize() {
+          if (!womenImage) return;
+          var screenWidth = window.innerWidth;
+          if (screenWidth >= 768 && screenWidth <= 1024) {
+            // Tablet image - you can set a different image here if needed
+            // womenImage.src = '/images/tablet-image.jpg';
+          } else {
+            // Default image
+            if (defaultSrc) {
+              womenImage.src = defaultSrc;
+            }
+          }
+        }
+        
+        handleResize();
+        window.addEventListener('resize', handleResize);
+      }
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMensWomensSection);
+    } else {
+      initMensWomensSection();
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Men's & Women's Jackets",
   "tag": "section",
-  "class": "mens-womens-section-wrapper",
+  "class": "signature-styles-section-wrapper",
   "settings": [
     {
       "type": "header",
@@ -97,7 +788,8 @@
       "type": "text",
       "id": "mens_title",
       "label": "Men's Title",
-      "default": "MEN'S LEATHER JACKET"
+      "default": "MEN'S\nLEATHER\nJACKET",
+      "info": "Use line breaks (\\n) to separate lines"
     },
     {
       "type": "textarea",
@@ -109,7 +801,7 @@
       "type": "text",
       "id": "mens_button_text",
       "label": "Men's Button Text",
-      "default": "SHOP NOW"
+      "default": "Shop Mens"
     },
     {
       "type": "url",
@@ -129,7 +821,8 @@
       "type": "text",
       "id": "womens_title",
       "label": "Women's Title",
-      "default": "WOMEN'S LEATHER JACKET"
+      "default": "WOMEN'S\nLEATHER\nJACKET",
+      "info": "Use line breaks (\\n) to separate lines"
     },
     {
       "type": "textarea",
@@ -141,7 +834,7 @@
       "type": "text",
       "id": "womens_button_text",
       "label": "Women's Button Text",
-      "default": "SHOP NOW"
+      "default": "Shop Womens"
     },
     {
       "type": "url",
@@ -156,4 +849,3 @@
   ]
 }
 {% endschema %}
-
