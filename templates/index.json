@@ -183,6 +183,14 @@
     "color_collection": {
       "type": "color-collection",
       "blocks": {
+        "color_category_MydGN3": {
+          "type": "color_category",
+          "settings": {
+            "title": "GREEN JACKETS",
+            "image": "shopify://shop_images/collection-7.webp",
+            "link": ""
+          }
+        },
         "color_1": {
           "type": "color_category",
           "settings": {
@@ -233,6 +241,7 @@
         }
       },
       "block_order": [
+        "color_category_MydGN3",
         "color_1",
         "color_2",
         "color_3",
