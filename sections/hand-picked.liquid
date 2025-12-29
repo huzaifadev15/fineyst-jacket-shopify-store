@@ -175,9 +175,9 @@
   .hand-picked-section__carousel-track {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.5rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     width: max-content;
     will-change: transform;
     margin: 0 auto;
@@ -353,7 +353,9 @@
     transform: translateY(-50%);
     background: black;
     color: white;
-    padding: 0.5rem;
+    padding: 1rem;
+    width: 3.5rem;
+    height: 3.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     z-index: 10;
@@ -362,6 +364,22 @@
     display: none;
     align-items: center;
     justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn {
+      width: 4rem;
+      height: 4rem;
+      padding: 1.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__nav-btn {
+      width: 4.5rem;
+      height: 4.5rem;
+      padding: 1.5rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -437,21 +455,28 @@
   }
 
   .hand-picked-section__nav-icon {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__nav-icon {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 2rem;
+      height: 2rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__nav-icon {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__nav-icon {
+      width: 3rem;
+      height: 3rem;
     }
   }
 
@@ -758,7 +783,7 @@
             activeIndex = 0;
           }
           
-          // Remove center class from all products
+          // Remove center class from all products first
           products.forEach(function(product) {
             product.classList.remove('is-center');
           });
@@ -768,20 +793,37 @@
             products[activeIndex].classList.add('is-center');
           }
           
-          // Center the track based on wrapper width
+          // Center the track to keep the center product in viewport center
           if (products[activeIndex]) {
             var activeProduct = products[activeIndex];
             var wrapper = track.closest('.hand-picked-section__carousel-wrapper--desktop');
             if (!wrapper) return;
             
-            var wrapperWidth = wrapper.offsetWidth;
-            var productLeft = activeProduct.offsetLeft;
-            var productWidth = activeProduct.offsetWidth;
-            
-            // Calculate offset to center the product in the viewport
-            // Start from -50% (centered track) and adjust for the product position
-            var offset = (wrapperWidth / 2) - (productLeft + productWidth / 2);
-            track.style.transform = 'translateX(calc(-50% + ' + offset + 'px))';
+            requestAnimationFrame(function() {
+              requestAnimationFrame(function() {
+                var wrapperWidth = wrapper.offsetWidth;
+                var wrapperRect = wrapper.getBoundingClientRect();
+                var productRect = activeProduct.getBoundingClientRect();
+                var trackRect = track.getBoundingClientRect();
+                
+                var currentTransform = track.style.transform || 'translateX(0px)';
+                var currentOffset = 0;
+                var match = currentTransform.match(/translateX\(([^)]+)\)/);
+                if (match) {
+                  currentOffset = parseFloat(match[1]) || 0;
+                }
+                
+                var productLeftInTrack = activeProduct.offsetLeft;
+                var productWidth = activeProduct.offsetWidth;
+                var productCenterInTrack = productLeftInTrack + productWidth / 2;
+                
+                // Calculate how much to move the track to center the product in the wrapper
+                var wrapperCenter = wrapperWidth / 2;
+                var offset = wrapperCenter - productCenterInTrack;
+                
+                track.style.transform = 'translateX(' + offset + 'px)';
+              });
+            });
           }
         });
       }
@@ -821,43 +863,58 @@
 
       // Navigation
       if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
+        prevBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if (isTransitioning) return;
+          
+          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+          if (!activeTrack) return;
+          
+          var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+          if (products.length === 0) return;
+          
           isTransitioning = true;
           activeIndex = Math.max(0, activeIndex - 1);
           updateCenterProduct();
+          
           setTimeout(function() {
             isTransitioning = false;
-          }, 300);
+          }, 400);
         });
       }
 
       if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if (isTransitioning) return;
-          isTransitioning = true;
+          
           var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-          if (activeTrack) {
-            var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-            activeIndex = Math.min(products.length - 1, activeIndex + 1);
-            updateCenterProduct();
-            setTimeout(function() {
-              isTransitioning = false;
-            }, 300);
-          }
+          if (!activeTrack) return;
+          
+          var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+          if (products.length === 0) return;
+          
+          isTransitioning = true;
+          activeIndex = Math.min(products.length - 1, activeIndex + 1);
+          updateCenterProduct();
+          
+          setTimeout(function() {
+            isTransitioning = false;
+          }, 400);
         });
       }
 
       // Initialize center product on load
       setTimeout(function() {
-        // Reset transform first to ensure proper centering
         tracks.forEach(function(track) {
-          if (track.classList.contains('is-active')) {
-            track.style.transform = 'translateX(0)';
+          if (track.getAttribute('data-gender') === activeCategory) {
+            track.classList.add('is-active');
           }
         });
         updateCenterProduct();
-      }, 100);
+      }, 300);
 
       // Update on window resize
       var resizeTimer;
