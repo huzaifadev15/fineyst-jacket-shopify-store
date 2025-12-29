@@ -175,8 +175,8 @@
       "type": "hand-picked",
       "settings": {
         "title": "HAND-PICKED FOR YOU",
-        "men_collection": "",
-        "women_collection": "",
+        "men_collection": "mens-aviator-jackets",
+        "women_collection": "denim-jackets",
         "products_to_show": 5
       }
     },

@@ -24,6 +24,7 @@
     max-width: 2000px;
     overflow: hidden;
     position: relative;
+    margin: 0 auto;
   }
 
   .hand-picked-section__title {
@@ -141,6 +142,9 @@
   .hand-picked-section__carousel-wrapper--desktop {
     display: none;
     padding: 1rem 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
   }
 
   @media (min-width: 640px) {
@@ -159,25 +163,36 @@
   .hand-picked-section__carousel-track {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    justify-content: center;
+    gap: 0.5rem;
     transition: transform 0.3s ease;
+    width: max-content;
+    will-change: transform;
+    margin: 0 auto;
+    position: relative;
   }
 
   @media (min-width: 640px) {
-    .hand-picked-section__carousel-track {
-      gap: 0.5rem;
-    }
-  }
-
-  @media (min-width: 768px) {
     .hand-picked-section__carousel-track {
       gap: 0.75rem;
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .hand-picked-section__carousel-track {
       gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__carousel-track {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__carousel-track {
+      gap: 2rem;
     }
   }
 
@@ -193,21 +208,18 @@
     flex-shrink: 0;
     cursor: pointer;
     width: calc(23% - 14px);
-    margin-left: calc((2px - 0.17 * (23% - 14px)) / 2);
-    margin-right: calc((2px - 0.17 * (23% - 14px)) / 2);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, margin 0.3s ease;
+    position: relative;
   }
 
   .hand-picked-section__product.is-center {
-    transform: scale(1.05);
-    margin-top: 20px;
-    margin-left: calc((2px - 0.17 * (23% - 14px)) / 2 + 0.05 * (23% - 14px));
-    margin-right: calc((2px - 0.17 * (23% - 14px)) / 2 + 0.05 * (23% - 14px));
+    transform: scale(1.05) translateY(20px);
+    z-index: 10;
   }
 
   .hand-picked-section__product:not(.is-center) {
-    transform: scale(0.85);
-    margin-top: 10px;
+    transform: scale(0.85) translateY(10px);
+    opacity: 0.9;
   }
 
   .hand-picked-section__product-card {
@@ -511,17 +523,16 @@
       <div class="hand-picked-section__carousel-wrapper">
         {%- assign men_collection = collections[section.settings.men_collection] -%}
         {%- assign women_collection = collections[section.settings.women_collection] -%}
-        {%- assign men_products = men_collection.products | limit: section.settings.products_to_show -%}
-        {%- assign women_products = women_collection.products | limit: section.settings.products_to_show -%}
+        {%- assign products_limit = section.settings.products_to_show | default: 10 -%}
 
-        {%- if men_products.size == 0 and women_products.size == 0 -%}
+        {%- if men_collection.products.size == 0 and women_collection.products.size == 0 -%}
           <div class="hand-picked-section__empty-state">
             <p class="hand-picked-section__empty-text">No products available for this category.</p>
           </div>
         {%- else -%}
           <!-- Mobile Carousel -->
           <div class="hand-picked-section__carousel-wrapper--mobile" data-handpicked-mobile>
-            {%- for product in men_products -%}
+            {%- for product in men_collection.products limit: products_limit -%}
               <div 
                 class="hand-picked-section__product-mobile{% if forloop.index == 1 %} is-center{% else %} is-hidden-right{% endif %}" 
                 data-product-index="{{ forloop.index0 }}"
@@ -574,8 +585,8 @@
           <!-- Desktop Carousel -->
           <div class="hand-picked-section__carousel-wrapper--desktop">
             <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="men">
-              {%- for product in men_products -%}
-                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+              {%- for product in men_collection.products limit: products_limit -%}
+                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}" data-product-index="{{ forloop.index0 }}">
                   <a href="{{ product.url }}">
                     <div class="hand-picked-section__product-card">
                       {%- if product.featured_image -%}
@@ -620,8 +631,8 @@
             </div>
 
             <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="women">
-              {%- for product in women_products -%}
-                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+              {%- for product in women_collection.products limit: products_limit -%}
+                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}" data-product-index="{{ forloop.index0 }}">
                   <a href="{{ product.url }}">
                     <div class="hand-picked-section__product-card">
                       {%- if product.featured_image -%}
@@ -703,8 +714,51 @@
       var mobileWrapper = section.querySelector('[data-handpicked-mobile]');
       
       var activeCategory = 'men';
-      var activeIndex = 0;
+      var activeIndex = 2; // Start with index 2 (3rd product) as center
       var isTransitioning = false;
+
+      function updateCenterProduct() {
+        tracks.forEach(function(track) {
+          if (!track.classList.contains('is-active')) return;
+          
+          var products = track.querySelectorAll('.hand-picked-section__product');
+          if (products.length === 0) return;
+          
+          // Ensure activeIndex is within bounds
+          if (activeIndex >= products.length) {
+            activeIndex = products.length - 1;
+          }
+          if (activeIndex < 0) {
+            activeIndex = 0;
+          }
+          
+          // Remove center class from all products
+          products.forEach(function(product) {
+            product.classList.remove('is-center');
+          });
+          
+          // Add center class to active product
+          if (products[activeIndex]) {
+            products[activeIndex].classList.add('is-center');
+          }
+          
+          // Center the track based on wrapper width
+          if (products[activeIndex]) {
+            var activeProduct = products[activeIndex];
+            var wrapper = track.closest('.hand-picked-section__carousel-wrapper--desktop');
+            if (!wrapper) return;
+            
+            var wrapperWidth = wrapper.offsetWidth;
+            var productLeft = activeProduct.offsetLeft;
+            var productWidth = activeProduct.offsetWidth;
+            
+            // Calculate offset to center the product in the viewport
+            // Start from -50% (centered track) and adjust for the product position
+            var offset = (wrapperWidth / 2) - (productLeft + productWidth / 2);
+            track.style.transform = 'translateX(calc(-50% + ' + offset + 'px))';
+          }
+        });
+      }
 
       // Category switching
       categoryButtons.forEach(function(btn) {
@@ -713,7 +767,7 @@
           if (category === activeCategory || isTransitioning) return;
           
           activeCategory = category;
-          activeIndex = 0;
+          activeIndex = 2; // Reset to center product
           isTransitioning = true;
 
           // Update button states
@@ -731,24 +785,62 @@
             }
           });
 
+          // Update center product after category switch
           setTimeout(function() {
+            updateCenterProduct();
             isTransitioning = false;
-          }, 300);
+          }, 50);
         });
       });
 
-      // Navigation (simplified - you may want to add more carousel logic)
+      // Navigation
       if (prevBtn) {
         prevBtn.addEventListener('click', function() {
-          // Add previous slide logic
+          if (isTransitioning) return;
+          isTransitioning = true;
+          activeIndex = Math.max(0, activeIndex - 1);
+          updateCenterProduct();
+          setTimeout(function() {
+            isTransitioning = false;
+          }, 300);
         });
       }
 
       if (nextBtn) {
         nextBtn.addEventListener('click', function() {
-          // Add next slide logic
+          if (isTransitioning) return;
+          isTransitioning = true;
+          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+          if (activeTrack) {
+            var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+            activeIndex = Math.min(products.length - 1, activeIndex + 1);
+            updateCenterProduct();
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 300);
+          }
         });
       }
+
+      // Initialize center product on load
+      setTimeout(function() {
+        // Reset transform first to ensure proper centering
+        tracks.forEach(function(track) {
+          if (track.classList.contains('is-active')) {
+            track.style.transform = 'translateX(0)';
+          }
+        });
+        updateCenterProduct();
+      }, 100);
+
+      // Update on window resize
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          updateCenterProduct();
+        }, 250);
+      });
     }
 
     if (document.readyState === 'loading') {

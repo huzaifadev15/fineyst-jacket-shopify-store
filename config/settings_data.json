@@ -16,7 +16,7 @@
     "color_text": "#1a1a1a",
     "color_header_bg": "#1a1a1a",
     "color_header_text": "#ffffff",
-    "show_chat_widget": true,
+    "show_chat_widget": false,
     "chat_widget_text": "CHAT NOW",
     "sections": {
       "header": {

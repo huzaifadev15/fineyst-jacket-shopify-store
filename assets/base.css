@@ -18,6 +18,10 @@
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -30,6 +34,10 @@ body {
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 img,
@@ -98,6 +106,14 @@ h3, .h3 {
 
 h4, .h4 {
   font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+}
+
+/* Main Content */
+.main-content {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 /* Container */
