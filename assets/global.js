@@ -1278,46 +1278,23 @@
     
     if (!faqQuestions.length) return;
     
-    // Set initial state for first item
-    const firstQuestion = faqQuestions[0];
-    if (firstQuestion && firstQuestion.getAttribute('aria-expanded') === 'true') {
-      const firstId = firstQuestion.getAttribute('data-faq-id');
-      const firstAnswer = faqSection.querySelector(`[data-faq-answer="${firstId}"]`);
-      if (firstAnswer) {
-        setTimeout(() => {
-          firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
-        }, 100);
-      }
-    }
-    
-    // Add click handler to each question using unique ID
+    // Add click handler to each question
     faqQuestions.forEach((question) => {
-      const faqId = question.getAttribute('data-faq-id');
-      if (!faqId) return;
-      
       question.addEventListener('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         
-        const clickedId = this.getAttribute('data-faq-id');
-        const clickedAnswer = faqSection.querySelector(`[data-faq-answer="${clickedId}"]`);
         const clickedItem = this.closest('.faq-section__item');
-        
-        if (!clickedAnswer || !clickedItem) return;
+        if (!clickedItem) return;
         
         const isExpanded = this.getAttribute('aria-expanded') === 'true';
         
-        // Close all other FAQs using their unique IDs
+        // Close all other FAQs (accordion behavior - only one open at a time)
         faqQuestions.forEach(otherQuestion => {
-          const otherId = otherQuestion.getAttribute('data-faq-id');
-          if (otherId !== clickedId) {
-            const otherAnswer = faqSection.querySelector(`[data-faq-answer="${otherId}"]`);
+          if (otherQuestion !== this) {
             const otherItem = otherQuestion.closest('.faq-section__item');
-            
-            if (otherAnswer && otherItem) {
+            if (otherItem) {
               otherQuestion.setAttribute('aria-expanded', 'false');
               otherItem.classList.remove('faq-section__item--active');
-              otherAnswer.style.maxHeight = '0';
             }
           }
         });
@@ -1326,18 +1303,9 @@
         if (isExpanded) {
           this.setAttribute('aria-expanded', 'false');
           clickedItem.classList.remove('faq-section__item--active');
-          clickedAnswer.style.maxHeight = '0';
         } else {
           this.setAttribute('aria-expanded', 'true');
           clickedItem.classList.add('faq-section__item--active');
-          // Get the actual scroll height
-          clickedAnswer.style.maxHeight = 'none';
-          const height = clickedAnswer.scrollHeight;
-          clickedAnswer.style.maxHeight = '0';
-          // Force reflow
-          clickedAnswer.offsetHeight;
-          // Set to actual height
-          clickedAnswer.style.maxHeight = height + 'px';
         }
       });
     });
