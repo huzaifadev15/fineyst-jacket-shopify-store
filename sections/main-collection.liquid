@@ -4,21 +4,26 @@
     position: relative;
   }
 
+  .collection-main .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
   /* Toolbar */
   .collection-toolbar {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    background: #333;
+    border-radius: 4px;
     margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #eee;
+    overflow: hidden;
     flex-wrap: wrap;
   }
 
   .collection-toolbar__button {
     padding: 1rem 2rem;
     font-size: 1.4rem;
-    background: #333;
+    background: transparent;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -26,10 +31,18 @@
     align-items: center;
     gap: 0.8rem;
     transition: all 0.3s ease;
+    position: relative;
+    font-weight: 500;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+  }
+
+  .collection-toolbar__category-wrapper .collection-toolbar__button {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .collection-toolbar__button:hover {
-    background: #000;
+    background: rgba(0, 0, 0, 0.2);
   }
 
   .collection-toolbar__button svg {
@@ -37,25 +50,286 @@
     height: 16px;
   }
 
+  .collection-toolbar-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
   .collection-toolbar__count {
     font-size: 1.4rem;
     color: #666;
-    margin-left: auto;
+    padding: 1rem 0;
   }
 
-  .collection-toolbar__sort {
+  /* Category Dropdown */
+  .collection-toolbar__category-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .collection-toolbar__category-wrapper .collection-toolbar__button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .collection-toolbar__category-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  }
+
+  .collection-toolbar__category-menu.is-open {
+    display: block;
+  }
+
+  .collection-toolbar__category-item {
+    display: block;
+    padding: 1.2rem 2rem;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.4rem;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid #eee;
+  }
+
+  .collection-toolbar__category-item:last-child {
+    border-bottom: none;
+  }
+
+  .collection-toolbar__category-item:hover {
+    background: #f5f5f5;
+  }
+
+  .collection-toolbar__category-item.is-active {
+    background: #f0f0f0;
+    font-weight: 600;
+  }
+
+  /* Sort Dropdown - Button Style */
+  .collection-toolbar__sort-wrapper {
+    position: relative;
+    background: #fff;
+    min-width: 180px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .collection-toolbar__sort-button {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    font-size: 1.4rem;
+    background: #fff;
+    color: #333;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    position: relative;
+  }
+
+  .collection-toolbar__sort-button svg {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+  }
+
+  .collection-toolbar__sort-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+  }
+
+  .collection-toolbar__sort-menu.is-open {
+    display: block;
+  }
+
+  .collection-toolbar__sort-item {
+    display: block;
+    padding: 1.2rem 1.5rem;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.4rem;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+
+  .collection-toolbar__sort-item:last-child {
+    border-bottom: none;
+  }
+
+  .collection-toolbar__sort-item:hover {
+    background: #f5f5f5;
+  }
+
+  .collection-toolbar__sort-item.is-active {
+    background: #f0f0f0;
+    font-weight: 600;
+  }
+
+  /* Filter Sidebar */
+  .collection-filter-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    max-width: 90vw;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .collection-filter-sidebar.is-open {
+    right: 0;
+  }
+
+  .collection-filter-sidebar__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+  }
+
+  .collection-filter-sidebar__overlay.is-open {
+    display: block;
+  }
+
+  .collection-filter-sidebar__header {
+    padding: 2rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .collection-filter-sidebar__title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .collection-filter-sidebar__close {
+    background: none;
+    border: none;
+    font-size: 2.4rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  .collection-filter-sidebar__close:hover {
+    color: #000;
+  }
+
+  .collection-filter-sidebar__content {
+    padding: 2rem;
+  }
+
+  .collection-filter-group {
+    margin-bottom: 3rem;
+  }
+
+  .collection-filter-group__title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .collection-filter-option {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    cursor: pointer;
+  }
+
+  .collection-filter-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  .collection-filter-option label {
+    font-size: 1.4rem;
+    color: #666;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  .collection-filter-option:hover label {
+    color: #333;
+  }
+
+  .collection-filter-sidebar__actions {
+    padding: 2rem;
+    border-top: 1px solid #eee;
+    display: flex;
     gap: 1rem;
   }
 
-  .collection-toolbar__sort-select {
-    padding: 1rem 3rem 1rem 1.5rem;
+  .collection-filter-sidebar__button {
+    flex: 1;
+    padding: 1.2rem 2rem;
     font-size: 1.4rem;
-    border: 1px solid #ddd;
-    background: #fff;
+    border: none;
     cursor: pointer;
-    min-width: 180px;
+    transition: all 0.3s ease;
+  }
+
+  .collection-filter-sidebar__button--clear {
+    background: #f5f5f5;
+    color: #333;
+  }
+
+  .collection-filter-sidebar__button--clear:hover {
+    background: #eee;
+  }
+
+  .collection-filter-sidebar__button--apply {
+    background: #333;
+    color: #fff;
+  }
+
+  .collection-filter-sidebar__button--apply:hover {
+    background: #000;
   }
 
   /* What's my size button */
@@ -132,21 +406,68 @@
     }
   }
 
+  @media (max-width: 900px) {
+    .collection-main .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
   @media (max-width: 600px) {
+    .collection-main .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
     .collection-grid {
       grid-template-columns: 1fr;
       max-width: 40rem;
       margin: 0 auto;
     }
 
-    .collection-toolbar {
+    .collection-toolbar-wrapper {
       flex-direction: column;
-      gap: 1.5rem;
       align-items: stretch;
     }
 
+    .collection-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .collection-toolbar__button {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .collection-toolbar__button:last-of-type {
+      border-bottom: none;
+    }
+
+    .collection-toolbar__sort-wrapper {
+      border-left: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .collection-toolbar__count {
-      margin-left: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .collection-filter-sidebar {
+      width: 100vw;
+      right: -100vw;
+    }
+
+    .collection-toolbar__category-menu {
+      left: 0;
+      right: 0;
+      min-width: auto;
+    }
+
+    .collection-toolbar__sort-menu {
+      left: 0;
+      right: 0;
     }
   }
 {%- endstyle -%}
@@ -154,40 +475,82 @@
 <section class="collection-main">
   <div class="container">
     <!-- Toolbar -->
-    <div class="collection-toolbar">
-      <button type="button" class="collection-toolbar__button" data-category-dropdown>
-        {{ collection.title }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
-      
-      <button type="button" class="collection-toolbar__button" data-filter-toggle>
-        Filter
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="4" y1="21" x2="4" y2="14"/>
-          <line x1="4" y1="10" x2="4" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12" y2="3"/>
-          <line x1="20" y1="21" x2="20" y2="16"/>
-          <line x1="20" y1="12" x2="20" y2="3"/>
-          <line x1="1" y1="14" x2="7" y2="14"/>
-          <line x1="9" y1="8" x2="15" y2="8"/>
-          <line x1="17" y1="16" x2="23" y2="16"/>
-        </svg>
-      </button>
-      
-      <select class="collection-toolbar__sort-select" id="SortBy" data-sort-select>
-        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-        <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
-        <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Most Popular</option>
-        <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
-        <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
-        <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
-        <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
-        <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Date, Old to New</option>
-        <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Date, New to Old</option>
-      </select>
+    <div class="collection-toolbar-wrapper">
+      <div class="collection-toolbar">
+        <!-- Category Dropdown -->
+        <div class="collection-toolbar__category-wrapper">
+          <button type="button" class="collection-toolbar__button" data-category-dropdown>
+            {{ collection.title }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="collection-toolbar__category-menu" data-category-menu>
+            {%- for coll in collections -%}
+              {%- unless coll.handle == 'all' or coll.handle == 'frontpage' -%}
+                <a href="{{ coll.url }}" class="collection-toolbar__category-item {% if coll.handle == collection.handle %}is-active{% endif %}">
+                  {{ coll.title }}
+                </a>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        
+        <!-- Filter Button -->
+        <button type="button" class="collection-toolbar__button" data-filter-toggle>
+          Filter
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"/>
+            <line x1="4" y1="10" x2="4" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12" y2="3"/>
+            <line x1="20" y1="21" x2="20" y2="16"/>
+            <line x1="20" y1="12" x2="20" y2="3"/>
+            <line x1="1" y1="14" x2="7" y2="14"/>
+            <line x1="9" y1="8" x2="15" y2="8"/>
+            <line x1="17" y1="16" x2="23" y2="16"/>
+          </svg>
+        </button>
+        
+        <!-- Sort Dropdown - Button Style -->
+        <div class="collection-toolbar__sort-wrapper">
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          {%- assign current_sort_label = 'Most Popular' -%}
+          {%- if sort_by == 'manual' -%}
+            {%- assign current_sort_label = 'Featured' -%}
+          {%- elsif sort_by == 'best-selling' -%}
+            {%- assign current_sort_label = 'Most Popular' -%}
+          {%- elsif sort_by == 'title-ascending' -%}
+            {%- assign current_sort_label = 'Alphabetically, A-Z' -%}
+          {%- elsif sort_by == 'title-descending' -%}
+            {%- assign current_sort_label = 'Alphabetically, Z-A' -%}
+          {%- elsif sort_by == 'price-ascending' -%}
+            {%- assign current_sort_label = 'Price, Low to High' -%}
+          {%- elsif sort_by == 'price-descending' -%}
+            {%- assign current_sort_label = 'Price, High to Low' -%}
+          {%- elsif sort_by == 'created-ascending' -%}
+            {%- assign current_sort_label = 'Date, Old to New' -%}
+          {%- elsif sort_by == 'created-descending' -%}
+            {%- assign current_sort_label = 'Date, New to Old' -%}
+          {%- endif -%}
+          <button type="button" class="collection-toolbar__sort-button" data-sort-button>
+            <span>{{ current_sort_label }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="collection-toolbar__sort-menu" data-sort-menu>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'manual' %}is-active{% endif %}" data-sort-value="manual">Featured</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'best-selling' %}is-active{% endif %}" data-sort-value="best-selling">Most Popular</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'title-ascending' %}is-active{% endif %}" data-sort-value="title-ascending">Alphabetically, A-Z</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'title-descending' %}is-active{% endif %}" data-sort-value="title-descending">Alphabetically, Z-A</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'price-ascending' %}is-active{% endif %}" data-sort-value="price-ascending">Price, Low to High</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'price-descending' %}is-active{% endif %}" data-sort-value="price-descending">Price, High to Low</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'created-ascending' %}is-active{% endif %}" data-sort-value="created-ascending">Date, Old to New</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'created-descending' %}is-active{% endif %}" data-sort-value="created-descending">Date, New to Old</div>
+          </div>
+        </div>
+      </div>
 
       <p class="collection-toolbar__count">
         Showing {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
@@ -239,23 +602,183 @@
   </button>
 </section>
 
+<!-- Filter Sidebar -->
+<div class="collection-filter-sidebar__overlay" data-filter-overlay></div>
+<div class="collection-filter-sidebar" data-filter-sidebar>
+  <div class="collection-filter-sidebar__header">
+    <h2 class="collection-filter-sidebar__title">Filter Products</h2>
+    <button type="button" class="collection-filter-sidebar__close" data-filter-close>&times;</button>
+  </div>
+  <div class="collection-filter-sidebar__content">
+    {%- if collection.filters.size > 0 -%}
+      {%- for filter in collection.filters -%}
+        <div class="collection-filter-group">
+          <h3 class="collection-filter-group__title">{{ filter.label }}</h3>
+          {%- case filter.type -%}
+            {%- when 'list' -%}
+              {%- for filter_value in filter.values -%}
+                <div class="collection-filter-option">
+                  <input 
+                    type="checkbox" 
+                    id="filter-{{ filter.param_name }}-{{ forloop.index }}"
+                    name="{{ filter.param_name }}"
+                    value="{{ filter_value.value }}"
+                    {% if filter_value.active %}checked{% endif %}
+                    data-filter-input
+                  >
+                  <label for="filter-{{ filter.param_name }}-{{ forloop.index }}">
+                    {{ filter_value.label }} ({{ filter_value.count }})
+                  </label>
+                </div>
+              {%- endfor -%}
+            {%- when 'price_range' -%}
+              <div class="collection-filter-option">
+                <label>
+                  Min: {{ filter.min_value.value | money }}
+                  <input type="range" min="{{ filter.min_value.value }}" max="{{ filter.max_value.value }}" value="{{ filter.min_value.value }}" data-filter-price-min>
+                </label>
+              </div>
+              <div class="collection-filter-option">
+                <label>
+                  Max: {{ filter.max_value.value | money }}
+                  <input type="range" min="{{ filter.min_value.value }}" max="{{ filter.max_value.value }}" value="{{ filter.max_value.value }}" data-filter-price-max>
+                </label>
+              </div>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <p>No filters available for this collection.</p>
+    {%- endif -%}
+  </div>
+  <div class="collection-filter-sidebar__actions">
+    <button type="button" class="collection-filter-sidebar__button collection-filter-sidebar__button--clear" data-filter-clear>
+      Clear All
+    </button>
+    <button type="button" class="collection-filter-sidebar__button collection-filter-sidebar__button--apply" data-filter-apply>
+      Apply Filters
+    </button>
+  </div>
+</div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const sortSelect = document.querySelector('[data-sort-select]');
-    if (sortSelect) {
-      sortSelect.addEventListener('change', function() {
+    // Category Dropdown
+    const categoryButton = document.querySelector('[data-category-dropdown]');
+    const categoryMenu = document.querySelector('[data-category-menu]');
+    
+    if (categoryButton && categoryMenu) {
+      categoryButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        categoryMenu.classList.toggle('is-open');
+      });
+
+      // Close when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!categoryButton.contains(e.target) && !categoryMenu.contains(e.target)) {
+          categoryMenu.classList.remove('is-open');
+        }
+      });
+    }
+
+    // Sort Dropdown
+    const sortButton = document.querySelector('[data-sort-button]');
+    const sortMenu = document.querySelector('[data-sort-menu]');
+    const sortItems = document.querySelectorAll('[data-sort-value]');
+    
+    if (sortButton && sortMenu) {
+      sortButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sortMenu.classList.toggle('is-open');
+      });
+
+      sortItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          const sortValue = this.getAttribute('data-sort-value');
+          const url = new URL(window.location.href);
+          url.searchParams.set('sort_by', sortValue);
+          window.location.href = url.toString();
+        });
+      });
+
+      // Close when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
+          sortMenu.classList.remove('is-open');
+        }
+      });
+    }
+
+    // Filter Sidebar
+    const filterToggle = document.querySelector('[data-filter-toggle]');
+    const filterSidebar = document.querySelector('[data-filter-sidebar]');
+    const filterOverlay = document.querySelector('[data-filter-overlay]');
+    const filterClose = document.querySelector('[data-filter-close]');
+    const filterApply = document.querySelector('[data-filter-apply]');
+    const filterClear = document.querySelector('[data-filter-clear]');
+    
+    function openFilterSidebar() {
+      if (filterSidebar) filterSidebar.classList.add('is-open');
+      if (filterOverlay) filterOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterSidebar() {
+      if (filterSidebar) filterSidebar.classList.remove('is-open');
+      if (filterOverlay) filterOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (filterToggle) {
+      filterToggle.addEventListener('click', openFilterSidebar);
+    }
+
+    if (filterClose) {
+      filterClose.addEventListener('click', closeFilterSidebar);
+    }
+
+    if (filterOverlay) {
+      filterOverlay.addEventListener('click', closeFilterSidebar);
+    }
+
+    if (filterApply) {
+      filterApply.addEventListener('click', function() {
         const url = new URL(window.location.href);
-        url.searchParams.set('sort_by', this.value);
+        const checkboxes = document.querySelectorAll('[data-filter-input]:checked');
+        
+        // Clear existing filter params
+        url.searchParams.forEach(function(value, key) {
+          if (key.startsWith('filter.v')) {
+            url.searchParams.delete(key);
+          }
+        });
+
+        // Add selected filters
+        checkboxes.forEach(function(checkbox) {
+          const filterName = checkbox.name;
+          const filterValue = checkbox.value;
+          url.searchParams.set(filterName, filterValue);
+        });
+
         window.location.href = url.toString();
       });
     }
 
-    // Filter toggle (placeholder)
-    const filterToggle = document.querySelector('[data-filter-toggle]');
-    if (filterToggle) {
-      filterToggle.addEventListener('click', function() {
-        // Add filter functionality here
-        alert('Filter functionality coming soon!');
+    if (filterClear) {
+      filterClear.addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('[data-filter-input]');
+        checkboxes.forEach(function(checkbox) {
+          checkbox.checked = false;
+        });
+        
+        const url = new URL(window.location.href);
+        url.searchParams.forEach(function(value, key) {
+          if (key.startsWith('filter.v')) {
+            url.searchParams.delete(key);
+          }
+        });
+        
+        window.location.href = url.toString();
       });
     }
 

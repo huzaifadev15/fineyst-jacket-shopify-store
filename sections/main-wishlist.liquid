@@ -1,0 +1,296 @@
+{%- comment -%}
+  Wishlist Page Section
+  
+  This section displays all products saved to the wishlist (stored in localStorage).
+  The wishlist page must be created in Shopify Admin with handle "wishlist"
+  and template "page.wishlist" assigned to it.
+  
+  The page will automatically:
+  - Load products from localStorage wishlist
+  - Display them in a grid layout
+  - Allow removal of items
+  - Show empty state when wishlist is empty
+{%- endcomment -%}
+
+{%- style -%}
+  .wishlist-main {
+    padding: 12rem 0 8rem;
+  }
+
+  .wishlist-main__header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .wishlist-main__title {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .wishlist-main__empty {
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+
+  .wishlist-main__empty-title {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .wishlist-main__empty-text {
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  .wishlist-main__empty-link {
+    display: inline-block;
+    padding: 1.5rem 3rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: opacity 0.3s ease;
+  }
+
+  .wishlist-main__empty-link:hover {
+    opacity: 0.8;
+  }
+
+  .wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+  }
+
+  .wishlist-item {
+    position: relative;
+  }
+
+  .wishlist-item__remove {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 4rem;
+    height: 4rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .wishlist-item__remove:hover {
+    background: #fff;
+    transform: scale(1.1);
+  }
+
+  .wishlist-item__remove svg {
+    width: 2rem;
+    height: 2rem;
+    stroke: #000;
+  }
+
+  @media (max-width: 768px) {
+    .wishlist-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+  }
+{%- endstyle -%}
+
+<section class="wishlist-main">
+  <div class="container">
+    <div class="wishlist-main__header">
+      <h1 class="wishlist-main__title">My Wishlist</h1>
+    </div>
+
+    <div class="wishlist-main__empty" id="wishlist-empty" style="display: none;">
+      <h2 class="wishlist-main__empty-title">Your wishlist is empty</h2>
+      <p class="wishlist-main__empty-text">Start adding products to your wishlist to see them here.</p>
+      <a href="{{ routes.collections_url }}" class="wishlist-main__empty-link">Continue Shopping</a>
+    </div>
+
+    <div class="wishlist-grid" id="wishlist-grid"></div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function getWishlist() {
+      try {
+        const wishlist = localStorage.getItem('wishlist');
+        return wishlist ? JSON.parse(wishlist) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function removeFromWishlist(productId) {
+      const wishlist = getWishlist();
+      const index = wishlist.indexOf(String(productId));
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        return true;
+      }
+      return false;
+    }
+
+    async function fetchProductById(productId) {
+      try {
+        // Try to fetch product by ID - this requires the product handle
+        // Since we only have ID, we'll need to search or use a different approach
+        // For now, we'll try to get product data from the all products endpoint
+        const response = await fetch(`/products.json`);
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data.products.find(p => p.id === parseInt(productId)) || null;
+      } catch (e) {
+        console.error('Error fetching product:', e);
+        return null;
+      }
+    }
+
+    function formatMoney(cents) {
+      if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+        return Shopify.formatMoney(cents);
+      }
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function renderWishlistItem(product) {
+      const variant = product.variants[0];
+      const image = product.featured_image || product.images[0];
+      const imageUrl = image ? image.src : '';
+      const productUrl = `/products/${product.handle}`;
+      const price = formatMoney(variant.price);
+      const comparePrice = variant.compare_at_price > variant.price ? formatMoney(variant.compare_at_price) : null;
+
+      return `
+        <div class="wishlist-item" data-product-id="${product.id}">
+          <button 
+            type="button" 
+            class="wishlist-item__remove" 
+            aria-label="Remove from wishlist"
+            data-remove-wishlist="${product.id}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="product-card">
+            <div class="product-card__image">
+              <a href="${productUrl}">
+                ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" loading="lazy">` : '<div style="background: #f5f5f5; aspect-ratio: 3/4;"></div>'}
+              </a>
+            </div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">
+                <a href="${productUrl}">${product.title}</a>
+              </h3>
+              <div class="product-card__price">
+                ${comparePrice ? `<span class="product-card__price--compare">${comparePrice}</span>` : ''}
+                <span class="product-card__price--sale">${price}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadWishlist() {
+      const wishlist = getWishlist();
+      const grid = document.getElementById('wishlist-grid');
+      const empty = document.getElementById('wishlist-empty');
+
+      if (!wishlist.length) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading wishlist...</p>';
+
+      try {
+        const products = await Promise.all(
+          wishlist.map(id => fetchProductById(id))
+        );
+
+        const validProducts = products.filter(p => p !== null);
+        
+        if (validProducts.length === 0) {
+          grid.innerHTML = '';
+          grid.style.display = 'none';
+          empty.style.display = 'block';
+          return;
+        }
+
+        grid.innerHTML = validProducts.map(product => renderWishlistItem(product)).join('');
+
+        // Add remove handlers
+        document.querySelectorAll('[data-remove-wishlist]').forEach(btn => {
+          btn.addEventListener('click', async function() {
+            const productId = this.getAttribute('data-remove-wishlist');
+            if (removeFromWishlist(productId)) {
+              // Remove the item from DOM
+              const item = this.closest('.wishlist-item');
+              if (item) {
+                item.style.transition = 'opacity 0.3s ease';
+                item.style.opacity = '0';
+                setTimeout(() => {
+                  item.remove();
+                  loadWishlist(); // Reload to check if empty
+                }, 300);
+              }
+            }
+          });
+        });
+      } catch (error) {
+        console.error('Error loading wishlist:', error);
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #999;">Error loading wishlist. Please refresh the page.</p>';
+      }
+    }
+
+    // Load wishlist on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadWishlist);
+    } else {
+      loadWishlist();
+    }
+
+    // Listen for wishlist updates from other pages
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'wishlist') {
+        loadWishlist();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist Page",
+  "tag": "section",
+  "class": "wishlist-page-section",
+  "settings": []
+}
+{% endschema %}
+
