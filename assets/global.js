@@ -10,6 +10,7 @@
     initQuantityButtons();
     initAddToCart();
     initCartSidebar();
+    initWishlist();
     initWelcomeCarousel();
     initHandPickedCarousel();
     initColorCollectionCarousel();
@@ -1269,6 +1270,134 @@
     updateCarousel();
   }
   
+  /* Wishlist Functionality */
+  function initWishlist() {
+    // Get wishlist from localStorage
+    function getWishlist() {
+      try {
+        const wishlist = localStorage.getItem('wishlist');
+        return wishlist ? JSON.parse(wishlist) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // Save wishlist to localStorage
+    function saveWishlist(wishlist) {
+      try {
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      } catch (e) {
+        console.error('Error saving wishlist:', e);
+      }
+    }
+
+    // Check if product is in wishlist
+    function isInWishlist(productId) {
+      const wishlist = getWishlist();
+      return wishlist.includes(String(productId));
+    }
+
+    // Add product to wishlist
+    function addToWishlist(productId) {
+      const wishlist = getWishlist();
+      if (!wishlist.includes(String(productId))) {
+        wishlist.push(String(productId));
+        saveWishlist(wishlist);
+      }
+    }
+
+    // Remove product from wishlist
+    function removeFromWishlist(productId) {
+      const wishlist = getWishlist();
+      const index = wishlist.indexOf(String(productId));
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        saveWishlist(wishlist);
+      }
+    }
+
+    // Update wishlist button state
+    function updateWishlistButton(button, productId) {
+      const isInList = isInWishlist(productId);
+      if (isInList) {
+        button.classList.add('is-active');
+        const svg = button.querySelector('svg');
+        if (svg) {
+          svg.setAttribute('fill', '#ff0000');
+          svg.setAttribute('stroke', '#ff0000');
+        }
+      } else {
+        button.classList.remove('is-active');
+        const svg = button.querySelector('svg');
+        if (svg) {
+          svg.setAttribute('fill', 'none');
+          svg.setAttribute('stroke', 'currentColor');
+        }
+      }
+    }
+
+    // Initialize all wishlist buttons on page
+    function initWishlistButtons() {
+      const wishlistButtons = document.querySelectorAll('[data-wishlist-add], [data-wishlist-action], [data-wishlist-toggle]');
+      wishlistButtons.forEach(button => {
+        const productId = button.getAttribute('data-wishlist-add') || 
+                         button.getAttribute('data-product-id') || 
+                         button.closest('[data-product-id]')?.getAttribute('data-product-id');
+        
+        if (productId) {
+          updateWishlistButton(button, productId);
+        }
+      });
+    }
+
+    // Handle wishlist button clicks
+    document.addEventListener('click', function(e) {
+      const wishlistBtn = e.target.closest('[data-wishlist-add], [data-wishlist-action], [data-wishlist-toggle]');
+      if (!wishlistBtn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const productId = wishlistBtn.getAttribute('data-wishlist-add') || 
+                       wishlistBtn.getAttribute('data-product-id') || 
+                       wishlistBtn.closest('[data-product-id]')?.getAttribute('data-product-id');
+
+      if (!productId) {
+        console.warn('Product ID not found for wishlist button');
+        return;
+      }
+
+      if (isInWishlist(productId)) {
+        removeFromWishlist(productId);
+        console.log('Removed from wishlist:', productId);
+      } else {
+        addToWishlist(productId);
+        console.log('Added to wishlist:', productId);
+      }
+
+      // Update all wishlist buttons for this product
+      const allButtons = document.querySelectorAll(`[data-wishlist-add="${productId}"], [data-product-id="${productId}"][data-wishlist-action], [data-product-id="${productId}"][data-wishlist-toggle]`);
+      allButtons.forEach(btn => updateWishlistButton(btn, productId));
+    });
+
+    // Initialize buttons on page load
+    initWishlistButtons();
+
+    // Re-initialize when new content is loaded (for dynamic content)
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length) {
+          initWishlistButtons();
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
   /* FAQ Accordion */
   function initFAQ() {
     const faqSection = document.querySelector('.faq-section');
