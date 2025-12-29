@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "type": "footer",
   "name": "Footer group",
@@ -42,7 +41,7 @@
             "link_text_3": "Women's Denim Jackets",
             "link_url_3": "shopify://collections/womens-denim-jackets",
             "link_text_4": "Women's Suede Jackets",
-            "link_url_4": "shopify://collections/womens-suede-jackets",
+            "link_url_4": "shopify://collections/womens-suede-leather-jackets",
             "link_text_5": "View All",
             "link_url_5": "shopify://collections"
           }
