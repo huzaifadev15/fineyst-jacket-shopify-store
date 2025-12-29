@@ -62,6 +62,14 @@
             "gender": "men"
           }
         },
+        "category_7H8X78": {
+          "type": "category",
+          "settings": {
+            "title": "LEATHER JACKETS",
+            "link_url": "",
+            "gender": "men"
+          }
+        },
         "category_men_4": {
           "type": "category",
           "settings": {
@@ -131,6 +139,7 @@
         "category_men_1",
         "category_men_2",
         "category_men_3",
+        "category_7H8X78",
         "category_men_4",
         "category_men_5",
         "category_women_1",
@@ -150,8 +159,8 @@
     "mens_womens_jackets": {
       "type": "mens-womens-jackets",
       "settings": {
-        "mens_image": "shopify://shop_images/boy_tablet_image.png",
-        "mens_title": "MEN'S JACKETS",
+        "mens_image": "shopify://shop_images/design-men-home.png",
+        "mens_title": "MEN'S LEATHER JACKETS",
         "mens_description": "Crafted for the modern warrior, each jacket embodies strength, style and sophistication with premium leather that ages beautifully with every adventure.",
         "mens_button_text": "SHOP NOW",
         "mens_button_url": "",
