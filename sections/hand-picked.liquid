@@ -157,7 +157,6 @@
     overflow: hidden;
     position: relative;
     width: 100%;
-    min-height: 0;
   }
 
   @media (min-width: 640px) {
@@ -174,73 +173,67 @@
   }
 
   .hand-picked-section__carousel-track {
-    display: flex !important;
-    opacity: 0;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 0.5rem !important;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-    width: max-content !important;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: max-content;
     will-change: transform;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 0;
+    position: relative;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__carousel-track {
-      gap: 0.75rem !important;
+      gap: 0.75rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__carousel-track {
-      gap: 1rem !important;
+      gap: 1rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__carousel-track {
-      gap: 1.5rem !important;
+      gap: 1.5rem;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-track {
-      gap: 2rem !important;
+      gap: 2rem;
     }
   }
 
-  .hand-picked-section__carousel-track.is-active {
-    opacity: 1 !important;
-    position: relative !important;
+  .hand-picked-section__carousel-track[data-gender="women"] {
+    display: none;
+  }
+
+  .hand-picked-section__carousel-track[data-gender="women"].is-active {
+    display: flex;
   }
 
   .hand-picked-section__product {
-    flex-shrink: 0 !important;
+    flex-shrink: 0;
     cursor: pointer;
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
+    width: calc(20% - 16px);
+    transition: transform 0.3s ease;
     position: relative;
-    display: flex !important;
+    display: flex;
     flex-direction: column;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product {
-      width: 240px !important;
-      min-width: 240px !important;
-      max-width: 240px !important;
+      width: calc(18% - 18px);
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product {
-      width: 260px !important;
-      min-width: 260px !important;
-      max-width: 260px !important;
+      width: calc(16% - 20px);
     }
   }
 
@@ -248,33 +241,15 @@
     position: relative;
     overflow: hidden;
     background: #f3f4f6;
-    width: 100% !important;
-    height: 330px !important;
-    min-height: 330px !important;
-    max-height: 330px !important;
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__product-card {
-      height: 360px !important;
-      min-height: 360px !important;
-      max-height: 360px !important;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__product-card {
-      height: 390px !important;
-      min-height: 390px !important;
-      max-height: 390px !important;
-    }
+    aspect-ratio: 280 / 420;
+    width: 100%;
   }
 
   .hand-picked-section__product-card img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
   .hand-picked-section__product:hover .hand-picked-section__product-card img {
@@ -282,28 +257,28 @@
   }
 
   .hand-picked-section__product-info {
-    text-align: center !important;
-    margin-top: 0.5rem !important;
-    margin-bottom: 1rem !important;
-    padding: 0 0.25rem !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0 0.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__product-info {
-      margin-top: 0.75rem !important;
-      margin-bottom: 1.5rem !important;
-      padding: 0 0.5rem !important;
+      margin-top: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__product-info {
-      margin-top: 1rem !important;
-      margin-bottom: 2rem !important;
-      padding: 0 0.5rem !important;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
     }
   }
 
@@ -375,7 +350,7 @@
 
   .hand-picked-section__nav-btn {
     position: absolute;
-    top: calc(2rem + 165px);
+    top: 50%;
     transform: translateY(-50%);
     background: black;
     color: white;
@@ -402,16 +377,9 @@
 
   @media (min-width: 1024px) {
     .hand-picked-section__nav-btn {
-      top: calc(2rem + 180px);
       width: 4.5rem;
       height: 4.5rem;
       padding: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__nav-btn {
-      top: calc(3rem + 195px);
     }
   }
 
@@ -844,70 +812,36 @@
         return maxScroll;
       }
 
-      // Category switching with fade transition
+      // Category switching
       categoryButtons.forEach(function(btn) {
         btn.addEventListener('click', function() {
           var category = this.getAttribute('data-handpicked-category');
           if (category === activeCategory || isTransitioning) return;
           
+          activeCategory = category;
+          scrollPosition = 0; // Reset scroll position
           isTransitioning = true;
-          
-          // Fade out current track
+
+          // Update button states
+          categoryButtons.forEach(function(b) {
+            var isActive = b.getAttribute('data-handpicked-category') === category;
+            b.setAttribute('aria-pressed', isActive);
+          });
+
+          // Show/hide tracks
           tracks.forEach(function(track) {
-            if (track.classList.contains('is-active')) {
-              track.style.opacity = '0';
+            if (track.getAttribute('data-gender') === category) {
+              track.classList.add('is-active');
+            } else {
+              track.classList.remove('is-active');
             }
           });
 
+          // Update scroll position after category switch
           setTimeout(function() {
-            // Hide current track and show new one
-            var wrapper = section.querySelector('.hand-picked-section__carousel-wrapper--desktop');
-            
-            tracks.forEach(function(track) {
-              if (track.getAttribute('data-gender') === category) {
-                track.classList.add('is-active');
-                track.style.opacity = '0';
-              } else {
-                track.classList.remove('is-active');
-              }
-            });
-
-            // Reset scroll position for new category
-            activeCategory = category;
-            scrollPosition = 0;
-
-            // Update button states
-            categoryButtons.forEach(function(b) {
-              var isActive = b.getAttribute('data-handpicked-category') === category;
-              b.setAttribute('aria-pressed', isActive);
-            });
-
-            requestAnimationFrame(function() {
-              requestAnimationFrame(function() {
-                var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-                if (activeTrack && wrapper) {
-                  // Force layout recalculation to ensure accurate dimensions
-                  void activeTrack.offsetHeight;
-                  void wrapper.offsetHeight;
-                  
-                  // Ensure all products in the active track have consistent sizing
-                  var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-                  products.forEach(function(product) {
-                    // Force recalculation of product dimensions
-                    void product.offsetWidth;
-                    void product.offsetHeight;
-                  });
-                  
-                  activeTrack.style.opacity = '1';
-                  updateScrollPosition();
-                }
-                
-                setTimeout(function() {
-                  isTransitioning = false;
-                }, 300);
-              });
-            });
-          }, 150);
+            updateScrollPosition();
+            isTransitioning = false;
+          }, 50);
         });
       });
 
@@ -955,10 +889,6 @@
         tracks.forEach(function(track) {
           if (track.getAttribute('data-gender') === activeCategory) {
             track.classList.add('is-active');
-            track.style.opacity = '1';
-          } else {
-            track.classList.remove('is-active');
-            track.style.opacity = '0';
           }
         });
         scrollPosition = 0;
