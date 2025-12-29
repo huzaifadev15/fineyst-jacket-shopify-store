@@ -21,26 +21,26 @@
     <!-- Main Navigation -->
     <nav class="site-header__nav" aria-label="Main navigation">
       <ul class="site-header__nav-list">
-        {%- for link in section.settings.menu.links -%}
-          <li class="site-header__nav-item{% if link.links != blank %} has-dropdown{% endif %}">
-            <a 
-              href="{{ link.url }}" 
-              class="site-header__nav-link"
-              {% if link.current %} aria-current="page"{% endif %}
-            >
-              {{ link.title }}
-            </a>
-            {%- if link.links != blank -%}
-              <div class="site-header__dropdown">
-                {%- for childlink in link.links -%}
-                  <a href="{{ childlink.url }}" class="site-header__dropdown-link">
-                    {{ childlink.title }}
-                  </a>
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
+        <li class="site-header__nav-item">
+          <a href="/collections/mens-jackets" class="site-header__nav-link">
+            MEN'S JACKETS
+          </a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="/collections/womens-jackets" class="site-header__nav-link">
+            WOMEN'S JACKETS
+          </a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="/collections/coats" class="site-header__nav-link">
+            COATS
+          </a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="/pages/contact" class="site-header__nav-link">
+            CONTACT US
+          </a>
+        </li>
       </ul>
     </nav>
 
@@ -93,13 +93,26 @@
 <div class="mobile-menu" data-mobile-menu>
   <nav>
     <ul class="mobile-menu__nav-list">
-      {%- for link in section.settings.menu.links -%}
-        <li>
-          <a href="{{ link.url }}" class="mobile-menu__nav-link">
-            {{ link.title }}
-          </a>
-        </li>
-      {%- endfor -%}
+      <li>
+        <a href="/collections/mens-jackets" class="mobile-menu__nav-link">
+          MEN'S JACKETS
+        </a>
+      </li>
+      <li>
+        <a href="/collections/womens-jackets" class="mobile-menu__nav-link">
+          WOMEN'S JACKETS
+        </a>
+      </li>
+      <li>
+        <a href="/collections/coats" class="mobile-menu__nav-link">
+          COATS
+        </a>
+      </li>
+      <li>
+        <a href="/pages/contact" class="mobile-menu__nav-link">
+          CONTACT US
+        </a>
+      </li>
     </ul>
 
     {%- if section.settings.sub_menu != blank -%}
