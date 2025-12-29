@@ -183,6 +183,13 @@
     "color_collection": {
       "type": "color-collection",
       "blocks": {
+        "color_category_pXY9C4": {
+          "type": "color_category",
+          "settings": {
+            "title": "BLACK JACKETS",
+            "link": ""
+          }
+        },
         "color_1": {
           "type": "color_category",
           "settings": {
@@ -219,11 +226,13 @@
           "type": "color_category",
           "settings": {
             "title": "PINK JACKETS",
+            "image": "shopify://shop_images/collection-5.webp",
             "link": ""
           }
         }
       },
       "block_order": [
+        "color_category_pXY9C4",
         "color_1",
         "color_2",
         "color_3",
