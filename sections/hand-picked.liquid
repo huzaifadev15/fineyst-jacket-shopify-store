@@ -1,82 +1,763 @@
+{%- style -%}
+  .hand-picked-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: white;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section {
+      padding-bottom: 3rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section {
+      padding-bottom: 4rem;
+    }
+  }
+
+  .hand-picked-section__container {
+    width: 100%;
+    max-width: 2000px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hand-picked-section__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2b2b2b;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__title {
+      font-size: 1.875rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .hand-picked-section__category-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__category-nav {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .hand-picked-section__category-btn {
+    padding: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    color: #374151;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .hand-picked-section__category-btn:hover {
+    color: #2b2b2b;
+  }
+
+  .hand-picked-section__category-text {
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 0.125rem;
+    transition: all 0.3s ease;
+    font-weight: 700;
+  }
+
+  .hand-picked-section__category-btn[aria-pressed="true"] .hand-picked-section__category-text {
+    border-bottom-color: #2b2b2b;
+    color: #2b2b2b;
+  }
+
+  .hand-picked-section__content {
+    position: relative;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__content {
+      padding: 0 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__content {
+      padding: 0 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__content {
+      padding: 0 3rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__content {
+      padding: 0 4rem;
+    }
+  }
+
+  .hand-picked-section__carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+    min-height: 600px;
+  }
+
+  .hand-picked-section__carousel-wrapper--mobile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 550px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__carousel-wrapper--mobile {
+      display: none;
+    }
+  }
+
+  .hand-picked-section__carousel-wrapper--desktop {
+    display: none;
+    padding: 1rem 0;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      padding: 1.5rem 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      display: block;
+      padding: 2rem 0;
+    }
+  }
+
+  .hand-picked-section__carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__carousel-track {
+      gap: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__carousel-track {
+      gap: 0.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__carousel-track {
+      gap: 1rem;
+    }
+  }
+
+  .hand-picked-section__carousel-track[data-gender="women"] {
+    display: none;
+  }
+
+  .hand-picked-section__carousel-track[data-gender="women"].is-active {
+    display: flex;
+  }
+
+  .hand-picked-section__product {
+    flex-shrink: 0;
+    cursor: pointer;
+    width: calc(23% - 14px);
+    margin-left: calc((2px - 0.17 * (23% - 14px)) / 2);
+    margin-right: calc((2px - 0.17 * (23% - 14px)) / 2);
+    transition: transform 0.3s ease;
+  }
+
+  .hand-picked-section__product.is-center {
+    transform: scale(1.05);
+    margin-top: 20px;
+    margin-left: calc((2px - 0.17 * (23% - 14px)) / 2 + 0.05 * (23% - 14px));
+    margin-right: calc((2px - 0.17 * (23% - 14px)) / 2 + 0.05 * (23% - 14px));
+  }
+
+  .hand-picked-section__product:not(.is-center) {
+    transform: scale(0.85);
+    margin-top: 10px;
+  }
+
+  .hand-picked-section__product-card {
+    position: relative;
+    overflow: hidden;
+    background: #f3f4f6;
+    aspect-ratio: 280 / 420;
+  }
+
+  .hand-picked-section__product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .hand-picked-section__product:hover .hand-picked-section__product-card img {
+    transform: scale(1.05);
+  }
+
+  .hand-picked-section__product-info {
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-info {
+      margin-top: 0.75rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__product-info {
+      margin-top: 1rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .hand-picked-section__product-title {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: black;
+    text-transform: uppercase;
+    line-height: 1.25;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-title {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__product-title {
+      font-size: 1rem;
+    }
+  }
+
+  .hand-picked-section__product:hover .hand-picked-section__product-title {
+    color: #2b2b2b;
+  }
+
+  .hand-picked-section__product-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-price {
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__product-price {
+      font-size: 1rem;
+    }
+  }
+
+  .hand-picked-section__product-price-current {
+    color: black;
+    font-weight: 700;
+  }
+
+  .hand-picked-section__product-price-original {
+    color: #6b7280;
+    text-decoration: line-through;
+    font-size: 0.875rem;
+  }
+
+  .hand-picked-section__nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: black;
+    color: white;
+    padding: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 1438px) {
+    .hand-picked-section__nav-btn {
+      display: none !important;
+    }
+  }
+
+  .hand-picked-section__nav-btn:hover {
+    background: #1f2937;
+  }
+
+  .hand-picked-section__nav-btn--prev {
+    left: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 1rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 3rem;
+    }
+  }
+
+  .hand-picked-section__nav-btn--next {
+    right: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--next {
+      right: 1rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--next {
+      right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__nav-btn--next {
+      right: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__nav-btn--next {
+      right: 3rem;
+    }
+  }
+
+  .hand-picked-section__nav-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__nav-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .hand-picked-section__empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 50;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hand-picked-section__empty-text {
+    color: #6b7280;
+    font-size: 1.125rem;
+  }
+
+  /* Mobile specific styles */
+  .hand-picked-section__product-mobile {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 65%;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateX(130%) scale(0.7);
+    transition: all 0.3s ease;
+  }
+
+  .hand-picked-section__product-mobile.is-center {
+    opacity: 1;
+    transform: translateX(0) scale(1.04);
+    z-index: 3;
+    margin-top: 20px;
+  }
+
+  .hand-picked-section__product-mobile.is-prev {
+    opacity: 1;
+    transform: translateX(-100%) scale(0.85);
+    z-index: 2;
+    margin-top: 10px;
+  }
+
+  .hand-picked-section__product-mobile.is-next {
+    opacity: 1;
+    transform: translateX(100%) scale(0.85);
+    z-index: 2;
+    margin-top: 10px;
+  }
+
+  .hand-picked-section__product-mobile.is-hidden-left {
+    transform: translateX(-130%) scale(0.7);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .hand-picked-section__product-mobile.is-hidden-right {
+    transform: translateX(130%) scale(0.7);
+    opacity: 0;
+    z-index: 1;
+  }
+{%- endstyle -%}
+
 <section class="hand-picked-section" data-section-id="{{ section.id }}">
-  <div class="container">
-    <div class="hand-picked-section__header">
-      <h2 class="hand-picked-section__title">{{ section.settings.title }}</h2>
-      <div class="hand-picked-section__gender-nav">
-        <button class="hand-picked-section__gender-link active" data-handpicked-gender="men">MEN</button>
-        <span class="hand-picked-section__divider">/</span>
-        <button class="hand-picked-section__gender-link" data-handpicked-gender="women">WOMEN</button>
-      </div>
+  <div class="hand-picked-section__container">
+    <h2 class="hand-picked-section__title">
+      {{ section.settings.title | default: "HAND-PICKED FOR YOU" }}
+    </h2>
+    
+    <div class="hand-picked-section__category-nav">
+      <button 
+        class="hand-picked-section__category-btn" 
+        data-handpicked-category="men"
+        aria-pressed="true"
+      >
+        <span class="hand-picked-section__category-text">MEN</span>
+      </button>
+      <button 
+        class="hand-picked-section__category-btn" 
+        data-handpicked-category="women"
+        aria-pressed="false"
+      >
+        <span class="hand-picked-section__category-text">WOMEN</span>
+      </button>
     </div>
 
-    <div class="hand-picked-section__carousel-wrapper">
-      <div class="hand-picked-section__carousel-nav">
-        <button class="hand-picked-section__carousel-btn hand-picked-section__carousel-btn--prev" data-handpicked-prev aria-label="Previous">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <button class="hand-picked-section__carousel-btn hand-picked-section__carousel-btn--next" data-handpicked-next aria-label="Next">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="hand-picked-section__carousel" data-handpicked-carousel>
-        <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="men">
-          {%- assign men_collection = collections[section.settings.men_collection] -%}
-          {%- if men_collection != blank -%}
-            {%- for product in men_collection.products limit: section.settings.products_to_show -%}
-              <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
-                {% render 'product-card', product: product, show_badges: false, show_actions: false %}
-              </div>
-            {%- endfor -%}
-          {%- else -%}
-            {%- for i in (1..5) -%}
-              <div class="hand-picked-section__product{% if i == 3 %} is-center{% endif %}">
-                <div class="product-card product-card--placeholder">
-                  <div class="product-card__image">
-                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
-                  </div>
-                  <div class="product-card__info">
-                    <h3 class="product-card__title">Sample Product {{ i }}</h3>
-                    <p class="product-card__price">$199.00</p>
-                  </div>
-                </div>
-              </div>
-            {%- endfor -%}
-          {%- endif -%}
-        </div>
+    <div class="hand-picked-section__content">
+      <div class="hand-picked-section__carousel-wrapper">
+        {%- assign men_collection = collections[section.settings.men_collection] -%}
+        {%- assign women_collection = collections[section.settings.women_collection] -%}
+        {%- assign men_products = men_collection.products | limit: section.settings.products_to_show -%}
+        {%- assign women_products = women_collection.products | limit: section.settings.products_to_show -%}
 
-        <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="women" style="display: none;">
-          {%- assign women_collection = collections[section.settings.women_collection] -%}
-          {%- if women_collection != blank -%}
-            {%- for product in women_collection.products limit: section.settings.products_to_show -%}
-              <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
-                {% render 'product-card', product: product, show_badges: false, show_actions: false %}
-              </div>
-            {%- endfor -%}
-          {%- else -%}
-            {%- for i in (1..5) -%}
-              <div class="hand-picked-section__product{% if i == 3 %} is-center{% endif %}">
-                <div class="product-card product-card--placeholder">
-                  <div class="product-card__image">
-                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
-                  </div>
-                  <div class="product-card__info">
-                    <h3 class="product-card__title">Sample Product {{ i }}</h3>
-                    <p class="product-card__price">$199.00</p>
+        {%- if men_products.size == 0 and women_products.size == 0 -%}
+          <div class="hand-picked-section__empty-state">
+            <p class="hand-picked-section__empty-text">No products available for this category.</p>
+          </div>
+        {%- else -%}
+          <!-- Mobile Carousel -->
+          <div class="hand-picked-section__carousel-wrapper--mobile" data-handpicked-mobile>
+            {%- for product in men_products -%}
+              <div 
+                class="hand-picked-section__product-mobile{% if forloop.index == 1 %} is-center{% else %} is-hidden-right{% endif %}" 
+                data-product-index="{{ forloop.index0 }}"
+                data-gender="men"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                  <a href="{{ product.url }}" style="position: relative; cursor: pointer; overflow: hidden; width: 100%; aspect-ratio: 252.7 / 383.3;">
+                    {%- if product.featured_image -%}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 280 }}"
+                        alt="{{ product.title | escape }}"
+                        width="280"
+                        height="420"
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+                    {%- endif -%}
+                  </a>
+                  <div style="text-align: center; margin-top: 0.75rem; width: 100%; padding: 0 0.25rem;">
+                    <h3 style="font-weight: 600; font-size: 0.75rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      {%- assign title = product.title -%}
+                      {%- if title.size > 38 -%}
+                        {{ title | truncate: 38 }}...
+                      {%- else -%}
+                        {{ title }}
+                      {%- endif -%}
+                    </h3>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; font-size: 0.875rem; margin-top: 0.25rem;">
+                      {%- if product.compare_at_price > product.price -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                        <div style="color: #6b7280; text-decoration: line-through; font-size: 0.875rem;">
+                          {{ product.compare_at_price | money }}
+                        </div>
+                      {%- else -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                      {%- endif -%}
+                    </div>
                   </div>
                 </div>
               </div>
             {%- endfor -%}
-          {%- endif -%}
-        </div>
+          </div>
+
+          <!-- Desktop Carousel -->
+          <div class="hand-picked-section__carousel-wrapper--desktop">
+            <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="men">
+              {%- for product in men_products -%}
+                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+                  <a href="{{ product.url }}">
+                    <div class="hand-picked-section__product-card">
+                      {%- if product.featured_image -%}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 280 }}"
+                          alt="{{ product.title | escape }}"
+                          width="280"
+                          height="420"
+                          loading="lazy"
+                        >
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="hand-picked-section__product-info">
+                      <h3 class="hand-picked-section__product-title">
+                        {%- assign title = product.title -%}
+                        {%- if title.size > 38 -%}
+                          {{ title | truncate: 38 }}...
+                        {%- else -%}
+                          {{ title }}
+                        {%- endif -%}
+                      </h3>
+                      <div class="hand-picked-section__product-price">
+                        {%- if product.compare_at_price > product.price -%}
+                          <div class="hand-picked-section__product-price-current">
+                            {{ product.price | money }}
+                          </div>
+                          <div class="hand-picked-section__product-price-original">
+                            {{ product.compare_at_price | money }}
+                          </div>
+                        {%- else -%}
+                          <div class="hand-picked-section__product-price-current">
+                            {{ product.price | money }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+
+            <div class="hand-picked-section__carousel-track" data-handpicked-track data-gender="women">
+              {%- for product in women_products -%}
+                <div class="hand-picked-section__product{% if forloop.index == 3 %} is-center{% endif %}">
+                  <a href="{{ product.url }}">
+                    <div class="hand-picked-section__product-card">
+                      {%- if product.featured_image -%}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 280 }}"
+                          alt="{{ product.title | escape }}"
+                          width="280"
+                          height="420"
+                          loading="lazy"
+                        >
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="hand-picked-section__product-info">
+                      <h3 class="hand-picked-section__product-title">
+                        {%- assign title = product.title -%}
+                        {%- if title.size > 38 -%}
+                          {{ title | truncate: 38 }}...
+                        {%- else -%}
+                          {{ title }}
+                        {%- endif -%}
+                      </h3>
+                      <div class="hand-picked-section__product-price">
+                        {%- if product.compare_at_price > product.price -%}
+                          <div class="hand-picked-section__product-price-current">
+                            {{ product.price | money }}
+                          </div>
+                          <div class="hand-picked-section__product-price-original">
+                            {{ product.compare_at_price | money }}
+                          </div>
+                        {%- else -%}
+                          <div class="hand-picked-section__product-price-current">
+                            {{ product.price | money }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <button 
+            class="hand-picked-section__nav-btn hand-picked-section__nav-btn--prev" 
+            data-handpicked-prev
+            aria-label="Previous"
+          >
+            <svg class="hand-picked-section__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button 
+            class="hand-picked-section__nav-btn hand-picked-section__nav-btn--next" 
+            data-handpicked-next
+            aria-label="Next"
+          >
+            <svg class="hand-picked-section__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        {%- endif -%}
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  (function() {
+    function initHandPickedSection() {
+      var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+      if (!section) return;
+
+      var categoryButtons = section.querySelectorAll('[data-handpicked-category]');
+      var tracks = section.querySelectorAll('[data-handpicked-track]');
+      var prevBtn = section.querySelector('[data-handpicked-prev]');
+      var nextBtn = section.querySelector('[data-handpicked-next]');
+      var mobileWrapper = section.querySelector('[data-handpicked-mobile]');
+      
+      var activeCategory = 'men';
+      var activeIndex = 0;
+      var isTransitioning = false;
+
+      // Category switching
+      categoryButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var category = this.getAttribute('data-handpicked-category');
+          if (category === activeCategory || isTransitioning) return;
+          
+          activeCategory = category;
+          activeIndex = 0;
+          isTransitioning = true;
+
+          // Update button states
+          categoryButtons.forEach(function(b) {
+            var isActive = b.getAttribute('data-handpicked-category') === category;
+            b.setAttribute('aria-pressed', isActive);
+          });
+
+          // Show/hide tracks
+          tracks.forEach(function(track) {
+            if (track.getAttribute('data-gender') === category) {
+              track.classList.add('is-active');
+            } else {
+              track.classList.remove('is-active');
+            }
+          });
+
+          setTimeout(function() {
+            isTransitioning = false;
+          }, 300);
+        });
+      });
+
+      // Navigation (simplified - you may want to add more carousel logic)
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          // Add previous slide logic
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          // Add next slide logic
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHandPickedSection);
+    } else {
+      initHandPickedSection();
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -104,7 +785,7 @@
       "min": 4,
       "max": 12,
       "step": 1,
-      "default": 5,
+      "default": 10,
       "label": "Products to show"
     }
   ],
