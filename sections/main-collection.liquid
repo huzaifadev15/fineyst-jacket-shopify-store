@@ -489,6 +489,122 @@
 
   .collection-filter-sidebar__content {
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+
+  .collection-filter-sidebar__active-filters {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .collection-filter-sidebar__active-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .collection-filter-sidebar__active-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-filter-sidebar__active-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 1.2rem;
+  }
+
+  .collection-filter-sidebar__active-filter-name {
+    font-weight: 500;
+  }
+
+  .collection-filter-sidebar__active-filter-remove {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .collection-filter-sidebar__active-filter-remove:hover {
+    opacity: 0.7;
+  }
+
+  .collection-filter-sidebar__clear-all {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    font-size: 1.3rem;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .collection-filter-sidebar__clear-all:hover {
+    color: #000;
+  }
+
+  .collection-filter-sidebar__footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 1;
+  }
+
+  .collection-filter-sidebar__apply-btn,
+  .collection-filter-sidebar__reset-btn {
+    flex: 1;
+    padding: 1.2rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .collection-filter-sidebar__apply-btn {
+    background: #000;
+    color: #fff;
+  }
+
+  .collection-filter-sidebar__apply-btn:hover {
+    background: #333;
+  }
+
+  .collection-filter-sidebar__reset-btn {
+    background: #f5f5f5;
+    color: #333;
+  }
+
+  .collection-filter-sidebar__reset-btn:hover {
+    background: #e5e5e5;
   }
 
   .collection-filter-group {
@@ -1022,6 +1138,21 @@
       gap: 0.8rem;
     }
 
+    .collection-filter-sidebar__footer {
+      position: sticky;
+      bottom: 0;
+      padding-bottom: 2rem;
+    }
+
+    .collection-filter-sidebar__active-list {
+      gap: 0.6rem;
+    }
+
+    .collection-filter-sidebar__active-filter {
+      font-size: 1.1rem;
+      padding: 0.5rem 0.8rem;
+    }
+
     .collection-category-sidebar {
       width: 100vw;
       left: -100vw;
@@ -1104,9 +1235,109 @@
     </div>
 
     {%- paginate collection.products by section.settings.products_per_page -%}
-      <div class="collection-grid">
+      <div class="collection-grid" data-collection-grid>
         {%- for product in collection.products -%}
-          {% render 'product-card', product: product %}
+          {%- liquid
+            assign product_color = ''
+            assign product_material = ''
+            assign product_style = ''
+            assign product_gender = ''
+            assign product_sizes = ''
+            
+            comment Get color from product options
+            endcomment
+            if product.options_with_values.size > 0
+              for option in product.options_with_values
+                assign option_name_lower = option.name | downcase
+                if option_name_lower == 'color' or option_name_lower == 'colour'
+                  if option.values.size > 0
+                    assign product_color = option.values | join: '|'
+                  endif
+                elsif option_name_lower == 'material'
+                  if option.values.size > 0
+                    assign product_material = option.values | join: '|'
+                  endif
+                elsif option_name_lower == 'style'
+                  if option.values.size > 0
+                    assign product_style = option.values | join: '|'
+                  endif
+                elsif option_name_lower == 'gender'
+                  if option.values.size > 0
+                    assign product_gender = option.values | join: '|'
+                  endif
+                elsif option_name_lower == 'size'
+                  if option.values.size > 0
+                    assign product_sizes = option.values | join: '|'
+                  endif
+                endif
+              endfor
+            endif
+            
+            comment Get from tags if not in options
+            endcomment
+            if product.tags.size > 0
+              for tag in product.tags
+                assign tag_lower = tag | downcase
+                if tag_lower contains 'color:' or tag_lower contains 'colour:'
+                  assign tag_parts = tag | split: ':'
+                  if tag_parts.size > 1
+                    if product_color == ''
+                      assign product_color = tag_parts[1]
+                    else
+                      assign product_color = product_color | append: '|' | append: tag_parts[1]
+                    endif
+                  endif
+                elsif tag_lower contains 'material:'
+                  assign tag_parts = tag | split: ':'
+                  if tag_parts.size > 1
+                    if product_material == ''
+                      assign product_material = tag_parts[1]
+                    else
+                      assign product_material = product_material | append: '|' | append: tag_parts[1]
+                    endif
+                  endif
+                elsif tag_lower contains 'style:'
+                  assign tag_parts = tag | split: ':'
+                  if tag_parts.size > 1
+                    if product_style == ''
+                      assign product_style = tag_parts[1]
+                    else
+                      assign product_style = product_style | append: '|' | append: tag_parts[1]
+                    endif
+                  endif
+                elsif tag_lower == 'men' or tag_lower == 'mens' or tag_lower == 'male'
+                  if product_gender == ''
+                    assign product_gender = 'Men'
+                  else
+                    assign product_gender = product_gender | append: '|Men'
+                  endif
+                elsif tag_lower == 'women' or tag_lower == 'womens' or tag_lower == 'female'
+                  if product_gender == ''
+                    assign product_gender = 'Women'
+                  else
+                    assign product_gender = product_gender | append: '|Women'
+                  endif
+                elsif tag_lower == 'unisex'
+                  if product_gender == ''
+                    assign product_gender = 'Unisex'
+                  else
+                    assign product_gender = product_gender | append: '|Unisex'
+                  endif
+                endif
+              endfor
+            endif
+          -%}
+          <div 
+            class="product-card-wrapper" 
+            data-product-color="{{ product_color }}"
+            data-product-material="{{ product_material }}"
+            data-product-style="{{ product_style }}"
+            data-product-gender="{{ product_gender }}"
+            data-product-sizes="{{ product_sizes }}"
+            data-product-available="{% if product.available %}1{% else %}0{% endif %}"
+          >
+            {% render 'product-card', product: product %}
+          </div>
         {%- else -%}
           <p>No products found in this collection.</p>
         {%- endfor -%}
@@ -1228,6 +1459,17 @@
     <button type="button" class="collection-filter-sidebar__close" data-filter-close>&times;</button>
   </div>
   <div class="collection-filter-sidebar__content">
+    <!-- Active Filters Display -->
+    <div class="collection-filter-sidebar__active-filters" data-active-filters>
+      <h3 class="collection-filter-sidebar__active-title">Active Filters</h3>
+      <div class="collection-filter-sidebar__active-list" data-active-filters-list>
+        <!-- Active filters will be dynamically inserted here -->
+      </div>
+      <button type="button" class="collection-filter-sidebar__clear-all" data-clear-all-filters style="display: none;">
+        Clear All
+      </button>
+    </div>
+
     <!-- Materials Filter -->
     <div class="collection-filter-group" data-filter-type="material">
       <h3 class="collection-filter-group__title">Materials</h3>
@@ -1465,6 +1707,16 @@
         </div>
       </div>
     </div>
+
+    <!-- Apply Button -->
+    <div class="collection-filter-sidebar__footer">
+      <button type="button" class="collection-filter-sidebar__apply-btn" data-filter-apply>
+        Apply Filters
+      </button>
+      <button type="button" class="collection-filter-sidebar__reset-btn" data-filter-reset>
+        Reset
+      </button>
+    </div>
   </div>
 </div>
 
@@ -1688,19 +1940,38 @@
       const url = new URL(window.location.href);
       const checkboxes = document.querySelectorAll('[data-filter-input]:checked');
       
-      // Clear existing filter params
+      // Clear existing filter params - collect keys first to avoid iteration issues
+      const keysToDelete = [];
       url.searchParams.forEach(function(value, key) {
         if (key.startsWith('filter.v')) {
-          url.searchParams.delete(key);
+          keysToDelete.push(key);
         }
       });
+      keysToDelete.forEach(function(key) {
+        url.searchParams.delete(key);
+      });
 
-      // Add selected filters
+      // Group filters by name to handle multiple values
+      const filterGroups = {};
       checkboxes.forEach(function(checkbox) {
         const filterName = checkbox.name;
         const filterValue = checkbox.value;
-        url.searchParams.set(filterName, filterValue);
+        if (!filterGroups[filterName]) {
+          filterGroups[filterName] = [];
+        }
+        filterGroups[filterName].push(filterValue);
       });
+
+      // Add selected filters - for Shopify, we append multiple values with the same key
+      Object.keys(filterGroups).forEach(function(filterName) {
+        const values = filterGroups[filterName];
+        values.forEach(function(value) {
+          url.searchParams.append(filterName, value);
+        });
+      });
+
+      // Close filter sidebar
+      closeFilterSidebar();
 
       window.location.href = url.toString();
     }
@@ -1717,12 +1988,304 @@
       filterOverlay.addEventListener('click', closeFilterSidebar);
     }
 
-    // Apply filters immediately when clicked
-    if (filterInputs) {
-      filterInputs.forEach(function(checkbox) {
-        checkbox.addEventListener('change', applyFilters);
+    // Restore filter state from URL parameters on page load
+    function restoreFilterState() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (filterInputs) {
+        filterInputs.forEach(function(checkbox) {
+          const filterName = checkbox.name;
+          const filterValue = checkbox.value;
+          // Check if this filter value exists in URL params
+          const paramValues = urlParams.getAll(filterName);
+          if (paramValues.includes(filterValue)) {
+            checkbox.checked = true;
+          }
+        });
+      }
+    }
+
+    // Update active filters display (only inside modal)
+    function updateActiveFiltersDisplay() {
+      const activeFiltersList = document.querySelector('[data-active-filters-list]');
+      const clearAllBtn = document.querySelector('[data-clear-all-filters]');
+      if (!activeFiltersList) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      activeFiltersList.innerHTML = '';
+
+      const filterLabels = {
+        'filter.v.option.color': 'Color',
+        'filter.v.option.material': 'Material',
+        'filter.v.option.style': 'Style',
+        'filter.v.option.gender': 'Gender',
+        'filter.v.availability': 'Size'
+      };
+
+      let hasActiveFilters = false;
+
+      urlParams.forEach(function(value, key) {
+        if (key.startsWith('filter.v')) {
+          hasActiveFilters = true;
+          const filterLabel = filterLabels[key] || key.replace('filter.v.option.', '').replace('filter.v.', '');
+          const filterTag = document.createElement('div');
+          filterTag.className = 'collection-filter-sidebar__active-filter';
+          filterTag.innerHTML = `
+            <span class="collection-filter-sidebar__active-filter-name">${filterLabel}: ${value}</span>
+            <button type="button" class="collection-filter-sidebar__active-filter-remove" data-remove-filter="${key}" data-remove-value="${encodeURIComponent(value)}" aria-label="Remove filter">&times;</button>
+          `;
+          activeFiltersList.appendChild(filterTag);
+        }
+      });
+
+      if (clearAllBtn) {
+        clearAllBtn.style.display = hasActiveFilters ? 'block' : 'none';
+      }
+    }
+
+    // Remove individual filter
+    function removeFilter(filterName, filterValue) {
+      const url = new URL(window.location.href);
+      const values = url.searchParams.getAll(filterName);
+      url.searchParams.delete(filterName);
+      
+      // Re-add all values except the one being removed
+      values.forEach(function(value) {
+        if (decodeURIComponent(value) !== decodeURIComponent(filterValue)) {
+          url.searchParams.append(filterName, value);
+        }
+      });
+
+      window.location.href = url.toString();
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+      const url = new URL(window.location.href);
+      url.searchParams.forEach(function(value, key) {
+        if (key.startsWith('filter.v')) {
+          url.searchParams.delete(key);
+        }
+      });
+      window.location.href = url.toString();
+    }
+
+    // Client-side product filtering based on URL parameters
+    function filterProducts() {
+      const collectionGrid = document.querySelector('[data-collection-grid]');
+      if (!collectionGrid) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const productWrappers = collectionGrid.querySelectorAll('.product-card-wrapper');
+      
+      // Get active filters from URL
+      const activeFilters = {
+        color: urlParams.getAll('filter.v.option.color'),
+        material: urlParams.getAll('filter.v.option.material'),
+        style: urlParams.getAll('filter.v.option.style'),
+        gender: urlParams.getAll('filter.v.option.gender'),
+        availability: urlParams.getAll('filter.v.availability')
+      };
+
+      // Check if any filters are active
+      const hasActiveFilters = Object.keys(activeFilters).some(key => activeFilters[key].length > 0);
+
+      let visibleCount = 0;
+
+      productWrappers.forEach(function(wrapper) {
+        let shouldShow = true;
+
+        // If no filters are active, show all products
+        if (!hasActiveFilters) {
+          wrapper.style.display = '';
+          visibleCount++;
+          return;
+        }
+
+        // Helper function to normalize and compare values
+        function normalizeValue(value) {
+          return value.toLowerCase().trim().replace(/\s+/g, ' ');
+        }
+
+        function valuesMatch(productValue, filterValue) {
+          const normalizedProduct = normalizeValue(productValue);
+          const normalizedFilter = normalizeValue(filterValue);
+          return normalizedProduct === normalizedFilter || 
+                 normalizedProduct.includes(normalizedFilter) || 
+                 normalizedFilter.includes(normalizedProduct);
+        }
+
+        // Filter by color
+        if (activeFilters.color.length > 0) {
+          const productColorAttr = wrapper.getAttribute('data-product-color') || '';
+          if (productColorAttr === '') {
+            shouldShow = false;
+          } else {
+            const productColors = productColorAttr.split('|').map(c => c.trim()).filter(c => c);
+            const filterColors = activeFilters.color.map(c => decodeURIComponent(c).trim());
+            const hasMatchingColor = productColors.some(pc => 
+              filterColors.some(fc => valuesMatch(pc, fc))
+            );
+            if (!hasMatchingColor) {
+              shouldShow = false;
+            }
+          }
+        }
+
+        // Filter by material
+        if (shouldShow && activeFilters.material.length > 0) {
+          const productMaterialAttr = wrapper.getAttribute('data-product-material') || '';
+          if (productMaterialAttr === '') {
+            shouldShow = false;
+          } else {
+            const productMaterials = productMaterialAttr.split('|').map(m => m.trim()).filter(m => m);
+            const filterMaterials = activeFilters.material.map(m => decodeURIComponent(m).trim());
+            const hasMatchingMaterial = productMaterials.some(pm => 
+              filterMaterials.some(fm => valuesMatch(pm, fm))
+            );
+            if (!hasMatchingMaterial) {
+              shouldShow = false;
+            }
+          }
+        }
+
+        // Filter by style
+        if (shouldShow && activeFilters.style.length > 0) {
+          const productStyleAttr = wrapper.getAttribute('data-product-style') || '';
+          if (productStyleAttr === '') {
+            shouldShow = false;
+          } else {
+            const productStyles = productStyleAttr.split('|').map(s => s.trim()).filter(s => s);
+            const filterStyles = activeFilters.style.map(s => decodeURIComponent(s).trim());
+            const hasMatchingStyle = productStyles.some(ps => 
+              filterStyles.some(fs => valuesMatch(ps, fs))
+            );
+            if (!hasMatchingStyle) {
+              shouldShow = false;
+            }
+          }
+        }
+
+        // Filter by gender
+        if (shouldShow && activeFilters.gender.length > 0) {
+          const productGenderAttr = wrapper.getAttribute('data-product-gender') || '';
+          if (productGenderAttr === '') {
+            shouldShow = false;
+          } else {
+            const productGenders = productGenderAttr.split('|').map(g => g.trim()).filter(g => g);
+            const filterGenders = activeFilters.gender.map(g => decodeURIComponent(g).trim());
+            const hasMatchingGender = productGenders.some(pg => 
+              filterGenders.some(fg => valuesMatch(pg, fg))
+            );
+            if (!hasMatchingGender) {
+              shouldShow = false;
+            }
+          }
+        }
+
+        // Filter by availability (size)
+        if (shouldShow && activeFilters.availability.length > 0) {
+          const productSizes = (wrapper.getAttribute('data-product-sizes') || '').split('|').map(s => s.trim()).filter(s => s);
+          // For availability filter, we just check if product has any sizes available
+          if (productSizes.length === 0) {
+            shouldShow = false;
+          }
+        }
+
+        // Show or hide product
+        if (shouldShow) {
+          wrapper.style.display = '';
+          visibleCount++;
+        } else {
+          wrapper.style.display = 'none';
+        }
+      });
+
+      // Show "no products" message if no products visible
+      const existingMsg = collectionGrid.querySelector('p[data-no-products-msg]');
+      if (visibleCount === 0 && hasActiveFilters) {
+        if (!existingMsg) {
+          const msg = document.createElement('p');
+          msg.setAttribute('data-no-products-msg', 'true');
+          msg.textContent = 'No products found matching your filters.';
+          msg.style.gridColumn = '1 / -1';
+          msg.style.textAlign = 'center';
+          msg.style.padding = '4rem 2rem';
+          msg.style.fontSize = '1.6rem';
+          msg.style.color = '#666';
+          collectionGrid.appendChild(msg);
+        }
+      } else if (existingMsg) {
+        existingMsg.remove();
+      }
+    }
+
+    // Restore filters on page load
+    restoreFilterState();
+    updateActiveFiltersDisplay();
+
+    // Handle remove filter clicks
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('[data-remove-filter]')) {
+        const button = e.target.closest('[data-remove-filter]');
+        const filterName = button.getAttribute('data-remove-filter');
+        const filterValue = button.getAttribute('data-remove-value');
+        removeFilter(filterName, filterValue);
+      }
+    });
+
+    // Handle clear all filters
+    const clearAllBtn = document.querySelector('[data-clear-all-filters]');
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', clearAllFilters);
+    }
+
+    // Apply button - apply filters when clicked
+    const applyBtn = document.querySelector('[data-filter-apply]');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function() {
+        applyFilters();
       });
     }
+
+    // Reset button - clear all filters from URL
+    const resetBtn = document.querySelector('[data-filter-reset]');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        // Clear all checkboxes
+        if (filterInputs) {
+          filterInputs.forEach(function(checkbox) {
+            checkbox.checked = false;
+          });
+        }
+        // Clear all filters from URL and reload
+        const url = new URL(window.location.href);
+        url.searchParams.forEach(function(value, key) {
+          if (key.startsWith('filter.v')) {
+            url.searchParams.delete(key);
+          }
+        });
+        window.location.href = url.toString();
+      });
+    }
+
+    // Update active filters when sidebar opens
+    if (filterToggle) {
+      const originalOpen = openFilterSidebar;
+      openFilterSidebar = function() {
+        originalOpen();
+        updateActiveFiltersDisplay();
+      };
+    }
+
+    // Run filtering on page load (filterProducts is defined earlier)
+    filterProducts();
+
+    // Re-filter when URL changes (for back/forward navigation)
+    window.addEventListener('popstate', function() {
+      restoreFilterState();
+      updateActiveFiltersDisplay();
+      filterProducts();
+    });
 
     // Size Finder Modal
     const sizeModalToggle = document.querySelector('[data-size-modal-toggle]');
