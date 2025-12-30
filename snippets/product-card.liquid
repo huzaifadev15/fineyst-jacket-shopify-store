@@ -28,7 +28,7 @@
   endif
 -%}
 
-<div class="product-card" data-product-id="{{ product.id }}">
+<div class="product-card" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}">
   <div class="product-card__image">
     <a href="{{ product.url }}" aria-label="{{ product.title }}">
       {%- if featured_image != blank -%}

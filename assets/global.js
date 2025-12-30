@@ -1525,6 +1525,28 @@
         if (response.ok) {
           const data = await response.json();
           const product = data.products.find(p => String(p.id) === String(productId));
+          if (product) {
+            // Ensure options_with_values structure
+            if (!product.options_with_values && product.options) {
+              product.options_with_values = product.options.map((opt, idx) => ({
+                name: typeof opt === 'string' ? opt : (opt.name || `Option ${idx + 1}`),
+                values: typeof opt === 'string' ? [] : (opt.values || [])
+              }));
+            }
+            // Normalize images
+            if (product.images && product.images.length > 0) {
+              product.images = product.images.map(img => {
+                if (typeof img === 'string') {
+                  return { src: img, url: img };
+                }
+                return {
+                  src: img.src || img.url || '',
+                  url: img.url || img.src || '',
+                  alt: img.alt || product.title || ''
+                };
+              });
+            }
+          }
           return product || null;
         }
         return null;
@@ -1666,15 +1688,37 @@
         }
       }
 
+      // Normalize images - ensure full URLs
+      let normalizedImages = [];
+      if (product?.images && product.images.length > 0) {
+        normalizedImages = product.images.map(img => {
+          if (typeof img === 'string') {
+            return { src: img, url: img };
+          }
+          return {
+            src: img.src || img.url || '',
+            url: img.url || img.src || '',
+            alt: img.alt || product?.title || ''
+          };
+        });
+      } else if (product?.featured_image) {
+        const featuredImg = product.featured_image;
+        normalizedImages = [{
+          src: typeof featuredImg === 'string' ? featuredImg : (featuredImg.src || featuredImg.url || ''),
+          url: typeof featuredImg === 'string' ? featuredImg : (featuredImg.url || featuredImg.src || ''),
+          alt: product?.title || ''
+        }];
+      }
+
       // Create wishlist item
       const wishlistItem = {
         id: String(productId),
         name: product?.title || 'Product',
         handle: product?.handle || '',
         url: product ? `/products/${product.handle}` : '',
-        price: product?.variants?.[0]?.price || 0,
-        salePrice: product?.variants?.[0]?.compare_at_price || null,
-        images: product?.images || [],
+        price: product?.variants?.[0]?.price || 0, // Price in cents (Shopify format)
+        salePrice: product?.variants?.[0]?.compare_at_price || null, // Compare price in cents
+        images: normalizedImages,
         variants: product?.variants || [],
         options: product?.options || product?.options_with_values || [],
         colorDetails: colorOptions.length > 0 ? colorOptions : [],
@@ -1684,6 +1728,7 @@
 
       wishlist.push(wishlistItem);
       saveWishlist(wishlist);
+      updateWishlistCount();
     }
 
     // Remove product from wishlist
@@ -1691,7 +1736,27 @@
       const wishlist = getWishlist();
       const filtered = wishlist.filter(item => String(item.id) !== String(productId));
       saveWishlist(filtered);
+      updateWishlistCount();
     }
+
+    // Update wishlist count in header
+    function updateWishlistCount() {
+      const wishlist = getWishlist();
+      const count = wishlist.length;
+      const countElements = document.querySelectorAll('[data-wishlist-count]');
+      countElements.forEach(el => {
+        el.textContent = count;
+        el.setAttribute('data-count', count);
+        if (count === 0) {
+          el.style.display = 'none';
+        } else {
+          el.style.display = 'flex';
+        }
+      });
+    }
+    
+    // Make updateWishlistCount available globally
+    window.updateWishlistCount = updateWishlistCount;
 
     // Update wishlist button state
     function updateWishlistButton(button, productId) {
@@ -1759,6 +1824,15 @@
 
     // Initialize buttons on page load
     initWishlistButtons();
+    updateWishlistCount();
+
+    // Listen for storage changes (for cross-tab updates)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'wishlist-storage') {
+        updateWishlistCount();
+        initWishlistButtons();
+      }
+    });
 
     // Re-initialize when new content is loaded (for dynamic content)
     const observer = new MutationObserver(function(mutations) {
