@@ -206,64 +206,46 @@
     {%- endif -%}
     
     {%- comment -%} Display first available color {%- endcomment -%}
+    {%- assign display_color = null -%}
     {%- if color_option != null and color_option.values.size > 0 -%}
-      {%- assign first_color = color_option.values.first -%}
-      <div class="product-card__colors">
-        <div class="product-card__color-box">
-          <div class="product-card__color-swatch">
-            {%- assign color_lower = first_color | downcase | strip -%}
-            {%- if color_lower == 'black' or color_lower contains 'black' -%}
-              <span class="product-card__color-dot"></span>
-            {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
-              <span class="product-card__color-dot" style="background: #8B4513;"></span>
-            {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
-              <span class="product-card__color-dot" style="background: #FF0000;"></span>
-            {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
-              <span class="product-card__color-dot" style="background: #0000FF;"></span>
-            {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
-              <span class="product-card__color-dot" style="background: #008000;"></span>
-            {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
-              <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
-            {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
-              <span class="product-card__color-dot" style="background: #808080;"></span>
-            {%- else -%}
-              <span class="product-card__color-dot" style="background: #000;"></span>
-            {%- endif -%}
-          </div>
-          <span class="product-card__color-name">{{ first_color }}</span>
-        </div>
-      </div>
+      {%- assign display_color = color_option.values.first -%}
     {%- elsif color_values != blank -%}
       {%- assign colors_array = color_values | split: '|' -%}
       {%- if colors_array.size > 0 -%}
-        {%- assign first_color = colors_array.first -%}
-        <div class="product-card__colors">
-          <div class="product-card__color-box">
-            <div class="product-card__color-swatch">
-              {%- assign color_lower = first_color | downcase | strip -%}
-              {%- if color_lower == 'black' or color_lower contains 'black' -%}
-                <span class="product-card__color-dot"></span>
-              {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
-                <span class="product-card__color-dot" style="background: #8B4513;"></span>
-              {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
-                <span class="product-card__color-dot" style="background: #FF0000;"></span>
-              {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
-                <span class="product-card__color-dot" style="background: #0000FF;"></span>
-              {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
-                <span class="product-card__color-dot" style="background: #008000;"></span>
-              {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
-                <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
-              {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
-                <span class="product-card__color-dot" style="background: #808080;"></span>
-              {%- else -%}
-                <span class="product-card__color-dot" style="background: #000;"></span>
-              {%- endif -%}
-            </div>
-            <span class="product-card__color-name">{{ first_color }}</span>
-          </div>
-        </div>
+        {%- assign display_color = colors_array.first -%}
       {%- endif -%}
     {%- endif -%}
+    
+    {%- comment -%} Always show color box for consistent design {%- endcomment -%}
+    {%- if display_color == null or display_color == blank -%}
+      {%- assign display_color = 'Black' -%}
+    {%- endif -%}
+    
+    <div class="product-card__colors">
+      <div class="product-card__color-box">
+        <div class="product-card__color-swatch">
+          {%- assign color_lower = display_color | downcase | strip -%}
+          {%- if color_lower == 'black' or color_lower contains 'black' -%}
+            <span class="product-card__color-dot"></span>
+          {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
+            <span class="product-card__color-dot" style="background: #8B4513;"></span>
+          {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
+            <span class="product-card__color-dot" style="background: #FF0000;"></span>
+          {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
+            <span class="product-card__color-dot" style="background: #0000FF;"></span>
+          {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
+            <span class="product-card__color-dot" style="background: #008000;"></span>
+          {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
+            <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
+          {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
+            <span class="product-card__color-dot" style="background: #808080;"></span>
+          {%- else -%}
+            <span class="product-card__color-dot" style="background: #000;"></span>
+          {%- endif -%}
+        </div>
+        <span class="product-card__color-name">{{ display_color }}</span>
+      </div>
+    </div>
   </div>
 </div>
 

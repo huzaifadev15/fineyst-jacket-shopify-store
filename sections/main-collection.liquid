@@ -92,6 +92,18 @@
     border-radius: 4px;
   }
 
+  .collection-toolbar__category-wrapper .collection-toolbar__button {
+    overflow: hidden;
+  }
+
+  .collection-toolbar__category-wrapper .collection-toolbar__button span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+
   /* Category Sidebar */
   .collection-category-sidebar {
     position: fixed;
@@ -334,6 +346,15 @@
     text-align: left;
     position: relative;
     transition: all 0.2s ease;
+    overflow: hidden;
+  }
+
+  .collection-toolbar__sort-button span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
   }
 
   .collection-toolbar__sort-button.is-active {
@@ -802,6 +823,35 @@
     display: grid;
     grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
     gap: 3rem;
+    align-items: stretch;
+  }
+
+  .collection-grid > * {
+    min-width: 0;
+  }
+
+  .collection-grid .product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .collection-grid .product-card__image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .collection-grid .product-card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
   }
 
   .collection-pagination {
@@ -863,24 +913,74 @@
     }
 
     .collection-grid {
-      grid-template-columns: 1fr;
-      max-width: 40rem;
-      margin: 0 auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .collection-grid > * {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .collection-grid .product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .collection-grid .product-card__image {
+      width: 100%;
+      aspect-ratio: 3/4;
+      flex-shrink: 0;
+      min-width: 0;
+    }
+
+    .collection-grid .product-card__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      width: 100%;
     }
 
     .collection-toolbar-wrapper {
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
     }
 
     .collection-toolbar {
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      align-items: center;
+      flex: 1;
+      width: 100%;
+    }
+
+    .collection-toolbar__category-wrapper {
+      flex: 1;
+      min-width: 0;
+      max-width: 40%;
     }
 
     .collection-toolbar__button {
-      border-right: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: none;
+      padding: 1rem 1rem;
+      font-size: 1.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+
+    .collection-toolbar__button[data-filter-toggle] {
+      flex: 0 0 auto;
+      min-width: fit-content;
+      padding: 1rem 1.2rem;
     }
 
     .collection-toolbar__button:last-of-type {
@@ -888,13 +988,28 @@
     }
 
     .collection-toolbar__sort-wrapper {
-      border-left: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: none;
+      flex: 1;
+      min-width: 0;
+      max-width: 40%;
+    }
+
+    .collection-toolbar__sort-button {
+      padding: 1rem 2.5rem 1rem 1rem;
+      font-size: 1.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
 
     .collection-toolbar__count {
-      text-align: center;
-      width: 100%;
+      display: none;
+    }
+
+    .collection-toolbar__size-button {
+      display: none;
     }
 
     .collection-filter-sidebar {
@@ -932,7 +1047,7 @@
         <!-- Category Dropdown -->
         <div class="collection-toolbar__category-wrapper">
           <button type="button" class="collection-toolbar__button" data-category-dropdown>
-            {{ collection.title }}
+            <span>{{ collection.title }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"/>
             </svg>
