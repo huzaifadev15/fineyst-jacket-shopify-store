@@ -2326,7 +2326,7 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   margin-bottom: 2rem;
-  display: flex;
+  display: block;
   align-items: center;
   gap: 0.3rem;
 }
@@ -2933,6 +2933,7 @@
   background: #fff;
   padding: 5rem 0;
   margin-top: 0;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer .container {
@@ -2970,9 +2971,11 @@
   color: #000;
   margin: 0;
   line-height: 1.2;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__logo-box {
@@ -2989,6 +2992,8 @@
   color: #000;
   margin-bottom: 2.5rem;
   margin-top: 0;
+  font-weight: 700;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__contact {
@@ -3004,6 +3009,8 @@
   font-size: 1.4rem;
   color: #000;
   line-height: 1.6;
+  font-family: 'avertaBold', sans-serif;
+  font-weight: 700;
 }
 
 .site-footer__contact-item svg {
@@ -3018,18 +3025,26 @@
   gap: 3rem;
 }
 
-.site-footer__nav-column {
+.site-footer__nav-item {
   display: flex;
   flex-direction: column;
 }
 
-.site-footer__nav-title {
+.site-footer__nav-button {
+  display: none;
+}
+
+.site-footer__nav-button-text {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
   color: #000;
+  font-family: 'avertaBold', sans-serif;
+}
+
+.site-footer__nav-chevron {
+  display: none;
 }
 
 .site-footer__nav-list {
@@ -3046,26 +3061,33 @@
   padding: 0;
 }
 
+.site-footer__nav-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  color: #000;
+  font-family: 'avertaBold', sans-serif;
+}
+
 .site-footer__nav-link {
   font-size: 1.4rem;
   color: #000;
   text-decoration: none;
   transition: color 0.3s ease;
+  font-family: 'avertaBold', sans-serif;
+  font-weight: 700;
 }
 
 .site-footer__nav-link:hover {
-  color: #666;
+  color: #000;
 }
 
 @media (max-width: 1200px) {
   .site-footer__grid {
     grid-template-columns: 1fr 2fr;
     gap: 5rem;
-  }
-
-  .site-footer__nav {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
   }
 }
 
@@ -3075,8 +3097,108 @@
     gap: 4rem;
   }
 
+  /* Mobile: Center company section */
+  .site-footer__company {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .site-footer__logo {
+    text-align: center;
+  }
+
+  .site-footer__logo a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .site-footer__contact {
+    align-items: center;
+  }
+
+  .site-footer__contact-item {
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile: Expandable navigation buttons */
   .site-footer__nav {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .site-footer__nav-title {
+    display: none;
+  }
+
+  .site-footer__nav-button {
+    display: flex;
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 0.4rem;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: left;
+  }
+
+  .site-footer__nav-button:hover {
+    background: #e5e5e5;
+  }
+
+  .site-footer__nav-chevron {
+    display: block;
+    width: 1.6rem;
+    height: 1.6rem;
+    color: #000;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .site-footer__nav-item.is-open .site-footer__nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .site-footer__nav-list {
+    display: none;
+    padding-top: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .site-footer__nav-item.is-open .site-footer__nav-list {
+    display: flex;
+  }
+
+  .site-footer__nav-link {
+    font-size: 1.3rem;
+    color: #666;
+    padding: 0.5rem 0;
+  }
+
+  /* Mobile: Center social section */
+  .site-footer__social-section {
+    align-items: center;
+    text-align: center;
+  }
+
+  .site-footer__social-icons {
+    justify-content: center;
+  }
+
+  /* Mobile: Center newsletter section */
+  .site-footer__newsletter-section {
+    text-align: center;
+  }
+
+  .site-footer__newsletter-form {
+    justify-content: center;
+    max-width: 50rem;
+    margin: 0 auto;
   }
 }
 
@@ -3092,17 +3214,20 @@
 
 .site-footer__social-section {
   display: flex;
-  align-items: center;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
   width: 100%;
 }
 
 .site-footer__social-label {
   font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: #000;
+  margin: 0;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__social-icons {
@@ -3117,15 +3242,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: #2b2b2b;
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   text-decoration: none;
   transition: background 0.3s ease;
 }
 
 .site-footer__social-icon:hover {
-  background: #333;
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .site-footer__social-icon svg {
@@ -3133,6 +3260,8 @@
   height: 20px;
   fill: currentColor;
   color: #fff;
+  stroke: #fff;
+  stroke-width: 0.5;
 }
 
 .site-footer__newsletter-section {
@@ -3146,6 +3275,7 @@
   text-transform: uppercase;
   margin-bottom: 0.8rem;
   color: #000;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__newsletter-description {
@@ -3153,6 +3283,8 @@
   line-height: 1.6;
   color: #666;
   margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__newsletter-form {
@@ -3170,6 +3302,8 @@
   font-size: 1.4rem;
   color: #000;
   border-radius: 0.4rem;
+  font-family: 'avertaBold', sans-serif;
+  font-weight: 700;
 }
 
 .site-footer__newsletter-input:focus {
@@ -3183,7 +3317,7 @@
 
 .site-footer__newsletter-button {
   padding: 1.2rem 2.5rem;
-  background: #000;
+  background: #2b2b2b;
   color: #fff;
   border: none;
   font-size: 1.4rem;
@@ -3194,10 +3328,11 @@
   transition: background 0.3s ease;
   white-space: nowrap;
   border-radius: 0.4rem;
+  font-family: 'avertaBold', sans-serif;
 }
 
 .site-footer__newsletter-button:hover {
-  background: #333;
+  background: #000;
 }
 
 @media (max-width: 900px) {

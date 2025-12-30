@@ -14,7 +14,7 @@
             {%- endif -%}
           </a>
         </div>
-        <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+        <p class="site-footer__tagline">Experience the finest quality and {{ section.settings.tagline }}</p>
         <div class="site-footer__contact">
           <div class="site-footer__contact-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -43,8 +43,16 @@
       <div class="site-footer__nav">
         {%- for block in section.blocks -%}
           {%- if block.type == 'link' -%}
-            <div class="site-footer__nav-column" {{ block.shopify_attributes }}>
+            <div class="site-footer__nav-item" {{ block.shopify_attributes }}>
+              <!-- Desktop: Title -->
               <h3 class="site-footer__nav-title">{{ block.settings.title }}</h3>
+              <!-- Mobile: Expandable Button -->
+              <button type="button" class="site-footer__nav-button" data-footer-nav-toggle>
+                <span class="site-footer__nav-button-text">{{ block.settings.title }}</span>
+                <svg class="site-footer__nav-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
               <ul class="site-footer__nav-list">
                 {%- if block.settings.link_text_1 != blank -%}
                   <li><a href="{{ block.settings.link_url_1 }}" class="site-footer__nav-link">{{ block.settings.link_text_1 }}</a></li>
@@ -148,6 +156,19 @@
     </div>
   </div>
 </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const navButtons = document.querySelectorAll('[data-footer-nav-toggle]');
+  
+  navButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const navItem = this.closest('.site-footer__nav-item');
+      navItem.classList.toggle('is-open');
+    });
+  });
+});
+</script>
 
 {% schema %}
 {
