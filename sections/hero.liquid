@@ -43,6 +43,61 @@
   #Hero-{{ section.id }} .hero__link {
     font-size: 3rem;
   }
+
+  @media (max-width: 768px) {
+    #Hero-{{ section.id }} {
+      {%- if section.settings.height == 'full' -%}
+        height: 60vh;
+      {%- elsif section.settings.height == 'large' -%}
+        height: 50vh;
+      {%- elsif section.settings.height == 'medium' -%}
+        height: 40vh;
+      {%- else -%}
+        height: 35vh;
+      {%- endif -%}
+    }
+    #Hero-{{ section.id }} .hero__media img {
+      transform: translateY(-4rem);
+      height: calc(100% + 5rem);
+    }
+    #Hero-{{ section.id }} .hero__content {
+      left: 0;
+      right: auto;
+      text-align: left;
+    }
+    #Hero-{{ section.id }} .hero__content-bottom {
+      padding: 1.5rem;
+      max-width: 100%;
+      text-align: left;
+    }
+    #Hero-{{ section.id }} .hero__title {
+      font-size: 2.5rem;
+      white-space: normal;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      text-align: left;
+    }
+    #Hero-{{ section.id }} .hero__links {
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    #Hero-{{ section.id }} .hero__link {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #Hero-{{ section.id }} .hero__title {
+      font-size: 2.25rem;
+    }
+    #Hero-{{ section.id }} .hero__link {
+      font-size: 1.35rem;
+    }
+    #Hero-{{ section.id }} .hero__content-bottom {
+      padding: 1rem;
+    }
+  }
 {%- endstyle -%}
 
 <section id="Hero-{{ section.id }}" class="hero">
