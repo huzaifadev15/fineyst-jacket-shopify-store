@@ -1587,6 +1587,12 @@
       // Try to get product data
       let product = productData;
       if (!product) {
+        // Check cache first
+        if (window.productDataCache && window.productDataCache[productId]) {
+          product = window.productDataCache[productId];
+        }
+      }
+      if (!product) {
         product = getProductDataFromPage();
       }
       if (!product) {
@@ -1690,24 +1696,74 @@
 
       // Normalize images - ensure full URLs
       let normalizedImages = [];
+      
+      // Helper to convert relative URLs to absolute
+      function normalizeImageUrl(url) {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+          return url;
+        }
+        if (url.startsWith('//')) {
+          return 'https:' + url;
+        }
+        if (url.startsWith('/')) {
+          return window.location.origin + url;
+        }
+        return url;
+      }
+      
       if (product?.images && product.images.length > 0) {
         normalizedImages = product.images.map(img => {
+          let imgUrl = '';
           if (typeof img === 'string') {
-            return { src: img, url: img };
+            imgUrl = img;
+          } else {
+            imgUrl = img.src || img.url || '';
           }
+          const normalizedUrl = normalizeImageUrl(imgUrl);
           return {
-            src: img.src || img.url || '',
-            url: img.url || img.src || '',
-            alt: img.alt || product?.title || ''
+            src: normalizedUrl,
+            url: normalizedUrl,
+            alt: (typeof img === 'object' ? img.alt : '') || product?.title || ''
           };
         });
       } else if (product?.featured_image) {
         const featuredImg = product.featured_image;
+        let imgUrl = typeof featuredImg === 'string' ? featuredImg : (featuredImg.src || featuredImg.url || '');
+        const normalizedUrl = normalizeImageUrl(imgUrl);
         normalizedImages = [{
-          src: typeof featuredImg === 'string' ? featuredImg : (featuredImg.src || featuredImg.url || ''),
-          url: typeof featuredImg === 'string' ? featuredImg : (featuredImg.url || featuredImg.src || ''),
+          src: normalizedUrl,
+          url: normalizedUrl,
           alt: product?.title || ''
         }];
+      }
+
+      // Extract price correctly - ensure it's in cents
+      let price = 0;
+      let salePrice = null;
+      
+      if (product?.variants && product.variants.length > 0) {
+        const firstVariant = product.variants[0];
+        // Shopify prices are always in cents in JSON API
+        // Ensure we're getting the raw price value, not a formatted string
+        if (firstVariant.price !== undefined && firstVariant.price !== null) {
+          price = typeof firstVariant.price === 'number' ? firstVariant.price : parseInt(String(firstVariant.price), 10) || 0;
+        }
+        if (firstVariant.compare_at_price !== undefined && firstVariant.compare_at_price !== null) {
+          salePrice = typeof firstVariant.compare_at_price === 'number' ? firstVariant.compare_at_price : parseInt(String(firstVariant.compare_at_price), 10) || null;
+        }
+      } else if (product?.price !== undefined && product?.price !== null) {
+        // Fallback: if no variants, try product.price
+        // Shopify JSON API always uses cents
+        price = typeof product.price === 'number' ? product.price : parseInt(String(product.price), 10) || 0;
+        if (product.compare_at_price !== undefined && product.compare_at_price !== null) {
+          salePrice = typeof product.compare_at_price === 'number' ? product.compare_at_price : parseInt(String(product.compare_at_price), 10) || null;
+        }
+      }
+      
+      // Debug logging (can be removed in production)
+      if (price > 0 && price < 1000) {
+        console.warn('Wishlist: Price seems low:', price, 'cents for product:', product?.title, '- Expected price in cents (e.g., 50000 for $500)');
       }
 
       // Create wishlist item
@@ -1716,8 +1772,8 @@
         name: product?.title || 'Product',
         handle: product?.handle || '',
         url: product ? `/products/${product.handle}` : '',
-        price: product?.variants?.[0]?.price || 0, // Price in cents (Shopify format)
-        salePrice: product?.variants?.[0]?.compare_at_price || null, // Compare price in cents
+        price: price, // Price in cents (Shopify format)
+        salePrice: salePrice, // Compare price in cents
         images: normalizedImages,
         variants: product?.variants || [],
         options: product?.options || product?.options_with_values || [],
@@ -1816,6 +1872,9 @@
         await addToWishlist(productId);
         console.log('Added to wishlist:', productId);
       }
+
+      // Update wishlist count in header
+      updateWishlistCount();
 
       // Update all wishlist buttons for this product
       const allButtons = document.querySelectorAll(`[data-wishlist-add="${productId}"], [data-product-id="${productId}"][data-wishlist-action], [data-product-id="${productId}"][data-wishlist-toggle]`);
