@@ -1192,6 +1192,115 @@
       // Initialize after DOM is ready
       setTimeout(initializeCarousel, 100);
 
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchEndX = 0;
+      var touchEndY = 0;
+      var isDragging = false;
+
+      function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isDragging = false;
+      }
+
+      function handleTouchMove(e) {
+        if (!touchStartX || !touchStartY) return;
+        isDragging = true;
+      }
+
+      function handleTouchEnd(e) {
+        if (!touchStartX || !touchStartY || !isDragging || isTransitioning) return;
+        
+        touchEndX = e.changedTouches[0].clientX;
+        touchEndY = e.changedTouches[0].clientY;
+        
+        var deltaX = touchStartX - touchEndX;
+        var deltaY = touchStartY - touchEndY;
+        var minSwipeDistance = 50; 
+        
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+          e.preventDefault();
+          isTransitioning = true;
+          
+          if (deltaX > 0) {
+            if (isMobileView()) {
+              var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+              if (mobileProducts.length > 0) {
+                mobileCurrentIndex = Math.min(mobileProducts.length - 1, mobileCurrentIndex + 1);
+                updateMobileCarousel();
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 300);
+            } else {
+              var scrollAmount = getScrollAmount();
+              var maxScroll = getMaxScroll();
+              
+              scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
+              updateScrollPosition();
+              
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 500);
+            }
+          } else {
+            // Swipe right - go to previous
+            if (isMobileView()) {
+              // Mobile navigation
+              var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+              if (mobileProducts.length > 0) {
+                mobileCurrentIndex = Math.max(0, mobileCurrentIndex - 1);
+                updateMobileCarousel();
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 300);
+            } else {
+              // Desktop navigation
+              var scrollAmount = getScrollAmount();
+              
+              scrollPosition = Math.min(0, scrollPosition + scrollAmount);
+              updateScrollPosition();
+              
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 500);
+            }
+          }
+        }
+        
+        // Reset
+        touchStartX = 0;
+        touchStartY = 0;
+        touchEndX = 0;
+        touchEndY = 0;
+        isDragging = false;
+      }
+
+      // Add touch event listeners to both mobile and desktop carousels
+      // Mobile wrapper - this is the main touch target on mobile devices
+      if (mobileWrapper) {
+        mobileWrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+        mobileWrapper.addEventListener('touchmove', handleTouchMove, { passive: true });
+        mobileWrapper.addEventListener('touchend', handleTouchEnd, { passive: false });
+      }
+      
+      // Desktop wrapper - for desktop touch devices (tablets, etc.)
+      var desktopCarouselWrapper = section.querySelector('.hand-picked-section__carousel-wrapper--desktop');
+      if (desktopCarouselWrapper) {
+        desktopCarouselWrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+        desktopCarouselWrapper.addEventListener('touchmove', handleTouchMove, { passive: true });
+        desktopCarouselWrapper.addEventListener('touchend', handleTouchEnd, { passive: false });
+      }
+      
+      // Also attach to the carousel tracks for desktop
+      tracks.forEach(function(track) {
+        track.addEventListener('touchstart', handleTouchStart, { passive: true });
+        track.addEventListener('touchmove', handleTouchMove, { passive: true });
+        track.addEventListener('touchend', handleTouchEnd, { passive: false });
+      });
+
       // Update on window resize
       var resizeTimer;
       window.addEventListener('resize', function() {
