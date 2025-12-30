@@ -303,6 +303,11 @@ h4, .h4 {
   transition: all 0.3s ease;
 }
 
+/* Hide chat widget on product pages */
+.template-product .chat-widget {
+  display: none;
+}
+
 .chat-widget:hover {
   background: #c1121f;
   padding-right: 1.5rem;
