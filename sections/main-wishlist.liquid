@@ -537,6 +537,12 @@
           version: 0
         };
         localStorage.setItem('wishlist-storage', JSON.stringify(wishlistData));
+        // Trigger custom event for cross-page updates
+        window.dispatchEvent(new CustomEvent('wishlist-updated', { detail: { items } }));
+        // Update wishlist count in header
+        if (typeof window.updateWishlistCount === 'function') {
+          window.updateWishlistCount();
+        }
       } catch (e) {
         console.error('Error saving wishlist:', e);
       }
@@ -696,20 +702,37 @@
 
     // Render wishlist item
     function renderWishlistItem(item) {
-      // Handle images - support multiple formats
+      // Handle images - support multiple formats and normalize URLs
+      function normalizeImageUrl(url) {
+        if (!url) return '/placeholder.svg';
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+          return url;
+        }
+        if (url.startsWith('//')) {
+          return 'https:' + url;
+        }
+        if (url.startsWith('/')) {
+          return window.location.origin + url;
+        }
+        return url;
+      }
+      
       let imageUrl = '/placeholder.svg';
       if (item.images && item.images.length > 0) {
         const firstImage = item.images[0];
+        let rawUrl = '';
         if (typeof firstImage === 'string') {
-          imageUrl = firstImage;
+          rawUrl = firstImage;
         } else if (firstImage.url) {
-          imageUrl = firstImage.url;
+          rawUrl = firstImage.url;
         } else if (firstImage.src) {
-          imageUrl = firstImage.src;
+          rawUrl = firstImage.src;
         }
+        imageUrl = normalizeImageUrl(rawUrl);
       } else if (item.image) {
         // Fallback to single image property
-        imageUrl = typeof item.image === 'string' ? item.image : (item.image.url || item.image.src || '/placeholder.svg');
+        const rawUrl = typeof item.image === 'string' ? item.image : (item.image.url || item.image.src || '');
+        imageUrl = normalizeImageUrl(rawUrl);
       }
       const colorDetails = item.colorDetails || item.colors || [];
       const color = colorDetails[0] || {};
@@ -724,12 +747,12 @@
       const variantId = variant ? variant.id : (item.variants && item.variants[0] ? item.variants[0].id : null);
       // Price is in cents (Shopify format), ensure it's a number
       let currentPrice = 0;
-      if (variant && variant.price) {
-        currentPrice = typeof variant.price === 'number' ? variant.price : parseInt(variant.price) || 0;
-      } else if (item.price) {
-        currentPrice = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
-      } else if (item.salePrice) {
-        currentPrice = typeof item.salePrice === 'number' ? item.salePrice : parseInt(item.salePrice) || 0;
+      if (variant && variant.price !== undefined && variant.price !== null) {
+        currentPrice = typeof variant.price === 'number' ? variant.price : parseInt(String(variant.price), 10) || 0;
+      } else if (item.price !== undefined && item.price !== null) {
+        currentPrice = typeof item.price === 'number' ? item.price : parseInt(String(item.price), 10) || 0;
+      } else if (item.salePrice !== undefined && item.salePrice !== null) {
+        currentPrice = typeof item.salePrice === 'number' ? item.salePrice : parseInt(String(item.salePrice), 10) || 0;
       }
 
       return `
