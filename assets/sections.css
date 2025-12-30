@@ -1160,7 +1160,7 @@
 
 .usa-fulfillment-section__content {
   position: relative;
-  padding: 2rem 0;
+  padding: 2rem 0 2rem 8rem;
 }
 
 .usa-fulfillment-section__nav {
@@ -1366,10 +1366,11 @@
 
 .tailored-fit-section__content {
   position: relative;
-  padding: 4rem;
+  padding: 4rem 4rem 4rem 8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 60rem;
 }
 
 .tailored-fit-section__nav {
@@ -1521,7 +1522,7 @@
   }
 
   .tailored-fit-section__content {
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 3rem 7rem;
     min-height: 50rem;
   }
 
@@ -1536,7 +1537,7 @@
   }
 
   .tailored-fit-section__content {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 2rem 6rem;
     min-height: 40rem;
   }
 
@@ -1628,7 +1629,7 @@
 
 .premium-materials-section__content {
   position: relative;
-  padding: 4rem;
+  padding: 4rem 4rem 4rem 8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1749,7 +1750,7 @@
   }
 
   .premium-materials-section__content {
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 3rem 7rem;
     min-height: 35rem;
   }
 
@@ -1764,7 +1765,7 @@
   }
 
   .premium-materials-section__content {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 2rem 6rem;
     min-height: 30rem;
   }
 
