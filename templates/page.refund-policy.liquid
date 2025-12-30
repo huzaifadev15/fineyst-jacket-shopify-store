@@ -1,0 +1,342 @@
+---
+layout: theme
+---
+
+{%- style -%}
+  .refund-policy-page {
+    min-height: 100vh;
+    background: #fff;
+  }
+  
+  .refund-header {
+    position: relative;
+    overflow: hidden;
+    background: #f6f6f6;
+  }
+  
+  .refund-header__content {
+    position: relative;
+    z-index: 10;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 8rem;
+    padding-bottom: 10rem;
+    text-align: center;
+  }
+  
+  .refund-header__title {
+    font-size: clamp(4rem, 5vw, 6rem);
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 3rem;
+  }
+  
+  .refund-header__description {
+    font-size: clamp(1.8rem, 2vw, 2rem);
+    color: #000;
+    margin-bottom: 5rem;
+  }
+  
+  .refund-header__features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  
+  .refund-header__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .refund-header__feature-icon {
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 50%;
+    background: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .refund-header__feature-icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: #000;
+  }
+  
+  .refund-header__feature-text {
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .refund-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .refund-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  
+  .refund-card__content {
+    padding: 6rem 4rem;
+  }
+  
+  .refund-card__date {
+    text-align: right;
+    margin-bottom: 3rem;
+  }
+  
+  .refund-card__date p {
+    font-size: 1.4rem;
+    color: #6b7280;
+  }
+  
+  .refund-section {
+    margin-bottom: 5rem;
+  }
+  
+  .refund-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .refund-section p {
+    color: #374151;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    font-size: 1.6rem;
+  }
+  
+  .refund-section ul {
+    list-style: disc;
+    padding-left: 3rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  
+  .refund-section ol {
+    list-style: decimal;
+    padding-left: 3rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  
+  .refund-section li {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+  }
+  
+  .refund-section a {
+    color: #2b2b2b;
+    text-decoration: none;
+  }
+  
+  .refund-section a:hover {
+    text-decoration: underline;
+  }
+  
+  .contact-section {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 3rem;
+  }
+  
+  .contact-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-section p {
+    color: #374151;
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+  }
+  
+  .contact-info-box {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 2rem;
+    border-radius: 0.5rem;
+  }
+  
+  .contact-info-box p {
+    color: #374151;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+  }
+  
+  .contact-info-box p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .contact-info-box strong {
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    .refund-header__features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    
+    .refund-card__content {
+      padding: 3rem 2rem;
+    }
+    
+    .refund-section h2 {
+      font-size: 2rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="refund-policy-page">
+  <!-- Header Banner -->
+  <div class="refund-header">
+    <div class="refund-header__content">
+      <h1 class="refund-header__title">Refund Policy</h1>
+      <p class="refund-header__description">Easy returns and hassle-free refunds on eligible orders</p>
+      
+      <div class="refund-header__features">
+        <div class="refund-header__feature">
+          <div class="refund-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+          </div>
+          <p class="refund-header__feature-text">30-Day Returns</p>
+        </div>
+        
+        <div class="refund-header__feature">
+          <div class="refund-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 2.1l4 4-4 4"/>
+              <path d="M3 12.2l14 0"/>
+              <path d="M7 21.9l-4-4 4-4"/>
+              <path d="M21 11.8l-14 0"/>
+            </svg>
+          </div>
+          <p class="refund-header__feature-text">Easy Process</p>
+        </div>
+        
+        <div class="refund-header__feature">
+          <div class="refund-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="5" width="22" height="14" rx="7" ry="7"/>
+              <path d="M8 11l2 2 4-4"/>
+            </svg>
+          </div>
+          <p class="refund-header__feature-text">Fast Refunds</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="refund-content">
+    <div class="refund-card">
+      <div class="refund-card__content">
+        <div class="refund-card__date">
+          <p>Last updated: 11/8/2025</p>
+        </div>
+        
+        <div class="refund-sections">
+          <section class="refund-section">
+            <h2>Return Eligibility</h2>
+            <p>We offer returns and exchanges within 30 days of delivery within the United States. To be eligible for a return:</p>
+            <ul>
+              <li>Items must be in original condition with tags attached</li>
+              <li>Items must not be worn, washed, or damaged</li>
+              <li>Original packaging and receipt are required</li>
+              <li>Custom or personalized items are not eligible for return</li>
+            </ul>
+          </section>
+
+          <section class="refund-section">
+            <h2>Return Process</h2>
+            <p>To initiate a return:</p>
+            <ol>
+              <li>Contact our customer service team at info@fineystjackets.com</li>
+              <li>Provide your order number and reason for return</li>
+              <li>We will provide you with a return authorization number</li>
+              <li>Package the item securely with the return authorization number</li>
+              <li>Ship the item back to us using a trackable shipping method</li>
+            </ol>
+          </section>
+
+          <section class="refund-section">
+            <h2>Refund Timeline</h2>
+            <p>Once we receive your returned item:</p>
+            <ul>
+              <li>We will inspect the item within 3-5 business days</li>
+              <li>If approved, your refund will be processed within 5-7 business days</li>
+              <li>Refunds will be issued to the original payment method</li>
+              <li>You will receive an email confirmation once the refund is processed</li>
+            </ul>
+          </section>
+
+          <section class="refund-section">
+            <h2>Exchanges</h2>
+            <p>We offer exchanges within 30 days of delivery. You will pay the difference if it is higher in price, or receive a refund if it is lower.</p>
+          </section>
+
+          <section class="refund-section">
+            <h2>Shipping Costs</h2>
+            <p>Return shipping costs are the responsibility of the customer unless the return is due to our error (wrong item sent, defective item, etc.). In cases where the return is our fault, we will provide a prepaid return label.</p>
+          </section>
+
+          <section class="refund-section">
+            <h2>Non-Returnable Items</h2>
+            <p>The following items cannot be returned:</p>
+            <ul>
+              <li>Custom or personalized items</li>
+              <li>Items worn, washed, or damaged by the customer</li>
+              <li>Items without original tags or packaging</li>
+              <li>Items returned after 30 days from delivery</li>
+              <li>Items purchased during final sale or clearance</li>
+            </ul>
+          </section>
+
+          <section class="refund-section">
+            <h2>Damaged or Defective Items</h2>
+            <p>If you receive a damaged or defective item, please contact us immediately at info@fineystjackets.com with photos of the damage. We will arrange for a free return and full refund or replacement.</p>
+          </section>
+
+          <section class="refund-section">
+            <h2>Policy Changes</h2>
+            <p>We reserve the right to modify this refund policy at any time. Changes will be posted on this page with an updated revision date. Your continued use of our services after any changes constitutes acceptance of the new policy.</p>
+          </section>
+
+          <section class="contact-section">
+            <h2>Contact Information</h2>
+            <p>For questions about returns or refunds, please contact us:</p>
+            <div class="contact-info-box">
+              <p><strong>Email:</strong> info@fineystjackets.com</p>
+              <p><strong>Phone:</strong> +1 (888) 840-0885</p>
+              <p><strong>Business Hours:</strong> Monday - Friday: 9:00 AM - 6:00 PM CST</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
