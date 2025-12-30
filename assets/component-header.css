@@ -275,7 +275,8 @@
   height: 2.2rem;
 }
 
-.site-header__cart-count {
+.site-header__cart-count,
+.site-header__wishlist-count {
   position: absolute;
   top: -0.8rem;
   right: -0.8rem;
@@ -289,6 +290,11 @@
   font-size: 1rem;
   font-weight: 600;
   border-radius: 50%;
+}
+
+.site-header__wishlist-count:empty,
+.site-header__wishlist-count[data-count="0"] {
+  display: none;
 }
 
 /* Sub Navigation (Categories) - Now in Navbar */

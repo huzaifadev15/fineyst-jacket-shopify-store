@@ -568,6 +568,10 @@
       const items = getWishlist();
       const filtered = items.filter(item => String(item.id) !== String(itemId));
       saveWishlist(filtered);
+      // Update wishlist count in header
+      if (typeof window.updateWishlistCount === 'function') {
+        window.updateWishlistCount();
+      }
       return filtered;
     }
 
@@ -692,8 +696,21 @@
 
     // Render wishlist item
     function renderWishlistItem(item) {
-      const image = item.images && item.images[0] ? item.images[0] : null;
-      const imageUrl = image?.url || image?.src || '/placeholder.svg';
+      // Handle images - support multiple formats
+      let imageUrl = '/placeholder.svg';
+      if (item.images && item.images.length > 0) {
+        const firstImage = item.images[0];
+        if (typeof firstImage === 'string') {
+          imageUrl = firstImage;
+        } else if (firstImage.url) {
+          imageUrl = firstImage.url;
+        } else if (firstImage.src) {
+          imageUrl = firstImage.src;
+        }
+      } else if (item.image) {
+        // Fallback to single image property
+        imageUrl = typeof item.image === 'string' ? item.image : (item.image.url || item.image.src || '/placeholder.svg');
+      }
       const colorDetails = item.colorDetails || item.colors || [];
       const color = colorDetails[0] || {};
       const colorValue = color.value || color.hex || '#8FBC8F';
@@ -705,7 +722,15 @@
       // Find variant ID based on selected size
       const variant = findVariantBySize(item, selectedSize);
       const variantId = variant ? variant.id : (item.variants && item.variants[0] ? item.variants[0].id : null);
-      const currentPrice = variant ? variant.price : (item.price || item.salePrice || 0);
+      // Price is in cents (Shopify format), ensure it's a number
+      let currentPrice = 0;
+      if (variant && variant.price) {
+        currentPrice = typeof variant.price === 'number' ? variant.price : parseInt(variant.price) || 0;
+      } else if (item.price) {
+        currentPrice = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
+      } else if (item.salePrice) {
+        currentPrice = typeof item.salePrice === 'number' ? item.salePrice : parseInt(item.salePrice) || 0;
+      }
 
       return `
         <div class="wishlist-item" data-item-id="${item.id}">
@@ -823,6 +848,10 @@
           const itemId = this.getAttribute('data-remove');
           removeItem(itemId);
           loadWishlist();
+          // Update wishlist count in header
+          if (typeof window.updateWishlistCount === 'function') {
+            window.updateWishlistCount();
+          }
         });
       });
 
@@ -898,12 +927,20 @@
             addToCart(variantId, 1);
             removeItem(itemId);
             loadWishlist();
+            // Update wishlist count in header
+            if (typeof window.updateWishlistCount === 'function') {
+              window.updateWishlistCount();
+            }
           } else {
             // Fallback: try to add first variant
             if (item.variants && item.variants[0]) {
               addToCart(item.variants[0].id, 1);
               removeItem(itemId);
               loadWishlist();
+              // Update wishlist count in header
+              if (typeof window.updateWishlistCount === 'function') {
+                window.updateWishlistCount();
+              }
             }
           }
         });
@@ -950,6 +987,11 @@
           saveWishlist([]);
           loadWishlist();
           
+          // Update wishlist count in header
+          if (typeof window.updateWishlistCount === 'function') {
+            window.updateWishlistCount();
+          }
+          
           if (typeof window.showNotification === 'function') {
             window.showNotification('All items added to cart!', 'success');
           }
@@ -959,15 +1001,26 @@
 
     // Initialize
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadWishlist);
+      document.addEventListener('DOMContentLoaded', function() {
+        loadWishlist();
+        if (typeof window.updateWishlistCount === 'function') {
+          window.updateWishlistCount();
+        }
+      });
     } else {
       loadWishlist();
+      if (typeof window.updateWishlistCount === 'function') {
+        window.updateWishlistCount();
+      }
     }
 
     // Listen for storage changes
     window.addEventListener('storage', function(e) {
       if (e.key === 'wishlist-storage') {
         loadWishlist();
+        if (typeof window.updateWishlistCount === 'function') {
+          window.updateWishlistCount();
+        }
       }
     });
   })();
