@@ -1,3 +1,65 @@
+{%- style -%}
+  @media (max-width: 768px) {
+    .faq-section {
+      padding: 3rem 0 !important;
+    }
+    .faq-section .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .faq-section__title {
+      font-size: 2rem !important;
+      margin-bottom: 2rem !important;
+      padding: 0 1rem;
+    }
+    .faq-section__grid {
+      column-count: 1 !important;
+      column-gap: 0 !important;
+    }
+    .faq-section__item {
+      margin-bottom: 1rem !important;
+    }
+    .faq-section__question {
+      padding: 1.2rem !important;
+    }
+    .faq-section__question-text {
+      font-size: 1.2rem !important;
+      padding-right: 1rem !important;
+    }
+    .faq-section__icon {
+      width: 2rem !important;
+      height: 2rem !important;
+    }
+    .faq-section__answer-content {
+      padding: 0 1.2rem 1.2rem 1.2rem !important;
+      font-size: 1.2rem !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .faq-section {
+      padding: 2.5rem 0 !important;
+    }
+    .faq-section .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .faq-section__title {
+      font-size: 1.75rem !important;
+      margin-bottom: 1.5rem !important;
+    }
+    .faq-section__question {
+      padding: 1rem !important;
+    }
+    .faq-section__question-text {
+      font-size: 1.1rem !important;
+    }
+    .faq-section__answer-content {
+      padding: 0 1rem 1rem 1rem !important;
+      font-size: 1.1rem !important;
+    }
+  }
+{%- endstyle -%}
+
 <section class="faq-section">
   <div class="container">
     {%- if section.settings.title != blank -%}
