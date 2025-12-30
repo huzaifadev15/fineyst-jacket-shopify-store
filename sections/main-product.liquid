@@ -4,21 +4,7 @@
   }
 
   .product-breadcrumbs {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #666;
-    display: block !important;
-    width: 100%;
-    visibility: visible !important;
-    opacity: 1 !important;
-    text-align: center;
-    padding: 2rem 0;
-    margin-bottom: 0;
-  }
-
-  .product-breadcrumbs .container {
-    text-align: center;
+    display: none;
   }
 
   .product-breadcrumbs a {
@@ -39,6 +25,7 @@
   .product-gallery {
     position: sticky;
     top: 10rem;
+    margin-top: 21px;
     min-width: 0; /* Allow grid item to shrink if needed */
   }
 
@@ -632,10 +619,21 @@
     }
 
     .product-breadcrumbs {
+      display: block !important;
       font-size: 15px;
       margin-top: 53px;
       text-align: center;
       padding: 0 1.5rem;
+      width: 100%;
+      visibility: visible !important;
+      opacity: 1 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #666;
+    }
+
+    .product-breadcrumbs .container {
+      text-align: center;
     }
 
     .product-title-section {

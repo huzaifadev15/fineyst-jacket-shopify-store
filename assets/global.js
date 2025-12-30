@@ -51,6 +51,7 @@
   function initMobileMenu() {
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const mobileMenu = document.querySelector('[data-mobile-menu]');
+    const menuClose = document.querySelector('[data-menu-close]');
   
     if (!menuToggle || !mobileMenu) return;
   
@@ -59,6 +60,15 @@
       menuToggle.setAttribute('aria-expanded', isActive);
       document.body.style.overflow = isActive ? 'hidden' : '';
     });
+  
+    // Close menu on close button click
+    if (menuClose) {
+      menuClose.addEventListener('click', function() {
+        mobileMenu.classList.remove('is-active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    }
   
     // Close menu on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
@@ -568,11 +578,14 @@
   }
 
   function formatMoney(cents) {
+    // Ensure cents is a valid number
+    const amount = typeof cents === 'number' ? cents : parseInt(cents, 10) || 0;
+    
     if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
-      return Shopify.formatMoney(cents);
+      return Shopify.formatMoney(amount);
     }
     // Fallback formatting
-    return 'Rs ' + (cents / 100).toLocaleString('en-IN');
+    return 'Rs ' + (amount / 100).toLocaleString('en-IN');
   }
 
   // Utility function to escape HTML to prevent XSS
@@ -859,9 +872,23 @@
   }
 
   function updateCartSubtotal(cart) {
+    // Ensure cart and total_price are valid
+    if (!cart) {
+      console.error('Cart is undefined in updateCartSubtotal');
+      return;
+    }
+    
+    const totalPrice = cart.total_price || 0;
+    const priceValue = typeof totalPrice === 'number' ? totalPrice : parseInt(totalPrice, 10) || 0;
+    
     const subtotalEl = document.querySelector('[data-cart-sidebar-subtotal]');
     if (subtotalEl) {
-      subtotalEl.textContent = formatMoney(cart.total_price);
+      subtotalEl.textContent = formatMoney(priceValue);
+    }
+    
+    const totalEl = document.querySelector('[data-cart-sidebar-total]');
+    if (totalEl) {
+      totalEl.textContent = formatMoney(priceValue);
     }
     
     // Update dynamic checkout buttons
@@ -1206,6 +1233,70 @@
       }, 250);
     });
   
+    // Touch/Swipe functionality for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let isDragging = false;
+
+    function handleTouchStart(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isDragging = false;
+    }
+
+    function handleTouchMove(e) {
+      if (!touchStartX || !touchStartY) return;
+      isDragging = true;
+    }
+
+    function handleTouchEnd(e) {
+      if (!touchStartX || !touchStartY || !isDragging) return;
+      
+      touchEndX = e.changedTouches[0].clientX;
+      touchEndY = e.changedTouches[0].clientY;
+      
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = touchStartY - touchEndY;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+      
+      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        e.preventDefault();
+        
+        if (deltaX > 0) {
+          // Swipe left - go to next
+          const visibleCount = visibleCards.length;
+          const maxVisible = Math.min(getMaxVisible(), visibleCount);
+          const maxIndex = Math.max(0, visibleCount - maxVisible);
+          
+          if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+          }
+        } else {
+          // Swipe right - go to previous
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        }
+      }
+      
+      // Reset
+      touchStartX = 0;
+      touchStartY = 0;
+      touchEndX = 0;
+      touchEndY = 0;
+      isDragging = false;
+    }
+
+    // Add touch event listeners to carousel
+    carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+
     // Initialize with men's categories
     filterByGender('men');
   }
@@ -1444,6 +1535,69 @@
       }, 250);
     });
   
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let isDragging = false;
+
+    function handleTouchStart(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isDragging = false;
+    }
+
+    function handleTouchMove(e) {
+      if (!touchStartX || !touchStartY) return;
+      isDragging = true;
+    }
+
+    function handleTouchEnd(e) {
+      if (!touchStartX || !touchStartY || !isDragging) return;
+      
+      touchEndX = e.changedTouches[0].clientX;
+      touchEndY = e.changedTouches[0].clientY;
+      
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = touchStartY - touchEndY;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+      
+      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        e.preventDefault();
+        
+        if (deltaX > 0) {
+          // Swipe left - go to next
+          const visibleCards = getVisibleCards();
+          const isMobile = window.innerWidth < 768;
+          const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
+          
+          if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+          }
+        } else {
+          // Swipe right - go to previous
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        }
+      }
+      
+      // Reset
+      touchStartX = 0;
+      touchStartY = 0;
+      touchEndX = 0;
+      touchEndY = 0;
+      isDragging = false;
+    }
+
+    // Add touch event listeners to carousel
+    carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+
     // Initialize
     updateCarousel();
   }
