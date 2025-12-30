@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     background: white;
-    padding-bottom: 0.5rem;
+    padding: 2rem 0 1rem;
   }
 
   @media (min-width: 640px) {
@@ -15,7 +15,7 @@
 
   @media (min-width: 768px) {
     .hand-picked-section {
-      padding-bottom: 1.5rem;
+      padding: 3rem 0 1.5rem;
     }
   }
 
@@ -25,19 +25,30 @@
     overflow: hidden;
     position: relative;
     margin: 0 auto;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__container {
+      padding: 0;
+    }
   }
 
   .hand-picked-section__title {
-    font-size: 4rem !important;
+    font-size: 1.75rem !important;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
     color: #2b2b2b;
+    line-height: 1.2;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__title {
       font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      padding: 0;
     }
   }
 
@@ -52,18 +63,27 @@
     justify-content: center;
     margin-top: -0.5rem;
     margin-bottom: 1rem;
-    gap: 0.25rem;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__category-nav {
+      gap: 0.75rem;
+      padding: 0;
+    }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__category-nav {
       margin-bottom: 1.5rem;
+      gap: 1rem;
     }
   }
 
   .hand-picked-section__category-btn {
-    padding: 0 0.5rem;
-    font-size: 2.25rem;
+    padding: 0 0.75rem;
+    font-size: 1.25rem;
     font-weight: 500;
     transition: color 0.3s ease;
     color: #374151;
@@ -74,7 +94,8 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__category-btn {
-      font-size: 2.5rem !important;
+      font-size: 2rem !important;
+      padding: 0 0.5rem;
     }
   }
 
@@ -141,8 +162,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 550px;
+    height: 450px;
     overflow: hidden;
+    padding: 0 3.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__carousel-wrapper--mobile {
+      height: 500px;
+      padding: 0 4rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -378,17 +407,25 @@
     transform: translateY(-50%);
     background: black;
     color: white;
-    padding: 1rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    padding: 0.75rem;
+    width: 3rem;
+    height: 3rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     z-index: 10;
     border: none;
     cursor: pointer;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__nav-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: 1rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -414,15 +451,10 @@
     }
   }
 
-  @media (min-width: 768px) {
+  /* Hide buttons on very large screens if needed */
+  @media (min-width: 1440px) {
     .hand-picked-section__nav-btn {
       display: flex;
-    }
-  }
-
-  @media (max-width: 1438px) {
-    .hand-picked-section__nav-btn {
-      display: none !important;
     }
   }
 
@@ -486,6 +518,14 @@
     }
   }
 
+  /* Mobile carousel button positioning */
+  @media (max-width: 767px) {
+    .hand-picked-section__nav-btn {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
   .hand-picked-section__nav-icon {
     width: 1.5rem;
     height: 1.5rem;
@@ -526,7 +566,22 @@
 
   .hand-picked-section__empty-text {
     color: #6b7280;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__empty-text {
+      font-size: 1rem;
+      padding: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__empty-text {
+      font-size: 1.125rem;
+    }
   }
 
   /* Mobile specific styles */
@@ -534,8 +589,9 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 65%;
-    max-width: 280px;
+    width: 60%;
+    max-width: 220px;
+    min-width: 180px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -543,11 +599,20 @@
     opacity: 0;
     transform: translateX(130%) scale(0.7);
     transition: all 0.3s ease;
+    padding: 0 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile {
+      width: 55%;
+      max-width: 240px;
+      padding: 0;
+    }
   }
 
   .hand-picked-section__product-mobile.is-center {
     opacity: 1;
-    transform: translateX(0) scale(1.04);
+    transform: translateX(0) scale(1);
     z-index: 3;
     margin-top: 20px;
   }
@@ -576,6 +641,28 @@
     transform: translateX(130%) scale(0.7);
     opacity: 0;
     z-index: 1;
+  }
+
+  /* Mobile product info styles */
+  .hand-picked-section__product-mobile h3 {
+    font-size: 0.75rem !important;
+    line-height: 1.3;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile h3 {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  .hand-picked-section__product-mobile .product-price-mobile {
+    font-size: 0.75rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile .product-price-mobile {
+      font-size: 0.875rem !important;
+    }
   }
 {%- endstyle -%}
 
@@ -620,6 +707,54 @@
                 class="hand-picked-section__product-mobile{% if forloop.index == 1 %} is-center{% else %} is-hidden-right{% endif %}" 
                 data-product-index="{{ forloop.index0 }}"
                 data-gender="men"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                  <a href="{{ product.url }}" style="position: relative; cursor: pointer; overflow: hidden; width: 100%; aspect-ratio: 252.7 / 383.3;">
+                    {%- if product.featured_image -%}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 280 }}"
+                        alt="{{ product.title | escape }}"
+                        width="280"
+                        height="420"
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+                    {%- endif -%}
+                  </a>
+                  <div style="text-align: center; margin-top: 0.75rem; width: 100%; padding: 0 0.25rem;">
+                    <h3 style="font-weight: 600; font-size: 0.75rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      {%- assign title = product.title -%}
+                      {%- if title.size > 38 -%}
+                        {{ title | truncate: 38 }}...
+                      {%- else -%}
+                        {{ title }}
+                      {%- endif -%}
+                    </h3>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; font-size: 0.875rem; margin-top: 0.25rem;">
+                      {%- if product.compare_at_price > product.price -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                        <div style="color: #6b7280; text-decoration: line-through; font-size: 0.875rem;">
+                          {{ product.compare_at_price | money }}
+                        </div>
+                      {%- else -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+            {%- for product in women_collection.products limit: products_limit -%}
+              <div 
+                class="hand-picked-section__product-mobile is-hidden-right" 
+                data-product-index="{{ forloop.index0 }}"
+                data-gender="women"
               >
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
                   <a href="{{ product.url }}" style="position: relative; cursor: pointer; overflow: hidden; width: 100%; aspect-ratio: 252.7 / 383.3;">
@@ -799,6 +934,7 @@
       var activeCategory = 'men';
       var scrollPosition = 0;
       var isTransitioning = false;
+      var mobileCurrentIndex = 0; // Track current center product index for mobile
 
       function updateScrollPosition() {
         tracks.forEach(function(track) {
@@ -807,6 +943,52 @@
           // Apply scroll position
           track.style.transform = 'translateX(' + scrollPosition + 'px)';
         });
+      }
+
+      // Mobile carousel navigation
+      function updateMobileCarousel() {
+        if (!mobileWrapper || !isMobileView()) return;
+        
+        // Hide all products first, then show only active category
+        var allMobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile');
+        allMobileProducts.forEach(function(product) {
+          var productGender = product.getAttribute('data-gender');
+          if (productGender !== activeCategory) {
+            // Hide products from inactive category
+            product.classList.remove('is-center', 'is-prev', 'is-next', 'is-hidden-left', 'is-hidden-right');
+            product.style.display = 'none';
+            return;
+          } else {
+            product.style.display = 'flex';
+          }
+        });
+        
+        var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+        if (mobileProducts.length === 0) return;
+        
+        // Ensure index is within bounds
+        mobileCurrentIndex = Math.max(0, Math.min(mobileCurrentIndex, mobileProducts.length - 1));
+        
+        mobileProducts.forEach(function(product, index) {
+          // Remove all state classes
+          product.classList.remove('is-center', 'is-prev', 'is-next', 'is-hidden-left', 'is-hidden-right');
+          
+          if (index === mobileCurrentIndex) {
+            product.classList.add('is-center');
+          } else if (index === mobileCurrentIndex - 1) {
+            product.classList.add('is-prev');
+          } else if (index === mobileCurrentIndex + 1) {
+            product.classList.add('is-next');
+          } else if (index < mobileCurrentIndex - 1) {
+            product.classList.add('is-hidden-left');
+          } else {
+            product.classList.add('is-hidden-right');
+          }
+        });
+      }
+
+      function isMobileView() {
+        return mobileWrapper && window.getComputedStyle(mobileWrapper).display !== 'none';
       }
 
       function getScrollAmount() {
@@ -851,6 +1033,7 @@
           
           activeCategory = category;
           scrollPosition = 0; // Reset scroll position
+          mobileCurrentIndex = 0; // Reset mobile carousel index
           isTransitioning = true;
 
           // Update button states
@@ -859,7 +1042,7 @@
             b.setAttribute('aria-pressed', isActive);
           });
 
-          // Show/hide tracks
+          // Show/hide desktop tracks
           tracks.forEach(function(track) {
             if (track.getAttribute('data-gender') === category) {
               track.classList.add('is-active');
@@ -871,12 +1054,16 @@
           // Update scroll position after category switch
           setTimeout(function() {
             updateScrollPosition();
+            // Update mobile carousel only if on mobile view
+            if (isMobileView()) {
+              updateMobileCarousel();
+            }
             isTransitioning = false;
           }, 50);
         });
       });
 
-      // Navigation - Simple horizontal scroll
+      // Navigation - Handle both mobile and desktop
       if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
           e.preventDefault();
@@ -884,15 +1071,30 @@
           if (isTransitioning) return;
           
           isTransitioning = true;
-          var scrollAmount = getScrollAmount();
-          var maxScroll = getMaxScroll();
           
-          scrollPosition = Math.min(0, scrollPosition + scrollAmount);
-          updateScrollPosition();
-          
-          setTimeout(function() {
-            isTransitioning = false;
-          }, 500);
+          // Check if we're on mobile view
+          if (isMobileView()) {
+            // Mobile navigation
+            var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+            if (mobileProducts.length > 0) {
+              mobileCurrentIndex = Math.max(0, mobileCurrentIndex - 1);
+              updateMobileCarousel();
+            }
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 300);
+          } else {
+            // Desktop navigation
+            var scrollAmount = getScrollAmount();
+            var maxScroll = getMaxScroll();
+            
+            scrollPosition = Math.min(0, scrollPosition + scrollAmount);
+            updateScrollPosition();
+            
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 500);
+          }
         });
       }
 
@@ -903,38 +1105,83 @@
           if (isTransitioning) return;
           
           isTransitioning = true;
-          var scrollAmount = getScrollAmount();
-          var maxScroll = getMaxScroll();
           
-          scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
-          updateScrollPosition();
-          
-          setTimeout(function() {
-            isTransitioning = false;
-          }, 500);
+          // Check if we're on mobile view
+          if (isMobileView()) {
+            // Mobile navigation
+            var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+            if (mobileProducts.length > 0) {
+              mobileCurrentIndex = Math.min(mobileProducts.length - 1, mobileCurrentIndex + 1);
+              updateMobileCarousel();
+            }
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 300);
+          } else {
+            // Desktop navigation
+            var scrollAmount = getScrollAmount();
+            var maxScroll = getMaxScroll();
+            
+            scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
+            updateScrollPosition();
+            
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 500);
+          }
         });
       }
 
       // Initialize on load
-      setTimeout(function() {
+      function initializeCarousel() {
+        // Always initialize desktop tracks - ensure they're visible
         tracks.forEach(function(track) {
-          if (track.getAttribute('data-gender') === activeCategory) {
+          var trackGender = track.getAttribute('data-gender');
+          if (trackGender === activeCategory) {
             track.classList.add('is-active');
+          } else {
+            track.classList.remove('is-active');
           }
         });
+        
+        // Update desktop scroll position
         scrollPosition = 0;
         updateScrollPosition();
-      }, 100);
+        
+        // Initialize mobile carousel only if on mobile view
+        if (isMobileView()) {
+          mobileCurrentIndex = 0;
+          updateMobileCarousel();
+        }
+      }
+      
+      // Initialize after DOM is ready
+      setTimeout(initializeCarousel, 100);
 
       // Update on window resize
       var resizeTimer;
       window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
+          // Ensure desktop tracks are properly shown
+          tracks.forEach(function(track) {
+            if (track.getAttribute('data-gender') === activeCategory) {
+              track.classList.add('is-active');
+            } else {
+              track.classList.remove('is-active');
+            }
+          });
+          
           // Ensure scroll position is still valid after resize
           var maxScroll = getMaxScroll();
           scrollPosition = Math.max(maxScroll, Math.min(0, scrollPosition));
           updateScrollPosition();
+          
+          // Reset mobile carousel if switching to mobile view
+          if (isMobileView()) {
+            mobileCurrentIndex = 0;
+            updateMobileCarousel();
+          }
         }, 250);
       });
     }
