@@ -16,6 +16,7 @@
     initHandPickedCarousel();
     initColorCollectionCarousel();
     initFAQ();
+    initSectionCarousel();
   });
   
   /* Header Scroll Behavior */
@@ -1948,6 +1949,163 @@
         }
       });
     });
+  }
+
+  /* Section Carousel (Premium Materials, Tailored Fit, USA Fulfillment) */
+  function initSectionCarousel() {
+    // Slide data from the provided code
+    const slides = [
+      {
+        id: 1,
+        title: "UNMATCHED CRAFTSMANSHIP",
+        description: "Hours of artisan detail go into every jacket. From reinforced stitching to premium hardware, we build jackets that stand the test of time.",
+        features: [
+          "Reinforced stitching techniques",
+          "Premium YKK zippers",
+          "Quality lining materials",
+          "Artisan-level attention to detail"
+        ],
+        imageUrl: "https://www.fineystjackets.com/uploads/2025/product/craftmanship_banner_2.webp"
+      },
+      {
+        id: 3,
+        title: "PREMIUM MATERIALS",
+        description: "We don't mass-produce. We craft. Every FINEYST jacket starts with ethically sourced full-grain leather, precision cuts, and hours of artisan detail.",
+        features: [
+          "Ethically sourced full-grain leather",
+          "Premium lambskin and suede options",
+          "Distressed finishes for authentic look",
+          "Quality tested for durability"
+        ],
+        imageUrl: window.Shopify?.routes?.root_url ? window.Shopify.routes.root_url + "assets/option_1.webp" : "/assets/option_1.webp"
+      },
+      {
+        id: 2,
+        title: "TAILORED FIT",
+        description: "Whether you're buying a ready-to-wear bomber or designing a custom jacket from scratch, you're investing in precision-crafted fit.",
+        features: [
+          "Standard sizes available",
+          "Made-to-measure options",
+          "Perfect fit guarantee",
+          "Custom sizing consultations"
+        ],
+        imageUrl: "https://www.fineystjackets.com/uploads/2025/product/Tailored_fit_section_1.webp"
+      },
+      {
+        id: 4,
+        title: "USA FULFILLMENT",
+        description: "Fast, reliable shipping with hassle-free returns. We stand behind every jacket we make with comprehensive customer support.",
+        features: [
+          "Free shipping",
+          "24-48 hour processing",
+          "14-day easy returns",
+          "Dedicated customer support"
+        ],
+        imageUrl: window.Shopify?.routes?.root_url ? window.Shopify.routes.root_url + "assets/usa_fulfillment_banner.webp" : "/assets/usa_fulfillment_banner.webp"
+      }
+    ];
+
+    let currentIndex = 0;
+
+    // Update all sections with slide content
+    function updateAllSections(slide) {
+      // Update titles
+      const titles = document.querySelectorAll('.slider-content-title');
+      titles.forEach(title => {
+        title.textContent = slide.title;
+      });
+
+      // Update descriptions
+      const descriptions = document.querySelectorAll('.slider-content-description');
+      descriptions.forEach(desc => {
+        desc.textContent = slide.description;
+      });
+
+      // Update features
+      const featuresLists = document.querySelectorAll('.slider-content-features');
+      featuresLists.forEach(list => {
+        const existingItems = list.querySelectorAll('li');
+        const firstItem = existingItems[0];
+        const baseClassName = firstItem ? firstItem.className : '';
+        
+        list.innerHTML = '';
+        slide.features.forEach(feature => {
+          const listItem = document.createElement('li');
+          listItem.className = baseClassName;
+          listItem.textContent = feature;
+          list.appendChild(listItem);
+        });
+      });
+
+      // Update images
+      const images = document.querySelectorAll('.slider-content-image');
+      images.forEach(img => {
+        if (img.tagName === 'IMG') {
+          img.src = slide.imageUrl;
+          img.alt = slide.title;
+        }
+      });
+    }
+
+    // Update pagination dots
+    function updatePagination(index) {
+      const allDots = document.querySelectorAll('.section-carousel-dot');
+      allDots.forEach((dot) => {
+        const dotIndex = parseInt(dot.getAttribute('data-index') || '0', 10);
+        if (dotIndex === index) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    // Navigation handlers
+    function handlePrev() {
+      currentIndex = currentIndex > 0 ? currentIndex - 1 : slides.length - 1;
+      updateAllSections(slides[currentIndex]);
+      updatePagination(currentIndex);
+    }
+
+    function handleNext() {
+      currentIndex = currentIndex < slides.length - 1 ? currentIndex + 1 : 0;
+      updateAllSections(slides[currentIndex]);
+      updatePagination(currentIndex);
+    }
+
+    function goToSlide(index) {
+      if (index >= 0 && index < slides.length) {
+        currentIndex = index;
+        updateAllSections(slides[currentIndex]);
+        updatePagination(currentIndex);
+      }
+    }
+
+    // Attach event listeners using event delegation
+    document.addEventListener('click', function(e) {
+      const prevBtn = e.target.closest('.section-carousel-prev');
+      const nextBtn = e.target.closest('.section-carousel-next');
+      const dot = e.target.closest('.section-carousel-dot');
+
+      if (prevBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        handlePrev();
+      } else if (nextBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleNext();
+      } else if (dot) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dotIndex = parseInt(dot.getAttribute('data-index') || '0', 10);
+        goToSlide(dotIndex);
+      }
+    });
+
+    // Initialize with first slide
+    updateAllSections(slides[currentIndex]);
+    updatePagination(currentIndex);
   }
   
   

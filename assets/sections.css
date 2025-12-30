@@ -1153,7 +1153,7 @@
 
 .usa-fulfillment-section__grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
 }
@@ -1164,7 +1164,20 @@
 }
 
 .usa-fulfillment-section__nav {
-  margin-bottom: 3rem;
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+  z-index: 10;
+  margin: 0;
+}
+
+.usa-fulfillment-section__nav-right {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
 .usa-fulfillment-section__nav-btn {
@@ -1178,10 +1191,24 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
+  position: relative;
 }
 
 .usa-fulfillment-section__nav-btn:hover {
   background: #555;
+}
+
+.usa-fulfillment-section__nav-btn svg {
+  display: block;
+  margin: 0;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .usa-fulfillment-section__title {
@@ -1331,7 +1358,7 @@
 
 .tailored-fit-section__grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   align-items: stretch;
   min-height: 60rem;
@@ -1346,7 +1373,12 @@
 }
 
 .tailored-fit-section__nav {
-  margin-bottom: auto;
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+  z-index: 10;
+  margin: 0;
 }
 
 .tailored-fit-section__nav-btn {
@@ -1360,10 +1392,24 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
+  position: relative;
 }
 
 .tailored-fit-section__nav-btn:hover {
   background: #555;
+}
+
+.tailored-fit-section__nav-btn svg {
+  display: block;
+  margin: 0;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tailored-fit-section__title {
@@ -1499,9 +1545,22 @@
   }
 }
 
+/* Section Carousel Wrapper - All sections visible, content updates dynamically */
+.section-carousel-item {
+  display: block;
+  opacity: 1;
+}
+
+.slider-content-title,
+.slider-content-description,
+.slider-content-features,
+.slider-content-image {
+  transition: opacity 0.3s ease;
+}
+
 /* Premium Materials Section */
 .premium-materials-section {
-  padding: 0;
+  padding: 8rem 0;
   background: #000;
   color: #fff;
   position: relative;
@@ -1511,8 +1570,16 @@
   position: relative;
 }
 
-.premium-materials-section__nav-btn {
+.premium-materials-section__nav {
   position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+  z-index: 10;
+  margin: 0;
+}
+
+.premium-materials-section__nav-btn {
   width: 4.5rem;
   height: 4.5rem;
   display: flex;
@@ -1523,23 +1590,32 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
+  padding: 0;
+  position: relative;
 }
 
 .premium-materials-section__nav-btn:hover {
   background: #555;
 }
 
-.premium-materials-section__nav-btn--prev {
-  left: 2rem;
+.premium-materials-section__nav-btn svg {
+  display: block;
+  margin: 0;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.premium-materials-section__nav-btn--next {
-  right: 2rem;
+.premium-materials-section__nav-right {
+  position: absolute;
   top: 50%;
+  right: 2rem;
   transform: translateY(-50%);
+  z-index: 10;
 }
 
 .premium-materials-section__grid {
@@ -1552,12 +1628,11 @@
 
 .premium-materials-section__content {
   position: relative;
-  padding: 4rem 10rem 4rem 4rem;
+  padding: 4rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   min-height: 60rem;
-  max-width: 85%;
-  margin-left: 10rem;
 }
 
 .premium-materials-section__title {
@@ -1613,27 +1688,26 @@
 }
 
 .premium-materials-section__pagination {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  z-index: 10;
+  margin-top: auto;
+  padding-top: 3rem;
 }
 
-.premium-materials-section__dot {
+.premium-materials-section__pagination-dot {
   width: 0.8rem;
   height: 0.8rem;
   border-radius: 50%;
   background: #fff;
   opacity: 0.3;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.premium-materials-section__dot--active {
+.premium-materials-section__pagination-dot.active,
+.section-carousel-dot.active {
   width: 1rem;
   height: 1rem;
   opacity: 1;
@@ -1645,9 +1719,6 @@
   height: 100%;
   min-height: 60rem;
   overflow: hidden;
-  flex: 1;
-  margin-left: -43rem;
-  padding: 0;
 }
 
 .premium-materials-section__image {
