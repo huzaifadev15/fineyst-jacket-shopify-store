@@ -1,3 +1,45 @@
+{%- style -%}
+  @media (max-width: 768px) {
+    .color-collection-section .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .color-collection-section__header {
+      padding-left: 0;
+      padding-right: 0;
+      margin-bottom: 2rem;
+    }
+    .color-collection-section__title {
+      font-size: 2.5rem !important;
+      line-height: 1.2;
+    }
+    .color-collection-section__subtitle {
+      font-size: 1.25rem !important;
+      line-height: 1.5;
+    }
+    .color-collection-section__carousel-header {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .color-collection-section__carousel {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  @media (max-width: 480px) {
+    .color-collection-section .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .color-collection-section__title {
+      font-size: 3rem !important;
+    }
+    .color-collection-section__subtitle {
+      font-size: 2.1rem !important;
+    }
+  }
+{%- endstyle -%}
+
 <section class="color-collection-section" data-section-id="{{ section.id }}">
   <div class="color-collection-section__background">
     <div class="color-collection-section__overlay"></div>

@@ -1237,37 +1237,51 @@
     let currentIndex = 0;
     const cards = Array.from(track.querySelectorAll('.color-collection-section__card'));
     const totalCards = cards.length;
-    const visibleCards = 5;
-  
+
+    function getVisibleCards() {
+      // On mobile, typically 1 card is visible, on desktop 3-5 cards
+      const isMobile = window.innerWidth < 768;
+      return isMobile ? 1 : 5;
+    }
+
     function getCardWidth() {
       const firstCard = cards[0];
       if (!firstCard) return 0;
       const style = window.getComputedStyle(firstCard);
       const width = firstCard.offsetWidth;
-      const gap = parseInt(style.marginRight) || 32;
+      const gap = parseInt(style.marginRight) || parseInt(style.marginLeft) || 16;
       return width + gap;
     }
-  
+
     function updateCarousel() {
       const cardWidth = getCardWidth();
+      if (cardWidth === 0) return; // Don't update if card width is 0
+      
       const translateX = -currentIndex * cardWidth;
       track.style.transform = `translateX(${translateX}px)`;
       
-      const maxIndex = Math.max(0, totalCards - visibleCards);
+      const visibleCards = getVisibleCards();
+      // On mobile, allow scrolling to the last card (totalCards - 1)
+      // On desktop, stop when last visibleCards are shown
+      const isMobile = window.innerWidth < 768;
+      const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
       
       prevBtn.disabled = currentIndex === 0;
       nextBtn.disabled = currentIndex >= maxIndex;
     }
-  
+
     prevBtn.addEventListener('click', function() {
       if (currentIndex > 0) {
         currentIndex--;
         updateCarousel();
       }
     });
-  
+
     nextBtn.addEventListener('click', function() {
-      const maxIndex = Math.max(0, totalCards - visibleCards);
+      const visibleCards = getVisibleCards();
+      const isMobile = window.innerWidth < 768;
+      const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
+      
       if (currentIndex < maxIndex) {
         currentIndex++;
         updateCarousel();
@@ -1279,6 +1293,15 @@
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function() {
+        // Recalculate card width
+        const newCardWidth = getCardWidth();
+        if (newCardWidth > 0) {
+          // Ensure currentIndex is still valid after resize
+          const visibleCards = getVisibleCards();
+          const isMobile = window.innerWidth < 768;
+          const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
+          currentIndex = Math.min(currentIndex, maxIndex);
+        }
         updateCarousel();
       }, 250);
     });
