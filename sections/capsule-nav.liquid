@@ -78,6 +78,7 @@
   }
 {%- endstyle -%}
 
+{%- unless template.name == 'page' and page.handle == 'wishlist' -%}
 <nav class="capsule-nav" id="capsule-nav">
   <div class="capsule-nav__container">
     <ul class="capsule-nav__list">
@@ -114,6 +115,7 @@
     </ul>
   </div>
 </nav>
+{%- endunless -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
