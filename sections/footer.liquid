@@ -43,16 +43,9 @@
       <div class="site-footer__nav">
         {%- for block in section.blocks -%}
           {%- if block.type == 'link' -%}
-            <div class="site-footer__nav-item" {{ block.shopify_attributes }}>
-              <!-- Desktop: Title -->
-              <h3 class="site-footer__nav-title">{{ block.settings.title }}</h3>
-              <!-- Mobile: Expandable Button -->
-              <button type="button" class="site-footer__nav-button" data-footer-nav-toggle>
-                <span class="site-footer__nav-button-text">{{ block.settings.title }}</span>
-                <svg class="site-footer__nav-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
+            <div class="site-footer__nav-column" {{ block.shopify_attributes }}>
+              <h3 class="site-footer__nav-title" data-footer-toggle>{{ block.settings.title }}</h3>
+
               <ul class="site-footer__nav-list">
                 {%- if block.settings.link_text_1 != blank -%}
                   <li><a href="{{ block.settings.link_url_1 }}" class="site-footer__nav-link">{{ block.settings.link_text_1 }}</a></li>
@@ -158,16 +151,48 @@
 </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const navButtons = document.querySelectorAll('[data-footer-nav-toggle]');
-  
-  navButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      const navItem = this.closest('.site-footer__nav-item');
-      navItem.classList.toggle('is-open');
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile footer dropdown functionality
+    const footerToggles = document.querySelectorAll('[data-footer-toggle]');
+    
+    footerToggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        // Only work on mobile (screen width <= 900px)
+        if (window.innerWidth <= 900) {
+          const navList = this.nextElementSibling;
+          const isActive = this.classList.contains('active');
+          
+          // Close all other dropdowns
+          footerToggles.forEach(otherToggle => {
+            if (otherToggle !== this) {
+              otherToggle.classList.remove('active');
+              otherToggle.nextElementSibling.classList.remove('active');
+            }
+          });
+          
+          // Toggle current dropdown
+          if (isActive) {
+            this.classList.remove('active');
+            navList.classList.remove('active');
+          } else {
+            this.classList.add('active');
+            navList.classList.add('active');
+          }
+        }
+      });
+    });
+    
+    // Reset dropdowns on window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 900) {
+        footerToggles.forEach(toggle => {
+          toggle.classList.remove('active');
+          toggle.nextElementSibling.classList.remove('active');
+        });
+      }
     });
   });
-});
+
 </script>
 
 {% schema %}
