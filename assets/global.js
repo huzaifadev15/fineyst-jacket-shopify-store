@@ -1449,48 +1449,145 @@
   
   /* Wishlist Functionality */
   function initWishlist() {
-    // Get wishlist from localStorage
+    // Get wishlist from localStorage (new format with full product data)
     function getWishlist() {
       try {
-        const wishlist = localStorage.getItem('wishlist');
-        return wishlist ? JSON.parse(wishlist) : [];
+        const wishlist = localStorage.getItem('wishlist-storage');
+        if (wishlist) {
+          const parsed = JSON.parse(wishlist);
+          return parsed.state?.items || [];
+        }
+        // Fallback to old format (just IDs)
+        const oldWishlist = localStorage.getItem('wishlist');
+        if (oldWishlist) {
+          const ids = JSON.parse(oldWishlist);
+          return ids.map(id => ({ id: String(id) }));
+        }
+        return [];
       } catch (e) {
         return [];
       }
     }
 
     // Save wishlist to localStorage
-    function saveWishlist(wishlist) {
+    function saveWishlist(items) {
       try {
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        const wishlistData = {
+          state: { items: items },
+          version: 0
+        };
+        localStorage.setItem('wishlist-storage', JSON.stringify(wishlistData));
+        // Also keep old format for backward compatibility
+        const ids = items.map(item => String(item.id));
+        localStorage.setItem('wishlist', JSON.stringify(ids));
       } catch (e) {
         console.error('Error saving wishlist:', e);
       }
     }
 
+    // Fetch product data by handle
+    async function fetchProductDataByHandle(handle) {
+      try {
+        const response = await fetch(`/products/${handle}.json`);
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data.product;
+      } catch (e) {
+        console.error('Error fetching product:', e);
+        return null;
+      }
+    }
+
+    // Fetch product data by ID (searches all products)
+    async function fetchProductData(productId) {
+      try {
+        // Try to get handle from data attribute or page
+        const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+        const handle = productElement?.getAttribute('data-product-handle') || 
+                      productElement?.closest('[data-product-handle]')?.getAttribute('data-product-handle');
+        
+        if (handle) {
+          return await fetchProductDataByHandle(handle);
+        }
+
+        // Fallback: try to find in products.json
+        const response = await fetch('/products.json?limit=250');
+        if (response.ok) {
+          const data = await response.json();
+          const product = data.products.find(p => String(p.id) === String(productId));
+          return product || null;
+        }
+        return null;
+      } catch (e) {
+        console.error('Error fetching product:', e);
+        return null;
+      }
+    }
+
+    // Get product data from page (if on product page)
+    function getProductDataFromPage() {
+      const productJson = document.getElementById('ProductJson');
+      if (productJson) {
+        try {
+          return JSON.parse(productJson.textContent);
+        } catch (e) {
+          console.error('Error parsing product JSON:', e);
+        }
+      }
+      return null;
+    }
+
     // Check if product is in wishlist
     function isInWishlist(productId) {
       const wishlist = getWishlist();
-      return wishlist.includes(String(productId));
+      return wishlist.some(item => String(item.id) === String(productId));
     }
 
     // Add product to wishlist
-    function addToWishlist(productId) {
+    async function addToWishlist(productId, productData = null) {
       const wishlist = getWishlist();
-      if (!wishlist.includes(String(productId))) {
-        wishlist.push(String(productId));
-        saveWishlist(wishlist);
+      
+      // Check if already in wishlist
+      if (isInWishlist(productId)) {
+        return;
       }
+
+      // Try to get product data
+      let product = productData;
+      if (!product) {
+        product = getProductDataFromPage();
+      }
+      if (!product) {
+        product = await fetchProductData(productId);
+      }
+
+      // Create wishlist item
+      const wishlistItem = {
+        id: String(productId),
+        name: product?.title || 'Product',
+        handle: product?.handle || '',
+        url: product ? `/products/${product.handle}` : '',
+        price: product?.variants?.[0]?.price || 0,
+        salePrice: product?.variants?.[0]?.compare_at_price || null,
+        images: product?.images || [],
+        variants: product?.variants || [],
+        colorDetails: product?.options?.find(opt => opt.name.toLowerCase() === 'color')?.values?.map((val, idx) => ({
+          name: val,
+          value: product?.variants?.[idx]?.option1 || val
+        })) || [],
+        sizeDetails: product?.options?.find(opt => opt.name.toLowerCase() === 'size')?.values || [],
+        size: ''
+      };
+
+      wishlist.push(wishlistItem);
+      saveWishlist(wishlist);
     }
 
     // Remove product from wishlist
     function removeFromWishlist(productId) {
       const wishlist = getWishlist();
-      const index = wishlist.indexOf(String(productId));
-      if (index > -1) {
-        wishlist.splice(index, 1);
-        saveWishlist(wishlist);
-      }
+      const filtered = wishlist.filter(item => String(item.id) !== String(productId));
+      saveWishlist(filtered);
     }
 
     // Update wishlist button state
@@ -1528,7 +1625,7 @@
     }
 
     // Handle wishlist button clicks
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', async function(e) {
       const wishlistBtn = e.target.closest('[data-wishlist-add], [data-wishlist-action], [data-wishlist-toggle]');
       if (!wishlistBtn) return;
 
@@ -1548,7 +1645,7 @@
         removeFromWishlist(productId);
         console.log('Removed from wishlist:', productId);
       } else {
-        addToWishlist(productId);
+        await addToWishlist(productId);
         console.log('Added to wishlist:', productId);
       }
 
