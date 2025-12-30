@@ -1,47 +1,54 @@
-<section class="premium-materials-section" data-section-id="{{ section.id }}">
-  <div class="premium-materials-section__container">
-    <button class="premium-materials-section__nav-btn premium-materials-section__nav-btn--prev" aria-label="Previous">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </button>
-    
+<section class="premium-materials-section section-carousel-item" data-carousel-index="0" data-section-id="{{ section.id }}">
+  <div class="container">
     <div class="premium-materials-section__grid">
+      
       <div class="premium-materials-section__content">
-        <h2 class="premium-materials-section__title">{{ section.settings.title }}</h2>
-        <p class="premium-materials-section__description">{{ section.settings.description }}</p>
+        <div class="premium-materials-section__nav">
+          <button type="button" class="premium-materials-section__nav-btn premium-materials-section__nav-btn--prev section-carousel-prev" aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <h2 class="premium-materials-section__title slider-content-title">{{ section.settings.title }}</h2>
+        <p class="premium-materials-section__description slider-content-description">{{ section.settings.description }}</p>
         
         <div class="premium-materials-section__features">
           <h3 class="premium-materials-section__features-heading">{{ section.settings.features_heading }}</h3>
-          <ul class="premium-materials-section__features-list">
+          <ul class="premium-materials-section__features-list slider-content-features">
             {%- for block in section.blocks -%}
               <li class="premium-materials-section__feature" {{ block.shopify_attributes }}>
-                <span class="premium-materials-section__feature-icon">✓</span>
                 {{ block.settings.text }}
               </li>
             {%- endfor -%}
           </ul>
         </div>
         
-        <div class="premium-materials-section__pagination">
-          <span class="premium-materials-section__pagination-dot active"></span>
-          <span class="premium-materials-section__pagination-dot"></span>
-          <span class="premium-materials-section__pagination-dot"></span>
+        <div class="premium-materials-section__pagination section-carousel-pagination">
+          <span class="premium-materials-section__pagination-dot section-carousel-dot active" data-index="0"></span>
+          <span class="premium-materials-section__pagination-dot section-carousel-dot" data-index="1"></span>
+          <span class="premium-materials-section__pagination-dot section-carousel-dot" data-index="2"></span>
         </div>
       </div>
       
       <div class="premium-materials-section__visual">
         <div class="premium-materials-section__image">
-          <img src="{{ 'option_1.webp' | asset_url }}" alt="{{ section.settings.title }}">
+          {%- if section.settings.image != blank -%}
+            <img class="slider-content-image" src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.title }}" loading="lazy">
+          {%- else -%}
+            <img class="slider-content-image" src="{{ 'option_1.webp' | asset_url }}" alt="{{ section.settings.title }}" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="premium-materials-section__nav-right">
+          <button type="button" class="premium-materials-section__nav-btn premium-materials-section__nav-btn--next section-carousel-next" aria-label="Next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
-    
-    <button class="premium-materials-section__nav-btn premium-materials-section__nav-btn--next" aria-label="Next">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </button>
   </div>
 </section>
 
