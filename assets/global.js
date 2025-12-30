@@ -874,6 +874,11 @@
       subtotalEl.textContent = formatMoney(cart.total_price);
     }
     
+    const totalEl = document.querySelector('[data-cart-sidebar-total]');
+    if (totalEl) {
+      totalEl.textContent = formatMoney(cart.total_price);
+    }
+    
     // Update dynamic checkout buttons
     updateDynamicCheckoutButtons(cart);
   }
