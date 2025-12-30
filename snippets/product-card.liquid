@@ -86,15 +86,65 @@
     <div class="product-card__actions">
       <button 
         type="button" 
-        class="product-card__action" 
+        class="product-card__action product-card__wishlist" 
         aria-label="Add to wishlist"
         data-wishlist-add="{{ product.id }}"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </button>
     </div>
+
+    {%- comment -%} Quick Shop Section {%- endcomment -%}
+    {%- assign size_option = null -%}
+    {%- if product.options_with_values.size > 0 -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'size' -%}
+          {%- assign size_option = option -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if size_option != null and size_option.values.size > 0 -%}
+      {%- assign size_index = -1 -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'size' -%}
+          {%- assign size_index = forloop.index0 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="product-card__quick-shop">
+        <p class="product-card__quick-shop-title">Quick Shop (Select your Size)</p>
+        <div class="product-card__sizes">
+          {%- for size in size_option.values -%}
+            {%- assign size_available = false -%}
+            {%- assign variant_id = null -%}
+            {%- if size_index >= 0 -%}
+              {%- for variant in product.variants -%}
+                {%- if variant.options[size_index] == size and variant.available -%}
+                  {%- assign size_available = true -%}
+                  {%- assign variant_id = variant.id -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            <button 
+              type="button" 
+              class="product-card__size-button {% unless size_available %}product-card__size-button--unavailable{% endunless %}" 
+              data-variant-id="{% if variant_id %}{{ variant_id }}{% endif %}"
+              data-product-id="{{ product.id }}"
+              {% unless size_available %}disabled{% endunless %}
+            >
+              {{ size }}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 
   <div class="product-card__content">
@@ -103,7 +153,7 @@
     {%- endif -%}
     
     <h3 class="product-card__title">
-      <a href="{{ product.url }}">{{ product.title }}</a>
+      <a href="{{ product.url }}">{{ product.title | upcase }}</a>
     </h3>
 
     <div class="product-card__price">
@@ -111,9 +161,109 @@
         <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
         <span class="product-card__price--sale">{{ product.price | money }}</span>
       {%- else -%}
-        {{ product.price | money }}
+        <span class="product-card__price--regular">{{ product.price | money }}</span>
       {%- endif -%}
     </div>
+
+    {%- assign color_option = null -%}
+    
+    {%- comment -%} Find color option {%- endcomment -%}
+    {%- if product.options_with_values.size > 0 -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+          {%- assign color_option = option -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    
+    {%- comment -%} If no color option found, try to get unique colors from variants {%- endcomment -%}
+    {%- if color_option == null and product.variants.size > 0 -%}
+      {%- assign color_values = '' -%}
+      {%- assign color_index = -1 -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+          {%- assign color_index = forloop.index0 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if color_index >= 0 -%}
+        {%- for variant in product.variants -%}
+          {%- if variant.options[color_index] != blank -%}
+            {%- assign variant_color = variant.options[color_index] -%}
+            {%- unless color_values contains variant_color -%}
+              {%- if color_values == blank -%}
+                {%- assign color_values = variant_color -%}
+              {%- else -%}
+                {%- assign color_values = color_values | append: '|' | append: variant_color -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endif -%}
+    
+    {%- comment -%} Display first available color {%- endcomment -%}
+    {%- if color_option != null and color_option.values.size > 0 -%}
+      {%- assign first_color = color_option.values.first -%}
+      <div class="product-card__colors">
+        <div class="product-card__color-box">
+          <div class="product-card__color-swatch">
+            {%- assign color_lower = first_color | downcase | strip -%}
+            {%- if color_lower == 'black' or color_lower contains 'black' -%}
+              <span class="product-card__color-dot"></span>
+            {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
+              <span class="product-card__color-dot" style="background: #8B4513;"></span>
+            {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
+              <span class="product-card__color-dot" style="background: #FF0000;"></span>
+            {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
+              <span class="product-card__color-dot" style="background: #0000FF;"></span>
+            {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
+              <span class="product-card__color-dot" style="background: #008000;"></span>
+            {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
+              <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
+            {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
+              <span class="product-card__color-dot" style="background: #808080;"></span>
+            {%- else -%}
+              <span class="product-card__color-dot" style="background: #000;"></span>
+            {%- endif -%}
+          </div>
+          <span class="product-card__color-name">{{ first_color }}</span>
+        </div>
+      </div>
+    {%- elsif color_values != blank -%}
+      {%- assign colors_array = color_values | split: '|' -%}
+      {%- if colors_array.size > 0 -%}
+        {%- assign first_color = colors_array.first -%}
+        <div class="product-card__colors">
+          <div class="product-card__color-box">
+            <div class="product-card__color-swatch">
+              {%- assign color_lower = first_color | downcase | strip -%}
+              {%- if color_lower == 'black' or color_lower contains 'black' -%}
+                <span class="product-card__color-dot"></span>
+              {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
+                <span class="product-card__color-dot" style="background: #8B4513;"></span>
+              {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
+                <span class="product-card__color-dot" style="background: #FF0000;"></span>
+              {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
+                <span class="product-card__color-dot" style="background: #0000FF;"></span>
+              {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
+                <span class="product-card__color-dot" style="background: #008000;"></span>
+              {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
+                <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
+              {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
+                <span class="product-card__color-dot" style="background: #808080;"></span>
+              {%- else -%}
+                <span class="product-card__color-dot" style="background: #000;"></span>
+              {%- endif -%}
+            </div>
+            <span class="product-card__color-name">{{ first_color }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
   </div>
 </div>
 
@@ -141,5 +291,416 @@
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
   }
+
+  .product-card__wishlist {
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .product-card__wishlist:hover {
+    background: transparent !important;
+    transform: scale(1.1);
+  }
+
+  .product-card__wishlist svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+  }
+
+  .product-card__title {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .product-card__title a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .product-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    justify-content: flex-start;
+  }
+
+  .product-card__price--compare {
+    font-size: 1.4rem;
+    color: #666;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+
+  .product-card__price--sale {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .product-card__price--regular {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .product-card__colors {
+    display: flex !important;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .product-card__color-box {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid #000 !important;
+    border-radius: 2px;
+    background: #fff !important;
+    min-width: 100px;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .product-card__color-swatch {
+    width: 20px;
+    height: 20px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .product-card__color-dot {
+    width: 16px;
+    height: 16px;
+    background: #000 !important;
+    border-radius: 50%;
+    display: block !important;
+    flex-shrink: 0;
+  }
+
+  .product-card__color-name {
+    font-size: 1.2rem;
+    color: #666 !important;
+    text-transform: capitalize;
+    font-weight: 400;
+    white-space: nowrap;
+    display: inline-block !important;
+  }
+
+  .product-card__quick-shop {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+    z-index: 20;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card:hover .product-card__quick-shop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .product-card__quick-shop-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+
+  .product-card__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .product-card__size-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #000;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 45px;
+    text-align: center;
+  }
+
+  .product-card__size-button:hover:not(:disabled) {
+    background: #000;
+    color: #fff;
+  }
+
+  .product-card__size-button--unavailable {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: #ccc;
+  }
+
+  .product-card__size-button--unavailable:hover {
+    background: #fff;
+    color: #000;
+  }
 </style>
+
+<script>
+  (function() {
+    // Prevent duplicate initialization
+    if (window.productCardQuickShopInitialized) {
+      return;
+    }
+    window.productCardQuickShopInitialized = true;
+    
+    // Use event delegation to handle clicks on all size buttons
+    document.addEventListener('click', function(e) {
+      const button = e.target.closest('.product-card__size-button:not(:disabled)');
+      if (!button) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Check if button is already processing
+      if (button.hasAttribute('data-adding-to-cart')) {
+        return;
+      }
+      
+      const variantId = button.getAttribute('data-variant-id');
+      const productId = button.getAttribute('data-product-id');
+      
+      if (!variantId || !productId) {
+        return;
+      }
+      
+      // Get original text
+      if (!button.getAttribute('data-original-text')) {
+        button.setAttribute('data-original-text', button.textContent.trim());
+      }
+      const originalText = button.getAttribute('data-original-text');
+      
+      // Validate variant ID
+      if (variantId === 'undefined' || variantId === 'null' || variantId === '') {
+        console.error('Invalid variant ID:', variantId);
+        return;
+      }
+      
+      // Convert variant ID to number if it's a string
+      const numericVariantId = typeof variantId === 'string' ? parseInt(variantId, 10) : variantId;
+      
+      if (isNaN(numericVariantId) || numericVariantId <= 0) {
+        console.error('Variant ID is not a valid number:', variantId);
+        return;
+      }
+      
+      // Mark button as processing
+      button.setAttribute('data-adding-to-cart', 'true');
+      button.disabled = true;
+      button.style.opacity = '0.6';
+      button.style.pointerEvents = 'none';
+      button.textContent = 'Adding...';
+            
+            const data = {
+              items: [{
+                id: numericVariantId,
+                quantity: 1
+              }]
+            };
+            
+            // Use cart_add_url if available, otherwise fallback to /cart/add.js
+            const cartUrl = (window.routes && window.routes.cart_add_url) 
+              ? window.routes.cart_add_url + '.js' 
+              : '/cart/add.js';
+            
+            fetch(cartUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+            .then(response => {
+              // Check if response is ok
+              if (!response.ok) {
+                // Handle specific error cases
+                if (response.status === 422) {
+                  // Item already in cart or max quantity reached
+                  return response.json().then(errorData => {
+                    // Return error object instead of showing alert immediately
+                    return {
+                      error: true,
+                      status: 422,
+                      message: errorData.description || errorData.message || 'This item is already in your cart at maximum quantity.'
+                    };
+                  }).catch(() => {
+                    return {
+                      error: true,
+                      status: 422,
+                      message: 'This item is already in your cart at maximum quantity.'
+                    };
+                  });
+                }
+                
+                // Try to get error message from response
+                return response.text().then(text => {
+                  let errorMessage = 'Failed to add item to cart';
+                  try {
+                    const errorData = JSON.parse(text);
+                    errorMessage = errorData.description || errorData.message || errorMessage;
+                  } catch (e) {
+                    // If response isn't JSON, use status text
+                    errorMessage = `Failed to add item to cart (${response.status})`;
+                  }
+                  return {
+                    error: true,
+                    status: response.status,
+                    message: errorMessage
+                  };
+                });
+              }
+              // Success - return cart data
+              return response.json().then(cartData => {
+                return {
+                  error: false,
+                  data: cartData
+                };
+              });
+            })
+            .then(result => {
+              // Handle result
+              if (result.error) {
+                // This is an error case
+                // Open cart sidebar to show current cart state
+                if (typeof openCartSidebar === 'function') {
+                  openCartSidebar();
+                } else {
+                  const cartSidebar = document.querySelector('[data-cart-sidebar]');
+                  if (cartSidebar) {
+                    cartSidebar.classList.add('is-open');
+                    document.body.style.overflow = 'hidden';
+                  }
+                }
+                
+                if (typeof loadCartSidebar === 'function') {
+                  loadCartSidebar();
+                }
+                
+                // For 422 (max quantity), don't show alert - cart sidebar is already open
+                // For other errors, show error message
+                if (result.status !== 422) {
+                  alert(result.message);
+                }
+                
+                // Re-enable button
+                button.removeAttribute('data-adding-to-cart');
+                button.disabled = false;
+                button.style.opacity = '1';
+                button.style.pointerEvents = '';
+                button.textContent = originalText;
+                return;
+              }
+              
+              // Success case - no alerts, just update UI
+              const cartData = result.data;
+              
+              // Validate cart data
+              if (!cartData) {
+                console.error('Invalid cart data received');
+                button.removeAttribute('data-adding-to-cart');
+                button.disabled = false;
+                button.style.opacity = '1';
+                button.style.pointerEvents = '';
+                button.textContent = originalText;
+                return;
+              }
+              
+              // Trigger cart update event
+              document.dispatchEvent(new CustomEvent('cart:updated'));
+              
+              // Update cart count if function exists
+              if (typeof updateCartCount === 'function') {
+                updateCartCount();
+              }
+              
+              // Open cart sidebar and render items
+              if (typeof openCartSidebar === 'function') {
+                openCartSidebar();
+              } else {
+                // Fallback: manually open sidebar
+                const cartSidebar = document.querySelector('[data-cart-sidebar]');
+                if (cartSidebar) {
+                  cartSidebar.classList.add('is-open');
+                  document.body.style.overflow = 'hidden';
+                }
+              }
+              
+              // Render cart items if function exists
+              if (typeof renderCartItems === 'function' && cartData && cartData.items && Array.isArray(cartData.items)) {
+                renderCartItems(cartData);
+                if (typeof updateCartSubtotal === 'function') {
+                  updateCartSubtotal(cartData);
+                }
+              } else if (typeof loadCartSidebar === 'function') {
+                setTimeout(function() {
+                  loadCartSidebar();
+                }, 500);
+              }
+              
+              // Re-enable button
+              button.removeAttribute('data-adding-to-cart');
+              button.disabled = false;
+              button.style.opacity = '1';
+              button.style.pointerEvents = '';
+              button.textContent = originalText;
+            })
+            .catch(error => {
+              console.error('Error adding to cart:', error);
+              
+              // Re-enable button on error
+              button.removeAttribute('data-adding-to-cart');
+              button.disabled = false;
+              button.style.opacity = '1';
+              button.style.pointerEvents = '';
+              button.textContent = originalText;
+              
+              // Only show alert for actual network/parsing errors
+              // Don't show if it's a handled error (422, etc.)
+              if (error.message && !error.message.includes('already in cart') && !error.message.includes('maximum quantity')) {
+                // Try to load cart anyway to show current state
+                if (typeof loadCartSidebar === 'function') {
+                  loadCartSidebar();
+                }
+                if (typeof openCartSidebar === 'function') {
+                  openCartSidebar();
+                }
+                
+                alert('Failed to add item to cart. Please try again.');
+              }
+            });
+    });
+  })();
+</script>
 

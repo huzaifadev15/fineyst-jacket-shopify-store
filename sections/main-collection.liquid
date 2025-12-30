@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     background: #333;
-    border-radius: 4px;
+    border-radius: 14px;
     margin-bottom: 3rem;
     overflow: hidden;
     flex-wrap: wrap;
@@ -65,6 +65,20 @@
     padding: 1rem 0;
   }
 
+  .collection-toolbar__size-button {
+    border-right: none;
+    background: #000;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+    margin-bottom: 29px;
+    border-radius: 14px;
+  }
+
+  .collection-toolbar__size-button:hover {
+    background: #000;
+    transform: scale(1.05);
+  }
+
   /* Category Dropdown */
   .collection-toolbar__category-wrapper {
     position: relative;
@@ -75,63 +89,243 @@
   .collection-toolbar__category-wrapper .collection-toolbar__button {
     width: 100%;
     justify-content: space-between;
+    border-radius: 4px;
   }
 
-  .collection-toolbar__category-menu {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 0;
+  /* Category Sidebar */
+  .collection-category-sidebar {
+    position: fixed;
+    top: 0;
+    left: -545px;
+    width: 545px;
+    max-width: 90vw;
+    height: 100vh;
     background: #fff;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 250px;
-    max-height: 400px;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    transition: left 0.3s ease;
     overflow-y: auto;
-    z-index: 1000;
+  }
+
+  .collection-category-sidebar.is-open {
+    left: 0;
+  }
+
+  .collection-category-sidebar__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
     display: none;
   }
 
-  .collection-toolbar__category-menu.is-open {
+  .collection-category-sidebar__overlay.is-open {
     display: block;
   }
 
-  .collection-toolbar__category-item {
-    display: block;
-    padding: 1.2rem 2rem;
+  .collection-category-sidebar__header {
+    padding: 2rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .collection-category-sidebar__title {
+    font-size: 1.8rem;
+    font-weight: 600;
     color: #333;
-    text-decoration: none;
+  }
+
+  .collection-category-sidebar__close {
+    background: none;
+    border: none;
+    font-size: 2.4rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  .collection-category-sidebar__close:hover {
+    color: #000;
+  }
+
+  .collection-category-sidebar__content {
+    padding: 2rem;
+  }
+
+  .collection-category-sidebar__search {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 1.4rem;
-    transition: background 0.2s ease;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .collection-category-sidebar__search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1.4rem;
+    color: #333;
+  }
+
+  .collection-category-sidebar__search input::placeholder {
+    color: #999;
+  }
+
+  .collection-category-sidebar__search svg {
+    width: 18px;
+    height: 18px;
+    color: #666;
+  }
+
+  .collection-category-sidebar__view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
     border-bottom: 1px solid #eee;
   }
 
-  .collection-toolbar__category-item:last-child {
-    border-bottom: none;
+  .collection-category-sidebar__view-button {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .collection-toolbar__category-item:hover {
+  .collection-category-sidebar__view-button.is-active {
+    background: #333;
+    border-color: #333;
+    color: #fff;
+  }
+
+  .collection-category-sidebar__view-button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .collection-category-sidebar__count {
+    font-size: 1.4rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .collection-category-sidebar__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .collection-category-sidebar__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+  }
+
+  .collection-category-sidebar__item:hover {
+    transform: translateY(-2px);
+  }
+
+  .collection-category-sidebar__item-image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1rem;
     background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .collection-toolbar__category-item.is-active {
-    background: #f0f0f0;
+  .collection-category-sidebar__item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection-category-sidebar__item-name {
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.4;
+    color: #333;
+  }
+
+  .collection-category-sidebar__item.is-active .collection-category-sidebar__item-image {
+    border: 2px solid #333;
+  }
+
+  .collection-category-sidebar__item.is-active .collection-category-sidebar__item-name {
     font-weight: 600;
+    color: #333;
+  }
+
+  /* List view styles */
+  .collection-category-sidebar__list.is-list-view {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .collection-category-sidebar__list.is-list-view .collection-category-sidebar__item {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+
+  .collection-category-sidebar__list.is-list-view .collection-category-sidebar__item-image {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .collection-category-sidebar__list.is-list-view .collection-category-sidebar__item-name {
+    text-align: left;
+    font-size: 1.4rem;
   }
 
   /* Sort Dropdown - Button Style */
   .collection-toolbar__sort-wrapper {
     position: relative;
-    background: #fff;
+    background: transparent;
     min-width: 180px;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10002;
   }
 
   .collection-toolbar__sort-button {
     width: 100%;
     padding: 1rem 3rem 1rem 1.5rem;
     font-size: 1.4rem;
-    background: #fff;
-    color: #333;
+    background: transparent;
+    color: #fff;
     border: none;
     cursor: pointer;
     display: flex;
@@ -139,6 +333,12 @@
     justify-content: space-between;
     text-align: left;
     position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .collection-toolbar__sort-button.is-active {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid #000;
   }
 
   .collection-toolbar__sort-button svg {
@@ -148,33 +348,41 @@
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #333;
+    color: #fff;
   }
 
   .collection-toolbar__sort-menu {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 0;
-    right: 0;
-    background: #fff;
-    border: 1px solid #ddd;
+    position: fixed;
+    background: #000;
+    border: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    z-index: 10002;
     display: none;
+    border-radius: 4px;
+    overflow: hidden;
+    min-width: 180px;
+    width: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
   }
 
   .collection-toolbar__sort-menu.is-open {
-    display: block;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
   }
 
   .collection-toolbar__sort-item {
     display: block;
     padding: 1.2rem 1.5rem;
-    color: #333;
+    color: #fff;
     text-decoration: none;
     font-size: 1.4rem;
     transition: background 0.2s ease;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
   }
 
@@ -183,11 +391,11 @@
   }
 
   .collection-toolbar__sort-item:hover {
-    background: #f5f5f5;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .collection-toolbar__sort-item.is-active {
-    background: #f0f0f0;
+    background: rgba(255, 255, 255, 0.15);
     font-weight: 600;
   }
 
@@ -195,19 +403,19 @@
   .collection-filter-sidebar {
     position: fixed;
     top: 0;
-    right: -400px;
-    width: 400px;
+    left: -545px;
+    width: 545px;
     max-width: 90vw;
     height: 100vh;
     background: #fff;
-    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
     z-index: 10000;
-    transition: right 0.3s ease;
+    transition: left 0.3s ease;
     overflow-y: auto;
   }
 
   .collection-filter-sidebar.is-open {
-    right: 0;
+    left: 0;
   }
 
   .collection-filter-sidebar__overlay {
@@ -273,64 +481,73 @@
     margin-bottom: 1.5rem;
   }
 
-  .collection-filter-option {
-    display: flex;
-    align-items: center;
-    padding: 1rem 0;
-    cursor: pointer;
-  }
-
-  .collection-filter-option input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 1rem;
-    cursor: pointer;
-  }
-
-  .collection-filter-option label {
-    font-size: 1.4rem;
-    color: #666;
-    cursor: pointer;
-    flex: 1;
-  }
-
-  .collection-filter-option:hover label {
-    color: #333;
-  }
-
-  .collection-filter-sidebar__actions {
-    padding: 2rem;
-    border-top: 1px solid #eee;
-    display: flex;
+  .collection-filter-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
 
-  .collection-filter-sidebar__button {
-    flex: 1;
-    padding: 1.2rem 2rem;
+  .collection-filter-option {
+    position: relative;
+  }
+
+  .collection-filter-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .collection-filter-option label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
     font-size: 1.4rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .collection-filter-sidebar__button--clear {
-    background: #f5f5f5;
     color: #333;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
   }
 
-  .collection-filter-sidebar__button--clear:hover {
-    background: #eee;
+  .collection-filter-option label:hover {
+    border-color: #999;
   }
 
-  .collection-filter-sidebar__button--apply {
+  .collection-filter-option input[type="checkbox"]:checked + label {
     background: #333;
     color: #fff;
+    border-color: #333;
   }
 
-  .collection-filter-sidebar__button--apply:hover {
-    background: #000;
+  /* Color filter specific styles */
+  .collection-filter-group[data-filter-type="color"] .collection-filter-options {
+    grid-template-columns: repeat(3, 1fr);
   }
+
+  .collection-filter-option__swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    flex-shrink: 0;
+  }
+
+  /* Gender filter - single row */
+  .collection-filter-group[data-filter-type="gender"] .collection-filter-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Sizes filter - 3 columns */
+  .collection-filter-group[data-filter-type="size"] .collection-filter-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
 
   /* What's my size button */
   .collection-size-button {
@@ -353,6 +570,232 @@
     background: #333;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Size Finder Modal */
+  .size-finder-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .size-finder-modal__overlay.is-open {
+    display: block;
+    opacity: 1;
+  }
+
+  .size-finder-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 12px;
+    z-index: 10001;
+    display: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .size-finder-modal.is-open {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .size-finder-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .size-finder-modal__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .size-finder-modal__logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .size-finder-modal__checkbox-icon {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #000;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    flex-shrink: 0;
+  }
+
+  .size-finder-modal__checkbox-icon svg {
+    width: 12px;
+    height: 12px;
+    color: #fff;
+    stroke: #fff;
+  }
+
+  .size-finder-modal__fit-finder {
+    font-size: 1.2rem;
+    color: #000;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .size-finder-modal__header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .size-finder-modal__privacy {
+    font-size: 1.2rem;
+    color: #000;
+    cursor: pointer;
+  }
+
+  .size-finder-modal__close {
+    background: none;
+    border: none;
+    font-size: 2.4rem;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    line-height: 1;
+    font-weight: 300;
+  }
+
+  .size-finder-modal__close:hover {
+    color: #333;
+  }
+
+  .size-finder-modal__content {
+    padding: 3rem 2rem;
+  }
+
+  .size-finder-modal__title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .size-finder-modal__subtitle {
+    font-size: 1.4rem;
+    color: #000;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .size-finder-modal__categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .size-finder-modal__category {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .size-finder-modal__category:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .size-finder-modal__category-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: #000;
+  }
+
+  .size-finder-modal__category-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: #000;
+  }
+
+  .size-finder-modal__category-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 1rem;
+  }
+
+  .size-finder-modal__category-description {
+    font-size: 1.3rem;
+    color: #000;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+    line-height: 1.5;
+  }
+
+  .size-finder-modal__category-button {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+  }
+
+  .size-finder-modal__category-button:hover {
+    background: #333;
+  }
+
+  @media (max-width: 900px) {
+    .size-finder-modal__categories {
+      grid-template-columns: 1fr;
+    }
+
+    .size-finder-modal {
+      width: 95%;
+      max-width: 500px;
+    }
   }
 
   .collection-grid {
@@ -456,13 +899,22 @@
 
     .collection-filter-sidebar {
       width: 100vw;
-      right: -100vw;
+      left: -100vw;
     }
 
-    .collection-toolbar__category-menu {
-      left: 0;
-      right: 0;
-      min-width: auto;
+    .collection-filter-options {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+    }
+
+    .collection-category-sidebar {
+      width: 100vw;
+      left: -100vw;
+    }
+
+    .collection-category-sidebar__list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
 
     .collection-toolbar__sort-menu {
@@ -485,15 +937,6 @@
               <polyline points="6 9 12 15 18 9"/>
             </svg>
           </button>
-          <div class="collection-toolbar__category-menu" data-category-menu>
-            {%- for coll in collections -%}
-              {%- unless coll.handle == 'all' or coll.handle == 'frontpage' -%}
-                <a href="{{ coll.url }}" class="collection-toolbar__category-item {% if coll.handle == collection.handle %}is-active{% endif %}">
-                  {{ coll.title }}
-                </a>
-              {%- endunless -%}
-            {%- endfor -%}
-          </div>
         </div>
         
         <!-- Filter Button -->
@@ -516,22 +959,14 @@
         <div class="collection-toolbar__sort-wrapper">
           {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
           {%- assign current_sort_label = 'Most Popular' -%}
-          {%- if sort_by == 'manual' -%}
-            {%- assign current_sort_label = 'Featured' -%}
-          {%- elsif sort_by == 'best-selling' -%}
+          {%- if sort_by == 'best-selling' -%}
             {%- assign current_sort_label = 'Most Popular' -%}
-          {%- elsif sort_by == 'title-ascending' -%}
-            {%- assign current_sort_label = 'Alphabetically, A-Z' -%}
-          {%- elsif sort_by == 'title-descending' -%}
-            {%- assign current_sort_label = 'Alphabetically, Z-A' -%}
-          {%- elsif sort_by == 'price-ascending' -%}
-            {%- assign current_sort_label = 'Price, Low to High' -%}
-          {%- elsif sort_by == 'price-descending' -%}
-            {%- assign current_sort_label = 'Price, High to Low' -%}
-          {%- elsif sort_by == 'created-ascending' -%}
-            {%- assign current_sort_label = 'Date, Old to New' -%}
           {%- elsif sort_by == 'created-descending' -%}
-            {%- assign current_sort_label = 'Date, New to Old' -%}
+            {%- assign current_sort_label = 'Newest' -%}
+          {%- elsif sort_by == 'price-descending' -%}
+            {%- assign current_sort_label = 'Price (high-low)' -%}
+          {%- elsif sort_by == 'price-ascending' -%}
+            {%- assign current_sort_label = 'Price (low-high)' -%}
           {%- endif -%}
           <button type="button" class="collection-toolbar__sort-button" data-sort-button>
             <span>{{ current_sort_label }}</span>
@@ -540,21 +975,17 @@
             </svg>
           </button>
           <div class="collection-toolbar__sort-menu" data-sort-menu>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'manual' %}is-active{% endif %}" data-sort-value="manual">Featured</div>
             <div class="collection-toolbar__sort-item {% if sort_by == 'best-selling' %}is-active{% endif %}" data-sort-value="best-selling">Most Popular</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'title-ascending' %}is-active{% endif %}" data-sort-value="title-ascending">Alphabetically, A-Z</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'title-descending' %}is-active{% endif %}" data-sort-value="title-descending">Alphabetically, Z-A</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'price-ascending' %}is-active{% endif %}" data-sort-value="price-ascending">Price, Low to High</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'price-descending' %}is-active{% endif %}" data-sort-value="price-descending">Price, High to Low</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'created-ascending' %}is-active{% endif %}" data-sort-value="created-ascending">Date, Old to New</div>
-            <div class="collection-toolbar__sort-item {% if sort_by == 'created-descending' %}is-active{% endif %}" data-sort-value="created-descending">Date, New to Old</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'created-descending' %}is-active{% endif %}" data-sort-value="created-descending">Newest</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'price-descending' %}is-active{% endif %}" data-sort-value="price-descending">Price (high-low)</div>
+            <div class="collection-toolbar__sort-item {% if sort_by == 'price-ascending' %}is-active{% endif %}" data-sort-value="price-ascending">Price (low-high)</div>
           </div>
         </div>
       </div>
 
-      <p class="collection-toolbar__count">
-        Showing {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
-      </p>
+      <button type="button" class="collection-toolbar__button collection-toolbar__size-button" data-size-modal-toggle>
+        What's My Size
+      </button>
     </div>
 
     {%- paginate collection.products by section.settings.products_per_page -%}
@@ -596,88 +1027,467 @@
     {%- endpaginate -%}
   </div>
 
-  <!-- What's my size button -->
-  <button type="button" class="collection-size-button" data-size-button>
-    What's my size?
-  </button>
+
+
 </section>
+
+
+
+<!-- Category Sidebar -->
+<div class="collection-category-sidebar__overlay" data-category-overlay></div>
+<div class="collection-category-sidebar" data-category-sidebar>
+  <div class="collection-category-sidebar__header">
+    <h2 class="collection-category-sidebar__title">Categories</h2>
+    <button type="button" class="collection-category-sidebar__close" data-category-close>&times;</button>
+  </div>
+  <div class="collection-category-sidebar__content">
+    <!-- Search Bar -->
+    <div class="collection-category-sidebar__search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="Search categories, materials, styles..." data-category-search>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="collection-category-sidebar__view-toggle">
+      <button type="button" class="collection-category-sidebar__view-button is-active" data-view-toggle="grid">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </button>
+      <button type="button" class="collection-category-sidebar__view-button" data-view-toggle="list">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Category Count -->
+    {%- assign category_count = 0 -%}
+    {%- for coll in collections -%}
+      {%- unless coll.handle == 'all' or coll.handle == 'frontpage' -%}
+        {%- assign category_count = category_count | plus: 1 -%}
+      {%- endunless -%}
+    {%- endfor -%}
+    <p class="collection-category-sidebar__count">Found {{ category_count }} categories</p>
+
+    <!-- Category List -->
+    <div class="collection-category-sidebar__list" data-category-list>
+      {%- for coll in collections -%}
+        {%- unless coll.handle == 'all' or coll.handle == 'frontpage' -%}
+          <a href="{{ coll.url }}" class="collection-category-sidebar__item {% if coll.handle == collection.handle %}is-active{% endif %}" data-category-item>
+            <div class="collection-category-sidebar__item-image">
+              {%- if coll.featured_image -%}
+                <img src="{{ coll.featured_image | img_url: '200x200' }}" alt="{{ coll.title }}" loading="lazy">
+              {%- else -%}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width: 50%; height: 50%; color: #ccc;">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+              {%- endif -%}
+            </div>
+            <span class="collection-category-sidebar__item-name">{{ coll.title }}</span>
+          </a>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
 
 <!-- Filter Sidebar -->
 <div class="collection-filter-sidebar__overlay" data-filter-overlay></div>
 <div class="collection-filter-sidebar" data-filter-sidebar>
   <div class="collection-filter-sidebar__header">
-    <h2 class="collection-filter-sidebar__title">Filter Products</h2>
+    <h2 class="collection-filter-sidebar__title">Filters</h2>
     <button type="button" class="collection-filter-sidebar__close" data-filter-close>&times;</button>
   </div>
   <div class="collection-filter-sidebar__content">
-    {%- if collection.filters.size > 0 -%}
-      {%- for filter in collection.filters -%}
-        <div class="collection-filter-group">
-          <h3 class="collection-filter-group__title">{{ filter.label }}</h3>
-          {%- case filter.type -%}
-            {%- when 'list' -%}
-              {%- for filter_value in filter.values -%}
-                <div class="collection-filter-option">
-                  <input 
-                    type="checkbox" 
-                    id="filter-{{ filter.param_name }}-{{ forloop.index }}"
-                    name="{{ filter.param_name }}"
-                    value="{{ filter_value.value }}"
-                    {% if filter_value.active %}checked{% endif %}
-                    data-filter-input
-                  >
-                  <label for="filter-{{ filter.param_name }}-{{ forloop.index }}">
-                    {{ filter_value.label }} ({{ filter_value.count }})
-                  </label>
-                </div>
-              {%- endfor -%}
-            {%- when 'price_range' -%}
-              <div class="collection-filter-option">
-                <label>
-                  Min: {{ filter.min_value.value | money }}
-                  <input type="range" min="{{ filter.min_value.value }}" max="{{ filter.max_value.value }}" value="{{ filter.min_value.value }}" data-filter-price-min>
-                </label>
-              </div>
-              <div class="collection-filter-option">
-                <label>
-                  Max: {{ filter.max_value.value | money }}
-                  <input type="range" min="{{ filter.min_value.value }}" max="{{ filter.max_value.value }}" value="{{ filter.max_value.value }}" data-filter-price-max>
-                </label>
-              </div>
-          {%- endcase -%}
+    <!-- Materials Filter -->
+    <div class="collection-filter-group" data-filter-type="material">
+      <h3 class="collection-filter-group__title">Materials</h3>
+      <div class="collection-filter-options">
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-leather" name="filter.v.option.material" value="Leather" data-filter-input>
+          <label for="filter-material-leather">Leather</label>
         </div>
-      {%- endfor -%}
-    {%- else -%}
-      <p>No filters available for this collection.</p>
-    {%- endif -%}
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-denim" name="filter.v.option.material" value="Denim" data-filter-input>
+          <label for="filter-material-denim">Denim</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-cotton" name="filter.v.option.material" value="Cotton" data-filter-input>
+          <label for="filter-material-cotton">Cotton</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-polyester" name="filter.v.option.material" value="Polyester" data-filter-input>
+          <label for="filter-material-polyester">Polyester</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-wool" name="filter.v.option.material" value="Wool" data-filter-input>
+          <label for="filter-material-wool">Wool</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-material-suede" name="filter.v.option.material" value="Suede" data-filter-input>
+          <label for="filter-material-suede">Suede</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Styles Filter -->
+    <div class="collection-filter-group" data-filter-type="style">
+      <h3 class="collection-filter-group__title">Styles</h3>
+      <div class="collection-filter-options">
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-bomber" name="filter.v.option.style" value="Bomber" data-filter-input>
+          <label for="filter-style-bomber">Bomber</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-biker" name="filter.v.option.style" value="Biker" data-filter-input>
+          <label for="filter-style-biker">Biker</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-varsity" name="filter.v.option.style" value="Varsity" data-filter-input>
+          <label for="filter-style-varsity">Varsity</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-aviator" name="filter.v.option.style" value="Aviator" data-filter-input>
+          <label for="filter-style-aviator">Aviator</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-puffer" name="filter.v.option.style" value="Puffer" data-filter-input>
+          <label for="filter-style-puffer">Puffer</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-style-trench" name="filter.v.option.style" value="Trench" data-filter-input>
+          <label for="filter-style-trench">Trench</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gender Filter -->
+    <div class="collection-filter-group" data-filter-type="gender">
+      <h3 class="collection-filter-group__title">Gender</h3>
+      <div class="collection-filter-options">
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-gender-men" name="filter.v.option.gender" value="Men" data-filter-input>
+          <label for="filter-gender-men">Men</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-gender-women" name="filter.v.option.gender" value="Women" data-filter-input>
+          <label for="filter-gender-women">Women</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-gender-unisex" name="filter.v.option.gender" value="Unisex" data-filter-input>
+          <label for="filter-gender-unisex">Unisex</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sizes Filter -->
+    <div class="collection-filter-group" data-filter-type="size">
+      <h3 class="collection-filter-group__title">Sizes</h3>
+      <div class="collection-filter-options">
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-xs" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-xs">XS</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-s" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-s">S</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-m" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-m">M</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-l" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-l">L</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-xl" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-xl">XL</label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-size-xxl" name="filter.v.availability" value="1" data-filter-input>
+          <label for="filter-size-xxl">XXL</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colors Filter -->
+    <div class="collection-filter-group" data-filter-type="color">
+      <h3 class="collection-filter-group__title">Colors</h3>
+      <div class="collection-filter-options">
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-grey" name="filter.v.option.color" value="Grey" data-filter-input>
+          <label for="filter-color-grey">
+            <span class="collection-filter-option__swatch" style="background-color: #808080;"></span>
+            Grey
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-black" name="filter.v.option.color" value="Black" data-filter-input>
+          <label for="filter-color-black">
+            <span class="collection-filter-option__swatch" style="background-color: #000000;"></span>
+            Black
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-sea-green" name="filter.v.option.color" value="Sea Green" data-filter-input>
+          <label for="filter-color-sea-green">
+            <span class="collection-filter-option__swatch" style="background-color: #2E8B57;"></span>
+            Sea Green
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-dark-brown" name="filter.v.option.color" value="Dark Brown" data-filter-input>
+          <label for="filter-color-dark-brown">
+            <span class="collection-filter-option__swatch" style="background-color: #654321;"></span>
+            Dark Brown
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-brown" name="filter.v.option.color" value="Brown" data-filter-input>
+          <label for="filter-color-brown">
+            <span class="collection-filter-option__swatch" style="background-color: #8B4513;"></span>
+            Brown
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-dark-blue" name="filter.v.option.color" value="Dark Blue" data-filter-input>
+          <label for="filter-color-dark-blue">
+            <span class="collection-filter-option__swatch" style="background-color: #00008B;"></span>
+            Dark Blue
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-maroon" name="filter.v.option.color" value="Maroon" data-filter-input>
+          <label for="filter-color-maroon">
+            <span class="collection-filter-option__swatch" style="background-color: #800000;"></span>
+            Maroon
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-black-brown" name="filter.v.option.color" value="Black And Brown" data-filter-input>
+          <label for="filter-color-black-brown">
+            <span class="collection-filter-option__swatch" style="background: linear-gradient(45deg, #000000 50%, #8B4513 50%);"></span>
+            Black And Brown
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-tan" name="filter.v.option.color" value="Tan" data-filter-input>
+          <label for="filter-color-tan">
+            <span class="collection-filter-option__swatch" style="background-color: #D2B48C;"></span>
+            Tan
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-white" name="filter.v.option.color" value="White" data-filter-input>
+          <label for="filter-color-white">
+            <span class="collection-filter-option__swatch" style="background-color: #FFFFFF; border: 1px solid #ddd;"></span>
+            White
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-cream" name="filter.v.option.color" value="Cream" data-filter-input>
+          <label for="filter-color-cream">
+            <span class="collection-filter-option__swatch" style="background-color: #FFFDD0;"></span>
+            Cream
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-purple" name="filter.v.option.color" value="Purple" data-filter-input>
+          <label for="filter-color-purple">
+            <span class="collection-filter-option__swatch" style="background-color: #800080;"></span>
+            Purple
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-sky-blue" name="filter.v.option.color" value="Sky Blue" data-filter-input>
+          <label for="filter-color-sky-blue">
+            <span class="collection-filter-option__swatch" style="background-color: #87CEEB;"></span>
+            Sky Blue
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-red" name="filter.v.option.color" value="Red" data-filter-input>
+          <label for="filter-color-red">
+            <span class="collection-filter-option__swatch" style="background-color: #FF0000;"></span>
+            Red
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-teal" name="filter.v.option.color" value="Teal" data-filter-input>
+          <label for="filter-color-teal">
+            <span class="collection-filter-option__swatch" style="background-color: #008080;"></span>
+            Teal
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-yellow" name="filter.v.option.color" value="Yellow" data-filter-input>
+          <label for="filter-color-yellow">
+            <span class="collection-filter-option__swatch" style="background-color: #FFFF00;"></span>
+            Yellow
+          </label>
+        </div>
+        <div class="collection-filter-option">
+          <input type="checkbox" id="filter-color-green" name="filter.v.option.color" value="Green" data-filter-input>
+          <label for="filter-color-green">
+            <span class="collection-filter-option__swatch" style="background-color: #008000;"></span>
+            Green
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="collection-filter-sidebar__actions">
-    <button type="button" class="collection-filter-sidebar__button collection-filter-sidebar__button--clear" data-filter-clear>
-      Clear All
-    </button>
-    <button type="button" class="collection-filter-sidebar__button collection-filter-sidebar__button--apply" data-filter-apply>
-      Apply Filters
-    </button>
+</div>
+
+<!-- Size Finder Modal -->
+<div class="size-finder-modal__overlay" data-size-modal-overlay></div>
+<div class="size-finder-modal" data-size-modal>
+  <div class="size-finder-modal__header">
+    <div class="size-finder-modal__logo">
+      <span class="size-finder-modal__logo-text">FINEYST</span>
+      <div class="size-finder-modal__checkbox-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <span class="size-finder-modal__fit-finder">FIT FINDER</span>
+    </div>
+    <div class="size-finder-modal__header-right">
+      <span class="size-finder-modal__privacy">Privacy</span>
+      <button type="button" class="size-finder-modal__close" data-size-modal-close>&times;</button>
+    </div>
+  </div>
+  
+  <div class="size-finder-modal__content">
+    <h2 class="size-finder-modal__title">Find your best fits</h2>
+    <p class="size-finder-modal__subtitle">Receive size recommendations by entering your data for each category</p>
+    
+    <div class="size-finder-modal__categories">
+      <div class="size-finder-modal__category">
+        <div class="size-finder-modal__category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16v2.5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V4"/>
+            <path d="M4 6.5v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-11"/>
+            <path d="M8 8h8"/>
+            <path d="M8 12h8"/>
+          </svg>
+        </div>
+        <h3 class="size-finder-modal__category-title">Tops</h3>
+        <p class="size-finder-modal__category-description">Size recommendations for shirts, coats, jackets, etc</p>
+        <button type="button" class="size-finder-modal__category-button">Select &gt;</button>
+      </div>
+      
+      <div class="size-finder-modal__category">
+        <div class="size-finder-modal__category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2h12a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+            <path d="M6 8h12"/>
+            <path d="M6 12h12"/>
+            <path d="M6 16h12"/>
+          </svg>
+        </div>
+        <h3 class="size-finder-modal__category-title">Pants</h3>
+        <p class="size-finder-modal__category-description">Size recommendations for pants, shorts, etc</p>
+        <button type="button" class="size-finder-modal__category-button">Select &gt;</button>
+      </div>
+      
+      <div class="size-finder-modal__category">
+        <div class="size-finder-modal__category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12h16"/>
+            <path d="M4 12c0-2 1-4 3-4h10c2 0 3 2 3 4v6c0 2-1 4-3 4H7c-2 0-3-2-3-4v-6z"/>
+            <path d="M4 12v-2c0-1 1-2 2-2h12c1 0 2 1 2 2v2"/>
+          </svg>
+        </div>
+        <h3 class="size-finder-modal__category-title">Footwear</h3>
+        <p class="size-finder-modal__category-description">Size recommendations for shoes</p>
+        <button type="button" class="size-finder-modal__category-button">Select &gt;</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Category Dropdown
+    // Category Sidebar
     const categoryButton = document.querySelector('[data-category-dropdown]');
-    const categoryMenu = document.querySelector('[data-category-menu]');
+    const categorySidebar = document.querySelector('[data-category-sidebar]');
+    const categoryOverlay = document.querySelector('[data-category-overlay]');
+    const categoryClose = document.querySelector('[data-category-close]');
+    const categorySearch = document.querySelector('[data-category-search]');
+    const categoryList = document.querySelector('[data-category-list]');
+    const categoryItems = document.querySelectorAll('[data-category-item]');
+    const viewToggleButtons = document.querySelectorAll('[data-view-toggle]');
     
-    if (categoryButton && categoryMenu) {
-      categoryButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        categoryMenu.classList.toggle('is-open');
-      });
+    function openCategorySidebar() {
+      if (categorySidebar) categorySidebar.classList.add('is-open');
+      if (categoryOverlay) categoryOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
 
-      // Close when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!categoryButton.contains(e.target) && !categoryMenu.contains(e.target)) {
-          categoryMenu.classList.remove('is-open');
-        }
+    function closeCategorySidebar() {
+      if (categorySidebar) categorySidebar.classList.remove('is-open');
+      if (categoryOverlay) categoryOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (categoryButton) {
+      categoryButton.addEventListener('click', openCategorySidebar);
+    }
+
+    if (categoryClose) {
+      categoryClose.addEventListener('click', closeCategorySidebar);
+    }
+
+    if (categoryOverlay) {
+      categoryOverlay.addEventListener('click', closeCategorySidebar);
+    }
+
+    // Search functionality
+    if (categorySearch && categoryItems) {
+      categorySearch.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        categoryItems.forEach(function(item) {
+          const itemName = item.querySelector('.collection-category-sidebar__item-name').textContent.toLowerCase();
+          if (itemName.includes(searchTerm)) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // View toggle functionality
+    if (viewToggleButtons && categoryList) {
+      viewToggleButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+          const viewType = this.getAttribute('data-view-toggle');
+          viewToggleButtons.forEach(function(btn) {
+            btn.classList.remove('is-active');
+          });
+          this.classList.add('is-active');
+          
+          if (viewType === 'list') {
+            categoryList.classList.add('is-list-view');
+          } else {
+            categoryList.classList.remove('is-list-view');
+          }
+        });
       });
     }
 
@@ -689,22 +1499,53 @@
     if (sortButton && sortMenu) {
       sortButton.addEventListener('click', function(e) {
         e.stopPropagation();
-        sortMenu.classList.toggle('is-open');
+        const wasOpen = sortMenu.classList.contains('is-open');
+        
+        if (wasOpen) {
+          sortMenu.classList.remove('is-open');
+          sortButton.classList.remove('is-active');
+          sortMenu.style.display = 'none';
+          sortMenu.style.opacity = '0';
+          sortMenu.style.visibility = 'hidden';
+        } else {
+          // Calculate position
+          const buttonRect = sortButton.getBoundingClientRect();
+          const wrapperRect = sortButton.closest('.collection-toolbar__sort-wrapper').getBoundingClientRect();
+          
+          sortMenu.style.top = (buttonRect.bottom + 8) + 'px';
+          sortMenu.style.left = wrapperRect.left + 'px';
+          sortMenu.style.width = wrapperRect.width + 'px';
+          
+          sortMenu.classList.add('is-open');
+          sortButton.classList.add('is-active');
+          sortMenu.style.display = 'block';
+          sortMenu.style.opacity = '1';
+          sortMenu.style.visibility = 'visible';
+        }
       });
 
       sortItems.forEach(function(item) {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
           const sortValue = this.getAttribute('data-sort-value');
-          const url = new URL(window.location.href);
-          url.searchParams.set('sort_by', sortValue);
-          window.location.href = url.toString();
+          if (sortValue) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort_by', sortValue);
+            window.location.href = url.toString();
+          }
         });
       });
 
-      // Close when clicking outside
+      // Close dropdown when clicking outside
       document.addEventListener('click', function(e) {
-        if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
-          sortMenu.classList.remove('is-open');
+        if (sortMenu && sortMenu.classList.contains('is-open')) {
+          if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
+            sortMenu.classList.remove('is-open');
+            sortButton.classList.remove('is-active');
+            sortMenu.style.display = 'none';
+            sortMenu.style.opacity = '0';
+            sortMenu.style.visibility = 'hidden';
+          }
         }
       });
     }
@@ -714,8 +1555,7 @@
     const filterSidebar = document.querySelector('[data-filter-sidebar]');
     const filterOverlay = document.querySelector('[data-filter-overlay]');
     const filterClose = document.querySelector('[data-filter-close]');
-    const filterApply = document.querySelector('[data-filter-apply]');
-    const filterClear = document.querySelector('[data-filter-clear]');
+    const filterInputs = document.querySelectorAll('[data-filter-input]');
     
     function openFilterSidebar() {
       if (filterSidebar) filterSidebar.classList.add('is-open');
@@ -727,6 +1567,27 @@
       if (filterSidebar) filterSidebar.classList.remove('is-open');
       if (filterOverlay) filterOverlay.classList.remove('is-open');
       document.body.style.overflow = '';
+    }
+
+    function applyFilters() {
+      const url = new URL(window.location.href);
+      const checkboxes = document.querySelectorAll('[data-filter-input]:checked');
+      
+      // Clear existing filter params
+      url.searchParams.forEach(function(value, key) {
+        if (key.startsWith('filter.v')) {
+          url.searchParams.delete(key);
+        }
+      });
+
+      // Add selected filters
+      checkboxes.forEach(function(checkbox) {
+        const filterName = checkbox.name;
+        const filterValue = checkbox.value;
+        url.searchParams.set(filterName, filterValue);
+      });
+
+      window.location.href = url.toString();
     }
 
     if (filterToggle) {
@@ -741,54 +1602,41 @@
       filterOverlay.addEventListener('click', closeFilterSidebar);
     }
 
-    if (filterApply) {
-      filterApply.addEventListener('click', function() {
-        const url = new URL(window.location.href);
-        const checkboxes = document.querySelectorAll('[data-filter-input]:checked');
-        
-        // Clear existing filter params
-        url.searchParams.forEach(function(value, key) {
-          if (key.startsWith('filter.v')) {
-            url.searchParams.delete(key);
-          }
-        });
-
-        // Add selected filters
-        checkboxes.forEach(function(checkbox) {
-          const filterName = checkbox.name;
-          const filterValue = checkbox.value;
-          url.searchParams.set(filterName, filterValue);
-        });
-
-        window.location.href = url.toString();
+    // Apply filters immediately when clicked
+    if (filterInputs) {
+      filterInputs.forEach(function(checkbox) {
+        checkbox.addEventListener('change', applyFilters);
       });
     }
 
-    if (filterClear) {
-      filterClear.addEventListener('click', function() {
-        const checkboxes = document.querySelectorAll('[data-filter-input]');
-        checkboxes.forEach(function(checkbox) {
-          checkbox.checked = false;
-        });
-        
-        const url = new URL(window.location.href);
-        url.searchParams.forEach(function(value, key) {
-          if (key.startsWith('filter.v')) {
-            url.searchParams.delete(key);
-          }
-        });
-        
-        window.location.href = url.toString();
-      });
+    // Size Finder Modal
+    const sizeModalToggle = document.querySelector('[data-size-modal-toggle]');
+    const sizeModal = document.querySelector('[data-size-modal]');
+    const sizeModalOverlay = document.querySelector('[data-size-modal-overlay]');
+    const sizeModalClose = document.querySelector('[data-size-modal-close]');
+    
+    function openSizeModal() {
+      if (sizeModal) sizeModal.classList.add('is-open');
+      if (sizeModalOverlay) sizeModalOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
     }
 
-    // Size button (placeholder)
-    const sizeButton = document.querySelector('[data-size-button]');
-    if (sizeButton) {
-      sizeButton.addEventListener('click', function() {
-        // Add size guide functionality here
-        alert('Size guide coming soon!');
-      });
+    function closeSizeModal() {
+      if (sizeModal) sizeModal.classList.remove('is-open');
+      if (sizeModalOverlay) sizeModalOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (sizeModalToggle) {
+      sizeModalToggle.addEventListener('click', openSizeModal);
+    }
+
+    if (sizeModalClose) {
+      sizeModalClose.addEventListener('click', closeSizeModal);
+    }
+
+    if (sizeModalOverlay) {
+      sizeModalOverlay.addEventListener('click', closeSizeModal);
     }
   });
 </script>
