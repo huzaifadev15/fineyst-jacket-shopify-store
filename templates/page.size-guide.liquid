@@ -37,7 +37,7 @@ layout: theme
     font-weight: 700;
     color: #000;
     margin-bottom: 2rem;
-    letter-spacing: 0;
+    margin-top: 3rem;
   }
   
   .size-guide-hero__description {
@@ -48,9 +48,9 @@ layout: theme
   
   .size-guide-hero__features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    max-width: 60rem;
+    max-width: 80rem;
     margin: 0 auto;
   }
   
@@ -159,9 +159,8 @@ layout: theme
     font-family: avertaDefault, "avertaDefault Fallback", Arial, Helvetica, sans-serif;
     font-size: clamp(2.4rem, 4vw, 3.2rem);
     font-weight: 700;
-    color: #171717;
+    color: #2B2B2B;
     margin-bottom: 1.5rem;
-    letter-spacing: 0;
   }
   
   .size-guide-section__description {
@@ -255,7 +254,7 @@ layout: theme
     padding: 1.5rem;
     font-size: 1.4rem;
     color: #666;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #000;
   }
   
   .size-table tr:last-child td {
@@ -315,7 +314,7 @@ layout: theme
   <div class="size-guide-hero">
     <div class="bg-grid-pattern"></div>
     <div class="size-guide-hero__content">
-      <h1 class="size-guide-hero__title">Complete Size Guide for Jackets & Outerwear</h1>
+      <h1 class="size-guide-hero__title">Complete Size Guide for<br>Jackets & Outerwear</h1>
       <p class="size-guide-hero__description">Find your perfect fit with our comprehensive sizing guide</p>
       
       <div class="size-guide-hero__features">
@@ -438,7 +437,7 @@ layout: theme
       <h2 class="size-guide-section__title">How to Measure</h2>
       <p class="size-guide-section__description">Follow these simple steps to take accurate measurements for the perfect fit.</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem; margin-bottom: 4rem;">
         <div style="background: #fff; border: 1px solid #2b2b2b; border-radius: 0.8rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
           <div style="aspect-ratio: 16/9; background: #f6f6f6; display: flex; align-items: center; justify-content: center; color: #666;">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -554,7 +553,7 @@ layout: theme
       <h2 class="size-guide-section__title">Fit Guide</h2>
       <p class="size-guide-section__description">Understand the different fits we offer to find the style that suits you best.</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(45rem, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(45rem, 1fr)); gap: 3rem; margin-bottom: 3rem;">
         <div style="background: #fff; border: 1px solid #2b2b2b; border-radius: 0.8rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
           <div style="display: flex;">
             <div style="width: 33.333%;">
@@ -606,6 +605,67 @@ layout: theme
             </div>
           </div>
         </div>
+        
+        <div style="background: #fff; border: 1px solid #2b2b2b; border-radius: 0.8rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="display: flex;">
+            <div style="width: 33.333%;">
+              <div style="aspect-ratio: 2/3; background: #f6f6f6; display: flex; align-items: center; justify-content: center; color: #666;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </div>
+            </div>
+            <div style="width: 66.667%; padding: 2.4rem;">
+              <h3 style="font-size: 2rem; font-weight: 600; color: #333; margin-bottom: 1rem;">Relaxed Fit</h3>
+              <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;">Our relaxed fit provides a generous cut with extra room through the chest, waist, and hips for maximum comfort.</p>
+              <div>
+                <h4 style="font-weight: 500; margin-bottom: 1rem; color: #333;">Best For:</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 0.5rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Fuller figures</span></li>
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 0.5rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Comfort-focused style</span></li>
+                  <li style="display: flex; align-items: flex-start;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Casual, laid-back looks</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: #fff; border: 1px solid #2b2b2b; border-radius: 0.8rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="display: flex;">
+            <div style="width: 33.333%;">
+              <div style="aspect-ratio: 2/3; background: #f6f6f6; display: flex; align-items: center; justify-content: center; color: #666;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </div>
+            </div>
+            <div style="width: 66.667%; padding: 2.4rem;">
+              <h3 style="font-size: 2rem; font-weight: 600; color: #333; margin-bottom: 1rem;">Oversized Fit</h3>
+              <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;">Our oversized fit features an extra roomy cut throughout for a trendy, statement-making silhouette.</p>
+              <div>
+                <h4 style="font-weight: 500; margin-bottom: 1rem; color: #333;">Best For:</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 0.5rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Street style looks</span></li>
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 0.5rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Layered outfits</span></li>
+                  <li style="display: flex; align-items: flex-start;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Making a fashion statement</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #2b2b2b; border-radius: 0.8rem; padding: 3rem; margin-top: 4rem;">
+        <h3 style="font-family: avertaDefault, 'avertaDefault Fallback', Arial, Helvetica, sans-serif; font-size: 2rem; font-weight: 600; color: #333; margin-bottom: 2rem; letter-spacing: 0;">Fit Tips</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="display: flex; align-items: flex-start; margin-bottom: 1rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">If you're between sizes, size up for a relaxed fit or size down for a more fitted look.</span></li>
+          <li style="display: flex; align-items: flex-start; margin-bottom: 1rem;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Consider your body type when choosing a fit. Different fits flatter different body shapes.</span></li>
+          <li style="display: flex; align-items: flex-start;"><span style="color: #2b2b2b; margin-right: 1rem;">•</span><span style="color: #666;">Remember that fabrics with stretch will provide more give and comfort regardless of the fit.</span></li>
+        </ul>
       </div>
     </section>
 
@@ -892,6 +952,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
   
+  function convertMeasurement(value, fromUnit, toUnit) {
+    if (fromUnit === toUnit) return value;
+    if (fromUnit === 'in' && toUnit === 'cm') {
+      return Math.round(parseFloat(value) * 2.54);
+    }
+    if (fromUnit === 'cm' && toUnit === 'in') {
+      return Math.round(parseFloat(value) / 2.54);
+    }
+    return value;
+  }
+  
+  function convertMeasurementRange(range, fromUnit, toUnit) {
+    if (!range || !range.includes('-')) return range;
+    const parts = range.split('-');
+    const converted = parts.map(part => convertMeasurement(part.trim(), fromUnit, toUnit));
+    return converted.join('-');
+  }
+  
   function updateSizeTable() {
     const data = sizeData[currentCategory];
     const headers = data.headers.map(header => {
@@ -909,8 +987,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     data.data.forEach(row => {
       tableHTML += '<tr>';
-      row.forEach(cell => {
-        tableHTML += `<td>${cell}</td>`;
+      row.forEach((cell, index) => {
+        let convertedCell = cell;
+        // Convert measurements for specific columns
+        if (currentCategory === 'mens' && (index === 1 || index === 2 || index === 3)) {
+          convertedCell = convertMeasurementRange(cell, 'in', currentUnit);
+        } else if (currentCategory === 'womens' && (index === 1 || index === 2 || index === 3)) {
+          convertedCell = convertMeasurementRange(cell, 'in', currentUnit);
+        } else if (currentCategory === 'kids' && (index === 1 || index === 3)) {
+          if (index === 1) { // Height
+            convertedCell = convertMeasurementRange(cell, 'in', currentUnit);
+          } else if (index === 3) { // Chest
+            convertedCell = convertMeasurement(cell, 'in', currentUnit);
+          }
+        } else if (currentCategory === 'accessories' && index === 2) {
+          convertedCell = convertMeasurementRange(cell, 'in', currentUnit);
+        }
+        tableHTML += `<td>${convertedCell}</td>`;
       });
       tableHTML += '</tr>';
     });
