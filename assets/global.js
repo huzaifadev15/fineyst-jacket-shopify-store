@@ -1491,7 +1491,17 @@
         const response = await fetch(`/products/${handle}.json`);
         if (!response.ok) return null;
         const data = await response.json();
-        return data.product;
+        const product = data.product;
+        
+        // Ensure we have options_with_values structure
+        if (product && !product.options_with_values && product.options) {
+          product.options_with_values = product.options.map((opt, idx) => ({
+            name: typeof opt === 'string' ? opt : (opt.name || `Option ${idx + 1}`),
+            values: typeof opt === 'string' ? [] : (opt.values || [])
+          }));
+        }
+        
+        return product;
       } catch (e) {
         console.error('Error fetching product:', e);
         return null;
@@ -1561,6 +1571,101 @@
         product = await fetchProductData(productId);
       }
 
+      // Extract size options from variants
+      let sizeOptions = [];
+      let colorOptions = [];
+      
+      if (product?.variants && product.variants.length > 0) {
+        // Get options from product (Shopify structure)
+        let options = product.options_with_values || product.options || [];
+        
+        // Normalize options structure
+        if (options.length > 0 && typeof options[0] === 'string') {
+          // If options is just an array of strings, convert to objects
+          options = options.map((opt, idx) => {
+            // Try to get values from variants
+            const values = new Set();
+            product.variants.forEach(v => {
+              const val = v.options && v.options[idx] 
+                ? v.options[idx] 
+                : (idx === 0 ? v.option1 : (idx === 1 ? v.option2 : v.option3));
+              if (val) values.add(val);
+            });
+            return {
+              name: opt,
+              values: Array.from(values)
+            };
+          });
+        }
+        
+        // Find which option is Size
+        let sizeOptionIndex = -1;
+        let colorOptionIndex = -1;
+        
+        options.forEach((opt, idx) => {
+          const optName = (typeof opt === 'string' ? opt : (opt.name || '')).toLowerCase();
+          if (optName === 'size' || optName.includes('size')) {
+            sizeOptionIndex = idx;
+          }
+          if (optName === 'color' || optName === 'colour') {
+            colorOptionIndex = idx;
+          }
+        });
+        
+        // Extract unique sizes from variants
+        if (sizeOptionIndex >= 0) {
+          const sizeSet = new Set();
+          product.variants.forEach(variant => {
+            let sizeValue = null;
+            if (variant.options && variant.options[sizeOptionIndex]) {
+              sizeValue = variant.options[sizeOptionIndex];
+            } else if (sizeOptionIndex === 0) {
+              sizeValue = variant.option1;
+            } else if (sizeOptionIndex === 1) {
+              sizeValue = variant.option2;
+            } else if (sizeOptionIndex === 2) {
+              sizeValue = variant.option3;
+            }
+            if (sizeValue && sizeValue.toLowerCase() !== 'default title') {
+              sizeSet.add(sizeValue);
+            }
+          });
+          sizeOptions = Array.from(sizeSet).sort();
+        } else {
+          // Fallback: if no size option found, try to extract from option1, option2, option3
+          // This handles cases where size might be in any option position
+          const allOptions = new Set();
+          product.variants.forEach(variant => {
+            [variant.option1, variant.option2, variant.option3].forEach(opt => {
+              if (opt && opt.toLowerCase() !== 'default title') {
+                allOptions.add(opt);
+              }
+            });
+          });
+          // If we have a reasonable number of options (likely sizes), use them
+          if (allOptions.size > 0 && allOptions.size <= 10) {
+            sizeOptions = Array.from(allOptions).sort();
+          }
+        }
+        
+        // Extract unique colors from variants
+        if (colorOptionIndex >= 0) {
+          const colorSet = new Set();
+          product.variants.forEach(variant => {
+            const colorValue = variant.options && variant.options[colorOptionIndex] 
+              ? variant.options[colorOptionIndex] 
+              : (colorOptionIndex === 0 ? variant.option1 : (colorOptionIndex === 1 ? variant.option2 : variant.option3));
+            if (colorValue && colorValue.toLowerCase() !== 'default title') {
+              colorSet.add(colorValue);
+            }
+          });
+          colorOptions = Array.from(colorSet).map(color => ({
+            name: color,
+            value: color
+          }));
+        }
+      }
+
       // Create wishlist item
       const wishlistItem = {
         id: String(productId),
@@ -1571,11 +1676,9 @@
         salePrice: product?.variants?.[0]?.compare_at_price || null,
         images: product?.images || [],
         variants: product?.variants || [],
-        colorDetails: product?.options?.find(opt => opt.name.toLowerCase() === 'color')?.values?.map((val, idx) => ({
-          name: val,
-          value: product?.variants?.[idx]?.option1 || val
-        })) || [],
-        sizeDetails: product?.options?.find(opt => opt.name.toLowerCase() === 'size')?.values || [],
+        options: product?.options || product?.options_with_values || [],
+        colorDetails: colorOptions.length > 0 ? colorOptions : [],
+        sizeDetails: sizeOptions,
         size: ''
       };
 
