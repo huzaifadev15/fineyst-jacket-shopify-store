@@ -35,8 +35,9 @@
   }
 
   .hand-picked-section__title {
-    font-size: 1.75rem !important;
-    font-weight: 700;
+    font-size: 3.25rem !important;
+    font-family: 'Averta', sans-serif;
+    font-weight: 900;
     text-align: center;
     margin-bottom: 1rem;
     padding: 0 1rem;
@@ -44,9 +45,15 @@
     line-height: 1.2;
   }
 
+  @media (max-width: 767px) {
+    .hand-picked-section__title {
+      font-size: 2.5rem !important;
+    }
+  }
+
   @media (min-width: 640px) {
     .hand-picked-section__title {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 1.5rem;
       padding: 0;
     }
@@ -54,7 +61,7 @@
 
   @media (min-width: 768px) {
     .hand-picked-section__title {
-      font-size: 3rem;
+      font-size: 3.5rem;
     }
   }
 
@@ -83,7 +90,8 @@
 
   .hand-picked-section__category-btn {
     padding: 0 0.75rem;
-    font-size: 1.25rem;
+    font-size: 1.75rem;
+    font-family: 'Averta', sans-serif;
     font-weight: 500;
     transition: color 0.3s ease;
     color: #374151;
