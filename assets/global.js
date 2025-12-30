@@ -1233,6 +1233,70 @@
       }, 250);
     });
   
+    // Touch/Swipe functionality for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let isDragging = false;
+
+    function handleTouchStart(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isDragging = false;
+    }
+
+    function handleTouchMove(e) {
+      if (!touchStartX || !touchStartY) return;
+      isDragging = true;
+    }
+
+    function handleTouchEnd(e) {
+      if (!touchStartX || !touchStartY || !isDragging) return;
+      
+      touchEndX = e.changedTouches[0].clientX;
+      touchEndY = e.changedTouches[0].clientY;
+      
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = touchStartY - touchEndY;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+      
+      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        e.preventDefault();
+        
+        if (deltaX > 0) {
+          // Swipe left - go to next
+          const visibleCount = visibleCards.length;
+          const maxVisible = Math.min(getMaxVisible(), visibleCount);
+          const maxIndex = Math.max(0, visibleCount - maxVisible);
+          
+          if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+          }
+        } else {
+          // Swipe right - go to previous
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        }
+      }
+      
+      // Reset
+      touchStartX = 0;
+      touchStartY = 0;
+      touchEndX = 0;
+      touchEndY = 0;
+      isDragging = false;
+    }
+
+    // Add touch event listeners to carousel
+    carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+
     // Initialize with men's categories
     filterByGender('men');
   }
@@ -1471,6 +1535,69 @@
       }, 250);
     });
   
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let isDragging = false;
+
+    function handleTouchStart(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isDragging = false;
+    }
+
+    function handleTouchMove(e) {
+      if (!touchStartX || !touchStartY) return;
+      isDragging = true;
+    }
+
+    function handleTouchEnd(e) {
+      if (!touchStartX || !touchStartY || !isDragging) return;
+      
+      touchEndX = e.changedTouches[0].clientX;
+      touchEndY = e.changedTouches[0].clientY;
+      
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = touchStartY - touchEndY;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+      
+      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        e.preventDefault();
+        
+        if (deltaX > 0) {
+          // Swipe left - go to next
+          const visibleCards = getVisibleCards();
+          const isMobile = window.innerWidth < 768;
+          const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
+          
+          if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+          }
+        } else {
+          // Swipe right - go to previous
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        }
+      }
+      
+      // Reset
+      touchStartX = 0;
+      touchStartY = 0;
+      touchEndX = 0;
+      touchEndY = 0;
+      isDragging = false;
+    }
+
+    // Add touch event listeners to carousel
+    carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+
     // Initialize
     updateCarousel();
   }
