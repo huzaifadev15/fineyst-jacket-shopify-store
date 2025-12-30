@@ -1328,6 +1328,36 @@
     gap: 3rem;
   }
 
+  .usa-fulfillment-section__content {
+    padding: 2rem 0 2rem 6rem;
+  }
+
+  .usa-fulfillment-section__nav {
+    left: 1rem;
+  }
+
+  .usa-fulfillment-section__nav-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .usa-fulfillment-section__nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .usa-fulfillment-section__nav-right {
+    right: 1rem;
+  }
+
+  .usa-fulfillment-section__title {
+    font-size: 2.5rem;
+  }
+
+  .usa-fulfillment-section__description {
+    font-size: 1.5rem;
+  }
+
   .usa-fulfillment-section__visual {
     min-height: 40rem;
   }
@@ -1339,13 +1369,65 @@
 
 @media (max-width: 600px) {
   .usa-fulfillment-section {
-    padding: 6rem 0;
+    padding: 4rem 0;
+  }
+
+  .usa-fulfillment-section__content {
+    padding: 1.5rem 0 1.5rem 5.5rem;
+  }
+
+  .usa-fulfillment-section__nav {
+    left: 0.75rem;
+    top: 55%;
+    transform: translateY(-50%);
+  }
+
+  .usa-fulfillment-section__nav-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .usa-fulfillment-section__nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .usa-fulfillment-section__nav-right {
+    right: 0.75rem;
+  }
+
+  .usa-fulfillment-section__title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .usa-fulfillment-section__description {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .usa-fulfillment-section__features-heading {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .usa-fulfillment-section__feature {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
   }
 
   .usa-fulfillment-section__box {
-    width: 10rem;
+    width: 8rem;
     top: 1rem;
     right: 1rem;
+  }
+
+  .usa-fulfillment-section__visual {
+    min-height: 30rem;
+  }
+
+  .usa-fulfillment-section__map {
+    min-height: 30rem;
   }
 }
 
@@ -1522,8 +1604,36 @@
   }
 
   .tailored-fit-section__content {
-    padding: 3rem 2rem 3rem 7rem;
+    padding: 3rem 2rem 3rem 6rem;
     min-height: 50rem;
+  }
+
+  .tailored-fit-section__nav {
+    left: 1rem;
+  }
+
+  .tailored-fit-section__nav-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .tailored-fit-section__nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .tailored-fit-section__nav-right {
+    right: 1rem;
+  }
+
+  .tailored-fit-section__title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tailored-fit-section__description {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
   }
 
   .tailored-fit-section__visual {
@@ -1533,12 +1643,52 @@
 
 @media (max-width: 600px) {
   .tailored-fit-section {
-    padding: 6rem 0;
+    padding: 4rem 0;
   }
 
   .tailored-fit-section__content {
-    padding: 2rem 1.5rem 2rem 6rem;
+    padding: 2rem 1.5rem 2rem 5.5rem;
     min-height: 40rem;
+  }
+
+  .tailored-fit-section__nav {
+    left: 0.75rem;
+    top: 55%;
+    transform: translateY(-50%);
+  }
+
+  .tailored-fit-section__nav-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .tailored-fit-section__nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tailored-fit-section__nav-right {
+    right: 0.75rem;
+  }
+
+  .tailored-fit-section__title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tailored-fit-section__description {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .tailored-fit-section__features-heading {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tailored-fit-section__feature {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
   }
 
   .tailored-fit-section__visual {
@@ -1750,8 +1900,46 @@
   }
 
   .premium-materials-section__content {
-    padding: 3rem 2rem 3rem 7rem;
+    padding: 3rem 2rem 3rem 6rem;
     min-height: 35rem;
+  }
+
+  .premium-materials-section__nav {
+    left: 1rem;
+  }
+
+  .premium-materials-section__nav-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .premium-materials-section__nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .premium-materials-section__nav-right {
+    right: 1rem;
+  }
+
+  .premium-materials-section__title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .premium-materials-section__description {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .premium-materials-section__features-heading {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .premium-materials-section__feature {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
   }
 
   .premium-materials-section__visual {
@@ -1765,8 +1953,52 @@
   }
 
   .premium-materials-section__content {
-    padding: 2rem 1.5rem 2rem 6rem;
+    padding: 2rem 1.5rem 2rem 5.5rem;
     min-height: 30rem;
+  }
+
+  .premium-materials-section__nav {
+    left: 0.75rem;
+    top: 135%;
+    transform: translateY(-50%);
+  }
+
+  .premium-materials-section__nav-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .premium-materials-section__nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .premium-materials-section__nav-right {
+    right: 0.75rem;
+  }
+
+  .premium-materials-section__title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .premium-materials-section__description {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .premium-materials-section__features-heading {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .premium-materials-section__feature {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .premium-materials-section__pagination {
+    padding-top: 2rem;
   }
 
   .premium-materials-section__visual {
