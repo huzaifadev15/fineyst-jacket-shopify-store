@@ -578,11 +578,14 @@
   }
 
   function formatMoney(cents) {
+    // Ensure cents is a valid number
+    const amount = typeof cents === 'number' ? cents : parseInt(cents, 10) || 0;
+    
     if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
-      return Shopify.formatMoney(cents);
+      return Shopify.formatMoney(amount);
     }
     // Fallback formatting
-    return 'Rs ' + (cents / 100).toLocaleString('en-IN');
+    return 'Rs ' + (amount / 100).toLocaleString('en-IN');
   }
 
   // Utility function to escape HTML to prevent XSS
@@ -869,14 +872,23 @@
   }
 
   function updateCartSubtotal(cart) {
+    // Ensure cart and total_price are valid
+    if (!cart) {
+      console.error('Cart is undefined in updateCartSubtotal');
+      return;
+    }
+    
+    const totalPrice = cart.total_price || 0;
+    const priceValue = typeof totalPrice === 'number' ? totalPrice : parseInt(totalPrice, 10) || 0;
+    
     const subtotalEl = document.querySelector('[data-cart-sidebar-subtotal]');
     if (subtotalEl) {
-      subtotalEl.textContent = formatMoney(cart.total_price);
+      subtotalEl.textContent = formatMoney(priceValue);
     }
     
     const totalEl = document.querySelector('[data-cart-sidebar-total]');
     if (totalEl) {
-      totalEl.textContent = formatMoney(cart.total_price);
+      totalEl.textContent = formatMoney(priceValue);
     }
     
     // Update dynamic checkout buttons
