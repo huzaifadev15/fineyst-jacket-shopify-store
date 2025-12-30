@@ -1,0 +1,378 @@
+---
+layout: theme
+---
+
+{%- style -%}
+  .terms-page {
+    min-height: 100vh;
+    background: #fff;
+  }
+  
+  .terms-header {
+    position: relative;
+    overflow: hidden;
+    background: #f6f6f6;
+  }
+  
+  .terms-header__content {
+    position: relative;
+    z-index: 10;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 8rem;
+    padding-bottom: 10rem;
+    text-align: center;
+  }
+  
+  .terms-header__title {
+    font-size: clamp(4rem, 5vw, 6rem);
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 3rem;
+  }
+  
+  .terms-header__description {
+    font-size: clamp(1.8rem, 2vw, 2rem);
+    color: #000;
+    margin-bottom: 5rem;
+  }
+  
+  .terms-header__features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  
+  .terms-header__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .terms-header__feature-icon {
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 50%;
+    background: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .terms-header__feature-icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: #000;
+  }
+  
+  .terms-header__feature-text {
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .terms-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .terms-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  
+  .terms-card__content {
+    padding: 6rem 4rem;
+  }
+  
+  .terms-section {
+    margin-bottom: 5rem;
+  }
+  
+  .terms-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .terms-section p {
+    color: #374151;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    font-size: 1.6rem;
+  }
+  
+  .terms-section ul {
+    list-style: disc;
+    padding-left: 3rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  
+  .terms-section li {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+  }
+  
+  .terms-section strong {
+    font-weight: 600;
+  }
+  
+  .contact-section {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 3rem;
+  }
+  
+  .contact-section h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-section p {
+    color: #374151;
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  
+  .contact-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 2rem;
+  }
+  
+  .contact-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-card p {
+    color: #374151;
+    font-size: 1.6rem;
+    margin-bottom: 0;
+  }
+  
+  .contact-links {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .contact-links a {
+    color: #2b2b2b;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .contact-links .arrow {
+    margin-right: 0.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .terms-header__features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    
+    .terms-card__content {
+      padding: 3rem 2rem;
+    }
+    
+    .terms-section h2 {
+      font-size: 2rem;
+    }
+    
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .contact-links {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+  }
+{%- endstyle -%}
+
+<div class="terms-page">
+  <!-- Header Banner -->
+  <div class="terms-header">
+    <div class="terms-header__content">
+      <h1 class="terms-header__title">Terms of Service</h1>
+      <p class="terms-header__description">Our commitment to transparency and fairness. These terms outline our relationship and responsibilities to each other.</p>
+      
+      <div class="terms-header__features">
+        <div class="terms-header__feature">
+          <div class="terms-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+          </div>
+          <p class="terms-header__feature-text">Legal Terms</p>
+        </div>
+        
+        <div class="terms-header__feature">
+          <div class="terms-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <p class="terms-header__feature-text">User Protection</p>
+        </div>
+        
+        <div class="terms-header__feature">
+          <div class="terms-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+          </div>
+          <p class="terms-header__feature-text">Fair Practices</p>
+        </div>
+        
+        <div class="terms-header__feature">
+          <div class="terms-header__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <p class="terms-header__feature-text">Community Guidelines</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="terms-content">
+    <div class="terms-card">
+      <div class="terms-card__content">
+        <div class="terms-sections">
+          <section class="terms-section">
+            <h2>Introduction</h2>
+            <p><strong>Last updated:</strong> April 20, 2025</p>
+            <p>Welcome to Fineyst. These Terms & Conditions govern your use of our website, services, and products. Please read these terms carefully before making a purchase or using our services within the United States.</p>
+          </section>
+
+          <section class="terms-section">
+            <h2>Acceptance of Terms</h2>
+            <p>By accessing or using our services, you agree to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use our services or make purchases from our website.</p>
+            <p>These terms apply to all visitors, users, and others who access or use our service.</p>
+          </section>
+
+          <section class="terms-section">
+            <h2>Use License</h2>
+            <p>Permission is granted to temporarily download one copy of the materials on Fineyst's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+            <ul>
+              <li>Modify or copy the materials</li>
+              <li>Use the materials for any commercial purpose or for any public display</li>
+              <li>Attempt to reverse engineer any software contained on the website</li>
+              <li>Remove any copyright or other proprietary notations from the materials</li>
+            </ul>
+          </section>
+
+          <section class="terms-section">
+            <h2>User Accounts</h2>
+            <p>When you create an account with us, you must provide information that is accurate, complete, and current at all times. You are responsible for safeguarding the password and for all activities that occur under your account.</p>
+            <p>You agree not to disclose your password to any third party and to take sole responsibility for any activities or actions under your account.</p>
+          </section>
+
+          <section class="terms-section">
+            <h2>Prohibited Uses</h2>
+            <p>You may not use our service:</p>
+            <ul>
+              <li>For any unlawful purpose or to solicit others to perform unlawful acts</li>
+              <li>To violate any international, federal, provincial, or state regulations, rules, laws, or local ordinances</li>
+              <li>To infringe upon or violate our intellectual property rights or the intellectual property rights of others</li>
+              <li>To harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate</li>
+              <li>To submit false or misleading information</li>
+            </ul>
+          </section>
+
+          <section class="terms-section">
+            <h2>Content</h2>
+            <p>Our service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material. You are responsible for the content that you post to the service, including its legality, reliability, and appropriateness.</p>
+            <p>By posting content to our service, you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such content on and through the service.</p>
+          </section>
+
+          <section class="terms-section">
+            <h2>Termination</h2>
+            <p>We may terminate or suspend your account and bar access to the service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation.</p>
+            <p>If you wish to terminate your account, you may simply discontinue using the service.</p>
+          </section>
+
+          <section class="terms-section">
+            <h2>Disclaimer</h2>
+            <p>The information on this website is provided on an "as is" basis. To the fullest extent permitted by law, this Company:</p>
+            <ul>
+              <li>Excludes all representations and warranties relating to this website and its contents</li>
+              <li>Excludes all liability for damages arising out of or in connection with your use of this website</li>
+            </ul>
+          </section>
+
+          <section class="contact-section">
+            <h2>Contact Information</h2>
+            <p>If you have any questions about these Terms of Service, please contact us:</p>
+            <div class="contact-grid">
+              <div class="contact-card">
+                <h3>Email</h3>
+                <p>info@fineystjackets.com</p>
+              </div>
+              <div class="contact-card">
+                <h3>Phone</h3>
+                <p>+1 (888) 840-0885</p>
+              </div>
+            </div>
+            <div class="contact-links">
+              <a href="/">
+                <span class="arrow">→</span>
+                Return to Shopping
+              </a>
+              <a href="{{ pages['contact-us'].url }}">
+                <span class="arrow">→</span>
+                Contact Us
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
