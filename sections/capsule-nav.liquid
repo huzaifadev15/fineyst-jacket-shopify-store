@@ -78,7 +78,8 @@
   }
 {%- endstyle -%}
 
-{%- unless template.name == 'page' and page.handle == 'wishlist' -%}
+{%- if template.name != 'product' -%}
+  {%- unless template.name == 'page' and page.handle == 'wishlist' -%}
 <nav class="capsule-nav" id="capsule-nav">
   <div class="capsule-nav__container">
     <ul class="capsule-nav__list">
@@ -115,11 +116,14 @@
     </ul>
   </div>
 </nav>
-{%- endunless -%}
+  {%- endunless -%}
+{%- endif -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const capsuleNav = document.getElementById('capsule-nav');
+  if (!capsuleNav) return;
+  
   const navList = capsuleNav.querySelector('.capsule-nav__list');
   let lastScrollY = 0;
   let isVisible = true;
