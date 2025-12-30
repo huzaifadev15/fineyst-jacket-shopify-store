@@ -952,8 +952,14 @@
       if (!visibleCard) return 0;
       const style = window.getComputedStyle(visibleCard);
       const width = visibleCard.offsetWidth;
-      const gap = parseInt(style.marginRight) || 32;
+      const gap = parseInt(style.marginRight) || parseInt(style.marginLeft) || 16;
       return width + gap;
+    }
+    
+    function getMaxVisible() {
+      // On mobile, typically 1-2 cards are visible, on desktop 3-5
+      const isMobile = window.innerWidth < 768;
+      return isMobile ? 1 : 5;
     }
   
     function filterByGender(gender) {
@@ -997,11 +1003,13 @@
   
     function updateCarousel() {
       const cardWidth = getCardWidth();
+      if (cardWidth === 0) return; // Don't update if card width is 0
+      
       const translateX = -currentIndex * cardWidth;
       track.style.transform = `translateX(${translateX}px)`;
       
       const visibleCount = visibleCards.length;
-      const maxVisible = Math.min(5, visibleCount);
+      const maxVisible = Math.min(getMaxVisible(), visibleCount);
       
       // Update button states
       prevBtn.disabled = currentIndex === 0;
@@ -1033,7 +1041,7 @@
   
     nextBtn.addEventListener('click', function() {
       const visibleCount = visibleCards.length;
-      const maxVisible = Math.min(5, visibleCount);
+      const maxVisible = Math.min(getMaxVisible(), visibleCount);
       const maxIndex = Math.max(0, visibleCount - maxVisible);
       
       if (currentIndex < maxIndex) {
@@ -1047,6 +1055,15 @@
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function() {
+        // Recalculate card width and reset if needed
+        const newCardWidth = getCardWidth();
+        if (newCardWidth > 0) {
+          // Ensure currentIndex is still valid
+          const visibleCount = visibleCards.length;
+          const maxVisible = Math.min(getMaxVisible(), visibleCount);
+          const maxIndex = Math.max(0, visibleCount - maxVisible);
+          currentIndex = Math.min(currentIndex, maxIndex);
+        }
         updateCarousel();
       }, 250);
     });
