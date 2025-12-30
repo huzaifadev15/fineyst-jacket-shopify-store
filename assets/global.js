@@ -6,6 +6,7 @@
     // Initialize all components
     initHeader();
     initMobileMenu();
+    initMegaMenu();
     initProductGallery();
     initQuantityButtons();
     initAddToCart();
@@ -65,6 +66,142 @@
         menuToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
       });
+    });
+  }
+
+  /* Mega Menu */
+  function initMegaMenu() {
+    const navItems = document.querySelectorAll('[data-mega-menu]');
+    const megaMenus = document.querySelectorAll('[data-mega-menu-panel]');
+    const closeButtons = document.querySelectorAll('[data-mega-menu-close]');
+    let activeMenu = null;
+    let hoverTimeout = null;
+
+    if (!navItems.length || !megaMenus.length) return;
+
+    // Handle hover on desktop
+    navItems.forEach(item => {
+      const menuType = item.dataset.megaMenu;
+      const megaMenu = document.querySelector(`[data-mega-menu-panel="${menuType}"]`);
+      const navLink = item.querySelector('.site-header__nav-link');
+
+      if (!megaMenu) return;
+
+      // Mouse enter
+      item.addEventListener('mouseenter', function() {
+        if (window.innerWidth >= 1025) {
+          clearTimeout(hoverTimeout);
+          closeAllMenus();
+          openMenu(megaMenu, item);
+        }
+      });
+
+      // Mouse leave
+      item.addEventListener('mouseleave', function() {
+        if (window.innerWidth >= 1025) {
+          hoverTimeout = setTimeout(() => {
+            closeMenu(megaMenu, item);
+          }, 200);
+        }
+      });
+
+      // Keep menu open when hovering over it
+      megaMenu.addEventListener('mouseenter', function() {
+        if (window.innerWidth >= 1025) {
+          clearTimeout(hoverTimeout);
+        }
+      });
+
+      megaMenu.addEventListener('mouseleave', function() {
+        if (window.innerWidth >= 1025) {
+          hoverTimeout = setTimeout(() => {
+            closeMenu(megaMenu, item);
+          }, 200);
+        }
+      });
+
+      // Click on mobile/tablet
+      navLink.addEventListener('click', function(e) {
+        if (window.innerWidth < 1025) {
+          e.preventDefault();
+          if (activeMenu === megaMenu) {
+            closeMenu(megaMenu, item);
+          } else {
+            closeAllMenus();
+            openMenu(megaMenu, item);
+          }
+        }
+      });
+    });
+
+    // Close buttons
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const megaMenu = this.closest('.mega-menu');
+        const navItem = document.querySelector(`[data-mega-menu="${megaMenu.dataset.megaMenuPanel}"]`);
+        if (megaMenu && navItem) {
+          closeMenu(megaMenu, navItem);
+        }
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+      if (window.innerWidth < 1025) {
+        const clickedInside = e.target.closest('.site-header__nav-item--has-mega-menu') || 
+                             e.target.closest('.mega-menu');
+        if (!clickedInside && activeMenu) {
+          const navItem = document.querySelector(`[data-mega-menu="${activeMenu.dataset.megaMenuPanel}"]`);
+          if (navItem) {
+            closeMenu(activeMenu, navItem);
+          }
+        }
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && activeMenu) {
+        const navItem = document.querySelector(`[data-mega-menu="${activeMenu.dataset.megaMenuPanel}"]`);
+        if (navItem) {
+          closeMenu(activeMenu, navItem);
+        }
+      }
+    });
+
+    // Close all menus function
+    function closeAllMenus() {
+      megaMenus.forEach(menu => {
+        const navItem = document.querySelector(`[data-mega-menu="${menu.dataset.megaMenuPanel}"]`);
+        if (navItem) {
+          closeMenu(menu, navItem);
+        }
+      });
+    }
+
+    // Open menu function
+    function openMenu(menu, navItem) {
+      menu.classList.add('is-active');
+      navItem.classList.add('is-active');
+      activeMenu = menu;
+      document.body.style.overflow = window.innerWidth < 1025 ? 'hidden' : '';
+    }
+
+    // Close menu function
+    function closeMenu(menu, navItem) {
+      menu.classList.remove('is-active');
+      navItem.classList.remove('is-active');
+      if (activeMenu === menu) {
+        activeMenu = null;
+      }
+      document.body.style.overflow = '';
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth >= 1025) {
+        closeAllMenus();
+      }
     });
   }
   
