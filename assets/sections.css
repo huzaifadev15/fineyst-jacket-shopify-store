@@ -3215,9 +3215,15 @@
 .site-footer__social-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.5rem;
   width: 100%;
+}
+
+@media (max-width: 900px) {
+  .site-footer__social-section {
+    align-items: center;
+  }
 }
 
 .site-footer__social-label {
@@ -3337,9 +3343,15 @@
 
 @media (max-width: 900px) {
   .site-footer__social-newsletter {
-    flex-direction: column;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 3rem;
+    align-items: flex-start;
+  }
+
+  .site-footer__social-section {
+    width: 100%;
+    align-items: flex-start;
   }
 
   .site-footer__newsletter-section {
@@ -3349,6 +3361,7 @@
 
   .site-footer__newsletter-form {
     flex-direction: column;
+    align-items: center;
   }
 
   .site-footer__newsletter-button {
