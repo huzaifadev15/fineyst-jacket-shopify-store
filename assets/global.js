@@ -1193,69 +1193,56 @@
       }, 250);
     });
   
-    // Touch/Swipe functionality for mobile
+    // Touch/Drag functionality for mobile - stops exactly where user releases
     let touchStartX = 0;
-    let touchStartY = 0;
-    let touchEndX = 0;
-    let touchEndY = 0;
     let isDragging = false;
+    let startTransform = 0;
 
     function handleTouchStart(e) {
       touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
       isDragging = false;
+      
+      // Get current transform value
+      const transform = track.style.transform;
+      const match = transform.match(/translateX\(([^)]+)px\)/);
+      startTransform = match ? parseFloat(match[1]) : 0;
+      
+      // Disable transition during drag
+      track.style.transition = 'none';
     }
 
     function handleTouchMove(e) {
-      if (!touchStartX || !touchStartY) return;
-      isDragging = true;
+      if (!touchStartX) return;
+      
+      const touchCurrentX = e.touches[0].clientX;
+      const deltaX = touchCurrentX - touchStartX;
+      
+      // Start dragging on any horizontal movement
+      if (!isDragging && Math.abs(deltaX) > 5) {
+        isDragging = true;
+        e.preventDefault();
+      }
+      
+      if (isDragging) {
+        e.preventDefault();
+        const newTransform = startTransform + deltaX;
+        track.style.transform = `translateX(${newTransform}px)`;
+      }
     }
 
     function handleTouchEnd(e) {
-      if (!touchStartX || !touchStartY || !isDragging) return;
+      // Re-enable transition
+      track.style.transition = '';
       
-      touchEndX = e.changedTouches[0].clientX;
-      touchEndY = e.changedTouches[0].clientY;
-      
-      const deltaX = touchStartX - touchEndX;
-      const deltaY = touchStartY - touchEndY;
-      const minSwipeDistance = 50; // Minimum distance for a swipe
-      
-      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-        e.preventDefault();
-        
-        if (deltaX > 0) {
-          // Swipe left - go to next
-          const visibleCount = visibleCards.length;
-          const maxVisible = Math.min(getMaxVisible(), visibleCount);
-          const maxIndex = Math.max(0, visibleCount - maxVisible);
-          
-          if (currentIndex < maxIndex) {
-            currentIndex++;
-            updateCarousel();
-          }
-        } else {
-          // Swipe right - go to previous
-          if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-          }
-        }
-      }
-      
-      // Reset
+      // Reset without any adjustment
       touchStartX = 0;
-      touchStartY = 0;
-      touchEndX = 0;
-      touchEndY = 0;
       isDragging = false;
     }
 
     // Add touch event listeners to carousel
     carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
-    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     // Initialize with men's categories
     filterByGender('men');
@@ -1500,52 +1487,46 @@
     let touchEndX = 0;
     let touchEndY = 0;
     let isDragging = false;
+    let startTransform = 0;
 
     function handleTouchStart(e) {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       isDragging = false;
+      
+      // Get current transform value
+      const transform = track.style.transform;
+      const match = transform.match(/translateX\(([^)]+)px\)/);
+      startTransform = match ? parseFloat(match[1]) : 0;
+      
+      // Disable transition during drag
+      track.style.transition = 'none';
     }
 
     function handleTouchMove(e) {
       if (!touchStartX || !touchStartY) return;
-      isDragging = true;
+      
+      const touchCurrentX = e.touches[0].clientX;
+      const deltaX = touchCurrentX - touchStartX;
+      
+      // Start dragging on any horizontal movement
+      if (!isDragging && Math.abs(deltaX) > 5) {
+        isDragging = true;
+        e.preventDefault();
+      }
+      
+      if (isDragging) {
+        e.preventDefault();
+        const newTransform = startTransform + deltaX;
+        track.style.transform = `translateX(${newTransform}px)`;
+      }
     }
 
     function handleTouchEnd(e) {
-      if (!touchStartX || !touchStartY || !isDragging) return;
+      // Re-enable transition
+      track.style.transition = '';
       
-      touchEndX = e.changedTouches[0].clientX;
-      touchEndY = e.changedTouches[0].clientY;
-      
-      const deltaX = touchStartX - touchEndX;
-      const deltaY = touchStartY - touchEndY;
-      const minSwipeDistance = 50; // Minimum distance for a swipe
-      
-      // Check if horizontal swipe is greater than vertical (to avoid conflicts with scrolling)
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-        e.preventDefault();
-        
-        if (deltaX > 0) {
-          // Swipe left - go to next
-          const visibleCards = getVisibleCards();
-          const isMobile = window.innerWidth < 768;
-          const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
-          
-          if (currentIndex < maxIndex) {
-            currentIndex++;
-            updateCarousel();
-          }
-        } else {
-          // Swipe right - go to previous
-          if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-          }
-        }
-      }
-      
-      // Reset
+      // Reset without any adjustment
       touchStartX = 0;
       touchStartY = 0;
       touchEndX = 0;
@@ -1555,8 +1536,8 @@
 
     // Add touch event listeners to carousel
     carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-    carousel.addEventListener('touchmove', handleTouchMove, { passive: true });
-    carousel.addEventListener('touchend', handleTouchEnd, { passive: false });
+    carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+    carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     // Initialize
     updateCarousel();

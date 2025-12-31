@@ -68,7 +68,7 @@
     <div class="color-collection-section__carousel" data-color-carousel style="width: 100%; overflow: hidden;">
       <div class="color-collection-section__carousel-track" data-color-track>
         {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link }}" class="color-collection-section__card" style="min-width: 350px; height: 450px;" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link }}" class="color-collection-section__card" style="min-width: 350px; height: 550px;" data-mobile-style="min-width: 250px; height: 350px;" {{ block.shopify_attributes }}>
             <div class="color-collection-section__card-image">
               {%- if block.settings.image != blank -%}
                 <img src="{{ block.settings.image | image_url: width: 500 }}" alt="{{ block.settings.title }}" loading="lazy">
