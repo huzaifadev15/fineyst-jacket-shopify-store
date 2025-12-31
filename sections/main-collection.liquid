@@ -1915,6 +1915,19 @@
           }
         }
       });
+
+      function closeSortDropdown() {
+        if (sortMenu && sortMenu.classList.contains('is-open')) {
+          sortMenu.classList.remove('is-open');
+          sortButton.classList.remove('is-active');
+          sortMenu.style.display = 'none';
+          sortMenu.style.opacity = '0';
+          sortMenu.style.visibility = 'hidden';
+        }
+      }
+
+      window.addEventListener('scroll', closeSortDropdown, { passive: true });
+      window.addEventListener('touchmove', closeSortDropdown, { passive: true });
     }
 
     // Filter Sidebar
