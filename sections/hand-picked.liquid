@@ -180,7 +180,6 @@
     overflow: hidden;
     padding: 0 3.5rem;
     margin-top: -1rem;
-    perspective: 1000px;
   }
 
   @media (min-width: 640px) {
@@ -200,7 +199,6 @@
   .hand-picked-section__carousel-wrapper--desktop {
     display: none;
     padding: 1rem 0 0.5rem;
-    margin-bottom: 1rem;
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -208,30 +206,14 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__carousel-wrapper--desktop {
-      padding: 1.5rem 0 0.5rem;
-      margin-bottom: 1.5rem;
+      padding: 1.5rem 0 0.75rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__carousel-wrapper--desktop {
       display: block;
-      padding: 2rem 0 0;
-      margin-bottom: 2rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__carousel-wrapper--desktop {
-      padding: 2rem 0 0;
-      margin-bottom: 2.5rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__carousel-wrapper--desktop {
-      padding: 2rem 0 0;
-      margin-bottom: 3rem;
+      padding: 2rem 0 1rem;
     }
   }
 
@@ -240,15 +222,10 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 0.5rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     width: max-content;
     will-change: transform;
     position: relative;
-  }
-
-  @media (min-width: 768px) {
-    .hand-picked-section__carousel-track {
-      transition: none;
-    }
   }
 
   @media (min-width: 640px) {
@@ -287,41 +264,27 @@
   .hand-picked-section__product {
     flex-shrink: 0 !important;
     cursor: pointer;
-    width: 260px !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
     position: relative;
     display: flex !important;
     flex-direction: column;
-    transition: transform 0.3s ease;
-    transform: scale(0.85) translateY(10px);
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product {
-      width: 280px !important;
-      min-width: 280px !important;
-      max-width: 280px !important;
+      width: 240px !important;
+      min-width: 240px !important;
+      max-width: 240px !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product {
-      width: 300px !important;
-      min-width: 300px !important;
-      max-width: 300px !important;
-    }
-  }
-
-  /* Desktop: Center card styling */
-  @media (min-width: 768px) {
-    .hand-picked-section__product.is-center {
-      transform: scale(1.05) translateY(20px);
-      z-index: 2;
-    }
-    
-    .hand-picked-section__product:not(.is-center) {
-      transform: scale(0.85) translateY(10px);
+      width: 260px !important;
+      min-width: 260px !important;
+      max-width: 260px !important;
     }
   }
 
@@ -330,24 +293,24 @@
     overflow: hidden;
     background: #f3f4f6;
     width: 100% !important;
-    height: 390px !important;
-    min-height: 390px !important;
-    max-height: 390px !important;
+    height: 330px !important;
+    min-height: 330px !important;
+    max-height: 330px !important;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product-card {
-      height: 420px !important;
-      min-height: 420px !important;
-      max-height: 420px !important;
+      height: 360px !important;
+      min-height: 360px !important;
+      max-height: 360px !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product-card {
-      height: 450px !important;
-      min-height: 450px !important;
-      max-height: 450px !important;
+      height: 390px !important;
+      min-height: 390px !important;
+      max-height: 390px !important;
     }
   }
 
@@ -364,8 +327,8 @@
 
   .hand-picked-section__product-info {
     text-align: center !important;
-    margin-top: 0.75rem !important;
-    margin-bottom: 0.75rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
     padding: 0 0.25rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -374,16 +337,16 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__product-info {
-      margin-top: 1rem !important;
-      margin-bottom: 1rem !important;
+      margin-top: 0.75rem !important;
+      margin-bottom: 0.75rem !important;
       padding: 0 0.5rem !important;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__product-info {
-      margin-top: 1.25rem !important;
-      margin-bottom: 1.25rem !important;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
       padding: 0 0.5rem !important;
     }
   }
@@ -665,10 +628,9 @@
 
   .hand-picked-section__product-mobile.is-center {
     opacity: 1;
-    transform: translateX(0) scale(1) rotateX(-8deg);
+    transform: translateX(0) scale(1);
     z-index: 3;
     margin-top: 20px;
-    transform-style: preserve-3d;
   }
 
   .hand-picked-section__product-mobile.is-prev {
@@ -1007,60 +969,14 @@
       var scrollPosition = 0;
       var isTransitioning = false;
       var mobileCurrentIndex = 0; // Track current center product index for mobile
-      var desktopCurrentIndex = 0; // Track current center product index for desktop
 
       function updateScrollPosition() {
         tracks.forEach(function(track) {
           if (!track.classList.contains('is-active')) return;
           
-          // Apply scroll position without transition for instant swap
-          track.style.transition = 'none';
+          // Apply scroll position
           track.style.transform = 'translateX(' + scrollPosition + 'px)';
-          
-          // Update center card on desktop immediately
-          if (!isMobileView()) {
-            updateCenterCardByIndex(track);
-          }
         });
-      }
-
-      function updateCenterCardByIndex(track) {
-        if (!track || isMobileView()) return;
-        
-        var products = Array.from(track.querySelectorAll('.hand-picked-section__product'));
-        if (products.length === 0) return;
-        
-        // Ensure index is within bounds
-        desktopCurrentIndex = Math.max(0, Math.min(desktopCurrentIndex, products.length - 1));
-        
-        // Remove is-center class from all products
-        products.forEach(function(product) {
-          product.classList.remove('is-center');
-        });
-        
-        // Add is-center class to the current index product
-        if (products[desktopCurrentIndex]) {
-          products[desktopCurrentIndex].classList.add('is-center');
-        }
-        
-        // Calculate scroll position to center the selected card
-        var wrapper = track.closest('.hand-picked-section__carousel-wrapper--desktop');
-        if (!wrapper) return;
-        
-        var centerProduct = products[desktopCurrentIndex];
-        if (!centerProduct) return;
-        
-        // Get wrapper and product dimensions
-        var wrapperWidth = wrapper.offsetWidth;
-        var productWidth = centerProduct.offsetWidth;
-        var productLeft = centerProduct.offsetLeft;
-        
-        // Calculate the scroll position needed to center the product
-        // Center of wrapper - (product position + half product width) = scroll offset
-        scrollPosition = (wrapperWidth / 2) - (productLeft + productWidth / 2);
-        
-        // Apply the new scroll position
-        track.style.transform = 'translateX(' + scrollPosition + 'px)';
       }
 
       // Mobile carousel navigation
@@ -1152,7 +1068,6 @@
           activeCategory = category;
           scrollPosition = 0; // Reset scroll position
           mobileCurrentIndex = 0; // Reset mobile carousel index
-          desktopCurrentIndex = 0; // Reset desktop carousel index
           isTransitioning = true;
 
           // Update button states
@@ -1176,13 +1091,6 @@
             // Update mobile carousel only if on mobile view
             if (isMobileView()) {
               updateMobileCarousel();
-            } else {
-              // Update center card for desktop
-              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-              if (activeTrack) {
-                desktopCurrentIndex = 0;
-                updateScrollPosition();
-              }
             }
             isTransitioning = false;
           }, 50);
@@ -1210,18 +1118,16 @@
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation - swap to previous card
-            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-            if (activeTrack) {
-              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-              if (products.length > 0 && desktopCurrentIndex > 0) {
-                desktopCurrentIndex--;
-                updateScrollPosition();
-              }
-            }
+            // Desktop navigation
+            var scrollAmount = getScrollAmount();
+            var maxScroll = getMaxScroll();
+            
+            scrollPosition = Math.min(0, scrollPosition + scrollAmount);
+            updateScrollPosition();
+            
             setTimeout(function() {
               isTransitioning = false;
-            }, 50);
+            }, 500);
           }
         });
       }
@@ -1246,18 +1152,16 @@
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation - swap to next card
-            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-            if (activeTrack) {
-              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-              if (products.length > 0 && desktopCurrentIndex < products.length - 1) {
-                desktopCurrentIndex++;
-                updateScrollPosition();
-              }
-            }
+            // Desktop navigation
+            var scrollAmount = getScrollAmount();
+            var maxScroll = getMaxScroll();
+            
+            scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
+            updateScrollPosition();
+            
             setTimeout(function() {
               isTransitioning = false;
-            }, 50);
+            }, 500);
           }
         });
       }
@@ -1276,7 +1180,6 @@
         
         // Update desktop scroll position
         scrollPosition = 0;
-        desktopCurrentIndex = 0;
         updateScrollPosition();
         
         // Initialize mobile carousel only if on mobile view
@@ -1421,12 +1324,6 @@
           if (isMobileView()) {
             mobileCurrentIndex = 0;
             updateMobileCarousel();
-          } else {
-            // Update center card for desktop after resize
-            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-            if (activeTrack) {
-              updateScrollPosition();
-            }
           }
         }, 250);
       });
