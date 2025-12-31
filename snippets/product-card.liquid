@@ -313,6 +313,7 @@
 <style>
   .product-card__image {
     position: relative;
+   
   }
 
   /* Desktop hover image (for products without carousel) */
@@ -332,10 +333,65 @@
     opacity: 1;
   }
 
-  /* Hide carousel on desktop */
+  /* Desktop: Show carousel as hover images */
   @media (min-width: 901px) {
     .product-card__carousel {
-      display: none;
+      display: block !important;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .product-card__carousel-track {
+      display: block !important;
+      width: 100% !important;
+      transform: none !important;
+      height: 100%;
+      position: relative;
+    }
+
+    .product-card__carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      display: block !important;
+    }
+
+    .product-card__carousel-slide:first-child {
+      position: relative;
+      opacity: 1 !important;
+      z-index: 1;
+    }
+
+    .product-card__carousel-slide:last-child {
+      z-index: 2;
+    }
+
+    .product-card:hover .product-card__carousel-slide:first-child {
+      opacity: 0 !important;
+    }
+
+    .product-card:hover .product-card__carousel-slide:last-child {
+      opacity: 1 !important;
+    }
+
+    .product-card__carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-card__carousel-slide a {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -606,10 +662,58 @@
       height: 100%;
     }
 
-    /* Hide carousel on desktop */
+    /* Desktop: Show first image and hover image */
     @media (min-width: 901px) {
       .product-card__carousel {
-        display: none;
+        display: block !important;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+
+      .product-card__carousel-track {
+        display: block !important;
+        width: 100% !important;
+        transform: none !important;
+        height: 100%;
+        position: relative;
+      }
+
+      .product-card__carousel-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        display: block !important;
+      }
+
+      .product-card__carousel-slide:first-child {
+        position: relative;
+        opacity: 1;
+        z-index: 1;
+      }
+
+      .product-card__carousel-slide:last-child {
+        z-index: 2;
+      }
+
+      .product-card:hover .product-card__carousel-slide:first-child {
+        opacity: 0;
+      }
+
+      .product-card:hover .product-card__carousel-slide:last-child {
+        opacity: 1;
+      }
+
+      .product-card__carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
     }
 
