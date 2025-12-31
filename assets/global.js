@@ -1976,8 +1976,8 @@
         button.classList.add('is-active');
         const svg = button.querySelector('svg');
         if (svg) {
-          svg.setAttribute('fill', '#ff0000');
-          svg.setAttribute('stroke', '#ff0000');
+          svg.setAttribute('fill', '#000000');
+          svg.setAttribute('stroke', '#000000');
         }
       } else {
         button.classList.remove('is-active');
