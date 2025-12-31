@@ -143,6 +143,19 @@
       </div>
     {%- endif -%}
 
+    <div class="product-card__actions-mobile">
+      <button 
+        type="button" 
+        class="product-card__action product-card__wishlist product-card__wishlist--mobile" 
+        aria-label="Add to wishlist"
+        data-wishlist-add="{{ product.id }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+    </div>
+
     {%- comment -%} Quick Shop Section {%- endcomment -%}
     {%- assign size_option = null -%}
     {%- if product.options_with_values.size > 0 -%}
@@ -292,20 +305,6 @@
         </div>
         <span class="product-card__color-name">{{ display_color }}</span>
       </div>
-    </div>
-
-    {%- comment -%} Mobile: Heart icon at bottom {%- endcomment -%}
-    <div class="product-card__actions-mobile">
-      <button 
-        type="button" 
-        class="product-card__action product-card__wishlist product-card__wishlist--mobile" 
-        aria-label="Add to wishlist"
-        data-wishlist-add="{{ product.id }}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </button>
     </div>
   </div>
 </div>
@@ -617,8 +616,9 @@
   @media (max-width: 900px) {
     .product-card__image {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       -webkit-tap-highlight-color: transparent;
+      padding-bottom: 3rem; /* Space for heart icon positioned at -2rem */
     }
 
     .product-card__carousel {
@@ -628,6 +628,7 @@
       width: 100%;
       touch-action: pan-y pinch-zoom;
       aspect-ratio: 3/4;
+      margin-bottom: 0; /* Reset margin */
     }
 
     .product-card__carousel-track {
@@ -747,13 +748,14 @@
       border-color: #000;
     }
 
-    /* Show mobile heart icon at bottom */
+    /* Show mobile heart icon at bottom of image */
     .product-card__actions-mobile {
+      position: absolute;
+      bottom: -2rem;
+      right: 1rem;
+      z-index: 100;
       display: flex;
       justify-content: flex-start;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #eee;
     }
 
     .product-card__wishlist--mobile {
