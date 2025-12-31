@@ -312,7 +312,8 @@
       "settings": {
         "title": "PREMIUM MATERIALS",
         "description": "We don't mass-produce. We craft. Every FINEYST jacket starts with ethically sourced full-grain leather, precision cuts, and hours of artisan detail.",
-        "features_heading": "KEY FEATURES:"
+        "features_heading": "KEY FEATURES:",
+        "image": "shopify://shop_images/premium-materials-banner_93956a80-85d3-47c9-b1e4-c5d575d475d4.png"
       }
     },
     "faq": {
