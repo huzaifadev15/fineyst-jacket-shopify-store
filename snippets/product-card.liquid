@@ -28,35 +28,74 @@
   endif
 -%}
 
-<div class="product-card" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}">
+  <div class="product-card" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}">
   <div class="product-card__image">
-    <a href="{{ product.url }}" aria-label="{{ product.title }}">
-      {%- if featured_image != blank -%}
-        <img
-          src="{{ featured_image | image_url: width: 600 }}"
-          srcset="
-            {{ featured_image | image_url: width: 400 }} 400w,
-            {{ featured_image | image_url: width: 600 }} 600w,
-            {{ featured_image | image_url: width: 800 }} 800w
-          "
-          sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
-          alt="{{ featured_image.alt | default: product.title }}"
-          loading="lazy"
-          width="{{ featured_image.width }}"
-          height="{{ featured_image.height }}"
-        >
-        {%- if product.images[1] != blank -%}
+    {%- if product.images[1] != blank -%}
+      {%- comment -%} Mobile Carousel for multiple images {%- endcomment -%}
+      <div class="product-card__carousel" data-product-card-carousel>
+        <div class="product-card__carousel-track" data-card-carousel-track>
+          <div class="product-card__carousel-slide" data-card-carousel-slide>
+            <a href="{{ product.url }}" aria-label="{{ product.title }}">
+              {%- if featured_image != blank -%}
+                <img
+                  src="{{ featured_image | image_url: width: 600 }}"
+                  srcset="
+                    {{ featured_image | image_url: width: 400 }} 400w,
+                    {{ featured_image | image_url: width: 600 }} 600w,
+                    {{ featured_image | image_url: width: 800 }} 800w
+                  "
+                  sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
+                  alt="{{ featured_image.alt | default: product.title }}"
+                  loading="lazy"
+                  width="{{ featured_image.width }}"
+                  height="{{ featured_image.height }}"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="product-card__carousel-slide" data-card-carousel-slide>
+            <a href="{{ product.url }}" aria-label="{{ product.title }}">
+              <img
+                src="{{ product.images[1] | image_url: width: 600 }}"
+                srcset="
+                  {{ product.images[1] | image_url: width: 400 }} 400w,
+                  {{ product.images[1] | image_url: width: 600 }} 600w,
+                  {{ product.images[1] | image_url: width: 800 }} 800w
+                "
+                sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
+                alt="{{ product.images[1].alt | default: product.title }}"
+                loading="lazy"
+                width="{{ product.images[1].width }}"
+                height="{{ product.images[1].height }}"
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      {%- comment -%} Single image - no carousel, but show hover on desktop {%- endcomment -%}
+      <a href="{{ product.url }}" aria-label="{{ product.title }}">
+        {%- if featured_image != blank -%}
           <img
-            class="product-card__image-hover"
-            src="{{ product.images[1] | image_url: width: 600 }}"
-            alt="{{ product.images[1].alt | default: product.title }}"
+            src="{{ featured_image | image_url: width: 600 }}"
+            srcset="
+              {{ featured_image | image_url: width: 400 }} 400w,
+              {{ featured_image | image_url: width: 600 }} 600w,
+              {{ featured_image | image_url: width: 800 }} 800w
+            "
+            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw"
+            alt="{{ featured_image.alt | default: product.title }}"
             loading="lazy"
+            width="{{ featured_image.width }}"
+            height="{{ featured_image.height }}"
           >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
-    </a>
+      </a>
+    {%- endif -%}
 
     {%- if show_badges -%}
       <div class="product-card__badges">
@@ -95,6 +134,14 @@
         </svg>
       </button>
     </div>
+
+    {%- comment -%} Mobile Image Indicators (Dots) {%- endcomment -%}
+    {%- if product.images[1] != blank -%}
+      <div class="product-card__image-indicators" data-card-carousel-dots>
+        <span class="product-card__indicator product-card__indicator--active" data-card-indicator="0"></span>
+        <span class="product-card__indicator" data-card-indicator="1"></span>
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Quick Shop Section {%- endcomment -%}
     {%- assign size_option = null -%}
@@ -246,19 +293,73 @@
         <span class="product-card__color-name">{{ display_color }}</span>
       </div>
     </div>
+
+    {%- comment -%} Mobile: Heart icon at bottom {%- endcomment -%}
+    <div class="product-card__actions-mobile">
+      <button 
+        type="button" 
+        class="product-card__action product-card__wishlist product-card__wishlist--mobile" 
+        aria-label="Add to wishlist"
+        data-wishlist-add="{{ product.id }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 
 <style>
+  .product-card__image {
+    position: relative;
+  }
+
+  /* Desktop hover image (for products without carousel) */
   .product-card__image-hover {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
     transition: opacity 0.5s ease;
+    z-index: 2;
+    object-fit: cover;
   }
 
   .product-card:hover .product-card__image-hover {
     opacity: 1;
+  }
+
+  /* Hide carousel on desktop */
+  @media (min-width: 901px) {
+    .product-card__carousel {
+      display: none;
+    }
+  }
+
+  /* Mobile-only: Show second image on tap/click */
+  @media (max-width: 900px) {
+    .product-card:hover .product-card__image-hover {
+      opacity: 0; /* Disable hover on mobile */
+    }
+
+    .product-card.is-swapped .product-card__image-hover {
+      opacity: 1;
+    }
+
+    .product-card.is-swapped img:not(.product-card__image-hover) {
+      opacity: 0;
+    }
+
+    .product-card__image {
+      position: relative;
+    }
+
+    .product-card__image img:not(.product-card__image-hover) {
+      transition: opacity 0.3s ease;
+    }
   }
 
   .product-card__badge--soldout {
@@ -455,6 +556,143 @@
     background: #fff;
     color: #000;
   }
+
+  /* Mobile Carousel Styles (like product page) */
+  @media (max-width: 900px) {
+    .product-card__image {
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .product-card__carousel {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      touch-action: pan-y pinch-zoom;
+      aspect-ratio: 3/4;
+    }
+
+    .product-card__carousel-track {
+      display: flex;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      width: 200%;
+      height: 100%;
+    }
+
+    .product-card__carousel-slide {
+      min-width: 50%;
+      width: 50%;
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .product-card__carousel-slide img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .product-card__carousel-slide a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Hide carousel on desktop */
+    @media (min-width: 901px) {
+      .product-card__carousel {
+        display: none;
+      }
+    }
+
+    /* Hide desktop heart icon on mobile */
+    .product-card__actions {
+      display: none;
+    }
+
+    /* Show image indicators (dots) where heart icon was */
+    .product-card__image-indicators {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.6rem;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .product-card__indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .product-card__indicator--active {
+      background: #000;
+      border-color: #000;
+    }
+
+    /* Show mobile heart icon at bottom */
+    .product-card__actions-mobile {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+    }
+
+    .product-card__wishlist--mobile {
+      background: transparent !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      backdrop-filter: none !important;
+      width: 3.5rem !important;
+      height: 3.5rem !important;
+      box-shadow: none !important;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-card__wishlist--mobile:hover {
+      background: #f5f5f5 !important;
+      transform: scale(1.05);
+    }
+
+    .product-card__wishlist--mobile svg {
+      width: 20px;
+      height: 20px;
+      stroke: #000 !important;
+      fill: none !important;
+    }
+
+    .product-card__wishlist--mobile.is-active svg {
+      fill: #000 !important;
+      stroke: #000 !important;
+    }
+  }
+
+  /* Desktop: Hide mobile elements */
+  @media (min-width: 901px) {
+    .product-card__image-indicators {
+      display: none;
+    }
+
+    .product-card__actions-mobile {
+      display: none;
+    }
+  }
 </style>
 
 <script>
@@ -464,6 +702,250 @@
       return;
     }
     window.productCardQuickShopInitialized = true;
+
+    // Mobile carousel for product cards (like product page)
+    function initProductCardCarousel() {
+      const carousels = document.querySelectorAll('[data-product-card-carousel]');
+      // Only initialize if carousels exist (they're only created on mobile or for products with 2+ images)
+      if (carousels.length === 0) return;
+      
+      carousels.forEach(function(carousel) {
+        const track = carousel.querySelector('[data-card-carousel-track]');
+        const slides = carousel.querySelectorAll('[data-card-carousel-slide]');
+        const card = carousel.closest('.product-card');
+        const dots = card ? card.querySelectorAll('[data-card-indicator]') : [];
+        
+        if (!track || slides.length === 0) return;
+
+        let currentIndex = 0;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let startTranslate = 0;
+        let currentTranslate = 0;
+
+        function updateCarousel() {
+          // Each slide is 50% of track width, so translate by 50% per slide
+          const translateX = -currentIndex * 50;
+          track.style.transform = `translateX(${translateX}%)`;
+
+          // Update dots
+          console.log('Updating dots, currentIndex:', currentIndex, 'dots count:', dots.length);
+          dots.forEach(function(dot, index) {
+            if (index === currentIndex) {
+              dot.classList.add('product-card__indicator--active');
+              console.log('Activating dot', index);
+            } else {
+              dot.classList.remove('product-card__indicator--active');
+              console.log('Deactivating dot', index);
+            }
+          });
+        }
+
+        function goToSlide(index) {
+          if (index < 0 || index >= slides.length) return;
+          currentIndex = index;
+          updateCarousel();
+        }
+
+        // Dot navigation
+        dots.forEach(function(dot, index) {
+          dot.addEventListener('click', function(e) {
+            e.stopPropagation();
+            goToSlide(index);
+          });
+        });
+
+        // Touch/swipe support (same as product page)
+        function getPositionX(event) {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        }
+
+        function touchStart(event) {
+          console.log('touchStart called', event.type, event.target);
+          // Always start drag tracking, we'll determine if it's a click or drag later
+          startX = getPositionX(event);
+          isDragging = true;
+          startTranslate = -currentIndex * 50; // Each slide is 50% of track
+          track.style.transition = 'none';
+          console.log('Drag started', { startX, startTranslate, currentIndex, isDragging });
+        }
+
+        function touchMove(event) {
+          if (!isDragging) {
+            console.log('touchMove called but not dragging');
+            return;
+          }
+          event.preventDefault();
+          currentX = getPositionX(event);
+          const carousel = track.closest('.product-card__carousel');
+          const carouselWidth = carousel ? carousel.offsetWidth : track.offsetWidth / 2;
+          const deltaX = currentX - startX;
+          // Move 50% of track per carousel width moved
+          currentTranslate = startTranslate + (deltaX / carouselWidth) * 50;
+          
+          console.log('Dragging', { 
+            currentX, 
+            startX, 
+            deltaX, 
+            carouselWidth, 
+            currentTranslate, 
+            startTranslate 
+          });
+          
+          // Constrain translation (max 50% per slide, 2 slides = 100% max)
+          const minTranslate = -(slides.length - 1) * 50;
+          const maxTranslate = 0;
+          currentTranslate = Math.max(minTranslate, Math.min(maxTranslate, currentTranslate));
+          
+          track.style.transform = `translateX(${currentTranslate}%)`;
+        }
+
+        function touchEnd() {
+          if (!isDragging) {
+            console.log('touchEnd called but not dragging');
+            return;
+          }
+          
+          const movedBy = currentTranslate - startTranslate;
+          const carousel = track.closest('.product-card__carousel');
+          const carouselWidth = carousel ? carousel.offsetWidth : track.offsetWidth / 2;
+          const threshold = carouselWidth * 0.15; // 15% of carousel width
+          const hasMoved = Math.abs(movedBy) > threshold;
+          
+          console.log('Drag ended', { 
+            currentTranslate, 
+            startTranslate, 
+            currentIndex, 
+            movedBy, 
+            threshold, 
+            hasMoved,
+            carouselWidth 
+          });
+          
+          isDragging = false;
+          track.style.transition = 'transform 0.3s ease';
+
+          // If there was significant movement, prevent link click and snap to slide
+          if (hasMoved) {
+            // Prevent link navigation
+            const links = track.querySelectorAll('a');
+            links.forEach(function(link) {
+              link.style.pointerEvents = 'none';
+              setTimeout(function() {
+                link.style.pointerEvents = '';
+              }, 100);
+            });
+            
+            // Snap to appropriate slide
+            if (movedBy > 0 && currentIndex > 0) {
+              console.log('Snapping to previous slide');
+              goToSlide(currentIndex - 1);
+            } else if (movedBy < 0 && currentIndex < slides.length - 1) {
+              console.log('Snapping to next slide');
+              goToSlide(currentIndex + 1);
+            } else {
+              console.log('At boundary, staying on current slide');
+              updateCarousel();
+            }
+          } else {
+            console.log('Movement too small, allowing link click');
+            updateCarousel();
+          }
+        }
+
+        // Track if there was actual drag movement to prevent link clicks
+        let hadDragMovement = false;
+        
+        // Store original touchEnd
+        const originalTouchEnd = touchEnd;
+        touchEnd = function() {
+          const movedBy = currentTranslate - startTranslate;
+          const carousel = track.closest('.product-card__carousel');
+          const carouselWidth = carousel ? carousel.offsetWidth : track.offsetWidth / 2;
+          const threshold = carouselWidth * 0.1; // 10% threshold
+          hadDragMovement = Math.abs(movedBy) > threshold;
+          console.log('hadDragMovement:', hadDragMovement, 'movedBy:', movedBy);
+          originalTouchEnd();
+        };
+        
+        // Prevent link clicks if there was drag movement
+        const links = track.querySelectorAll('a');
+        links.forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            if (hadDragMovement) {
+              console.log('Preventing link click after drag movement');
+              e.preventDefault();
+              e.stopPropagation();
+              hadDragMovement = false; // Reset for next interaction
+              return false;
+            }
+          }, true); // Use capture phase to catch before link navigation
+        });
+
+        // Touch events
+        track.addEventListener('touchstart', touchStart, { passive: true });
+        track.addEventListener('touchmove', touchMove, { passive: true });
+        track.addEventListener('touchend', touchEnd);
+
+        // Mouse events for desktop testing
+        track.addEventListener('mousedown', function(e) {
+          console.log('mousedown on track');
+          // Don't prevent default on mousedown, let touchStart handle it
+          touchStart(e);
+        });
+        
+        // Add mousemove to document to track drag outside track
+        document.addEventListener('mousemove', function(e) {
+          if (isDragging) {
+            console.log('mousemove during drag');
+            e.preventDefault();
+            touchMove(e);
+          }
+        });
+        
+        document.addEventListener('mouseup', function(e) {
+          if (isDragging) {
+            console.log('mouseup ending drag');
+            touchEnd();
+          }
+        });
+        
+        track.addEventListener('mouseleave', function(e) {
+          if (isDragging) {
+            console.log('mouseleave ending drag');
+            touchEnd();
+          }
+        });
+        
+        // Prevent image drag
+        const images = track.querySelectorAll('img');
+        images.forEach(function(img) {
+          img.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+          });
+        });
+
+        // Initialize
+        updateCarousel();
+      });
+    }
+
+    // Initialize on load and resize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProductCardCarousel);
+    } else {
+      initProductCardCarousel();
+    }
+
+    // Re-initialize on resize (in case of orientation change)
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        initProductCardCarousel();
+      }, 250);
+    });
     
     // Use event delegation to handle clicks on all size buttons
     document.addEventListener('click', function(e) {
@@ -693,4 +1175,5 @@
     });
   })();
 </script>
+
 
