@@ -150,18 +150,19 @@
   @media (min-width: 768px) {
     .hand-picked-section__content {
       padding: 0 2rem;
+      overflow: visible;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__content {
-      padding: 0 3rem;
+      padding: 0 2rem;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__content {
-      padding: 0 4rem;
+      padding: 0 2rem;
     }
   }
 
@@ -169,6 +170,12 @@
     overflow: hidden;
     position: relative;
     min-height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__carousel-wrapper {
+      overflow: visible;
+    }
   }
 
   .hand-picked-section__carousel-wrapper--mobile {
@@ -214,41 +221,43 @@
     .hand-picked-section__carousel-wrapper--desktop {
       display: block;
       padding: 2rem 0 1rem;
-    }
-  }
-
-  .hand-picked-section__carousel-track {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    width: max-content;
-    will-change: transform;
-    position: relative;
-  }
-
-  @media (min-width: 640px) {
-    .hand-picked-section__carousel-track {
-      gap: 0.75rem;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .hand-picked-section__carousel-track {
-      gap: 1rem;
+      min-height: 620px;
     }
   }
 
   @media (min-width: 1024px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      min-height: 720px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      min-height: 820px;
+      padding-top: 62px;
+      padding-right: 54px;
+      padding-left: 54px;
+    }
+  }
+
+  .hand-picked-section__carousel-track {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 550px;
+    padding: 0;
+    overflow: visible;
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__carousel-track {
-      gap: 1.5rem;
+      height: 650px;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-track {
-      gap: 2rem;
+      height: 720px;
     }
   }
 
@@ -264,28 +273,113 @@
   .hand-picked-section__product {
     flex-shrink: 0 !important;
     cursor: pointer;
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
-    position: relative;
+    width: 335.5px !important;
+    min-width: 335.5px !important;
+    max-width: 335.5px !important;
+    position: absolute;
+    top: 0;
     display: flex !important;
     flex-direction: column;
+    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), left 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 0;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* Center product - larger and in center */
+  /* 414.44 / 335.5 = 1.235 scale factor */
+  .hand-picked-section__product.is-center {
+    transform: translateX(-50%) scale(1.235);
+    opacity: 1;
+    z-index: 10;
+    left: 50%;
+  }
+
+  /* Adjacent left */
+  .hand-picked-section__product.is-adjacent-left {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 5;
+    left: 26%;
   }
 
   @media (min-width: 1024px) {
-    .hand-picked-section__product {
-      width: 240px !important;
-      min-width: 240px !important;
-      max-width: 240px !important;
+    .hand-picked-section__product.is-adjacent-left {
+      left: 27%;
     }
   }
 
   @media (min-width: 1280px) {
-    .hand-picked-section__product {
-      width: 260px !important;
-      min-width: 260px !important;
-      max-width: 260px !important;
+    .hand-picked-section__product.is-adjacent-left {
+      left: 28%;
     }
+  }
+
+  /* Adjacent right */
+  .hand-picked-section__product.is-adjacent-right {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 5;
+    left: 74%;
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__product.is-adjacent-right {
+      left: 73%;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__product.is-adjacent-right {
+      left: 72%;
+    }
+  }
+
+  /* Outer left */
+  .hand-picked-section__product.is-outer-left {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 2;
+    left: 6%;
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__product.is-outer-left {
+      left: 7%;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__product.is-outer-left {
+      left: 8%;
+    }
+  }
+
+  /* Outer right */
+  .hand-picked-section__product.is-outer-right {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 2;
+    left: 94%;
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__product.is-outer-right {
+      left: 93%;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__product.is-outer-right {
+      left: 92%;
+    }
+  }
+
+  /* Hidden products */
+  .hand-picked-section__product.is-hidden {
+    opacity: 0 !important;
+    pointer-events: none;
   }
 
   .hand-picked-section__product-card {
@@ -293,24 +387,24 @@
     overflow: hidden;
     background: #f3f4f6;
     width: 100% !important;
-    height: 330px !important;
-    min-height: 330px !important;
-    max-height: 330px !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: 400px !important;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product-card {
-      height: 360px !important;
-      min-height: 360px !important;
-      max-height: 360px !important;
+      height: 480px !important;
+      min-height: 480px !important;
+      max-height: 480px !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product-card {
-      height: 390px !important;
-      min-height: 390px !important;
-      max-height: 390px !important;
+      height: 540px !important;
+      min-height: 540px !important;
+      max-height: 540px !important;
     }
   }
 
@@ -319,6 +413,7 @@
     height: 100% !important;
     object-fit: cover !important;
     display: block !important;
+    transition: transform 0.4s ease-out;
   }
 
   .hand-picked-section__product:hover .hand-picked-section__product-card img {
@@ -419,16 +514,16 @@
 
   .hand-picked-section__nav-btn {
     position: absolute;
-    top: calc(2rem + 165px);
+    top: 50%;
     transform: translateY(-50%);
     background: black;
     color: white;
     padding: 0.75rem;
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 20;
     border: none;
     cursor: pointer;
     display: flex;
@@ -438,39 +533,33 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__nav-btn {
+      width: 3rem;
+      height: 3rem;
+      padding: 0.75rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn {
+      top: 45%;
+      width: 3rem;
+      height: 3rem;
+      padding: 0.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hand-picked-section__nav-btn {
       width: 3.5rem;
       height: 3.5rem;
       padding: 1rem;
     }
   }
 
-  @media (min-width: 768px) {
-    .hand-picked-section__nav-btn {
-      width: 4rem;
-      height: 4rem;
-      padding: 1.25rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__nav-btn {
-      top: calc(2rem + 180px);
-      width: 4.5rem;
-      height: 4.5rem;
-      padding: 1.5rem;
-    }
-  }
-
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn {
-      top: calc(3rem + 195px);
-    }
-  }
-
-  /* Hide buttons on very large screens if needed */
-  @media (min-width: 1440px) {
-    .hand-picked-section__nav-btn {
-      display: flex;
+      width: 3.5rem;
+      height: 3.5rem;
     }
   }
 
@@ -479,92 +568,84 @@
   }
 
   .hand-picked-section__nav-btn--prev {
-    left: 0.5rem;
+    left: 0.25rem;
   }
 
   @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__nav-btn--prev {
       left: 1rem;
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--prev {
       left: 1.5rem;
     }
   }
 
-  @media (min-width: 1024px) {
-    .hand-picked-section__nav-btn--prev {
-      left: 2rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__nav-btn--prev {
-      left: 3rem;
-    }
-  }
-
   .hand-picked-section__nav-btn--next {
-    right: 0.5rem;
+    right: 0.25rem;
   }
 
   @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--next {
+      right: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--next {
+      right: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__nav-btn--next {
       right: 1rem;
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--next {
       right: 1.5rem;
     }
   }
 
-  @media (min-width: 1024px) {
-    .hand-picked-section__nav-btn--next {
-      right: 2rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__nav-btn--next {
-      right: 3rem;
-    }
-  }
-
-  /* Mobile carousel button positioning */
-  @media (max-width: 767px) {
-    .hand-picked-section__nav-btn {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-
   .hand-picked-section__nav-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__nav-icon {
-      width: 2rem;
-      height: 2rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__nav-icon {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__nav-icon {
-      width: 3rem;
-      height: 3rem;
+      width: 1.75rem;
+      height: 1.75rem;
     }
   }
 
@@ -966,20 +1047,58 @@
       var mobileWrapper = section.querySelector('[data-handpicked-mobile]');
       
       var activeCategory = 'men';
-      var scrollPosition = 0;
       var isTransitioning = false;
       var mobileCurrentIndex = 0; // Track current center product index for mobile
+      var desktopCurrentIndex = 2; // Track current center product index for desktop (start at center)
 
-      function updateScrollPosition() {
-        tracks.forEach(function(track) {
-          if (!track.classList.contains('is-active')) return;
+      // Desktop carousel - center focus logic with infinite loop and sliding animation
+      function updateDesktopCarousel() {
+        if (isMobileView()) return;
+        
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack) return;
+        
+        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+        if (products.length === 0) return;
+        
+        var totalProducts = products.length;
+        
+        // Wrap index for infinite loop
+        desktopCurrentIndex = ((desktopCurrentIndex % totalProducts) + totalProducts) % totalProducts;
+        
+        products.forEach(function(product, index) {
+          // Remove all state classes
+          product.classList.remove('is-center', 'is-adjacent-left', 'is-adjacent-right', 'is-outer-left', 'is-outer-right', 'is-hidden');
           
-          // Apply scroll position
-          track.style.transform = 'translateX(' + scrollPosition + 'px)';
+          // Calculate circular distance from center (with direction)
+          var diff = index - desktopCurrentIndex;
+          // Adjust for circular wrapping
+          if (diff > totalProducts / 2) diff -= totalProducts;
+          if (diff < -totalProducts / 2) diff += totalProducts;
+          
+          if (diff === 0) {
+            // Center product
+            product.classList.add('is-center');
+          } else if (diff === -1) {
+            // Adjacent left
+            product.classList.add('is-adjacent-left');
+          } else if (diff === 1) {
+            // Adjacent right
+            product.classList.add('is-adjacent-right');
+          } else if (diff === -2) {
+            // Outer left
+            product.classList.add('is-outer-left');
+          } else if (diff === 2) {
+            // Outer right
+            product.classList.add('is-outer-right');
+          } else {
+            // Hidden products
+            product.classList.add('is-hidden');
+          }
         });
       }
 
-      // Mobile carousel navigation
+      // Mobile carousel navigation with infinite loop
       function updateMobileCarousel() {
         if (!mobileWrapper || !isMobileView()) return;
         
@@ -1000,8 +1119,14 @@
         var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
         if (mobileProducts.length === 0) return;
         
-        // Ensure index is within bounds
-        mobileCurrentIndex = Math.max(0, Math.min(mobileCurrentIndex, mobileProducts.length - 1));
+        var totalProducts = mobileProducts.length;
+        
+        // Wrap index for infinite loop
+        mobileCurrentIndex = ((mobileCurrentIndex % totalProducts) + totalProducts) % totalProducts;
+        
+        // Calculate prev and next indices with wrapping
+        var prevIndex = (mobileCurrentIndex - 1 + totalProducts) % totalProducts;
+        var nextIndex = (mobileCurrentIndex + 1) % totalProducts;
         
         mobileProducts.forEach(function(product, index) {
           // Remove all state classes
@@ -1009,54 +1134,27 @@
           
           if (index === mobileCurrentIndex) {
             product.classList.add('is-center');
-          } else if (index === mobileCurrentIndex - 1) {
+          } else if (index === prevIndex) {
             product.classList.add('is-prev');
-          } else if (index === mobileCurrentIndex + 1) {
+          } else if (index === nextIndex) {
             product.classList.add('is-next');
-          } else if (index < mobileCurrentIndex - 1) {
-            product.classList.add('is-hidden-left');
           } else {
-            product.classList.add('is-hidden-right');
+            // Calculate circular distance to determine hidden direction
+            var diff = index - mobileCurrentIndex;
+            if (diff > totalProducts / 2) diff -= totalProducts;
+            if (diff < -totalProducts / 2) diff += totalProducts;
+            
+            if (diff < 0) {
+              product.classList.add('is-hidden-left');
+            } else {
+              product.classList.add('is-hidden-right');
+            }
           }
         });
       }
 
       function isMobileView() {
         return mobileWrapper && window.getComputedStyle(mobileWrapper).display !== 'none';
-      }
-
-      function getScrollAmount() {
-        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-        if (!activeTrack) return 300;
-        
-        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-        if (products.length === 0) return 300;
-        
-        // Calculate scroll amount based on product width + gap
-        // Scroll by approximately 2-3 products at a time for smooth experience
-        var firstProduct = products[0];
-        if (firstProduct) {
-          var productWidth = firstProduct.offsetWidth;
-          var computedStyle = window.getComputedStyle(activeTrack);
-          var gap = parseFloat(computedStyle.gap) || 8;
-          // Scroll by 2.5 products worth for smooth scrolling
-          return (productWidth + gap) * 2.5;
-        }
-        return 300;
-      }
-
-      function getMaxScroll() {
-        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-        if (!activeTrack) return 0;
-        
-        var wrapper = activeTrack.closest('.hand-picked-section__carousel-wrapper--desktop');
-        if (!wrapper) return 0;
-        
-        var trackWidth = activeTrack.scrollWidth;
-        var wrapperWidth = wrapper.clientWidth;
-        var maxScroll = -(trackWidth - wrapperWidth);
-        
-        return maxScroll;
       }
 
       // Category switching
@@ -1066,8 +1164,8 @@
           if (category === activeCategory || isTransitioning) return;
           
           activeCategory = category;
-          scrollPosition = 0; // Reset scroll position
           mobileCurrentIndex = 0; // Reset mobile carousel index
+          desktopCurrentIndex = 0; // Reset desktop carousel to first product
           isTransitioning = true;
 
           // Update button states
@@ -1085,19 +1183,19 @@
             }
           });
 
-          // Update scroll position after category switch
+          // Update carousels after category switch
           setTimeout(function() {
-            updateScrollPosition();
-            // Update mobile carousel only if on mobile view
             if (isMobileView()) {
               updateMobileCarousel();
+            } else {
+              updateDesktopCarousel();
             }
             isTransitioning = false;
           }, 50);
         });
       });
 
-      // Navigation - Handle both mobile and desktop
+      // Navigation - Handle both mobile and desktop with infinite loop
       if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
           e.preventDefault();
@@ -1108,26 +1206,34 @@
           
           // Check if we're on mobile view
           if (isMobileView()) {
-            // Mobile navigation
+            // Mobile navigation with infinite loop
             var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
             if (mobileProducts.length > 0) {
-              mobileCurrentIndex = Math.max(0, mobileCurrentIndex - 1);
+              mobileCurrentIndex = mobileCurrentIndex - 1;
+              if (mobileCurrentIndex < 0) {
+                mobileCurrentIndex = mobileProducts.length - 1; // Loop to last
+              }
               updateMobileCarousel();
             }
             setTimeout(function() {
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation
-            var scrollAmount = getScrollAmount();
-            var maxScroll = getMaxScroll();
-            
-            scrollPosition = Math.min(0, scrollPosition + scrollAmount);
-            updateScrollPosition();
-            
+            // Desktop navigation with infinite loop - move center to previous product
+            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+            if (activeTrack) {
+              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+              if (products.length > 0) {
+                desktopCurrentIndex = desktopCurrentIndex - 1;
+                if (desktopCurrentIndex < 0) {
+                  desktopCurrentIndex = products.length - 1; // Loop to last
+                }
+                updateDesktopCarousel();
+              }
+            }
             setTimeout(function() {
               isTransitioning = false;
-            }, 500);
+            }, 400);
           }
         });
       }
@@ -1142,26 +1248,34 @@
           
           // Check if we're on mobile view
           if (isMobileView()) {
-            // Mobile navigation
+            // Mobile navigation with infinite loop
             var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
             if (mobileProducts.length > 0) {
-              mobileCurrentIndex = Math.min(mobileProducts.length - 1, mobileCurrentIndex + 1);
+              mobileCurrentIndex = mobileCurrentIndex + 1;
+              if (mobileCurrentIndex >= mobileProducts.length) {
+                mobileCurrentIndex = 0; // Loop to first
+              }
               updateMobileCarousel();
             }
             setTimeout(function() {
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation
-            var scrollAmount = getScrollAmount();
-            var maxScroll = getMaxScroll();
-            
-            scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
-            updateScrollPosition();
-            
+            // Desktop navigation with infinite loop - move center to next product
+            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+            if (activeTrack) {
+              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+              if (products.length > 0) {
+                desktopCurrentIndex = desktopCurrentIndex + 1;
+                if (desktopCurrentIndex >= products.length) {
+                  desktopCurrentIndex = 0; // Loop to first
+                }
+                updateDesktopCarousel();
+              }
+            }
             setTimeout(function() {
               isTransitioning = false;
-            }, 500);
+            }, 400);
           }
         });
       }
@@ -1178,14 +1292,13 @@
           }
         });
         
-        // Update desktop scroll position
-        scrollPosition = 0;
-        updateScrollPosition();
-        
-        // Initialize mobile carousel only if on mobile view
+        // Initialize based on current view
         if (isMobileView()) {
           mobileCurrentIndex = 0;
           updateMobileCarousel();
+        } else {
+          desktopCurrentIndex = 0; // Start with 1st product as center
+          updateDesktopCarousel();
         }
       }
       
@@ -1224,48 +1337,67 @@
           isTransitioning = true;
           
           if (deltaX > 0) {
+            // Swipe left - go to next (infinite loop)
             if (isMobileView()) {
               var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
               if (mobileProducts.length > 0) {
-                mobileCurrentIndex = Math.min(mobileProducts.length - 1, mobileCurrentIndex + 1);
+                mobileCurrentIndex = mobileCurrentIndex + 1;
+                if (mobileCurrentIndex >= mobileProducts.length) {
+                  mobileCurrentIndex = 0; // Loop to first
+                }
                 updateMobileCarousel();
               }
               setTimeout(function() {
                 isTransitioning = false;
               }, 300);
             } else {
-              var scrollAmount = getScrollAmount();
-              var maxScroll = getMaxScroll();
-              
-              scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
-              updateScrollPosition();
-              
+              // Desktop swipe with infinite loop
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack) {
+                var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+                if (products.length > 0) {
+                  desktopCurrentIndex = desktopCurrentIndex + 1;
+                  if (desktopCurrentIndex >= products.length) {
+                    desktopCurrentIndex = 0; // Loop to first
+                  }
+                  updateDesktopCarousel();
+                }
+              }
               setTimeout(function() {
                 isTransitioning = false;
-              }, 500);
+              }, 400);
             }
           } else {
-            // Swipe right - go to previous
+            // Swipe right - go to previous (infinite loop)
             if (isMobileView()) {
-              // Mobile navigation
+              // Mobile navigation with infinite loop
               var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
               if (mobileProducts.length > 0) {
-                mobileCurrentIndex = Math.max(0, mobileCurrentIndex - 1);
+                mobileCurrentIndex = mobileCurrentIndex - 1;
+                if (mobileCurrentIndex < 0) {
+                  mobileCurrentIndex = mobileProducts.length - 1; // Loop to last
+                }
                 updateMobileCarousel();
               }
               setTimeout(function() {
                 isTransitioning = false;
               }, 300);
             } else {
-              // Desktop navigation
-              var scrollAmount = getScrollAmount();
-              
-              scrollPosition = Math.min(0, scrollPosition + scrollAmount);
-              updateScrollPosition();
-              
+              // Desktop swipe with infinite loop
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack) {
+                var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+                if (products.length > 0) {
+                  desktopCurrentIndex = desktopCurrentIndex - 1;
+                  if (desktopCurrentIndex < 0) {
+                    desktopCurrentIndex = products.length - 1; // Loop to last
+                  }
+                  updateDesktopCarousel();
+                }
+              }
               setTimeout(function() {
                 isTransitioning = false;
-              }, 500);
+              }, 400);
             }
           }
         }
@@ -1315,15 +1447,12 @@
             }
           });
           
-          // Ensure scroll position is still valid after resize
-          var maxScroll = getMaxScroll();
-          scrollPosition = Math.max(maxScroll, Math.min(0, scrollPosition));
-          updateScrollPosition();
-          
-          // Reset mobile carousel if switching to mobile view
+          // Update based on current view
           if (isMobileView()) {
             mobileCurrentIndex = 0;
             updateMobileCarousel();
+          } else {
+            updateDesktopCarousel();
           }
         }, 250);
       });
