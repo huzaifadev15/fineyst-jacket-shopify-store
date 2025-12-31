@@ -172,10 +172,11 @@
 }
 
 .welcome-section__faq-text {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   line-height: 1.7;
   color: #666;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  font-family: 'AvertaDefault', sans-serif;
 }
 
 .welcome-section__faq-link {
@@ -185,11 +186,21 @@
 }
 
 .welcome-section__faq-title {
-  font-size: 2.4rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0em;
   color: #000;
   margin-bottom: 2rem;
+  font-family: 'avertaBlack', sans-serif;
+}
+
+.welcome-section__expanded-content p:first-child {
+  margin-bottom: 1rem !important;
+}
+
+.welcome-section__expanded-content {
+  font-family: 'AvertaDefault', sans-serif;
+  font-size: 1.7rem;
 }
 
 .welcome-section__faq-list {
@@ -213,7 +224,7 @@
   padding: 1.5rem;
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #000;
   cursor: pointer;
@@ -241,10 +252,12 @@
 
 .welcome-section__faq-answer-content {
   padding: 0 1.5rem 1.5rem 1.5rem;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 1.7;
   color: #666;
   text-align: left;
+  font-family: 'AvertaDefault', sans-serif;
+  background: #fff;
 }
 
 .welcome-section__faq-answer-content p {
@@ -282,6 +295,7 @@
 .welcome-section__faq-answer-content strong {
   color: #000;
   font-weight: 600;
+  font-family: 'avertaBold', sans-serif;
 }
 
 @keyframes bounce {
@@ -416,17 +430,19 @@
 
 .welcome-section__category-label {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  padding: 0;
+  background: none;
   color: #fff;
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'avertaBold', sans-serif;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  text-align: center;
+  text-align: left;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 @media (max-width: 1200px) {
@@ -443,17 +459,51 @@
 
 @media (max-width: 600px) {
   .welcome-section__category-card {
-    flex: 0 0 calc(50% - 1rem);
+    flex: 0 0 calc(65% - 0.5rem);
+  }
+
+  .welcome-section__carousel-track {
+    gap: 1rem;
+  }
+
+  .welcome-section__carousel {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .welcome-section__carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .welcome-section__carousel-track {
+    transition: none;
   }
 
   .welcome-section__carousel-nav {
-    top: -4.5rem;
-    right: 1rem;
+    display: none;
   }
 
-  .welcome-section__carousel-btn {
-    width: 3.5rem;
-    height: 3.5rem;
+  .welcome-section__faq-text,
+  .welcome-section__expanded-content {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .welcome-section__faq-title {
+    padding: 0 2rem;
+  }
+
+  .welcome-section__faq-list {
+    padding: 0 2rem;
+  }
+
+  .welcome-section__carousel-wrapper {
+    position: static;
   }
 }
 
@@ -912,7 +962,7 @@
 .color-collection-section__carousel {
   overflow: hidden;
   position: relative;
-  padding: 0;
+  padding: 0 0 0 4rem;
 }
 
 .color-collection-section__carousel-track {
@@ -937,7 +987,7 @@
 
 .color-collection-section__card-image {
   position: relative;
-  aspect-ratio: 3/4;
+  height: 100%;
   background: #e5e5e5;
   overflow: hidden;
 }
@@ -970,15 +1020,19 @@
 
 .color-collection-section__card-title {
   position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  right: 2rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  font-family: 'avertaBold', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #fff;
   z-index: 2;
+  text-align: left;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 @media (max-width: 1200px) {
@@ -999,12 +1053,41 @@
 
 @media (max-width: 600px) {
   .color-collection-section__card {
-    flex: 0 0 calc(50% - 1rem);
+    flex: 0 0 calc(65% - 0.5rem);
+  }
+
+  .color-collection-section__carousel-track {
+    gap: 1rem;
   }
 
   .color-collection-section__carousel-btn {
     width: 3.5rem;
     height: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .color-collection-section__card {
+    min-width: 280px !important;
+    height: 380px !important;
+  }
+
+  .color-collection-section__carousel-track {
+    gap: 1rem;
+  }
+
+  .color-collection-section__card-title {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+  }
+
+  .color-collection-section__carousel-header {
+    display: none !important;
+  }
+
+  .color-collection-section__carousel {
+    margin-top: 10rem;
+    padding-left: 1rem !important;
   }
 }
 
