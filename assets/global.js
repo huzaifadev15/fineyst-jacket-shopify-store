@@ -86,11 +86,10 @@
     const megaMenus = document.querySelectorAll('[data-mega-menu-panel]');
     const closeButtons = document.querySelectorAll('[data-mega-menu-close]');
     let activeMenu = null;
-    let hoverTimeout = null;
 
     if (!navItems.length || !megaMenus.length) return;
 
-    // Handle hover on desktop
+    // Handle click on all screen sizes
     navItems.forEach(item => {
       const menuType = item.dataset.megaMenu;
       const megaMenu = document.querySelector(`[data-mega-menu-panel="${menuType}"]`);
@@ -98,49 +97,14 @@
 
       if (!megaMenu) return;
 
-      // Mouse enter
-      item.addEventListener('mouseenter', function() {
-        if (window.innerWidth >= 1025) {
-          clearTimeout(hoverTimeout);
+      // Click to toggle menu (works on all screen sizes)
+      navLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (activeMenu === megaMenu) {
+          closeMenu(megaMenu, item);
+        } else {
           closeAllMenus();
           openMenu(megaMenu, item);
-        }
-      });
-
-      // Mouse leave
-      item.addEventListener('mouseleave', function() {
-        if (window.innerWidth >= 1025) {
-          hoverTimeout = setTimeout(() => {
-            closeMenu(megaMenu, item);
-          }, 200);
-        }
-      });
-
-      // Keep menu open when hovering over it
-      megaMenu.addEventListener('mouseenter', function() {
-        if (window.innerWidth >= 1025) {
-          clearTimeout(hoverTimeout);
-        }
-      });
-
-      megaMenu.addEventListener('mouseleave', function() {
-        if (window.innerWidth >= 1025) {
-          hoverTimeout = setTimeout(() => {
-            closeMenu(megaMenu, item);
-          }, 200);
-        }
-      });
-
-      // Click on mobile/tablet
-      navLink.addEventListener('click', function(e) {
-        if (window.innerWidth < 1025) {
-          e.preventDefault();
-          if (activeMenu === megaMenu) {
-            closeMenu(megaMenu, item);
-          } else {
-            closeAllMenus();
-            openMenu(megaMenu, item);
-          }
         }
       });
     });
@@ -156,16 +120,14 @@
       });
     });
 
-    // Close on outside click
+    // Close on outside click (works on all screen sizes)
     document.addEventListener('click', function(e) {
-      if (window.innerWidth < 1025) {
-        const clickedInside = e.target.closest('.site-header__nav-item--has-mega-menu') || 
-                             e.target.closest('.mega-menu');
-        if (!clickedInside && activeMenu) {
-          const navItem = document.querySelector(`[data-mega-menu="${activeMenu.dataset.megaMenuPanel}"]`);
-          if (navItem) {
-            closeMenu(activeMenu, navItem);
-          }
+      const clickedInside = e.target.closest('.site-header__nav-item--has-mega-menu') || 
+                           e.target.closest('.mega-menu');
+      if (!clickedInside && activeMenu) {
+        const navItem = document.querySelector(`[data-mega-menu="${activeMenu.dataset.megaMenuPanel}"]`);
+        if (navItem) {
+          closeMenu(activeMenu, navItem);
         }
       }
     });
@@ -208,11 +170,9 @@
       document.body.style.overflow = '';
     }
 
-    // Handle window resize
+    // Handle window resize - close menus on resize
     window.addEventListener('resize', function() {
-      if (window.innerWidth >= 1025) {
-        closeAllMenus();
-      }
+      closeAllMenus();
     });
   }
   
