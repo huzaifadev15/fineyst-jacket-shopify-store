@@ -27,6 +27,13 @@
     margin: 0 auto;
     padding: 0;
   }
+  
+  @media (min-width: 1280px) {
+    .hand-picked-section__container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 
   @media (min-width: 768px) {
     .hand-picked-section__container {
@@ -209,11 +216,16 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__carousel-wrapper--desktop {
       padding: 1.5rem 0 0.75rem;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
@@ -221,6 +233,8 @@
     .hand-picked-section__carousel-wrapper--desktop {
       display: block;
       padding: 2rem 0 1rem;
+      padding-left: 0;
+      padding-right: 0;
       min-height: 620px;
     }
   }
@@ -228,42 +242,43 @@
   @media (min-width: 1024px) {
     .hand-picked-section__carousel-wrapper--desktop {
       min-height: 720px;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-wrapper--desktop {
       min-height: 820px;
-      padding-top: 62px;
-      padding-right: 54px;
-      padding-left: 54px;
+      padding-right: 0;
+      padding-left: 0;
     }
   }
 
   .hand-picked-section__carousel-track {
-    display: block;
+    display: none;
     position: relative;
-    width: 100%;
+    width: max-content;
     height: 550px;
     padding: 0;
-    overflow: visible;
+    gap: 0;
+    align-items: center;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__carousel-track {
       height: 650px;
+      gap: 0;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-track {
       height: 720px;
+      gap: 0;
     }
-  }
-
-  /* Hide inactive tracks - both men and women */
-  .hand-picked-section__carousel-track {
-    display: none !important;
   }
 
   .hand-picked-section__carousel-track.is-active {
@@ -276,109 +291,51 @@
     width: 335.5px !important;
     min-width: 335.5px !important;
     max-width: 335.5px !important;
-    position: absolute;
-    top: 0;
+    position: relative;
     display: flex !important;
     flex-direction: column;
-    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), left 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                margin 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0s cubic-bezier(0, 0, 0, 0);
+    transform: scale(0.85) translateY(10px);
     opacity: 0;
-    z-index: 1;
-    left: 50%;
-    transform: translateX(-50%) scale(1);
+    visibility: hidden;
+    margin: 0;
   }
 
-  /* Center product - larger and in center */
-  /* 414.44 / 335.5 = 1.235 scale factor */
+  /* Center product - larger (scale 1.235 = 414.44/335.5) */
   .hand-picked-section__product.is-center {
-    transform: translateX(-50%) scale(1.235);
+    transform: scale(1.235) translateY(20px);
     opacity: 1;
+    visibility: visible;
     z-index: 10;
-    left: 50%;
+    margin: 0 47px;
   }
 
-  /* Adjacent left */
-  .hand-picked-section__product.is-adjacent-left {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-    z-index: 5;
-    left: 26%;
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__product.is-adjacent-left {
-      left: 27%;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__product.is-adjacent-left {
-      left: 28%;
-    }
-  }
-
-  /* Adjacent right */
+  /* Adjacent products - visible */
+  .hand-picked-section__product.is-adjacent-left,
   .hand-picked-section__product.is-adjacent-right {
-    transform: translateX(-50%) scale(1);
+    transform: scale(0.85) translateY(10px);
     opacity: 1;
+    visibility: visible;
     z-index: 5;
-    left: 74%;
+    margin: 0 -15px;
   }
 
-  @media (min-width: 1024px) {
-    .hand-picked-section__product.is-adjacent-right {
-      left: 73%;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__product.is-adjacent-right {
-      left: 72%;
-    }
-  }
-
-  /* Outer left */
-  .hand-picked-section__product.is-outer-left {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-    z-index: 2;
-    left: 6%;
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__product.is-outer-left {
-      left: 7%;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__product.is-outer-left {
-      left: 8%;
-    }
-  }
-
-  /* Outer right */
+  /* Outer products - visible (2 on each side) */
+  .hand-picked-section__product.is-outer-left,
   .hand-picked-section__product.is-outer-right {
-    transform: translateX(-50%) scale(1);
+    transform: scale(0.85) translateY(10px);
     opacity: 1;
+    visibility: visible;
     z-index: 2;
-    left: 94%;
+    margin: 0 -15px;
   }
 
-  @media (min-width: 1024px) {
-    .hand-picked-section__product.is-outer-right {
-      left: 93%;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .hand-picked-section__product.is-outer-right {
-      left: 92%;
-    }
-  }
-
-  /* Hidden products */
+  /* Hidden products - faded out but still visible for smooth transition */
   .hand-picked-section__product.is-hidden {
-    opacity: 0 !important;
+    opacity: 0;
+    visibility: visible;
     pointer-events: none;
   }
 
@@ -591,7 +548,7 @@
 
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--prev {
-      left: 1.5rem;
+      left: 95px;
     }
   }
 
@@ -619,7 +576,7 @@
 
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--next {
-      right: 1.5rem;
+      right: 103px;
     }
   }
 
@@ -1049,28 +1006,81 @@
       var activeCategory = 'men';
       var isTransitioning = false;
       var mobileCurrentIndex = 0; // Track current center product index for mobile
-      var desktopCurrentIndex = 2; // Track current center product index for desktop (start at center)
+      var desktopCurrentIndex = 0; // Track current center product index for desktop
+      var realProductCount = 0; // Track actual product count (without clones)
+      var BUFFER = 3; // Number of products to clone at each end for seamless loop
+      var hasUserInteracted = false; // Track if user has clicked nav buttons
 
-      // Desktop carousel - center focus logic with infinite loop and sliding animation
-      function updateDesktopCarousel() {
-        if (isMobileView()) return;
+
+      // Setup clones for seamless infinite loop - duplicate entire set multiple times
+      function setupInfiniteLoop() {
+        tracks.forEach(function(track) {
+          var products = track.querySelectorAll('.hand-picked-section__product:not([data-clone])');
+          if (products.length === 0) return;
+          
+          realProductCount = products.length;
+          if (realProductCount <= 1) return; // No need for loop if 1 or less products
+          
+          // Check if clones already exist
+          if (track.querySelector('.hand-picked-section__product[data-clone]')) return;
+          
+          // Duplicate entire product set 3 times (before and after) for seamless infinite scrolling
+          // This creates a truly continuous track with no gaps
+          for (var repeat = 0; repeat < 3; repeat++) {
+            // Add copies at the beginning
+            for (var i = 0; i < realProductCount; i++) {
+              var cloneStart = products[i].cloneNode(true);
+              cloneStart.setAttribute('data-clone', 'start-' + repeat);
+              track.insertBefore(cloneStart, products[0]);
+            }
+            // Add copies at the end
+            for (var j = 0; j < realProductCount; j++) {
+              var cloneEnd = products[j].cloneNode(true);
+              cloneEnd.setAttribute('data-clone', 'end-' + repeat);
+              track.appendChild(cloneEnd);
+            }
+          }
+        });
+      }
+
+      // Desktop carousel - track-based animation like React (only track moves, products only scale)
+      function getOffsetForIndex(index) {
+        if (isMobileView()) return 0;
         
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack || !activeTrack.children[index]) return 0;
+        
+        // Use window width for true centering
+        var viewportWidth = window.innerWidth;
+        
+        // Get the actual DOM element at the current index (could be duplicate or real)
+        var activeCard = activeTrack.children[index];
+        var cardWidth = activeCard.offsetWidth;
+        var cardLeft = activeCard.offsetLeft;
+        
+        // Calculate the center of the card's border box
+        var cardCenter = cardLeft + (cardWidth / 2);
+        
+        // Calculate offset to center the card in the viewport
+        // Only apply -13px adjustment on initial load (before user interacts)
+        var initialAdjustment = hasUserInteracted ? 0 : 17;
+        return (viewportWidth / 2) - cardCenter - initialAdjustment;
+      }
+
+
+      function updateProductClasses() {
         var activeTrack = section.querySelector('[data-handpicked-track].is-active');
         if (!activeTrack) return;
         
         var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-        if (products.length === 0) return;
-        
         var totalProducts = products.length;
         
-        // Wrap index for infinite loop
-        desktopCurrentIndex = ((desktopCurrentIndex % totalProducts) + totalProducts) % totalProducts;
-        
+        // Update scale classes only (no position changes)
+        // Only show 5 products: center + 2 on each side (with circular wrapping)
         products.forEach(function(product, index) {
-          // Remove all state classes
           product.classList.remove('is-center', 'is-adjacent-left', 'is-adjacent-right', 'is-outer-left', 'is-outer-right', 'is-hidden');
           
-          // Calculate circular distance from center (with direction)
+          // Calculate circular distance from center
           var diff = index - desktopCurrentIndex;
           // Adjust for circular wrapping
           if (diff > totalProducts / 2) diff -= totalProducts;
@@ -1092,10 +1102,55 @@
             // Outer right
             product.classList.add('is-outer-right');
           } else {
-            // Hidden products
+            // Hidden - beyond 2 positions from center
             product.classList.add('is-hidden');
           }
         });
+      }
+
+      function updateDesktopCarousel() {
+        if (isMobileView()) return;
+        
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack) return;
+        
+        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+        if (products.length === 0) return;
+        
+        var totalProducts = products.length;
+        var realStartIndex = 3 * realProductCount; // Start of real products section
+        var realEndIndex = 4 * realProductCount; // End of real products section
+        
+        // Handle seamless wrapping - when we reach bounds, wrap to adjacent duplicates
+        // This maintains visual continuity without jumps
+        if (desktopCurrentIndex >= totalProducts) {
+          // Past the end - wrap to start duplicates (which continue seamlessly)
+          var productIndex = ((desktopCurrentIndex - realEndIndex) % realProductCount);
+          desktopCurrentIndex = productIndex; // First set of start duplicates
+        } else if (desktopCurrentIndex < 0) {
+          // Before the start - wrap to end duplicates (which continue seamlessly)
+          var productIndex = ((desktopCurrentIndex % realProductCount) + realProductCount) % realProductCount;
+          desktopCurrentIndex = realEndIndex + productIndex; // First set of end duplicates
+        }
+        
+        // Update product classes FIRST (applies margins)
+        updateProductClasses();
+        
+        // Force reflow so margins are computed before calculating offset
+        activeTrack.offsetHeight;
+        
+        // Now calculate and apply the transform
+        requestAnimationFrame(function() {
+          var offset = getOffsetForIndex(desktopCurrentIndex);
+          if (isFinite(offset) && !isNaN(offset)) {
+            activeTrack.style.transform = 'translateX(' + offset + 'px)';
+          }
+        });
+        
+        // Reset transitioning after animation
+        setTimeout(function() {
+          isTransitioning = false;
+        }, 500);
       }
 
       // Mobile carousel navigation with infinite loop
@@ -1165,7 +1220,6 @@
           
           activeCategory = category;
           mobileCurrentIndex = 0; // Reset mobile carousel index
-          desktopCurrentIndex = 0; // Reset desktop carousel to first product
           isTransitioning = true;
 
           // Update button states
@@ -1183,15 +1237,23 @@
             }
           });
 
+          // Setup clones for new category
+          setupInfiniteLoop();
+
           // Update carousels after category switch
           setTimeout(function() {
             if (isMobileView()) {
               updateMobileCarousel();
             } else {
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack && realProductCount > 0) {
+                desktopCurrentIndex = 3 * realProductCount; // Start at first real product (after duplicates)
+              } else {
+                desktopCurrentIndex = 0;
+              }
               updateDesktopCarousel();
             }
-            isTransitioning = false;
-          }, 50);
+          }, 100);
         });
       });
 
@@ -1202,6 +1264,7 @@
           e.stopPropagation();
           if (isTransitioning) return;
           
+          hasUserInteracted = true;
           isTransitioning = true;
           
           // Check if we're on mobile view
@@ -1219,21 +1282,15 @@
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation with infinite loop - move center to previous product
+            // Desktop navigation - move center to previous product
             var activeTrack = section.querySelector('[data-handpicked-track].is-active');
             if (activeTrack) {
               var products = activeTrack.querySelectorAll('.hand-picked-section__product');
               if (products.length > 0) {
                 desktopCurrentIndex = desktopCurrentIndex - 1;
-                if (desktopCurrentIndex < 0) {
-                  desktopCurrentIndex = products.length - 1; // Loop to last
-                }
                 updateDesktopCarousel();
               }
             }
-            setTimeout(function() {
-              isTransitioning = false;
-            }, 400);
           }
         });
       }
@@ -1244,6 +1301,7 @@
           e.stopPropagation();
           if (isTransitioning) return;
           
+          hasUserInteracted = true;
           isTransitioning = true;
           
           // Check if we're on mobile view
@@ -1261,27 +1319,24 @@
               isTransitioning = false;
             }, 300);
           } else {
-            // Desktop navigation with infinite loop - move center to next product
+            // Desktop navigation - move center to next product
             var activeTrack = section.querySelector('[data-handpicked-track].is-active');
             if (activeTrack) {
               var products = activeTrack.querySelectorAll('.hand-picked-section__product');
               if (products.length > 0) {
                 desktopCurrentIndex = desktopCurrentIndex + 1;
-                if (desktopCurrentIndex >= products.length) {
-                  desktopCurrentIndex = 0; // Loop to first
-                }
                 updateDesktopCarousel();
               }
             }
-            setTimeout(function() {
-              isTransitioning = false;
-            }, 400);
           }
         });
       }
 
       // Initialize on load
       function initializeCarousel() {
+        // Setup clones for seamless infinite loop first
+        setupInfiniteLoop();
+        
         // Always initialize desktop tracks - ensure they're visible
         tracks.forEach(function(track) {
           var trackGender = track.getAttribute('data-gender');
@@ -1297,13 +1352,23 @@
           mobileCurrentIndex = 0;
           updateMobileCarousel();
         } else {
-          desktopCurrentIndex = 0; // Start with 1st product as center
-          updateDesktopCarousel();
+          // Start in the middle section (real products)
+          // With 3 duplicates before, real products start at index: 3 * realProductCount
+          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+          if (activeTrack && realProductCount > 0) {
+            desktopCurrentIndex = 3 * realProductCount; // Start at first real product (after 3 sets of duplicates)
+          } else {
+            desktopCurrentIndex = 0;
+          }
+          // Small delay to ensure DOM is fully rendered before calculating offsets
+          setTimeout(function() {
+            updateDesktopCarousel();
+          }, 150);
         }
       }
       
       // Initialize after DOM is ready
-      setTimeout(initializeCarousel, 100);
+      setTimeout(initializeCarousel, 200);
 
       var touchStartX = 0;
       var touchStartY = 0;
