@@ -1,4 +1,144 @@
-<section class="premium-materials-section section-carousel-item" data-carousel-index="0" data-section-id="{{ section.id }}">
+<section class="premium-materials-section" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="premium-materials-section__grid">
+      
+      <div class="premium-materials-section__content">
+        <div class="premium-materials-section__nav">
+          <button type="button" class="premium-materials-section__nav-btn premium-materials-section__nav-btn--prev section-carousel-prev" aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        {%- for block in section.blocks -%}
+        <div class="premium-materials-slide {% if forloop.first %}active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <h2 class="premium-materials-section__title slider-content-title">{{ block.settings.title }}</h2>
+          <p class="premium-materials-section__description slider-content-description">{{ block.settings.description }}</p>
+          
+          <div class="premium-materials-section__features">
+            <h3 class="premium-materials-section__features-heading">{{ block.settings.features_heading }}</h3>
+            <ul class="premium-materials-section__features-list slider-content-features">
+              <li class="premium-materials-section__feature">{{ block.settings.feature_1 }}</li>
+              <li class="premium-materials-section__feature">{{ block.settings.feature_2 }}</li>
+              <li class="premium-materials-section__feature">{{ block.settings.feature_3 }}</li>
+              <li class="premium-materials-section__feature">{{ block.settings.feature_4 }}</li>
+            </ul>
+          </div>
+        </div>
+        {%- endfor -%}
+        
+        <div class="premium-materials-section__pagination section-carousel-pagination">
+          {%- for block in section.blocks -%}
+          <span class="premium-materials-section__pagination-dot section-carousel-dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+          {%- endfor -%}
+        </div>
+      </div>
+      
+      <div class="premium-materials-section__visual">
+        <div class="premium-materials-section__image">
+          {%- for block in section.blocks -%}
+          <img class="slider-content-image {% if forloop.first %}active{% endif %}" data-slide-index="{{ forloop.index0 }}" src="{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1200 }}{% else %}{{ 'option_1.webp' | asset_url }}{% endif %}" alt="{{ block.settings.title }}" loading="lazy">
+          {%- endfor -%}
+        </div>
+        <div class="premium-materials-section__nav-right">
+          <button type="button" class="premium-materials-section__nav-btn premium-materials-section__nav-btn--next section-carousel-next" aria-label="Next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.premium-materials-slide,
+.slider-content-image {
+  display: none;
+}
+.premium-materials-slide.active,
+.slider-content-image.active {
+  display: block;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Premium Materials",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "material",
+      "name": "Material Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "PREMIUM MATERIALS"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "We source only the finest materials from around the world to create jackets that stand the test of time."
+        },
+        {
+          "type": "text",
+          "id": "features_heading",
+          "label": "Features Heading",
+          "default": "Key Features"
+        },
+        {
+          "type": "text",
+          "id": "feature_1",
+          "label": "Feature 1",
+          "default": "Premium full-grain leather"
+        },
+        {
+          "type": "text",
+          "id": "feature_2",
+          "label": "Feature 2",
+          "default": "YKK zippers for durability"
+        },
+        {
+          "type": "text",
+          "id": "feature_3",
+          "label": "Feature 3",
+          "default": "Soft quilted lining"
+        },
+        {
+          "type": "text",
+          "id": "feature_4",
+          "label": "Feature 4",
+          "default": "Hand-stitched details"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Materials",
+      "blocks": [
+        {
+          "type": "material"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5
+}
+{% endschema %}
+
+
+{% comment %} <section class="premium-materials-section section-carousel-item" data-carousel-index="0" data-section-id="{{ section.id }}">
   <div class="container">
     <div class="premium-materials-section__grid">
       
@@ -126,4 +266,4 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %} {% endcomment %}
