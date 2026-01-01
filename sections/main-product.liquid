@@ -34,11 +34,31 @@
     grid-template-columns: 1fr 1fr;
     position: relative;
   }
+  
+  .product-gallery__images:has(.product-gallery__image:nth-child(2)[style*="display: none"]) {
+    grid-template-columns: 1fr;
+    max-width: 50%;
+    width: 50%;
+  }
+  
+  @media (max-width: 768px) {
+    .product-gallery__images:has(.product-gallery__image:nth-child(2)[style*="display: none"]) {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+  
+  .product-gallery__images .product-gallery__image[style*="display: none"] {
+    display: none !important;
+  }
 
   .product-gallery__image {
-    overflow: visible;
+    overflow: hidden;
     background: #f5f5f5;
     position: relative;
+    aspect-ratio: 3 / 4;
+    min-height: 400px;
+    max-height: 800px;
   }
   
   .product-gallery__image img {
@@ -46,6 +66,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    min-height: 100%;
   }
 
   /* Mobile Carousel Styles */
@@ -81,6 +102,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    min-height: 100%;
   }
 
   .product-gallery__carousel-counter {
@@ -1102,11 +1124,44 @@
       swatch.addEventListener('click', function() {
         const optionName = this.dataset.optionName;
         const optionValue = this.dataset.optionValue;
-        const select = document.getElementById(`Option-${optionName.toLowerCase().replace(/\s+/g, '-')}`);
+        
+        console.log('Color swatch clicked:', optionName, optionValue);
+        
+        // Try multiple ways to find the select element
+        let select = null;
+        
+        // Method 1: Try with handleized name (Liquid format)
+        const handleizedName = optionName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        select = document.getElementById(`Option-${handleizedName}`);
+        
+        // Method 2: Try with simple lowercase
+        if (!select) {
+          select = document.getElementById(`Option-${optionName.toLowerCase()}`);
+        }
+        
+        // Method 3: Try to find by data attribute
+        if (!select) {
+          const allSelects = document.querySelectorAll('[data-option-select]');
+          allSelects.forEach(s => {
+            if (s.name && s.name.includes(optionName)) {
+              select = s;
+            }
+          });
+        }
+        
+        console.log('Found select element:', select, 'ID:', select ? select.id : 'not found');
         
         if (select) {
+          const oldValue = select.value;
           select.value = optionValue;
-          select.dispatchEvent(new Event('change'));
+          console.log('Select value changed from', oldValue, 'to', select.value);
+          
+          // Trigger change event
+          const changeEvent = new Event('change', { bubbles: true });
+          select.dispatchEvent(changeEvent);
+          console.log('Change event dispatched');
+        } else {
+          console.error('Could not find select element for option:', optionName);
         }
         
         // Update selected state
