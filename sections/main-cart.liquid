@@ -216,6 +216,53 @@
     color: #000;
   }
 
+  .cart-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .cart-loading-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cart-loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cart-loading-spinner__circle {
+    width: 4rem;
+    height: 4rem;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .cart-loading-spinner__text {
+    font-size: 1.4rem;
+    color: #666;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
   .cart-continue {
     margin-top: 2rem;
     display: inline-block;
@@ -701,6 +748,33 @@
     return 'Rs ' + (amount / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  function showCartPageLoader() {
+    const cartLayout = document.querySelector('.cart-layout');
+    if (!cartLayout) return;
+    
+    let overlay = cartLayout.querySelector('.cart-loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'cart-loading-overlay';
+      overlay.innerHTML = `
+        <div class="cart-loading-spinner">
+          <div class="cart-loading-spinner__circle"></div>
+          <span class="cart-loading-spinner__text">Updating cart...</span>
+        </div>
+      `;
+      cartLayout.style.position = 'relative';
+      cartLayout.appendChild(overlay);
+    }
+    overlay.classList.add('is-visible');
+  }
+
+  function hideCartPageLoader() {
+    const overlay = document.querySelector('.cart-layout .cart-loading-overlay');
+    if (overlay) {
+      overlay.classList.remove('is-visible');
+    }
+  }
+
   function updateCartItem(key, quantity) {
     const cartItemCard = document.querySelector(`[data-cart-item="${key}"]`);
     if (!cartItemCard) return;
@@ -709,6 +783,8 @@
     const totalElement = cartItemCard.querySelector('.cart-item-card__total');
     const minusBtn = cartItemCard.querySelector('[data-quantity-minus]');
     const plusBtn = cartItemCard.querySelector('[data-quantity-plus]');
+
+    showCartPageLoader();
 
     if (minusBtn) minusBtn.disabled = true;
     if (plusBtn) plusBtn.disabled = true;
@@ -785,6 +861,8 @@
   }
 
   function processCartResponse(cart, key, quantity, input, totalElement, minusBtn, plusBtn, cartItemCard) {
+    hideCartPageLoader();
+    
     if (!cart) {
       throw new Error('Invalid cart response');
     }
@@ -840,6 +918,7 @@
   }
 
   function handleCartError(error, input, totalElement, minusBtn, plusBtn) {
+    hideCartPageLoader();
     console.error('Error updating cart:', error);
     
     if (minusBtn) minusBtn.disabled = false;
