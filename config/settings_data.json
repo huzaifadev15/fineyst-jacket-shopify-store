@@ -34,6 +34,11 @@
         "type": "shopify://apps/rubik-variant-images/blocks/rubik-variant-images/e684282e-1343-4a60-8fa2-6393aded15f6",
         "disabled": false,
         "settings": {}
+      },
+      "1900631457097698167": {
+        "type": "shopify://apps/rubik-variant-images/blocks/rubik-swatch/e684282e-1343-4a60-8fa2-6393aded15f6",
+        "disabled": false,
+        "settings": {}
       }
     }
   }
