@@ -154,6 +154,19 @@
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </button>
+      <button 
+        type="button" 
+        class="product-card__action product-card__cart-btn product-card__cart-btn--mobile" 
+        aria-label="Add to cart"
+        data-quick-add-trigger="{{ product.id }}"
+        data-product-handle="{{ product.handle }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </button>
     </div>
 
     {%- comment -%} Quick Shop Section {%- endcomment -%}
@@ -305,6 +318,70 @@
         </div>
         <span class="product-card__color-name">{{ display_color }}</span>
       </div>
+    </div>
+  </div>
+
+  {%- comment -%} Quick Add Modal (Mobile) {%- endcomment -%}
+  <div class="quick-add-modal" data-quick-add-modal="{{ product.id }}">
+    <div class="quick-add-modal__overlay" data-quick-add-close></div>
+    <div class="quick-add-modal__content">
+      <div class="quick-add-modal__header">
+        <h3 class="quick-add-modal__title">{{ product.title | truncate: 35 }}</h3>
+        <button type="button" class="quick-add-modal__close" data-quick-add-close aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="quick-add-modal__price">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="quick-add-modal__price--compare">{{ product.compare_at_price | money }}</span>
+          <span class="quick-add-modal__price--sale">{{ product.price | money }}</span>
+        {%- else -%}
+          <span class="quick-add-modal__price--regular">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+
+      <p class="quick-add-modal__size-note">Sizes shown are standard to your country</p>
+
+      {%- if size_option != null and size_option.values.size > 0 -%}
+        <div class="quick-add-modal__sizes">
+          {%- for size in size_option.values -%}
+            {%- assign size_available = false -%}
+            {%- assign variant_id = null -%}
+            {%- if size_index >= 0 -%}
+              {%- for variant in product.variants -%}
+                {%- if variant.options[size_index] == size and variant.available -%}
+                  {%- assign size_available = true -%}
+                  {%- assign variant_id = variant.id -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            <label class="quick-add-modal__size-option {% unless size_available %}quick-add-modal__size-option--unavailable{% endunless %}">
+              <input 
+                type="radio" 
+                name="quick-add-size-{{ product.id }}" 
+                value="{{ variant_id }}"
+                data-size-value="{{ size }}"
+                {% unless size_available %}disabled{% endunless %}
+              >
+              <span class="quick-add-modal__size-label">{{ size }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        {%- comment -%} No size option - use first available variant {%- endcomment -%}
+        <input type="hidden" name="quick-add-variant-{{ product.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+      {%- endif -%}
+
+      <a href="#" class="quick-add-modal__size-chart">Size Chart <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+
+      <button type="button" class="quick-add-modal__add-btn" data-quick-add-submit="{{ product.id }}">
+        ADD TO CART
+      </button>
     </div>
   </div>
 </div>
@@ -754,7 +831,8 @@
       right: 1rem;
       z-index: 100;
       display: flex;
-      justify-content: flex-start;
+      gap: 0.5rem;
+      justify-content: flex-end;
     }
 
     .product-card__wishlist--mobile {
@@ -786,6 +864,33 @@
       fill: #000 !important;
       stroke: #000 !important;
     }
+
+    /* Mobile cart button */
+    .product-card__cart-btn--mobile {
+      background: #fff !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      width: 3.5rem !important;
+      height: 3.5rem !important;
+      box-shadow: none !important;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .product-card__cart-btn--mobile:hover {
+      background: #f5f5f5 !important;
+      transform: scale(1.05);
+    }
+
+    .product-card__cart-btn--mobile svg {
+      width: 20px;
+      height: 20px;
+      stroke: #000 !important;
+    }
   }
 
   /* Desktop: Hide mobile elements */
@@ -797,6 +902,211 @@
     .product-card__actions-mobile {
       display: none;
     }
+
+    .quick-add-modal {
+      display: none !important;
+    }
+  }
+
+  /* Quick Add Modal Styles */
+  .quick-add-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    display: none;
+    pointer-events: none;
+  }
+
+  .quick-add-modal.is-open {
+    display: block;
+    pointer-events: auto;
+  }
+
+  .quick-add-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    animation: quickAddFadeIn 0.3s ease;
+  }
+
+  @keyframes quickAddFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .quick-add-modal__content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    width: 100vw;
+    height: 50vh;
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+    padding: 1.5rem;
+    animation: quickAddSlideUp 0.3s ease;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  @keyframes quickAddSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .quick-add-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
+
+  .quick-add-modal__title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+    padding-right: 2rem;
+    line-height: 1.3;
+  }
+
+  .quick-add-modal__close {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .quick-add-modal__close:hover {
+    color: #000;
+  }
+
+  .quick-add-modal__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quick-add-modal__price--compare {
+    font-size: 1.2rem;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .quick-add-modal__price--sale,
+  .quick-add-modal__price--regular {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .quick-add-modal__size-note {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .quick-add-modal__sizes {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .quick-add-modal__size-option {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .quick-add-modal__size-option:hover:not(.quick-add-modal__size-option--unavailable) {
+    background: #f9f9f9;
+  }
+
+  .quick-add-modal__size-option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+    accent-color: #000;
+    cursor: pointer;
+  }
+
+  .quick-add-modal__size-label {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .quick-add-modal__size-option--unavailable {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .quick-add-modal__size-option--unavailable .quick-add-modal__size-label {
+    text-decoration: line-through;
+  }
+
+  .quick-add-modal__size-chart {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    font-size: 1.1rem;
+    color: #666;
+    text-decoration: none;
+    margin: 1rem 0;
+    transition: color 0.2s ease;
+  }
+
+  .quick-add-modal__size-chart:hover {
+    color: #000;
+  }
+
+  .quick-add-modal__add-btn {
+    width: 100%;
+    padding: 1.4rem 2rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .quick-add-modal__add-btn:hover {
+    background: #333;
+  }
+
+  .quick-add-modal__add-btn:disabled {
+    background: #ccc !important;
+    color: #999 !important;
+    cursor: not-allowed;
+  }
+
+  .quick-add-modal__add-btn.is-loading {
+    pointer-events: none;
+    opacity: 0.7;
   }
 </style>
 
@@ -1051,6 +1361,175 @@
         initProductCardCarousel();
       }, 250);
     });
+
+    // Quick Add Modal functionality
+    function initQuickAddModal() {
+      // Move all modals to body on init for proper full-screen display
+      document.querySelectorAll('.quick-add-modal').forEach(function(modal) {
+        if (modal.parentElement !== document.body) {
+          document.body.appendChild(modal);
+        }
+      });
+
+      // Open modal when cart button is clicked
+      document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-quick-add-trigger]');
+        if (trigger) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const productId = trigger.getAttribute('data-quick-add-trigger');
+          const modal = document.querySelector(`[data-quick-add-modal="${productId}"]`);
+          
+          if (modal) {
+            // Ensure modal is in body
+            if (modal.parentElement !== document.body) {
+              document.body.appendChild(modal);
+            }
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+      });
+
+      // Close modal
+      document.addEventListener('click', function(e) {
+        const closeBtn = e.target.closest('[data-quick-add-close]');
+        if (closeBtn) {
+          const modal = closeBtn.closest('.quick-add-modal');
+          if (modal) {
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+            
+            // Reset selection
+            const radios = modal.querySelectorAll('input[type="radio"]');
+            radios.forEach(function(radio) {
+              radio.checked = false;
+            });
+          }
+        }
+      });
+
+      // Handle add to cart from modal
+      document.addEventListener('click', function(e) {
+        const submitBtn = e.target.closest('[data-quick-add-submit]');
+        if (!submitBtn) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const productId = submitBtn.getAttribute('data-quick-add-submit');
+        const modal = document.querySelector(`[data-quick-add-modal="${productId}"]`);
+        
+        if (!modal) return;
+        
+        // Check if already processing
+        if (submitBtn.classList.contains('is-loading')) return;
+        
+        // Get selected variant
+        let variantId = null;
+        const selectedRadio = modal.querySelector(`input[name="quick-add-size-${productId}"]:checked`);
+        const hiddenVariant = modal.querySelector(`input[name="quick-add-variant-${productId}"]`);
+        
+        if (selectedRadio) {
+          variantId = selectedRadio.value;
+        } else if (hiddenVariant) {
+          variantId = hiddenVariant.value;
+        }
+        
+        if (!variantId || variantId === 'null' || variantId === '') {
+          alert('Please select a size');
+          return;
+        }
+        
+        // Show loading state
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'ADDING...';
+        submitBtn.classList.add('is-loading');
+        submitBtn.disabled = true;
+        
+        // Add to cart
+        const data = {
+          items: [{
+            id: parseInt(variantId, 10),
+            quantity: 1
+          }]
+        };
+        
+        const cartUrl = (window.routes && window.routes.cart_add_url) 
+          ? window.routes.cart_add_url + '.js' 
+          : '/cart/add.js';
+        
+        fetch(cartUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(function(response) {
+          if (!response.ok) {
+            return response.json().then(function(err) {
+              throw new Error(err.description || err.message || 'Failed to add to cart');
+            });
+          }
+          return response.json();
+        })
+        .then(function(cartData) {
+          // Close modal
+          modal.classList.remove('is-open');
+          document.body.style.overflow = '';
+          
+          // Reset selection
+          const radios = modal.querySelectorAll('input[type="radio"]');
+          radios.forEach(function(radio) {
+            radio.checked = false;
+          });
+          
+          // Trigger cart update
+          document.dispatchEvent(new CustomEvent('cart:updated'));
+          
+          // Update cart count
+          if (typeof updateCartCount === 'function') {
+            updateCartCount();
+          }
+          
+          // Open cart sidebar
+          if (typeof openCartSidebar === 'function') {
+            openCartSidebar();
+          } else {
+            const cartSidebar = document.querySelector('[data-cart-sidebar]');
+            if (cartSidebar) {
+              cartSidebar.classList.add('is-open');
+              document.body.style.overflow = 'hidden';
+            }
+          }
+          
+          // Reload cart sidebar
+          if (typeof loadCartSidebar === 'function') {
+            loadCartSidebar();
+          }
+        })
+        .catch(function(error) {
+          console.error('Error adding to cart:', error);
+          alert(error.message || 'Failed to add to cart. Please try again.');
+        })
+        .finally(function() {
+          // Reset button
+          submitBtn.textContent = originalText;
+          submitBtn.classList.remove('is-loading');
+          submitBtn.disabled = false;
+        });
+      });
+    }
+
+    // Initialize quick add modal
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initQuickAddModal);
+    } else {
+      initQuickAddModal();
+    }
     
     // Use event delegation to handle clicks on all size buttons
     document.addEventListener('click', function(e) {
