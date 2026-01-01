@@ -199,6 +199,9 @@
   /* Quantity Buttons */
   function initQuantityButtons() {
     document.addEventListener('click', function(e) {
+      const isCartPage = window.location.pathname.includes('/cart');
+      if (isCartPage) return;
+      
       const minusBtn = e.target.closest('[data-quantity-minus]');
       const plusBtn = e.target.closest('[data-quantity-plus]');
   
