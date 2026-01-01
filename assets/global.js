@@ -7,6 +7,7 @@
     initHeader();
     initMobileMenu();
     initMegaMenu();
+    initSearch();
     initProductGallery();
     initQuantityButtons();
     initAddToCart();
@@ -81,7 +82,454 @@
     });
   }
 
-  /* Mega Menu */
+  /* Search Modal */
+  function initSearch() {
+    const searchToggle = document.querySelector('[data-search-toggle]');
+    if (!searchToggle) return;
+
+    let searchModal = createSearchModal();
+    document.body.appendChild(searchModal);
+
+    const searchOverlay = searchModal.querySelector('[data-search-overlay]');
+    const searchInput = searchModal.querySelector('[data-search-input]');
+    const searchResults = searchModal.querySelector('[data-search-results]');
+    const searchClear = searchModal.querySelector('[data-search-clear]');
+    const suggestionsContainer = searchModal.querySelector('[data-search-suggestions]');
+    const searchClose = searchModal.querySelector('[data-search-close]');
+    const trendingTags = searchModal.querySelectorAll('[data-trending-tag]');
+    const trendingSection = searchModal.querySelector('.search-modal__trending');
+    const resultsSection = searchModal.querySelector('.search-modal__results');
+
+    searchToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      searchModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => searchInput.focus(), 100);
+    });
+
+    function closeSearch() {
+      searchModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+      if (suggestionsContainer) suggestionsContainer.innerHTML = '';
+      searchClear.style.display = 'none';
+      if (trendingSection) trendingSection.style.display = 'block';
+      if (resultsSection) resultsSection.style.display = 'none';
+    }
+
+    searchOverlay.addEventListener('click', closeSearch);
+    if (searchClose) {
+      searchClose.addEventListener('click', closeSearch);
+    }
+
+    // Trending tags functionality
+    trendingTags.forEach(tag => {
+      tag.addEventListener('click', function() {
+        const tagText = this.getAttribute('data-trending-tag');
+        searchInput.value = tagText;
+        searchInput.dispatchEvent(new Event('input'));
+        this.classList.add('is-active');
+        trendingTags.forEach(t => {
+          if (t !== this) t.classList.remove('is-active');
+        });
+      });
+    });
+
+    // Clear button functionality
+    searchClear.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      searchInput.value = '';
+      searchInput.focus();
+      searchResults.innerHTML = '';
+      suggestionsContainer.innerHTML = '';
+      searchClear.style.display = 'none';
+    });
+
+    // Show/hide clear button based on input
+    searchInput.addEventListener('input', function() {
+      if (this.value.trim().length > 0) {
+        searchClear.style.display = 'flex';
+      } else {
+        searchClear.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && searchModal.classList.contains('is-open')) {
+        closeSearch();
+      }
+    });
+
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      const query = this.value.trim();
+      
+      if (query.length > 2) {
+        if (trendingSection) trendingSection.style.display = 'none';
+        if (resultsSection) resultsSection.style.display = 'flex';
+        searchTimeout = setTimeout(() => performSearch(query, searchResults, suggestionsContainer, searchInput), 300);
+      } else {
+        searchResults.innerHTML = '';
+        if (suggestionsContainer) suggestionsContainer.innerHTML = '';
+        if (trendingSection) trendingSection.style.display = 'block';
+        if (resultsSection) resultsSection.style.display = 'none';
+      }
+    });
+  }
+
+  function createSearchModal() {
+    const modal = document.createElement('div');
+    modal.className = 'search-modal';
+    modal.innerHTML = `
+      <div class="search-modal__overlay" data-search-overlay></div>
+      <div class="search-modal__content">
+        <div class="search-modal__header">
+          <div class="search-modal__input-wrapper">
+            <svg class="search-modal__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="search" class="search-modal__input" placeholder="What are you looking for today?" data-search-input>
+            <button class="search-modal__clear" data-search-clear style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <button class="search-modal__close" data-search-close>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="search-modal__body">
+          <div class="search-modal__trending">
+            <div class="search-modal__trending-header">
+              <svg class="search-modal__trending-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <h3>TRENDING SEARCHES</h3>
+            </div>
+            <div class="search-modal__trending-tags" data-trending-tags>
+              <button class="trending-tag" data-trending-tag="running">RUNNING</button>
+              <button class="trending-tag" data-trending-tag="lifting straps">LIFTING STRAPS</button>
+              <button class="trending-tag" data-trending-tag="hoodie">HOODIE</button>
+              <button class="trending-tag" data-trending-tag="leggings">LEGGINGS</button>
+            </div>
+          </div>
+          <div class="search-modal__results" style="display: none;">
+            <div class="search-modal__suggestions">
+              <h3>SUGGESTIONS</h3>
+              <div class="search-suggestions" data-search-suggestions></div>
+            </div>
+            <div class="search-modal__products">
+              <h3>PRODUCTS</h3>
+              <div class="search-products" data-search-results></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return modal;
+  }
+
+  function performSearch(query, resultsContainer, suggestionsContainer, searchInput) {
+    // Generate suggestions based on query
+    const queryLower = query.toLowerCase();
+    const suggestions = [];
+    
+    // Create suggestions based on the search term
+    if (queryLower.includes('hoodie') || queryLower.includes('hood')) {
+      suggestions.push(`<div class="suggestion-item"><strong>Hoodies</strong> Mens Hoodie</div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>Hoodies</strong> Women Hoodies</div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>Hoodies</strong> For Men</div>`);
+    } else if (queryLower.includes('jacket')) {
+      suggestions.push(`<div class="suggestion-item"><strong>Jackets</strong> Mens Jacket</div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>Jackets</strong> Women <strong>Jackets</strong></div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>Jackets</strong> For Men</div>`);
+    } else {
+      // Generic suggestions
+      const capitalized = query.charAt(0).toUpperCase() + query.slice(1);
+      suggestions.push(`<div class="suggestion-item"><strong>${capitalized}</strong> Mens ${capitalized}</div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>${capitalized}</strong> Women <strong>${capitalized}</strong></div>`);
+      suggestions.push(`<div class="suggestion-item"><strong>${capitalized}</strong> For Men</div>`);
+    }
+    
+    suggestionsContainer.innerHTML = suggestions.join('');
+    
+    // Add click handlers to suggestions
+    if (searchInput) {
+      suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const suggestionText = this.textContent.trim();
+          searchInput.value = suggestionText;
+          searchInput.dispatchEvent(new Event('input'));
+        });
+      });
+    }
+    
+    // First, try to get product handles from search, then fetch full product data from products.json
+    Promise.all([
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=10`).catch(() => null),
+      fetch('/products.json?limit=250').catch(() => null)
+    ])
+      .then(([searchResponse, productsResponse]) => {
+        // Get all products from products.json
+        if (!productsResponse || !productsResponse.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        
+        return productsResponse.json().then(productsData => {
+          let matchingProducts = [];
+          
+          // If we have search results, use them to filter
+          if (searchResponse && searchResponse.ok) {
+            return searchResponse.json().then(searchData => {
+              if (searchData.resources && searchData.resources.results && searchData.resources.results.products) {
+                const searchHandles = searchData.resources.results.products.map(p => p.handle || p.url?.split('/products/')[1]?.split('?')[0]).filter(Boolean);
+                matchingProducts = productsData.products.filter(p => {
+                  return searchHandles.includes(p.handle) || 
+                         p.title.toLowerCase().includes(query.toLowerCase()) ||
+                         p.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase()));
+                });
+              } else {
+                // Fallback: search in all products
+                matchingProducts = productsData.products.filter(p => {
+                  return p.title.toLowerCase().includes(query.toLowerCase()) ||
+                         p.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase()));
+                });
+              }
+              
+              return matchingProducts.slice(0, 4).map(product => {
+                // Get featured image - use first image from images array
+                let imageUrl = '';
+                if (product.images && product.images.length > 0) {
+                  const img = product.images[0];
+                  if (typeof img === 'string') {
+                    imageUrl = img;
+                  } else if (img.src) {
+                    imageUrl = img.src;
+                  } else if (img.url) {
+                    imageUrl = img.url;
+                  }
+                  
+                  // Ensure full URL
+                  if (imageUrl) {
+                    if (imageUrl.startsWith('//')) {
+                      imageUrl = 'https:' + imageUrl;
+                    } else if (imageUrl.startsWith('/')) {
+                      imageUrl = window.location.origin + imageUrl;
+                    }
+                    // Add width parameter for optimization
+                    if (imageUrl.includes('cdn.shopify.com')) {
+                      imageUrl = imageUrl.replace(/\?.*$/, '') + '?width=600';
+                    }
+                  }
+                }
+                
+                // Get price from variants
+                const variant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
+                if (!variant) {
+                  return {
+                    image: imageUrl || 'https://via.placeholder.com/300x400/f0f0f0/999?text=No+Image',
+                    title: product.title || 'Product',
+                    price: 'Rs 0',
+                    comparePrice: null,
+                    fit: 'Regular Fit',
+                    color: 'Black',
+                    url: productUrl,
+                    rating: (Math.random() * 1.1 + 3.9).toFixed(1)
+                  };
+                }
+                
+                // Prices are already in rupees (no conversion needed)
+                const price = typeof variant.price === 'number' ? variant.price : parseInt(String(variant.price || 0), 10);
+                const comparePrice = variant.compare_at_price && variant.compare_at_price > variant.price
+                  ? (typeof variant.compare_at_price === 'number' ? variant.compare_at_price : parseInt(String(variant.compare_at_price || 0), 10))
+                  : null;
+                
+                // Format price with commas - prices are already in rupees
+                const priceNumber = Math.floor(price);
+                const formattedPrice = `Rs ${priceNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+                
+                const comparePriceNumber = comparePrice ? Math.floor(comparePrice) : null;
+                const formattedComparePrice = comparePriceNumber 
+                  ? `Rs ${comparePriceNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+                  : null;
+                
+                // Extract fit and color
+                let fit = 'Regular Fit';
+                let color = 'Black';
+                const titleLower = product.title.toLowerCase();
+                
+                if (titleLower.includes('slim')) fit = 'Slim Fit';
+                if (titleLower.includes('oversized')) fit = 'Oversized Fit';
+                
+                const colorKeywords = ['black', 'white', 'gray', 'grey', 'red', 'blue', 'green', 'brown', 'beige', 'navy'];
+                for (const keyword of colorKeywords) {
+                  if (titleLower.includes(keyword)) {
+                    color = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+                    break;
+                  }
+                }
+                
+                // Get product URL
+                const productUrl = product.url ? (product.url.startsWith('/') ? window.location.origin + product.url : product.url) : '#';
+                
+                return {
+                  image: imageUrl || 'https://via.placeholder.com/300x400/f0f0f0/999?text=No+Image',
+                  title: product.title || 'Product',
+                  price: formattedPrice,
+                  comparePrice: formattedComparePrice,
+                  fit: fit,
+                  color: color,
+                  url: productUrl,
+                  rating: (Math.random() * 1.1 + 3.9).toFixed(1)
+                };
+              });
+            });
+          } else {
+            // No search API, filter directly from products.json
+            matchingProducts = productsData.products.filter(p => {
+              return p.title.toLowerCase().includes(query.toLowerCase()) ||
+                     p.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase()));
+            });
+            
+            return matchingProducts.slice(0, 4).map(product => {
+              // Get featured image
+              let imageUrl = '';
+              if (product.images && product.images.length > 0) {
+                const img = product.images[0];
+                if (typeof img === 'string') {
+                  imageUrl = img;
+                } else if (img.src) {
+                  imageUrl = img.src;
+                } else if (img.url) {
+                  imageUrl = img.url;
+                }
+                
+                if (imageUrl) {
+                  if (imageUrl.startsWith('//')) {
+                    imageUrl = 'https:' + imageUrl;
+                  } else if (imageUrl.startsWith('/')) {
+                    imageUrl = window.location.origin + imageUrl;
+                  }
+                  if (imageUrl.includes('cdn.shopify.com')) {
+                    imageUrl = imageUrl.replace(/\?.*$/, '') + '?width=600';
+                  }
+                }
+              }
+              
+              const variant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
+              if (!variant) {
+                return {
+                  image: imageUrl || 'https://via.placeholder.com/300x400/f0f0f0/999?text=No+Image',
+                  title: product.title || 'Product',
+                  price: 'Rs 0',
+                  comparePrice: null,
+                  fit: 'Regular Fit',
+                  color: 'Black',
+                  url: productUrl,
+                  rating: (Math.random() * 1.1 + 3.9).toFixed(1)
+                };
+              }
+              
+              // Prices are already in rupees (no conversion needed)
+              const price = typeof variant.price === 'number' ? variant.price : parseInt(String(variant.price || 0), 10);
+              const comparePrice = variant.compare_at_price && variant.compare_at_price > variant.price
+                ? (typeof variant.compare_at_price === 'number' ? variant.compare_at_price : parseInt(String(variant.compare_at_price || 0), 10))
+                : null;
+              
+              // Format price with commas - prices are already in rupees
+              const priceNumber = Math.floor(price);
+              const formattedPrice = `Rs ${priceNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+              
+              const comparePriceNumber = comparePrice ? Math.floor(comparePrice) : null;
+              const formattedComparePrice = comparePriceNumber 
+                ? `Rs ${comparePriceNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+                : null;
+              
+              let fit = 'Regular Fit';
+              let color = 'Black';
+              const titleLower = product.title.toLowerCase();
+              
+              if (titleLower.includes('slim')) fit = 'Slim Fit';
+              if (titleLower.includes('oversized')) fit = 'Oversized Fit';
+              
+              const colorKeywords = ['black', 'white', 'gray', 'grey', 'red', 'blue', 'green', 'brown', 'beige', 'navy'];
+              for (const keyword of colorKeywords) {
+                if (titleLower.includes(keyword)) {
+                  color = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+                  break;
+                }
+              }
+              
+              const productUrl = product.url ? (product.url.startsWith('/') ? window.location.origin + product.url : product.url) : '#';
+              
+              return {
+                image: imageUrl || 'https://via.placeholder.com/300x400/f0f0f0/999?text=No+Image',
+                title: product.title || 'Product',
+                price: formattedPrice,
+                comparePrice: formattedComparePrice,
+                fit: fit,
+                color: color,
+                url: productUrl,
+                rating: (Math.random() * 1.1 + 3.9).toFixed(1)
+              };
+            });
+          }
+        });
+      })
+      .then(products => {
+        if (!products || products.length === 0) {
+          resultsContainer.innerHTML = '<div class="search-empty">No products found</div>';
+          return;
+        }
+        
+        const productsHTML = products.map(product => `
+          <a href="${product.url}" class="product-item">
+            <div class="product-item__image-wrapper">
+              <img src="${product.image}" alt="${product.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400/f0f0f0/999?text=No+Image'; this.onerror=null;">
+              <button class="product-wishlist" onclick="event.preventDefault(); event.stopPropagation();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="product-info">
+              ${product.rating ? `<div class="product-rating">★${product.rating}</div>` : ''}
+              <h4>${product.title}</h4>
+              <p class="product-fit">${product.fit}</p>
+              <p class="product-color">Color: ${product.color}</p>
+              <div class="product-price">
+                ${product.comparePrice ? `<span class="product-price__original">${product.comparePrice}</span>` : ''}
+                <span>${product.price}</span>
+              </div>
+            </div>
+          </a>
+        `).join('');
+        
+        resultsContainer.innerHTML = productsHTML;
+        
+        // Add "View all" link if there are products
+        if (products.length > 0) {
+          const viewAllLink = document.createElement('a');
+          viewAllLink.href = `/search?q=${encodeURIComponent(query)}&type=product`;
+          viewAllLink.className = 'view-all-link';
+          viewAllLink.textContent = `View all '${query}'`;
+          resultsContainer.appendChild(viewAllLink);
+        }
+      })
+      .catch(() => {
+        resultsContainer.innerHTML = '<div class="search-error">Search failed</div>';
+      });
+  }
   function initMegaMenu() {
     const navItems = document.querySelectorAll('[data-mega-menu]');
     const megaMenus = document.querySelectorAll('[data-mega-menu-panel]');
