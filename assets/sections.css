@@ -1065,13 +1065,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease-out;
 }
 
-.color-collection-section__card-link:hover
-  .color-collection-section__card-image
-  img {
-  transform: scale(1.05);
+.color-collection-section__card:hover .color-collection-section__card-image img {
+  transform: scale(1.08);
 }
 
 .color-collection-section__card-overlay {
