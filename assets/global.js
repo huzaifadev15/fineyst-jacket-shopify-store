@@ -1888,11 +1888,22 @@
         }
       }
 
-      // Update button state
+      // Update button state - use setTimeout to run after Rubik app
       const submitBtn = form.querySelector('[type="submit"]');
       if (submitBtn) {
-        submitBtn.disabled = !variant.available;
-        submitBtn.textContent = variant.available ? 'Add to Cart' : 'Sold Out';
+        // Check availability - default to true if property doesn't exist
+        const isAvailable = variant.available !== false;
+        console.log('Variant availability:', variant.available, 'isAvailable:', isAvailable);
+        
+        // Immediate update
+        submitBtn.disabled = !isAvailable;
+        submitBtn.textContent = isAvailable ? 'ADD TO CART' : 'SOLD OUT';
+        
+        // Delayed update to override any app that might change it
+        setTimeout(() => {
+          submitBtn.disabled = !isAvailable;
+          submitBtn.textContent = isAvailable ? 'ADD TO CART' : 'SOLD OUT';
+        }, 100);
       }
 
       // Update label to show selected color
@@ -1913,7 +1924,39 @@
       window.history.replaceState({}, '', url);
     } else {
       console.error('No matching variant found for options:', selectedOptions);
-      console.log('Available variants:', product.variants.map(v => ({ id: v.id, options: v.options })));
+      console.log('Available variants:', product.variants.map(v => ({ id: v.id, options: v.options, available: v.available })));
+      
+      // Try to find an available variant with the same first option (color)
+      const colorOption = selectedOptions[0];
+      const fallbackVariant = product.variants.find(v => v.options[0] === colorOption && v.available !== false);
+      
+      if (fallbackVariant) {
+        console.log('Found fallback variant with same color:', fallbackVariant.id);
+        // Update the size select to match the fallback variant
+        if (fallbackVariant.options[1]) {
+          const sizeSelect = form.querySelector('select[name="options[Size]"]');
+          if (sizeSelect) {
+            sizeSelect.value = fallbackVariant.options[1];
+          }
+        }
+        // Update variant ID
+        const variantInput = form.querySelector('[data-variant-id]');
+        if (variantInput) variantInput.value = fallbackVariant.id;
+        
+        // Enable button
+        const submitBtn = form.querySelector('[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'ADD TO CART';
+        }
+      } else {
+        // No available variant for this color - disable button
+        const submitBtn = form.querySelector('[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'UNAVAILABLE';
+        }
+      }
     }
   });
 
@@ -1926,405 +1969,104 @@
 
     console.log('=== updateProductImages START ===');
     console.log('Variant ID:', variant.id);
-    console.log('Variant options:', variant.options);
     console.log('Variant option1 (Color):', variant.option1);
-    console.log('Product images count:', product.images ? product.images.length : 0);
     
-    // Debug: Log all images
-    if (product.images && product.images.length > 0) {
-      console.log('All product images:');
-      product.images.forEach((img, idx) => {
-        // Get image URL - Shopify stores it in different ways
-        let imgUrl = '';
-        if (typeof img === 'string') {
-          imgUrl = img;
-        } else if (img.src) {
-          imgUrl = img.src;
-        } else if (img.id) {
-          // Construct URL from image ID
-          imgUrl = `https://cdn.shopify.com/s/files/1/${product.id}/products/${img.id}`;
-        }
+    // Try to get variant images from our custom JSON data
+    const variantImagesJson = document.getElementById('VariantImagesJson');
+    let variantImageUrl = null;
+    let colorHandle = null;
+    
+    if (variantImagesJson) {
+      try {
+        const variantImagesData = JSON.parse(variantImagesJson.textContent);
+        const variantData = variantImagesData[variant.id];
+        console.log('Variant data from JSON:', variantData);
         
-        console.log(`  Image ${idx}:`, {
-          url: imgUrl ? imgUrl.substring(0, 60) + '...' : 'no url',
-          alt: img.alt || 'no alt',
-          variant_ids: img.variant_ids || 'no variant_ids',
-          fullObject: img
-        });
-      });
-    }
-
-    // Get variant images - Shopify stores variant associations in image.variant_ids
-    let variantImages = [];
-    
-    // Method 1: Check if images have variant_ids that include this variant
-    if (product.images && product.images.length > 0) {
-      const imagesWithVariant = product.images.filter(img => {
-        // Shopify stores variant IDs in image.variant_ids array
-        if (img.variant_ids && Array.isArray(img.variant_ids)) {
-          return img.variant_ids.includes(variant.id);
+        if (variantData) {
+          variantImageUrl = variantData.featured_image;
+          colorHandle = variantData.color;
+          console.log('Found variant image URL:', variantImageUrl);
+          console.log('Color handle:', colorHandle);
         }
-        return false;
-      });
-      
-      if (imagesWithVariant.length > 0) {
-        variantImages = imagesWithVariant.map(img => {
-          // Extract URL from image object
-          if (typeof img === 'string') return img;
-          // Shopify stores image URL in different properties
-          if (img.src) return img.src;
-          if (img.url) return img.url;
-          // Try to get from nested properties
-          if (img.original && img.original.src) return img.original.src;
-          // Last resort: construct from image ID (but this might not work without filename)
-          console.warn('Image object has no src/url, trying to construct from ID:', img);
-          return '';
-        }).filter(url => url && typeof url === 'string');
-        console.log('✓ Found', variantImages.length, 'images via variant_ids');
+      } catch (e) {
+        console.error('Error parsing VariantImagesJson:', e);
       }
     }
     
-    // Method 2: If no variant-specific images, check variant's featured_image
-    if (variantImages.length === 0 && variant.featured_image) {
-      // featured_image can be an object or a string
-      let featuredImgUrl = '';
-      if (typeof variant.featured_image === 'string') {
-        featuredImgUrl = variant.featured_image;
-      } else if (variant.featured_image.src) {
-        featuredImgUrl = variant.featured_image.src;
-      } else if (variant.featured_image.id) {
-        // Try to find the image in product.images by ID and get its URL from DOM
-        const featuredImgId = variant.featured_image.id;
-        // Try to find image in DOM by checking all product images
-        const allProductImages = document.querySelectorAll('.product-gallery__image img, .product-gallery__carousel-slide img');
-        allProductImages.forEach(domImg => {
-          // Check if this DOM image matches the featured image ID
-          // We can't directly match by ID, so we'll use a different approach
-        });
-        
-        // Try to find in product.images array
-        const featuredImg = product.images.find(img => img.id === featuredImgId);
-        if (featuredImg) {
-          // Try multiple ways to get URL
-          featuredImgUrl = featuredImg.src || featuredImg.url || '';
-          // If still no URL, try to get from DOM
-          if (!featuredImgUrl) {
-            // Get all current images from DOM and use the one at the position of this image
-            const domImages = document.querySelectorAll('.product-gallery__image img, .product-gallery__carousel-slide img');
-            const imgIndex = product.images.findIndex(img => img.id === featuredImgId);
-            if (domImages[imgIndex]) {
-              featuredImgUrl = domImages[imgIndex].src;
-              console.log('Got image URL from DOM:', featuredImgUrl);
-            }
-          }
-        }
-      }
+    // If we have a featured image URL, update the gallery
+    if (variantImageUrl) {
+      console.log('Updating images with featured_image:', variantImageUrl);
       
-      if (featuredImgUrl) {
-        variantImages = [featuredImgUrl];
-        console.log('✓ Using variant featured_image');
-      } else {
-        console.log('✗ featured_image found but no URL extracted');
-      }
-    }
-    
-    // Method 3: Match images by color option in alt text
-    if (variantImages.length === 0) {
-      const colorOption = variant.option1 || (variant.options && variant.options[0]);
-      
-      if (colorOption && product.images) {
-        const matchingImages = product.images.filter(img => {
-          const imgAlt = (img.alt || '').toLowerCase().trim();
-          const imgSrc = (img.src || '').toLowerCase();
-          const colorLower = colorOption.toLowerCase().trim();
-          // Check if image alt text or filename contains the color name
-          return imgAlt.includes(colorLower) || 
-                 imgAlt === colorLower || 
-                 imgSrc.includes(colorLower) ||
-                 imgAlt.includes(colorLower.replace(/\s+/g, '-')) ||
-                 imgAlt.includes(colorLower.replace(/\s+/g, '_'));
-        });
-        
-        if (matchingImages.length > 0) {
-          variantImages = matchingImages.map(img => {
-            if (typeof img === 'string') return img;
-            return img.src || img.url || img.original || '';
-          }).filter(url => url && typeof url === 'string');
-          console.log('✓ Found', variantImages.length, 'images via color matching');
-        }
-      }
-    }
-    
-    // Method 4: Fall back to all product images if still no match
-    if (variantImages.length === 0 && product.images && product.images.length > 0) {
-      variantImages = product.images.map(img => {
-        if (typeof img === 'string') return img;
-        return img.src || img.url || img.original || '';
-      }).filter(url => url && typeof url === 'string');
-      console.log('⚠ Using all product images as fallback:', variantImages.length);
-    }
-    
-    // If we still don't have images, try to get from DOM using variant's featured_image
-    if (variantImages.length === 0 && variant.featured_image && variant.featured_image.id) {
-      console.log('Trying to get image from DOM using featured_image ID:', variant.featured_image.id);
-      // Find the image index in product.images array
-      const featuredImgIndex = product.images.findIndex(img => img.id === variant.featured_image.id);
-      console.log('Featured image index in product.images:', featuredImgIndex);
-      
-      if (featuredImgIndex >= 0) {
-        // Get all images from DOM carousel (they're in order)
-        const domImages = document.querySelectorAll('.product-gallery__carousel-slide img');
-        console.log('Found', domImages.length, 'images in DOM carousel');
-        
-        if (domImages[featuredImgIndex]) {
-          const imgSrc = domImages[featuredImgIndex].src;
-          variantImages = [imgSrc];
-          console.log('✓ Got image from DOM at index', featuredImgIndex, ':', imgSrc.substring(0, 60) + '...');
-        } else {
-          // Try desktop gallery
-          const desktopImages = document.querySelectorAll('.product-gallery__images .product-gallery__image img');
-          if (desktopImages[featuredImgIndex] || desktopImages[0]) {
-            const imgSrc = (desktopImages[featuredImgIndex] || desktopImages[0]).src;
-            variantImages = [imgSrc];
-            console.log('✓ Got image from desktop gallery');
-          }
-        }
-      }
-    }
-    
-    // Normalize image URLs to full URLs - ensure all are strings
-    variantImages = variantImages.map(imgUrl => {
-      // Convert to string if it's an object
-      if (typeof imgUrl !== 'string') {
-        if (imgUrl && imgUrl.src) {
-          imgUrl = imgUrl.src;
-        } else if (imgUrl && typeof imgUrl === 'object') {
-          // Try to extract URL from object
-          imgUrl = imgUrl.url || imgUrl.original || '';
-        } else {
-          return '';
-        }
-      }
-      
-      if (!imgUrl || typeof imgUrl !== 'string') return '';
-      
-      // If it's already a full URL, return as is
-      if (imgUrl.startsWith('http://') || imgUrl.startsWith('https://')) {
-        return imgUrl;
-      }
-      
-      // If it's a protocol-relative URL
-      if (imgUrl.startsWith('//')) {
-        return 'https:' + imgUrl;
-      }
-      
-      // If it's an absolute path
-      if (imgUrl.startsWith('/')) {
-        return window.location.origin + imgUrl;
-      }
-      
-      // If it's a Shopify CDN path, construct full URL
-      if (imgUrl.includes('cdn.shopify.com') || imgUrl.includes('shopifycdn.com')) {
-        if (!imgUrl.startsWith('http')) {
-          return 'https:' + (imgUrl.startsWith('//') ? imgUrl : '//' + imgUrl);
-        }
-        return imgUrl;
-      }
-      
-      return imgUrl;
-    }).filter(url => url && url.trim() !== ''); // Remove empty URLs
-    
-    console.log('Normalized variant images:', variantImages);
-    
-    // If we have variant images, update the gallery
-    if (variantImages.length > 0) {
-      console.log('Updating gallery with', variantImages.length, 'images');
-      
-      // Update desktop gallery images (2 column grid)
-      const desktopImageContainers = document.querySelectorAll('.product-gallery__images .product-gallery__image');
+      // Update desktop gallery (first image)
       const desktopImages = document.querySelectorAll('.product-gallery__images .product-gallery__image img');
-      console.log('Found desktop images:', desktopImages.length);
-      
-      // If only one image, hide the second container and adjust grid
-      const imagesGrid = document.querySelector('.product-gallery__images');
-      if (variantImages.length === 1 && desktopImageContainers.length >= 2) {
-        desktopImageContainers[0].style.display = 'block';
-        desktopImageContainers[1].style.display = 'none';
-        // Adjust grid to single column with max-width constraint
-        if (imagesGrid) {
-          imagesGrid.style.gridTemplateColumns = '1fr';
-          imagesGrid.style.maxWidth = '50%';
-          imagesGrid.style.width = '50%';
-        }
-      } else if (variantImages.length > 1) {
-        // Show both containers if we have multiple images
-        desktopImageContainers.forEach(container => {
-          container.style.display = 'block';
-        });
-        // Reset grid to two columns and remove max-width
-        if (imagesGrid) {
-          imagesGrid.style.gridTemplateColumns = '1fr 1fr';
-          imagesGrid.style.maxWidth = '100%';
-        }
+      if (desktopImages.length > 0) {
+        desktopImages[0].src = variantImageUrl.replace('1200x', '800x');
+        console.log('Updated desktop image 0');
       }
       
-      desktopImages.forEach((img, index) => {
-        const container = img.closest('.product-gallery__image');
-        
-        // Hide container if no image for this slot and we have only one image
-        if (variantImages.length === 1 && index > 0) {
-          if (container) container.style.display = 'none';
-          return;
-        }
-        
-        if (variantImages[index]) {
-          // Store current dimensions to maintain aspect ratio
-          const currentHeight = container ? container.offsetHeight : null;
-          
-          // Use Shopify image URL transformation for proper sizing
-          const imageUrl = variantImages[index];
-          // Try to extract base URL and add size parameter
-          let optimizedUrl = imageUrl;
-          
-          // Remove existing size parameters and add new one
-          optimizedUrl = optimizedUrl.replace(/_[0-9]+x[0-9]+\./i, '_800x.');
-          if (!optimizedUrl.includes('_800x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
-            optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_800x.$1');
-          }
-          
-          console.log('Updating desktop image', index, 'to', optimizedUrl);
-          
-          // Preserve aspect ratio by maintaining object-fit
-          img.style.objectFit = 'cover';
-          img.style.width = '100%';
-          img.style.height = '100%';
-          
-          // Update image
-          img.src = optimizedUrl;
-          img.srcset = '';
-          img.loading = 'lazy';
-          
-          // Ensure container maintains height
-          if (container && currentHeight) {
-            container.style.minHeight = currentHeight + 'px';
-          }
-          
-          // Show container
-          if (container) container.style.display = 'block';
-        } else if (variantImages[0] && variantImages.length > 1) {
-          // Only repeat if we have multiple images
-          const currentHeight = container ? container.offsetHeight : null;
-          
-          let optimizedUrl = variantImages[0].replace(/_[0-9]+x[0-9]+\./i, '_800x.');
-          if (!optimizedUrl.includes('_800x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
-            optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_800x.$1');
-          }
-          
-          img.style.objectFit = 'cover';
-          img.style.width = '100%';
-          img.style.height = '100%';
-          
-          console.log('Repeating first image for desktop slot', index);
-          img.src = optimizedUrl;
-          
-          if (container && currentHeight) {
-            container.style.minHeight = currentHeight + 'px';
-          }
-          
-          if (container) container.style.display = 'block';
-        }
-      });
-      
-      // Update mobile carousel images
-      const carouselTrack = document.querySelector('[data-carousel-track]');
-      if (carouselTrack) {
-        const carouselSlides = carouselTrack.querySelectorAll('[data-carousel-slide]');
-        const carouselDots = document.querySelectorAll('[data-carousel-dot]');
-        const carouselCounter = document.querySelector('[data-carousel-counter]');
-        const totalSpan = carouselCounter ? carouselCounter.querySelector('[data-carousel-total]') : null;
-        
-        // Update slides - only show slides that have images
-        carouselSlides.forEach((slide, index) => {
-          const slideImg = slide.querySelector('img');
-          if (slideImg) {
-            if (variantImages[index]) {
-              // Store current slide dimensions
-              const currentHeight = slide.offsetHeight;
-              
-              let optimizedUrl = variantImages[index];
-              // Remove existing size parameters and add new one
-              optimizedUrl = optimizedUrl.replace(/_[0-9]+x[0-9]+\./i, '_1200x.');
-              if (!optimizedUrl.includes('_1200x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
-                optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_1200x.$1');
-              }
-              console.log('Updating carousel slide', index, 'to', optimizedUrl);
-              
-              // Preserve aspect ratio
-              slideImg.style.objectFit = 'cover';
-              slideImg.style.width = '100%';
-              slideImg.style.height = '100%';
-              
-              // Update image
-              slideImg.src = optimizedUrl;
-              slideImg.srcset = '';
-              slideImg.loading = index === 0 ? 'eager' : 'lazy';
-              
-              // Maintain slide height
-              if (currentHeight) {
-                slide.style.minHeight = currentHeight + 'px';
-              }
-              
-              slide.style.display = 'flex';
-            } else {
-              // Hide slides that don't have images
-              slide.style.display = 'none';
-            }
-          }
-        });
-        
-        // If only one image, ensure carousel shows only that slide
-        if (variantImages.length === 1) {
-          carouselSlides.forEach((slide, index) => {
-            if (index > 0) {
-              slide.style.display = 'none';
-            }
-          });
-        }
-        
-        // Update dots - show only for available images
-        if (carouselDots.length > 0) {
-          carouselDots.forEach((dot, index) => {
-            if (index < variantImages.length) {
-              dot.style.display = 'block';
-            } else {
-              dot.style.display = 'none';
-            }
-          });
-        }
-        
-        // Update counter
-        if (totalSpan) {
-          totalSpan.textContent = variantImages.length;
-        }
+      // Update mobile carousel (first slide)
+      const carouselImages = document.querySelectorAll('[data-carousel-slide] img');
+      if (carouselImages.length > 0) {
+        carouselImages[0].src = variantImageUrl;
+        console.log('Updated carousel image 0');
         
         // Reset carousel to first slide
-        if (carouselSlides.length > 0 && variantImages.length > 0) {
-          const firstSlide = carouselSlides[0];
-          if (firstSlide) {
-            carouselTrack.style.transform = 'translateX(0%)';
-            // Update active dot
-            carouselDots.forEach((dot, index) => {
-              dot.classList.toggle('is-active', index === 0);
-            });
-            // Update counter
-            const currentSpan = carouselCounter ? carouselCounter.querySelector('[data-carousel-current]') : null;
-            if (currentSpan) {
-              currentSpan.textContent = '1';
-            }
+        const track = document.querySelector('[data-carousel-track]');
+        if (track) {
+          track.style.transform = 'translateX(0%)';
+        }
+        const currentSpan = document.querySelector('[data-carousel-current]');
+        if (currentSpan) currentSpan.textContent = '1';
+        const dots = document.querySelectorAll('[data-carousel-dot]');
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === 0));
+      }
+      
+      return;
+    }
+    
+    // Fallback: Try to match by color in alt text
+    if (colorHandle || variant.option1) {
+      const colorToMatch = colorHandle || (variant.option1 || '').toLowerCase().replace(/\s+/g, '-');
+      console.log('Trying to match images by color:', colorToMatch);
+      
+      // Check desktop images
+      const desktopImages = document.querySelectorAll('.product-gallery__images .product-gallery__image img');
+      desktopImages.forEach((img, index) => {
+        const imgAlt = (img.dataset.imageAlt || img.alt || '').toLowerCase();
+        if (imgAlt.includes(colorToMatch)) {
+          console.log('Found matching desktop image at index', index, 'with alt:', imgAlt);
+          // Move this image to the first position
+          if (index > 0 && desktopImages[0]) {
+            const firstSrc = desktopImages[0].src;
+            desktopImages[0].src = img.src;
+            img.src = firstSrc;
           }
         }
-      }
+      });
+      
+      // Check carousel images
+      const carouselSlides = document.querySelectorAll('[data-carousel-slide]');
+      carouselSlides.forEach((slide, index) => {
+        const img = slide.querySelector('img');
+        if (img) {
+          const imgAlt = (img.dataset.imageAlt || img.alt || '').toLowerCase();
+          if (imgAlt.includes(colorToMatch)) {
+            console.log('Found matching carousel slide at index', index);
+            // Go to this slide
+            const track = document.querySelector('[data-carousel-track]');
+            if (track) {
+              track.style.transform = `translateX(-${index * 100}%)`;
+            }
+            const currentSpan = document.querySelector('[data-carousel-current]');
+            if (currentSpan) currentSpan.textContent = (index + 1).toString();
+            const dots = document.querySelectorAll('[data-carousel-dot]');
+            dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+          }
+        }
+      });
     }
+    
+    console.log('=== updateProductImages END ===');
   }
   
   /* Welcome Section Carousel */

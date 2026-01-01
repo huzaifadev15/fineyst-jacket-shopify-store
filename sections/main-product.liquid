@@ -35,30 +35,12 @@
     position: relative;
   }
   
-  .product-gallery__images:has(.product-gallery__image:nth-child(2)[style*="display: none"]) {
-    grid-template-columns: 1fr;
-    max-width: 50%;
-    width: 50%;
-  }
-  
-  @media (max-width: 768px) {
-    .product-gallery__images:has(.product-gallery__image:nth-child(2)[style*="display: none"]) {
-      max-width: 100%;
-      width: 100%;
-    }
-  }
-  
-  .product-gallery__images .product-gallery__image[style*="display: none"] {
-    display: none !important;
-  }
 
   .product-gallery__image {
-    overflow: hidden;
+    overflow: visible;
     background: #f5f5f5;
     position: relative;
-    aspect-ratio: 3 / 4;
-    min-height: 400px;
-    max-height: 800px;
+
   }
   
   .product-gallery__image img {
@@ -66,7 +48,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    min-height: 100%;
   }
 
   /* Mobile Carousel Styles */
@@ -102,7 +83,6 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    min-height: 100%;
   }
 
   .product-gallery__carousel-counter {
@@ -803,25 +783,41 @@
   <div class="container">
     <div class="product-main__grid">
       <!-- Product Gallery -->
-      <div class="product-gallery">
+      <div class="product-gallery" data-product-gallery>
+        <!-- Store all variant image data for JavaScript -->
+        <script type="application/json" id="VariantImagesJson">
+          {
+            {%- for variant in product.variants -%}
+              "{{ variant.id }}": {
+                "featured_image": {% if variant.featured_image %}"{{ variant.featured_image | image_url: width: 1200 }}"{% else %}null{% endif %},
+                "color": "{{ variant.option1 | downcase | handle }}"
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          }
+        </script>
+        
         <!-- Desktop Gallery (2 column grid) -->
         <div class="product-gallery__images">
           {%- if product.images.size > 0 -%}
             {%- for image in product.images limit: 2 -%}
-              <div class="product-gallery__image">
+              <div class="product-gallery__image" data-image-index="{{ forloop.index0 }}">
                 <img
                   src="{{ image | image_url: width: 800 }}"
                   alt="{{ image.alt | default: product.title }}"
                   loading="lazy"
+                  data-image-alt="{{ image.alt | downcase | handle }}"
+                  data-original-src="{{ image | image_url: width: 800 }}"
                 >
               </div>
             {%- endfor -%}
             {%- if product.images.size == 1 -%}
-              <div class="product-gallery__image">
+              <div class="product-gallery__image" data-image-index="1">
                 <img
                   src="{{ product.images.first | image_url: width: 800 }}"
                   alt="{{ product.images.first.alt | default: product.title }}"
                   loading="lazy"
+                  data-image-alt="{{ product.images.first.alt | downcase | handle }}"
+                  data-original-src="{{ product.images.first | image_url: width: 800 }}"
                 >
               </div>
             {%- endif -%}
@@ -840,11 +836,13 @@
           {%- if product.images.size > 0 -%}
             <div class="product-gallery__carousel-track" data-carousel-track>
               {%- for image in product.images -%}
-                <div class="product-gallery__carousel-slide" data-carousel-slide>
+                <div class="product-gallery__carousel-slide" data-carousel-slide data-image-index="{{ forloop.index0 }}">
                   <img
                     src="{{ image | image_url: width: 1200 }}"
                     alt="{{ image.alt | default: product.title }}"
                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    data-image-alt="{{ image.alt | downcase | handle }}"
+                    data-original-src="{{ image | image_url: width: 1200 }}"
                   >
                 </div>
               {%- endfor -%}
@@ -915,7 +913,7 @@
                   <div class="product-form__color-swatches">
                     {%- for value in option.values -%}
                       {%- assign color_value = value | downcase | handle -%}
-                      {%- assign color_map = 'grey:#808080,black:#000000,white:#ffffff,red:#000000,blue:#0000ff,green:#008000,brown:#a52a2a,tan:#d2b48c,beige:#f5f5dc,navy:#000080' | split: ',' -%}
+                      {%- assign color_map = 'grey:#808080,black:#000000,white:#ffffff,red:#8b0000,blue:#0000ff,green:#008000,brown:#a52a2a,tan:#d2b48c,beige:#f5f5dc,navy:#000080' | split: ',' -%}
                       {%- assign swatch_color = '#ccc' -%}
                       {%- for color_pair in color_map -%}
                         {%- assign color_data = color_pair | split: ':' -%}
@@ -1125,43 +1123,21 @@
         const optionName = this.dataset.optionName;
         const optionValue = this.dataset.optionValue;
         
-        console.log('Color swatch clicked:', optionName, optionValue);
-        
-        // Try multiple ways to find the select element
-        let select = null;
-        
-        // Method 1: Try with handleized name (Liquid format)
-        const handleizedName = optionName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        select = document.getElementById(`Option-${handleizedName}`);
-        
-        // Method 2: Try with simple lowercase
-        if (!select) {
-          select = document.getElementById(`Option-${optionName.toLowerCase()}`);
-        }
-        
-        // Method 3: Try to find by data attribute
-        if (!select) {
-          const allSelects = document.querySelectorAll('[data-option-select]');
-          allSelects.forEach(s => {
-            if (s.name && s.name.includes(optionName)) {
-              select = s;
-            }
-          });
-        }
-        
-        console.log('Found select element:', select, 'ID:', select ? select.id : 'not found');
+        // Find the hidden select element for this option
+        const select = document.querySelector(`select[name="options[${optionName}]"]`);
         
         if (select) {
-          const oldValue = select.value;
           select.value = optionValue;
-          console.log('Select value changed from', oldValue, 'to', select.value);
-          
-          // Trigger change event
-          const changeEvent = new Event('change', { bubbles: true });
-          select.dispatchEvent(changeEvent);
-          console.log('Change event dispatched');
-        } else {
-          console.error('Could not find select element for option:', optionName);
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+
+document.dispatchEvent(
+  new CustomEvent('variant:change', {
+    bubbles: true,
+    detail: {
+      optionValue
+    }
+  })
+);
         }
         
         // Update selected state
