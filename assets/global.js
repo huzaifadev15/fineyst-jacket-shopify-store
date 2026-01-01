@@ -475,11 +475,14 @@
 
       if (minusBtn) {
         e.preventDefault();
+        e.stopPropagation();
         const key = minusBtn.dataset.cartQuantityMinus;
-        const input = minusBtn.parentElement.querySelector('[data-cart-quantity-input]');
+        const cartItem = minusBtn.closest('[data-cart-item-key]');
+        const input = cartItem ? cartItem.querySelector('[data-cart-quantity-input]') : null;
         if (input) {
           const currentQty = parseInt(input.value) || 1;
           if (currentQty > 1) {
+            input.setAttribute('data-prev-value', currentQty);
             updateCartItem(key, currentQty - 1);
           }
         }
@@ -487,18 +490,24 @@
 
       if (plusBtn) {
         e.preventDefault();
+        e.stopPropagation();
         const key = plusBtn.dataset.cartQuantityPlus;
-        const input = plusBtn.parentElement.querySelector('[data-cart-quantity-input]');
+        const cartItem = plusBtn.closest('[data-cart-item-key]');
+        const input = cartItem ? cartItem.querySelector('[data-cart-quantity-input]') : null;
         if (input) {
           const currentQty = parseInt(input.value) || 1;
+          input.setAttribute('data-prev-value', currentQty);
           updateCartItem(key, currentQty + 1);
         }
       }
 
       if (removeBtn) {
         e.preventDefault();
+        e.stopPropagation();
         const key = removeBtn.dataset.cartRemove;
-        removeCartItem(key);
+        if (confirm('Are you sure you want to remove this item from your cart?')) {
+          removeCartItem(key);
+        }
       }
     });
 
@@ -842,7 +851,9 @@
     }
     
     const totalPrice = cart.total_price || 0;
-    const priceValue = typeof totalPrice === 'number' ? totalPrice : parseInt(totalPrice, 10) || 0;
+    const priceValue = typeof totalPrice === 'number' 
+      ? totalPrice 
+      : (typeof totalPrice === 'string' ? parseInt(totalPrice, 10) : 0) || 0;
     
     const subtotalEl = document.querySelector('[data-cart-sidebar-subtotal]');
     if (subtotalEl) {
@@ -934,47 +945,164 @@
   }
 
   function updateCartItem(key, quantity) {
-    if (quantity <= 0) {
-      // Remove item
-      fetch(window.routes.cart_change_url + '.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: key,
-          quantity: 0
-        })
-      })
-      .then(response => response.json())
-      .then(cart => {
-        loadCartSidebar();
-      })
-      .catch(error => {
-        console.error('Error removing cart item:', error);
-        loadCartSidebar(); // Reload anyway to sync
-      });
-    } else {
-      // Update quantity
-      fetch(window.routes.cart_change_url + '.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: key,
-          quantity: quantity
-        })
-      })
-      .then(response => response.json())
-      .then(cart => {
-        loadCartSidebar();
-      })
-      .catch(error => {
-        console.error('Error updating cart:', error);
-        loadCartSidebar(); // Reload anyway to sync
-      });
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    const cartItem = sidebar ? sidebar.querySelector(`[data-cart-item-key="${key}"]`) : null;
+    const input = cartItem ? cartItem.querySelector('[data-cart-quantity-input]') : null;
+    const minusBtn = cartItem ? cartItem.querySelector('[data-cart-quantity-minus]') : null;
+    const plusBtn = cartItem ? cartItem.querySelector('[data-cart-quantity-plus]') : null;
+    const totalPriceEl = cartItem ? cartItem.querySelector('.cart-sidebar-item__total-price') : null;
+
+    if (minusBtn) minusBtn.disabled = true;
+    if (plusBtn) plusBtn.disabled = true;
+    if (input) input.disabled = true;
+
+    if (input) {
+      input.value = '...';
     }
+    if (totalPriceEl) {
+      totalPriceEl.textContent = 'Updating...';
+    }
+
+    const cartUpdateUrl = window.routes.cart_update_url + '.js';
+    
+    const updates = {};
+    const allInputs = sidebar ? sidebar.querySelectorAll('[data-cart-quantity-input]') : [];
+    allInputs.forEach(inputEl => {
+      const itemKey = inputEl.closest('[data-cart-item-key]')?.getAttribute('data-cart-item-key');
+      if (itemKey) {
+        if (itemKey === key) {
+          updates[itemKey] = quantity;
+        } else {
+          const currentQty = parseInt(inputEl.value) || 1;
+          updates[itemKey] = currentQty;
+        }
+      }
+    });
+
+    if (Object.keys(updates).length === 0) {
+      fetch(window.routes.cart_url + '.js')
+        .then(response => response.json())
+        .then(cart => {
+          if (cart && cart.items) {
+            cart.items.forEach(item => {
+              if (item.key === key) {
+                updates[item.key] = quantity;
+              } else {
+                updates[item.key] = item.quantity;
+              }
+            });
+          }
+          return performCartUpdate(cartUpdateUrl, updates, key, quantity, input, totalPriceEl, minusBtn, plusBtn, cartItem, sidebar);
+        })
+        .catch(error => {
+          console.error('Error loading cart for update:', error);
+          handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar);
+        });
+    } else {
+      performCartUpdate(cartUpdateUrl, updates, key, quantity, input, totalPriceEl, minusBtn, plusBtn, cartItem, sidebar);
+    }
+  }
+
+  function performCartUpdate(cartUpdateUrl, updates, key, quantity, input, totalPriceEl, minusBtn, plusBtn, cartItem, sidebar) {
+    return fetch(cartUpdateUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        updates: updates
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(text => {
+          try {
+            const errorData = JSON.parse(text);
+            throw new Error(errorData.description || 'Cart update failed with status: ' + response.status);
+          } catch (e) {
+            throw new Error('Cart update failed with status: ' + response.status);
+          }
+        });
+      }
+      return response.json();
+    })
+    .then(cart => {
+      if (!cart) {
+        throw new Error('Invalid cart response');
+      }
+
+      if (quantity === 0) {
+        if (cartItem) {
+          cartItem.style.transition = 'opacity 0.3s ease';
+          cartItem.style.opacity = '0';
+          setTimeout(() => {
+            cartItem.remove();
+            
+            const remainingItems = sidebar ? sidebar.querySelectorAll('[data-cart-item-key]') : [];
+            if (remainingItems.length === 0) {
+              const emptyContainer = sidebar ? sidebar.querySelector('[data-cart-sidebar-empty]') : null;
+              const itemsContainer = sidebar ? sidebar.querySelector('[data-cart-sidebar-items]') : null;
+              if (emptyContainer) emptyContainer.style.display = 'flex';
+              if (itemsContainer) itemsContainer.innerHTML = '';
+            }
+          }, 300);
+        }
+      } else {
+        if (cart.items && Array.isArray(cart.items)) {
+          const updatedItem = cart.items.find(item => item.key === key);
+          if (updatedItem) {
+            if (input) {
+              input.value = updatedItem.quantity;
+            }
+            if (totalPriceEl) {
+              const linePrice = typeof updatedItem.line_price === 'number' 
+                ? updatedItem.line_price 
+                : parseInt(updatedItem.line_price, 10) || 0;
+              totalPriceEl.textContent = 'Total Price: ' + formatMoney(linePrice);
+            }
+          } else {
+            loadCartSidebar();
+            return;
+          }
+        } else {
+          loadCartSidebar();
+          return;
+        }
+      }
+
+      if (cart) {
+        updateCartSubtotal(cart);
+      }
+
+      if (quantity > 0) {
+        if (minusBtn) minusBtn.disabled = false;
+        if (plusBtn) plusBtn.disabled = false;
+        if (input) input.disabled = false;
+      }
+
+      updateCartCount();
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+      handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar);
+    });
+  }
+
+  function handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar) {
+    if (minusBtn) minusBtn.disabled = false;
+    if (plusBtn) plusBtn.disabled = false;
+    if (input) input.disabled = false;
+
+    if (input && input.getAttribute('data-prev-value')) {
+      input.value = input.getAttribute('data-prev-value');
+    }
+    if (totalPriceEl) {
+      totalPriceEl.textContent = 'Error';
+    }
+
+    setTimeout(() => {
+      loadCartSidebar();
+    }, 500);
   }
 
   function removeCartItem(key) {
