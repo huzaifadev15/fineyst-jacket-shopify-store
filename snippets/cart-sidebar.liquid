@@ -84,6 +84,33 @@
       <span class="cart-sidebar__delivery-text">Delivery approx. January 02 - January 03</span>
     </div>
 
+    <!-- Discount Code Field -->
+    <div class="cart-sidebar__discount" data-cart-sidebar-discount onclick="event.stopPropagation()">
+      <div class="cart-sidebar__discount-input-wrapper" onclick="event.stopPropagation()">
+        <input 
+          type="text" 
+          class="cart-sidebar__discount-input" 
+          placeholder="Discount code" 
+          data-cart-sidebar-discount-input
+          aria-label="Discount code"
+          onclick="event.stopPropagation()"
+        />
+        <button 
+          type="button" 
+          class="cart-sidebar__discount-apply" 
+          data-cart-sidebar-discount-apply
+          aria-label="Apply discount code"
+          onclick="event.stopPropagation()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-sidebar__discount-message" data-cart-sidebar-discount-message style="display: none;" onclick="event.stopPropagation()"></div>
+    </div>
+
     <!-- Checkout Actions -->
     <div class="cart-sidebar__actions">
       <form action="/checkout" method="post" data-cart-sidebar-form>

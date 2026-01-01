@@ -932,6 +932,200 @@
       }
     });
 
+    // Discount code handler
+    const discountInput = sidebar.querySelector('[data-cart-sidebar-discount-input]');
+    const discountApplyBtn = sidebar.querySelector('[data-cart-sidebar-discount-apply]');
+    const discountMessage = sidebar.querySelector('[data-cart-sidebar-discount-message]');
+    
+    if (discountInput && discountApplyBtn) {
+      const showDiscountMessage = function(message, type) {
+        if (!discountMessage) return;
+        discountMessage.textContent = message;
+        discountMessage.className = 'cart-sidebar__discount-message';
+        discountMessage.classList.add('cart-sidebar__discount-message--' + (type || 'info'));
+        discountMessage.style.display = 'block';
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            discountMessage.style.display = 'none';
+          }, 3000);
+        }
+      };
+
+      const applyDiscount = function(e) {
+        // Prevent default behavior and stop event propagation
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
+        const code = discountInput.value.trim();
+        if (!code) {
+          showDiscountMessage('Please enter a discount code', 'error');
+          return;
+        }
+
+        // Show loading state
+        discountApplyBtn.disabled = true;
+        discountApplyBtn.style.opacity = '0.6';
+        discountMessage.style.display = 'none';
+
+        // Get current cart to compare
+        const cartUrl = window.routes.cart_url + '.js';
+        
+        fetch(cartUrl)
+          .then(response => response.json())
+          .then(originalCart => {
+            const originalTotal = parseFloat(originalCart.total_price || 0);
+            const originalDiscounts = originalCart.discount_applications || [];
+            const originalDiscountCodes = originalDiscounts.map(d => (d.code || '').toLowerCase());
+            
+            // Apply discount code using hidden iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.position = 'absolute';
+            iframe.style.left = '-9999px';
+            iframe.style.width = '1px';
+            iframe.style.height = '1px';
+            iframe.style.border = 'none';
+            iframe.name = 'discount-iframe-' + Date.now();
+            
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/discount/' + encodeURIComponent(code);
+            form.target = iframe.name;
+            form.style.display = 'none';
+            
+            document.body.appendChild(iframe);
+            document.body.appendChild(form);
+            form.submit();
+            
+            // Function to check if discount was applied
+            const checkDiscountApplied = function(attempt = 1) {
+              return fetch(cartUrl)
+                .then(response => response.json())
+                .then(newCart => {
+                  const newTotal = parseFloat(newCart.total_price || 0);
+                  const newDiscounts = newCart.discount_applications || [];
+                  const newDiscountCodes = newDiscounts.map(d => (d.code || '').toLowerCase());
+                  
+                  // Check if our code is in the discount applications
+                  const codeLower = code.toLowerCase();
+                  const discountCodeApplied = newDiscountCodes.includes(codeLower);
+                  
+                  // Check if total decreased (discount applied)
+                  const totalDecreased = newTotal < originalTotal && Math.abs(originalTotal - newTotal) > 1;
+                  
+                  // Check if new discounts were added
+                  const hasNewDiscount = newDiscounts.length > originalDiscounts.length;
+                  
+                  if (discountCodeApplied || (totalDecreased && hasNewDiscount)) {
+                    // Success!
+                    showDiscountMessage('Discount code applied successfully!', 'success');
+                    discountInput.value = '';
+                    loadCartSidebar();
+                    discountApplyBtn.disabled = false;
+                    discountApplyBtn.style.opacity = '1';
+                    
+                    // Clean up
+                    if (document.body.contains(iframe)) {
+                      document.body.removeChild(iframe);
+                    }
+                    if (document.body.contains(form)) {
+                      document.body.removeChild(form);
+                    }
+                    return true;
+                  } else if (attempt < 3) {
+                    // Try again after a delay
+                    return new Promise(resolve => {
+                      setTimeout(() => {
+                        checkDiscountApplied(attempt + 1).then(resolve);
+                      }, 1000);
+                    });
+                  } else {
+                    // Failed after all attempts
+                    showDiscountMessage('Invalid discount code. Please check and try again.', 'error');
+                    discountApplyBtn.disabled = false;
+                    discountApplyBtn.style.opacity = '1';
+                    
+                    // Clean up
+                    if (document.body.contains(iframe)) {
+                      document.body.removeChild(iframe);
+                    }
+                    if (document.body.contains(form)) {
+                      document.body.removeChild(form);
+                    }
+                    return false;
+                  }
+                })
+                .catch(error => {
+                  console.error('Error checking cart:', error);
+                  if (attempt < 3) {
+                    return new Promise(resolve => {
+                      setTimeout(() => {
+                        checkDiscountApplied(attempt + 1).then(resolve);
+                      }, 1000);
+                    });
+                  } else {
+                    showDiscountMessage('Error applying discount code. Please try again.', 'error');
+                    discountApplyBtn.disabled = false;
+                    discountApplyBtn.style.opacity = '1';
+                    
+                    // Clean up
+                    if (document.body.contains(iframe)) {
+                      document.body.removeChild(iframe);
+                    }
+                    if (document.body.contains(form)) {
+                      document.body.removeChild(form);
+                    }
+                    return false;
+                  }
+                });
+            };
+            
+            // Start checking after a short delay
+            setTimeout(() => {
+              checkDiscountApplied();
+            }, 1500);
+          })
+          .catch(error => {
+            console.error('Error getting original cart:', error);
+            showDiscountMessage('Error applying discount code. Please try again.', 'error');
+            discountApplyBtn.disabled = false;
+            discountApplyBtn.style.opacity = '1';
+          });
+      };
+
+      // Prevent clicks on discount section from closing sidebar
+      const discountSection = sidebar.querySelector('[data-cart-sidebar-discount]');
+      if (discountSection) {
+        discountSection.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+      }
+      
+      discountApplyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        applyDiscount(e);
+        return false;
+      });
+      
+      discountInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          applyDiscount(e);
+          return false;
+        }
+      });
+      
+      discountInput.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    }
+
     // Quantity update handlers
     sidebar.addEventListener('click', function(e) {
       const minusBtn = e.target.closest('[data-cart-quantity-minus]');
@@ -1636,26 +1830,44 @@
   document.addEventListener('change', function(e) {
     if (!e.target.matches('[data-option-select]')) return;
   
+    console.log('=== Variant Selection Handler Triggered ===');
+    console.log('Select element:', e.target.id, 'Value:', e.target.value);
+  
     const productJson = document.getElementById('ProductJson');
-    if (!productJson) return;
+    if (!productJson) {
+      console.error('ProductJson not found!');
+      return;
+    }
   
     const product = JSON.parse(productJson.textContent);
     const form = e.target.closest('form');
     const selects = form.querySelectorAll('[data-option-select]');
     
+    console.log('Found', selects.length, 'select elements');
+    
     // Get selected options
-    const selectedOptions = Array.from(selects).map(select => select.value);
+    const selectedOptions = Array.from(selects).map(select => {
+      console.log('Select:', select.id, 'Value:', select.value);
+      return select.value;
+    });
+    
+    console.log('Selected options:', selectedOptions);
     
     // Find matching variant
     const variant = product.variants.find(v => {
-      return v.options.every((option, index) => option === selectedOptions[index]);
+      const matches = v.options.every((option, index) => option === selectedOptions[index]);
+      if (matches) {
+        console.log('Found matching variant:', v.id, 'Options:', v.options);
+      }
+      return matches;
     });
   
     if (variant) {
+      console.log('Variant found:', variant.id, 'Color:', variant.option1);
       // Update variant ID
       const variantInput = form.querySelector('[data-variant-id]');
       if (variantInput) variantInput.value = variant.id;
-  
+
       // Update price
       const priceEl = document.querySelector('[data-product-price]');
       if (priceEl) {
@@ -1675,20 +1887,445 @@
           priceEl.innerHTML = `<span>${formattedPrice}</span>`;
         }
       }
-  
+
       // Update button state
       const submitBtn = form.querySelector('[type="submit"]');
       if (submitBtn) {
         submitBtn.disabled = !variant.available;
         submitBtn.textContent = variant.available ? 'Add to Cart' : 'Sold Out';
       }
-  
+
+      // Update label to show selected color
+      const colorLabel = document.querySelector('.product-form__label');
+      if (colorLabel && variant.option1) {
+        const optionName = colorLabel.textContent.split(':')[0];
+        colorLabel.textContent = optionName + ': ' + variant.option1.toUpperCase();
+        console.log('Updated label to:', colorLabel.textContent);
+      }
+
+      // Update images based on variant
+      console.log('Variant selected:', variant.id, 'Options:', variant.options);
+      updateProductImages(variant, product);
+
       // Update URL
       const url = new URL(window.location.href);
       url.searchParams.set('variant', variant.id);
       window.history.replaceState({}, '', url);
+    } else {
+      console.error('No matching variant found for options:', selectedOptions);
+      console.log('Available variants:', product.variants.map(v => ({ id: v.id, options: v.options })));
     }
   });
+
+  /* Update Product Images Based on Variant */
+  function updateProductImages(variant, product) {
+    if (!variant || !product) {
+      console.log('updateProductImages: Missing variant or product', { variant, product });
+      return;
+    }
+
+    console.log('=== updateProductImages START ===');
+    console.log('Variant ID:', variant.id);
+    console.log('Variant options:', variant.options);
+    console.log('Variant option1 (Color):', variant.option1);
+    console.log('Product images count:', product.images ? product.images.length : 0);
+    
+    // Debug: Log all images
+    if (product.images && product.images.length > 0) {
+      console.log('All product images:');
+      product.images.forEach((img, idx) => {
+        // Get image URL - Shopify stores it in different ways
+        let imgUrl = '';
+        if (typeof img === 'string') {
+          imgUrl = img;
+        } else if (img.src) {
+          imgUrl = img.src;
+        } else if (img.id) {
+          // Construct URL from image ID
+          imgUrl = `https://cdn.shopify.com/s/files/1/${product.id}/products/${img.id}`;
+        }
+        
+        console.log(`  Image ${idx}:`, {
+          url: imgUrl ? imgUrl.substring(0, 60) + '...' : 'no url',
+          alt: img.alt || 'no alt',
+          variant_ids: img.variant_ids || 'no variant_ids',
+          fullObject: img
+        });
+      });
+    }
+
+    // Get variant images - Shopify stores variant associations in image.variant_ids
+    let variantImages = [];
+    
+    // Method 1: Check if images have variant_ids that include this variant
+    if (product.images && product.images.length > 0) {
+      const imagesWithVariant = product.images.filter(img => {
+        // Shopify stores variant IDs in image.variant_ids array
+        if (img.variant_ids && Array.isArray(img.variant_ids)) {
+          return img.variant_ids.includes(variant.id);
+        }
+        return false;
+      });
+      
+      if (imagesWithVariant.length > 0) {
+        variantImages = imagesWithVariant.map(img => {
+          // Extract URL from image object
+          if (typeof img === 'string') return img;
+          // Shopify stores image URL in different properties
+          if (img.src) return img.src;
+          if (img.url) return img.url;
+          // Try to get from nested properties
+          if (img.original && img.original.src) return img.original.src;
+          // Last resort: construct from image ID (but this might not work without filename)
+          console.warn('Image object has no src/url, trying to construct from ID:', img);
+          return '';
+        }).filter(url => url && typeof url === 'string');
+        console.log('✓ Found', variantImages.length, 'images via variant_ids');
+      }
+    }
+    
+    // Method 2: If no variant-specific images, check variant's featured_image
+    if (variantImages.length === 0 && variant.featured_image) {
+      // featured_image can be an object or a string
+      let featuredImgUrl = '';
+      if (typeof variant.featured_image === 'string') {
+        featuredImgUrl = variant.featured_image;
+      } else if (variant.featured_image.src) {
+        featuredImgUrl = variant.featured_image.src;
+      } else if (variant.featured_image.id) {
+        // Try to find the image in product.images by ID and get its URL from DOM
+        const featuredImgId = variant.featured_image.id;
+        // Try to find image in DOM by checking all product images
+        const allProductImages = document.querySelectorAll('.product-gallery__image img, .product-gallery__carousel-slide img');
+        allProductImages.forEach(domImg => {
+          // Check if this DOM image matches the featured image ID
+          // We can't directly match by ID, so we'll use a different approach
+        });
+        
+        // Try to find in product.images array
+        const featuredImg = product.images.find(img => img.id === featuredImgId);
+        if (featuredImg) {
+          // Try multiple ways to get URL
+          featuredImgUrl = featuredImg.src || featuredImg.url || '';
+          // If still no URL, try to get from DOM
+          if (!featuredImgUrl) {
+            // Get all current images from DOM and use the one at the position of this image
+            const domImages = document.querySelectorAll('.product-gallery__image img, .product-gallery__carousel-slide img');
+            const imgIndex = product.images.findIndex(img => img.id === featuredImgId);
+            if (domImages[imgIndex]) {
+              featuredImgUrl = domImages[imgIndex].src;
+              console.log('Got image URL from DOM:', featuredImgUrl);
+            }
+          }
+        }
+      }
+      
+      if (featuredImgUrl) {
+        variantImages = [featuredImgUrl];
+        console.log('✓ Using variant featured_image');
+      } else {
+        console.log('✗ featured_image found but no URL extracted');
+      }
+    }
+    
+    // Method 3: Match images by color option in alt text
+    if (variantImages.length === 0) {
+      const colorOption = variant.option1 || (variant.options && variant.options[0]);
+      
+      if (colorOption && product.images) {
+        const matchingImages = product.images.filter(img => {
+          const imgAlt = (img.alt || '').toLowerCase().trim();
+          const imgSrc = (img.src || '').toLowerCase();
+          const colorLower = colorOption.toLowerCase().trim();
+          // Check if image alt text or filename contains the color name
+          return imgAlt.includes(colorLower) || 
+                 imgAlt === colorLower || 
+                 imgSrc.includes(colorLower) ||
+                 imgAlt.includes(colorLower.replace(/\s+/g, '-')) ||
+                 imgAlt.includes(colorLower.replace(/\s+/g, '_'));
+        });
+        
+        if (matchingImages.length > 0) {
+          variantImages = matchingImages.map(img => {
+            if (typeof img === 'string') return img;
+            return img.src || img.url || img.original || '';
+          }).filter(url => url && typeof url === 'string');
+          console.log('✓ Found', variantImages.length, 'images via color matching');
+        }
+      }
+    }
+    
+    // Method 4: Fall back to all product images if still no match
+    if (variantImages.length === 0 && product.images && product.images.length > 0) {
+      variantImages = product.images.map(img => {
+        if (typeof img === 'string') return img;
+        return img.src || img.url || img.original || '';
+      }).filter(url => url && typeof url === 'string');
+      console.log('⚠ Using all product images as fallback:', variantImages.length);
+    }
+    
+    // If we still don't have images, try to get from DOM using variant's featured_image
+    if (variantImages.length === 0 && variant.featured_image && variant.featured_image.id) {
+      console.log('Trying to get image from DOM using featured_image ID:', variant.featured_image.id);
+      // Find the image index in product.images array
+      const featuredImgIndex = product.images.findIndex(img => img.id === variant.featured_image.id);
+      console.log('Featured image index in product.images:', featuredImgIndex);
+      
+      if (featuredImgIndex >= 0) {
+        // Get all images from DOM carousel (they're in order)
+        const domImages = document.querySelectorAll('.product-gallery__carousel-slide img');
+        console.log('Found', domImages.length, 'images in DOM carousel');
+        
+        if (domImages[featuredImgIndex]) {
+          const imgSrc = domImages[featuredImgIndex].src;
+          variantImages = [imgSrc];
+          console.log('✓ Got image from DOM at index', featuredImgIndex, ':', imgSrc.substring(0, 60) + '...');
+        } else {
+          // Try desktop gallery
+          const desktopImages = document.querySelectorAll('.product-gallery__images .product-gallery__image img');
+          if (desktopImages[featuredImgIndex] || desktopImages[0]) {
+            const imgSrc = (desktopImages[featuredImgIndex] || desktopImages[0]).src;
+            variantImages = [imgSrc];
+            console.log('✓ Got image from desktop gallery');
+          }
+        }
+      }
+    }
+    
+    // Normalize image URLs to full URLs - ensure all are strings
+    variantImages = variantImages.map(imgUrl => {
+      // Convert to string if it's an object
+      if (typeof imgUrl !== 'string') {
+        if (imgUrl && imgUrl.src) {
+          imgUrl = imgUrl.src;
+        } else if (imgUrl && typeof imgUrl === 'object') {
+          // Try to extract URL from object
+          imgUrl = imgUrl.url || imgUrl.original || '';
+        } else {
+          return '';
+        }
+      }
+      
+      if (!imgUrl || typeof imgUrl !== 'string') return '';
+      
+      // If it's already a full URL, return as is
+      if (imgUrl.startsWith('http://') || imgUrl.startsWith('https://')) {
+        return imgUrl;
+      }
+      
+      // If it's a protocol-relative URL
+      if (imgUrl.startsWith('//')) {
+        return 'https:' + imgUrl;
+      }
+      
+      // If it's an absolute path
+      if (imgUrl.startsWith('/')) {
+        return window.location.origin + imgUrl;
+      }
+      
+      // If it's a Shopify CDN path, construct full URL
+      if (imgUrl.includes('cdn.shopify.com') || imgUrl.includes('shopifycdn.com')) {
+        if (!imgUrl.startsWith('http')) {
+          return 'https:' + (imgUrl.startsWith('//') ? imgUrl : '//' + imgUrl);
+        }
+        return imgUrl;
+      }
+      
+      return imgUrl;
+    }).filter(url => url && url.trim() !== ''); // Remove empty URLs
+    
+    console.log('Normalized variant images:', variantImages);
+    
+    // If we have variant images, update the gallery
+    if (variantImages.length > 0) {
+      console.log('Updating gallery with', variantImages.length, 'images');
+      
+      // Update desktop gallery images (2 column grid)
+      const desktopImageContainers = document.querySelectorAll('.product-gallery__images .product-gallery__image');
+      const desktopImages = document.querySelectorAll('.product-gallery__images .product-gallery__image img');
+      console.log('Found desktop images:', desktopImages.length);
+      
+      // If only one image, hide the second container and adjust grid
+      const imagesGrid = document.querySelector('.product-gallery__images');
+      if (variantImages.length === 1 && desktopImageContainers.length >= 2) {
+        desktopImageContainers[0].style.display = 'block';
+        desktopImageContainers[1].style.display = 'none';
+        // Adjust grid to single column with max-width constraint
+        if (imagesGrid) {
+          imagesGrid.style.gridTemplateColumns = '1fr';
+          imagesGrid.style.maxWidth = '50%';
+          imagesGrid.style.width = '50%';
+        }
+      } else if (variantImages.length > 1) {
+        // Show both containers if we have multiple images
+        desktopImageContainers.forEach(container => {
+          container.style.display = 'block';
+        });
+        // Reset grid to two columns and remove max-width
+        if (imagesGrid) {
+          imagesGrid.style.gridTemplateColumns = '1fr 1fr';
+          imagesGrid.style.maxWidth = '100%';
+        }
+      }
+      
+      desktopImages.forEach((img, index) => {
+        const container = img.closest('.product-gallery__image');
+        
+        // Hide container if no image for this slot and we have only one image
+        if (variantImages.length === 1 && index > 0) {
+          if (container) container.style.display = 'none';
+          return;
+        }
+        
+        if (variantImages[index]) {
+          // Store current dimensions to maintain aspect ratio
+          const currentHeight = container ? container.offsetHeight : null;
+          
+          // Use Shopify image URL transformation for proper sizing
+          const imageUrl = variantImages[index];
+          // Try to extract base URL and add size parameter
+          let optimizedUrl = imageUrl;
+          
+          // Remove existing size parameters and add new one
+          optimizedUrl = optimizedUrl.replace(/_[0-9]+x[0-9]+\./i, '_800x.');
+          if (!optimizedUrl.includes('_800x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
+            optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_800x.$1');
+          }
+          
+          console.log('Updating desktop image', index, 'to', optimizedUrl);
+          
+          // Preserve aspect ratio by maintaining object-fit
+          img.style.objectFit = 'cover';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          
+          // Update image
+          img.src = optimizedUrl;
+          img.srcset = '';
+          img.loading = 'lazy';
+          
+          // Ensure container maintains height
+          if (container && currentHeight) {
+            container.style.minHeight = currentHeight + 'px';
+          }
+          
+          // Show container
+          if (container) container.style.display = 'block';
+        } else if (variantImages[0] && variantImages.length > 1) {
+          // Only repeat if we have multiple images
+          const currentHeight = container ? container.offsetHeight : null;
+          
+          let optimizedUrl = variantImages[0].replace(/_[0-9]+x[0-9]+\./i, '_800x.');
+          if (!optimizedUrl.includes('_800x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
+            optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_800x.$1');
+          }
+          
+          img.style.objectFit = 'cover';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          
+          console.log('Repeating first image for desktop slot', index);
+          img.src = optimizedUrl;
+          
+          if (container && currentHeight) {
+            container.style.minHeight = currentHeight + 'px';
+          }
+          
+          if (container) container.style.display = 'block';
+        }
+      });
+      
+      // Update mobile carousel images
+      const carouselTrack = document.querySelector('[data-carousel-track]');
+      if (carouselTrack) {
+        const carouselSlides = carouselTrack.querySelectorAll('[data-carousel-slide]');
+        const carouselDots = document.querySelectorAll('[data-carousel-dot]');
+        const carouselCounter = document.querySelector('[data-carousel-counter]');
+        const totalSpan = carouselCounter ? carouselCounter.querySelector('[data-carousel-total]') : null;
+        
+        // Update slides - only show slides that have images
+        carouselSlides.forEach((slide, index) => {
+          const slideImg = slide.querySelector('img');
+          if (slideImg) {
+            if (variantImages[index]) {
+              // Store current slide dimensions
+              const currentHeight = slide.offsetHeight;
+              
+              let optimizedUrl = variantImages[index];
+              // Remove existing size parameters and add new one
+              optimizedUrl = optimizedUrl.replace(/_[0-9]+x[0-9]+\./i, '_1200x.');
+              if (!optimizedUrl.includes('_1200x') && !optimizedUrl.match(/_[0-9]+x[0-9]+/i)) {
+                optimizedUrl = optimizedUrl.replace(/\.(jpg|jpeg|png|webp)/i, '_1200x.$1');
+              }
+              console.log('Updating carousel slide', index, 'to', optimizedUrl);
+              
+              // Preserve aspect ratio
+              slideImg.style.objectFit = 'cover';
+              slideImg.style.width = '100%';
+              slideImg.style.height = '100%';
+              
+              // Update image
+              slideImg.src = optimizedUrl;
+              slideImg.srcset = '';
+              slideImg.loading = index === 0 ? 'eager' : 'lazy';
+              
+              // Maintain slide height
+              if (currentHeight) {
+                slide.style.minHeight = currentHeight + 'px';
+              }
+              
+              slide.style.display = 'flex';
+            } else {
+              // Hide slides that don't have images
+              slide.style.display = 'none';
+            }
+          }
+        });
+        
+        // If only one image, ensure carousel shows only that slide
+        if (variantImages.length === 1) {
+          carouselSlides.forEach((slide, index) => {
+            if (index > 0) {
+              slide.style.display = 'none';
+            }
+          });
+        }
+        
+        // Update dots - show only for available images
+        if (carouselDots.length > 0) {
+          carouselDots.forEach((dot, index) => {
+            if (index < variantImages.length) {
+              dot.style.display = 'block';
+            } else {
+              dot.style.display = 'none';
+            }
+          });
+        }
+        
+        // Update counter
+        if (totalSpan) {
+          totalSpan.textContent = variantImages.length;
+        }
+        
+        // Reset carousel to first slide
+        if (carouselSlides.length > 0 && variantImages.length > 0) {
+          const firstSlide = carouselSlides[0];
+          if (firstSlide) {
+            carouselTrack.style.transform = 'translateX(0%)';
+            // Update active dot
+            carouselDots.forEach((dot, index) => {
+              dot.classList.toggle('is-active', index === 0);
+            });
+            // Update counter
+            const currentSpan = carouselCounter ? carouselCounter.querySelector('[data-carousel-current]') : null;
+            if (currentSpan) {
+              currentSpan.textContent = '1';
+            }
+          }
+        }
+      }
+    }
+  }
   
   /* Welcome Section Carousel */
   function initWelcomeCarousel() {
