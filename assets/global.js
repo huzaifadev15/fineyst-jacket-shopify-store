@@ -2252,7 +2252,11 @@
     document.addEventListener('click', function(e) {
       const link = e.target.closest('a[href]');
       if (link && !link.href.includes('#') && !link.href.includes('javascript:') && !link.target) {
-        overlay.classList.add('is-visible');
+        // Don't show loader for links inside mega menu parent items
+        const hasMegaMenu = link.closest('.site-header__nav-item--has-mega-menu');
+        if (!hasMegaMenu) {
+          overlay.classList.add('is-visible');
+        }
       }
     });
 
