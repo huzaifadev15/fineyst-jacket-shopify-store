@@ -170,7 +170,15 @@
                     </div>
                   {%- endif -%}
                   <div class="welcome-section__category-label">
-                    {{ block.settings.title }}
+                    <span class="welcome-section__category-title">
+                      {{ block.settings.title }}
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" class="welcome-section__category-arrow">
+                        <polyline points="9 18 15 12 9 6"/>
+                      </svg>
+                    </span>
+                    {%- if block.settings.description != blank -%}
+                      <span class="welcome-section__category-description">{{ block.settings.description }}</span>
+                    {%- endif -%}
                   </div>
                 </a>
               </div>
@@ -238,6 +246,12 @@
           "default": "LEATHER JACKETS"
         },
         {
+          "type": "textarea",
+          "id": "description",
+          "label": "Category Description",
+          "default": "Durable and stylish outerwear reimagined for the next generation."
+        },
+        {
           "type": "url",
           "id": "link_url",
           "label": "Category Link URL"
@@ -263,31 +277,36 @@
         {
           "type": "category",
           "settings": {
-            "title": "LEATHER JACKETS"
+            "title": "LEATHER JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "PUFFER JACKETS"
+            "title": "PUFFER JACKETS",
+            "description": "Warm, lightweight insulation for ultimate cold-weather comfort."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "DENIM JACKETS"
+            "title": "DENIM JACKETS",
+            "description": "Classic American style meets modern craftsmanship."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "SUEDE JACKETS"
+            "title": "SUEDE JACKETS",
+            "description": "Luxuriously soft texture with a timeless vintage appeal."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "AVIATOR JACKETS"
+            "title": "AVIATOR JACKETS",
+            "description": "Heritage aviation design built for adventure and warmth."
           }
         }
       ]
