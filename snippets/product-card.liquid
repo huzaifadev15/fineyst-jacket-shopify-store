@@ -487,7 +487,6 @@
 
     .product-card__image {
       position: relative;
-      padding-bottom: 3.5rem; /* Space for both heart and cart icons */
     }
 
     .product-card__image img:not(.product-card__image-hover) {
@@ -1082,7 +1081,7 @@
   .quick-add-modal__add-btn {
     width: 100%;
     padding: 1.4rem 2rem;
-    background: #6B8E9B;
+    background: #000;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -1096,11 +1095,12 @@
   }
 
   .quick-add-modal__add-btn:hover {
-    background: #5a7a86;
+    background: #333;
   }
 
   .quick-add-modal__add-btn:disabled {
-    background: #ccc;
+    background: #ccc !important;
+    color: #999 !important;
     cursor: not-allowed;
   }
 
