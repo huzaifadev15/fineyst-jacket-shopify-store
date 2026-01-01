@@ -39,6 +39,13 @@
         "type": "shopify://apps/rubik-variant-images/blocks/rubik-swatch/e684282e-1343-4a60-8fa2-6393aded15f6",
         "disabled": false,
         "settings": {}
+      },
+      "4571859552318407796": {
+        "type": "shopify://apps/globo-color-swatch/blocks/app-embed-block/4394f710-096c-4021-bbde-8ebb26057c11",
+        "disabled": false,
+        "settings": {
+          "customCssGCW": ""
+        }
       }
     }
   }
