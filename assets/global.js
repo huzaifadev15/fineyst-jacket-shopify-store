@@ -17,6 +17,7 @@
     initColorCollectionCarousel();
     initFAQ();
     initSectionCarousel();
+    initNavigationOverlay();
   });
   
   /* Header Scroll Behavior */
@@ -279,12 +280,16 @@
       return;
     }
     
+    // Show loading overlay
+    showCartLoadingOverlay();
+    
     // Convert variant ID to number if it's a string
     const numericVariantId = typeof variantId === 'string' ? parseInt(variantId, 10) : variantId;
     
     if (isNaN(numericVariantId)) {
       console.error('Variant ID is not a valid number:', variantId);
       alert('Invalid product variant. Please try again.');
+      hideCartLoadingOverlay();
       return;
     }
     
@@ -298,6 +303,7 @@
     if (!window.routes || !window.routes.cart_add_url) {
       console.error('Cart routes not defined');
       alert('Cart system not initialized. Please refresh the page.');
+      hideCartLoadingOverlay();
       return;
     }
   
@@ -325,6 +331,9 @@
             // Show friendly message
             alert(errorMessage);
             
+            // Hide loading overlay
+            hideCartLoadingOverlay();
+            
             // Return null to skip the success handler
             return null;
           }).catch(() => {
@@ -332,6 +341,7 @@
             openCartSidebar();
             loadCartSidebar();
             alert('This item is already in your cart at maximum quantity.');
+            hideCartLoadingOverlay();
             return null;
           });
         }
@@ -374,12 +384,16 @@
         updateCartSubtotal(cartData);
         openCartSidebar();
         showCartSidebarBanner();
+        
+        // Hide loading overlay
+        hideCartLoadingOverlay();
       } else {
         // Fallback: try to load cart
         console.log('No cart data in response, fetching cart...');
         openCartSidebar();
         setTimeout(() => {
           loadCartSidebar();
+          hideCartLoadingOverlay();
         }, 500);
       }
     })
@@ -398,6 +412,9 @@
       
       const errorMessage = error.message || 'Failed to add item to cart. Please try again.';
       alert(errorMessage);
+      
+      // Hide loading overlay
+      hideCartLoadingOverlay();
     });
   }
   
@@ -505,9 +522,7 @@
         e.preventDefault();
         e.stopPropagation();
         const key = removeBtn.dataset.cartRemove;
-        if (confirm('Are you sure you want to remove this item from your cart?')) {
-          removeCartItem(key);
-        }
+        removeCartItem(key);
       }
     });
 
@@ -952,6 +967,9 @@
     const plusBtn = cartItem ? cartItem.querySelector('[data-cart-quantity-plus]') : null;
     const totalPriceEl = cartItem ? cartItem.querySelector('.cart-sidebar-item__total-price') : null;
 
+    // Show loading overlay
+    showCartLoadingOverlay();
+
     if (minusBtn) minusBtn.disabled = true;
     if (plusBtn) plusBtn.disabled = true;
     if (input) input.disabled = true;
@@ -1081,6 +1099,9 @@
       }
 
       updateCartCount();
+      
+      // Hide loading overlay
+      hideCartLoadingOverlay();
     })
     .catch(error => {
       console.error('Error updating cart:', error);
@@ -1089,6 +1110,9 @@
   }
 
   function handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar) {
+    // Hide loading overlay
+    hideCartLoadingOverlay();
+    
     if (minusBtn) minusBtn.disabled = false;
     if (plusBtn) plusBtn.disabled = false;
     if (input) input.disabled = false;
@@ -1106,7 +1130,42 @@
   }
 
   function removeCartItem(key) {
+    // Show loading overlay immediately
+    showCartLoadingOverlay();
     updateCartItem(key, 0);
+  }
+  
+  /* Cart Loading Overlay */
+  function showCartLoadingOverlay() {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    const content = sidebar ? sidebar.querySelector('.cart-sidebar__content') : null;
+    if (!content) return;
+    
+    let overlay = content.querySelector('.cart-loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'cart-loading-overlay';
+      overlay.innerHTML = `
+        <div class="cart-loading-spinner">
+          <div class="cart-loading-spinner__circle"></div>
+          <span class="cart-loading-spinner__text">Updating cart...</span>
+        </div>
+      `;
+      content.appendChild(overlay);
+    }
+    
+    overlay.classList.add('is-visible');
+  }
+  
+  function hideCartLoadingOverlay() {
+    const sidebar = document.querySelector('[data-cart-sidebar]');
+    const content = sidebar ? sidebar.querySelector('.cart-sidebar__content') : null;
+    if (!content) return;
+    
+    const overlay = content.querySelector('.cart-loading-overlay');
+    if (overlay) {
+      overlay.classList.remove('is-visible');
+    }
   }
   
   /* Utility: Slide out animation */
@@ -2177,6 +2236,32 @@
     });
   }
 
+  /* Navigation Loading Overlay */
+  function initNavigationOverlay() {
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.className = 'navigation-overlay';
+    overlay.innerHTML = `
+      <div class="navigation-spinner">
+        <div class="navigation-spinner__circle"></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Show overlay on navigation
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a[href]');
+      if (link && !link.href.includes('#') && !link.href.includes('javascript:') && !link.target) {
+        overlay.classList.add('is-visible');
+      }
+    });
+
+    // Hide overlay on page load
+    window.addEventListener('pageshow', function() {
+      overlay.classList.remove('is-visible');
+    });
+  }
+  
   /* Section Carousel (Premium Materials, Tailored Fit, USA Fulfillment) */
   function initSectionCarousel() {
     // Slide data from the provided code
