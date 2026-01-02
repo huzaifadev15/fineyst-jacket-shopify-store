@@ -75,7 +75,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-suede.webp",
             "title": "SUEDE JACKETS",
-            "link_url": "shopify://collections/mens-suede-jackets",
+            "link_url": "shopify://collections/suede-jackets",
             "gender": "men"
           }
         },

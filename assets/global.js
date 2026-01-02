@@ -2243,7 +2243,17 @@
       if (isDragging) {
         e.preventDefault();
         const newTransform = startTransform + deltaX;
-        track.style.transform = `translateX(${newTransform}px)`;
+        
+        // Calculate boundaries
+        const cardWidth = getCardWidth();
+        const visibleCount = visibleCards.length;
+        const maxVisible = Math.min(getMaxVisible(), visibleCount);
+        const minTransform = -(Math.max(0, visibleCount - maxVisible) * cardWidth);
+        const maxTransform = 0;
+        
+        // Constrain transform within boundaries
+        const constrainedTransform = Math.max(minTransform, Math.min(maxTransform, newTransform));
+        track.style.transform = `translateX(${constrainedTransform}px)`;
       }
     }
 
@@ -2535,7 +2545,18 @@
       if (isDragging) {
         e.preventDefault();
         const newTransform = startTransform + deltaX;
-        track.style.transform = `translateX(${newTransform}px)`;
+        
+        // Calculate boundaries
+        const cardWidth = getCardWidth();
+        const visibleCards = getVisibleCards();
+        const isMobile = window.innerWidth < 768;
+        const maxIndex = isMobile ? Math.max(0, totalCards - 1) : Math.max(0, totalCards - visibleCards);
+        const minTransform = -(maxIndex * cardWidth);
+        const maxTransform = 0;
+        
+        // Constrain transform within boundaries
+        const constrainedTransform = Math.max(minTransform, Math.min(maxTransform, newTransform));
+        track.style.transform = `translateX(${constrainedTransform}px)`;
       }
     }
 
