@@ -1,0 +1,792 @@
+---
+layout: theme
+---
+
+{%- style -%}
+  .about-page {
+    background: #fff;
+    padding-bottom: 8rem;
+  }
+  
+  .about-hero {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+  
+  .about-hero__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+    background-size: 40px 40px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .about-hero__content {
+    position: relative;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 8rem;
+    padding-bottom: 12rem;
+    text-align: center;
+  }
+  
+  .about-hero__title {
+    font-size: clamp(4rem, 5vw, 6rem);
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 2rem;
+    font-family: avertaDefault, sans-serif;
+    padding-top: 4rem;
+  }
+  
+  .about-hero__description {
+    font-size: clamp(1.8rem, 2vw, 2rem);
+    color: #171717;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .about-hero__features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  
+  .about-hero__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .about-hero__feature-icon {
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    background: #f6f6f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .about-hero__feature-icon svg {
+    width: 2.8rem;
+    height: 2.8rem;
+    color: #000;
+  }
+  
+  .about-hero__feature-text {
+    font-weight: 500;
+    color: #000;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .container {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .mission-section {
+    padding: 8rem 0 12rem;
+  }
+  
+  .mission-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  
+  .mission-content h2 {
+    font-size: clamp(3rem, 4vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .mission-content p {
+    color: #171717;
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .mission-buttons {
+    margin-top: 4rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .btn--primary {
+    background: #eaeaea;
+    color: #000;
+  }
+  
+  .btn--primary:hover {
+    background: #f6f6f6;
+  }
+  
+  .btn--secondary {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+  }
+  
+  .btn--secondary:hover {
+    background: #fff;
+    color: #000;
+  }
+  
+  .mission-image {
+    position: relative;
+    height: 40rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  .mission-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .values-section {
+    background: #f9fafb;
+    padding: 8rem 0 12rem;
+  }
+  
+  .values-header {
+    text-align: center;
+    margin-bottom: 8rem;
+  }
+  
+  .values-header h2 {
+    font-size: clamp(3rem, 4vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .values-header p {
+    color: #6b7280;
+    font-size: 1.8rem;
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
+    white-space: nowrap;
+  }
+  
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+  }
+  
+  .value-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 4rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .value-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  .value-card__icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+  }
+  
+  .value-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .value-card p {
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .team-section {
+    padding: 8rem 0 12rem;
+  }
+  
+  .team-header {
+    text-align: center;
+    margin-bottom: 8rem;
+  }
+  
+  .team-header h2 {
+    font-size: clamp(3rem, 4vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .team-header p {
+    color: #171717;
+    font-size: 1.8rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4rem;
+  }
+  
+  .team-member {
+    group: true;
+  }
+  
+  .team-member__image {
+    position: relative;
+    height: 30rem;
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .team-member:hover .team-member__image {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  .team-member__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .team-member:hover .team-member__image img {
+    transform: scale(1.05);
+  }
+  
+  .team-member__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .team-member:hover .team-member__overlay {
+    opacity: 1;
+  }
+  
+  .team-member h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .team-member p {
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .timeline-section {
+    background: #f9fafb;
+    padding: 8rem 0 12rem;
+  }
+  
+  .timeline-header {
+    text-align: center;
+    margin-bottom: 8rem;
+  }
+  
+  .timeline-header h2 {
+    font-size: clamp(3rem, 4vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .timeline-header p {
+    color: #171717;
+    font-size: 1.8rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .timeline {
+    position: relative;
+  }
+  
+  .timeline__line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    width: 1px;
+    background: #000;
+  }
+  
+  .timeline__events {
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+  }
+  
+  .timeline__event {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  
+  .timeline__event--left .timeline__content {
+    margin-right: 4rem;
+    margin-left: auto;
+  }
+  
+  .timeline__event--right .timeline__content {
+    margin-left: 4rem;
+  }
+  
+  .timeline__dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    background: #2b2b2b;
+    border-radius: 50%;
+  }
+  
+  .timeline__content {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .timeline__content:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  .timeline__year {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: #eaeaea;
+    color: #000;
+    border-radius: 2rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .timeline__content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .timeline__content p {
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .cta-section {
+    padding: 8rem 0 12rem;
+    text-align: center;
+  }
+  
+  .cta-section h2 {
+    font-size: clamp(3rem, 4vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .cta-section p {
+    color: #171717;
+    font-size: 1.8rem;
+    max-width: 40rem;
+    margin: 0 auto 4rem;
+    font-family: avertaDefault, sans-serif;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 1024px) {
+    .mission-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    
+    .values-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    
+    .team-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+    
+    .timeline__line {
+      display: none;
+    }
+    
+    .timeline__event {
+      grid-template-columns: 1fr;
+    }
+    
+    .timeline__event--left .timeline__content,
+    .timeline__event--right .timeline__content {
+      margin: 0;
+    }
+    
+    .timeline__dot {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .about-hero__features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .mission-buttons {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 1.2rem 2rem;
+      font-size: 1.2rem;
+      width: auto;
+      max-width: 400px;
+      white-space: nowrap;
+    }
+    
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+{%- endstyle -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Fineyst Jackets",
+  "url": "{{ shop.secure_url }}",
+  "logo": "{{ 'logo.png' | asset_url }}",
+  "description": "Crafting exceptional fashion experiences since 2010",
+  "foundingDate": "2010",
+  "employee": [
+    {
+      "@type": "Person",
+      "name": "Alex Johnson",
+      "jobTitle": "Founder & CEO"
+    },
+    {
+      "@type": "Person",
+      "name": "Sam Rivera",
+      "jobTitle": "Creative Director"
+    },
+    {
+      "@type": "Person",
+      "name": "Taylor Kim",
+      "jobTitle": "Head of Sustainability"
+    },
+    {
+      "@type": "Person",
+      "name": "Jordan Patel",
+      "jobTitle": "Lead Designer"
+    }
+  ],
+  "sameAs": [
+    "https://facebook.com/fineystjackets",
+    "https://twitter.com/fineystjackets",
+    "https://instagram.com/fineystjackets",
+    "https://linkedin.com/company/fineyst"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1 (888) 840-0885",
+    "contactType": "customer service",
+    "email": "info@fineystjackets.com"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Us - Our Story and Mission",
+  "description": "Learn about our story, mission, and the team behind FINEYST.",
+  "url": "{{ shop.secure_url }}{{ page.url }}"
+}
+</script>
+
+<div class="about-page">
+  <!-- Hero Section -->
+  <div class="about-hero">
+    <div class="about-hero__grid"></div>
+    <div class="about-hero__content">
+      <h1 class="about-hero__title">Our Story</h1>
+      <p class="about-hero__description">Crafting exceptional fashion experiences since 2010</p>
+      
+      <div class="about-hero__features">
+        <div class="about-hero__feature">
+          <div class="about-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="7"/>
+              <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88"/>
+            </svg>
+          </div>
+          <p class="about-hero__feature-text">Quality Crafted</p>
+        </div>
+        
+        <div class="about-hero__feature">
+          <div class="about-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <p class="about-hero__feature-text">Sustainable</p>
+        </div>
+        
+        <div class="about-hero__feature">
+          <div class="about-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <p class="about-hero__feature-text">Global Reach</p>
+        </div>
+        
+        <div class="about-hero__feature">
+          <div class="about-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <p class="about-hero__feature-text">Customer First</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission Section -->
+  <div class="container">
+    <section class="mission-section">
+      <div class="mission-grid">
+        <div class="mission-content">
+          <h2>Our Mission</h2>
+          <p>At FINEYST, we believe that fashion is more than just clothing—it's a form of self-expression, a statement of identity, and a celebration of individuality.</p>
+          <p>Our mission is to provide high-quality, sustainable fashion that empowers people to express themselves authentically while minimizing our environmental footprint.</p>
+          <div class="mission-buttons"> 
+            <a href="{{ collections.all.url }}" class="btn btn--primary">Shop Collection</a>
+            <a href="{{ blog.news.url }}" class="btn btn--secondary">Read Our Blog Articles</a>
+          </div>
+        </div>
+        <div class="mission-image">
+          <img src="{{ 'about-mission.jpg' | asset_url }}" alt="Our sustainable practices" loading="lazy">
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Values Section -->
+  <section class="values-section">
+    <div class="container">
+      <div class="values-header">
+        <h2>Our Values</h2>
+        <p>These core principles guide everything we do, from design to delivery.</p>
+      </div>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-card__icon">🌱</div>
+          <h3>Sustainability</h3>
+          <p>We're committed to reducing our environmental impact through responsible sourcing and production methods.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-card__icon">✨</div>
+          <h3>Quality</h3>
+          <p>We believe in creating products that last, reducing waste and providing better value to our customers.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-card__icon">🤝</div>
+          <h3>Inclusivity</h3>
+          <p>We design for everybody, celebrating diversity in all its forms through our products and practices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <div class="container">
+    <section class="team-section">
+      <div class="team-header">
+        <h2>Meet Our Team</h2>
+        <p>The passionate individuals behind FINEYST who bring our vision to life every day.</p>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="team-member__image">
+            <img src="{{ 'team-alex-johnson.jpg' | asset_url }}" alt="Alex Johnson" loading="lazy">
+            <div class="team-member__overlay"></div>
+          </div>
+          <h3>Alex Johnson</h3>
+          <p>Founder & CEO</p>
+        </div>
+        
+        <div class="team-member">
+          <div class="team-member__image">
+            <img src="{{ 'team-sam-rivera.jpg' | asset_url }}" alt="Sam Rivera" loading="lazy">
+            <div class="team-member__overlay"></div>
+          </div>
+          <h3>Sam Rivera</h3>
+          <p>Creative Director</p>
+        </div>
+        
+        <div class="team-member">
+          <div class="team-member__image">
+            <img src="{{ 'team-taylor-kim.jpg' | asset_url }}" alt="Taylor Kim" loading="lazy">
+            <div class="team-member__overlay"></div>
+          </div>
+          <h3>Taylor Kim</h3>
+          <p>Head of Sustainability</p>
+        </div>
+        
+        <div class="team-member">
+          <div class="team-member__image">
+            <img src="{{ 'team-jordan-patel.jpg' | asset_url }}" alt="Jordan Patel" loading="lazy">
+            <div class="team-member__overlay"></div>
+          </div>
+          <h3>Jordan Patel</h3>
+          <p>Lead Designer</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Timeline Section -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="timeline-header">
+        <h2>Our Journey</h2>
+        <p>From humble beginnings to where we are today.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline__line"></div>
+        
+        <div class="timeline__events">
+          <div class="timeline__event timeline__event--left">
+            <div class="timeline__content">
+              <span class="timeline__year">2010</span>
+              <h3>The Beginning</h3>
+              <p>FINEYST was founded with a simple mission: to create sustainable fashion that doesn't compromise on style.</p>
+            </div>
+            <div class="timeline__dot"></div>
+            <div></div>
+          </div>
+          
+          <div class="timeline__event timeline__event--right">
+            <div></div>
+            <div class="timeline__dot"></div>
+            <div class="timeline__content">
+              <span class="timeline__year">2015</span>
+              <h3>Going Global</h3>
+              <p>We expanded our operations to reach customers worldwide, bringing our sustainable fashion to new markets.</p>
+            </div>
+          </div>
+          
+          <div class="timeline__event timeline__event--left">
+            <div class="timeline__content">
+              <span class="timeline__year">2018</span>
+              <h3>Sustainability Pledge</h3>
+              <p>We committed to using 100% sustainable materials by 2025, setting a new standard in the industry.</p>
+            </div>
+            <div class="timeline__dot"></div>
+            <div></div>
+          </div>
+          
+          <div class="timeline__event timeline__event--right">
+            <div></div>
+            <div class="timeline__dot"></div>
+            <div class="timeline__content">
+              <span class="timeline__year">2023</span>
+              <h3>Innovation Hub</h3>
+              <p>We launched our innovation center to develop new sustainable fabrics and manufacturing processes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <div class="container">
+    <section class="cta-section">
+      <h2>Join Our Journey</h2>
+      <p>Be part of our story as we continue to redefine sustainable fashion for the future.</p>
+      <div class="cta-buttons">
+        <a href="{{ collections.all.url }}" class="btn btn--primary">Explore Collection</a>
+        <a href="{{ pages['contact-us'].url }}" class="btn btn--secondary">Get in Touch</a>
+      </div>
+    </section>
+  </div>
+</div>
