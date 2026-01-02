@@ -1087,23 +1087,117 @@
         {%- endif -%}
 
         <div class="product-accordion">
-          <div class="product-accordion__item">
-            <button type="button" class="product-accordion__header" data-accordion-toggle>
+          <div class="product-accordion__item" style="border-bottom: 1px solid #e5e7eb;">
+            <button type="button" class="product-accordion__header" data-accordion-toggle style="width: 100%; padding: 0.75rem 0.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; color: #000; background: none; border: none; cursor: pointer;">
               <span>DETAILS</span>
-              <svg class="product-accordion__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="product-accordion__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1rem; height: 1rem; transition: transform 0.2s ease;">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </button>
-            <div class="product-accordion__content">
-              {%- if product.description != blank -%}
-                <div class="product-info__description">
-                  {{ product.description }}
+            <div class="product-accordion__content" style="overflow: hidden; transition: all 0.3s ease-in-out; max-height: 0; opacity: 0;">
+              <div style="padding-bottom: 0.75rem; font-size: 1.4rem; color: #374151; line-height: 1.6; font-family: 'avertaDefault', sans-serif; font-weight: 400;">
+                {%- assign first_paragraph = product.description | split: '</p>' | first | append: '</p>' -%}
+                {%- assign rest_description = product.description | remove_first: first_paragraph -%}
+                
+                <div class="product-description" style="font-size: inherit;">
+                  <style>
+                    .product-description h1, .product-description h2, .product-description h3, .product-description h4, .product-description h5, .product-description h6 {
+                      font-size: 1.4rem !important;
+                      font-weight: 600 !important;
+                      margin: 0.5rem 0 !important;
+                    }
+                  </style>
+                  {{ first_paragraph }}
                 </div>
-              {%- else -%}
-                <p>No additional details available.</p>
-              {%- endif -%}
+                
+                {%- if rest_description != blank -%}
+                  <button 
+                    type="button"
+                    class="read-more-btn"
+                    data-read-more
+                    style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 0.5rem; margin-top: 0.5rem; background-color: transparent; border: none; cursor: pointer;"
+                  >
+                    <span style="font-size: 1.4rem; font-weight: 500; margin-right: 0.25rem; color: #000;">Read more</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #000;">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                {%- else -%}
+                  <button 
+                    type="button"
+                    class="read-more-btn"
+                    data-read-more
+                    style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 0.5rem; margin-top: 0.5rem; background-color: transparent; border: none; cursor: pointer;"
+                  >
+                    <span style="font-size: 1.4rem; font-weight: 500; margin-right: 0.25rem; color: #000;">View Details</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #000;">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                {%- endif -%}
+                
+                <ul style="list-style-type: disc; padding-left: 1.25rem; margin-top: 0.75rem; margin-bottom: 0;">
+                  <li style="margin-bottom: 0.25rem;">SKU: {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}</li>
+                  <li style="margin-bottom: 0.25rem;">Material: {{ product.metafields.custom.material | default: 'Premium fabric' }}</li>
+                  <li style="margin-bottom: 0.25rem;">Fit: {{ product.metafields.custom.fit | default: 'Regular fit' }}</li>
+                </ul>
+              </div>
             </div>
           </div>
+
+          {%- if rest_description != blank -%}
+            <!-- Modal for full description -->
+            <div class="details-modal" data-details-modal style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 1); z-index: 99999; display: none; align-items: center; justify-content: center;">
+              <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 80rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5;">
+                  <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0; font-family: 'AvertaDefault', sans-serif;">Product Details</h3>
+                  <button type="button" data-modal-close style="color: #6b7280; background: none; border: none; cursor: pointer; padding: 0.25rem;" onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+                <div style="font-size: 1.6rem; color: #374151; line-height: 1.6; font-family: 'AvertaDefault', sans-serif;">
+                  <style>
+                    .details-modal h1, .details-modal h2, .details-modal h3, .details-modal h4, .details-modal h5, .details-modal h6 {
+                      font-size: 1.4rem !important;
+                      font-weight: 600 !important;
+                      margin: 1rem 0 0.5rem 0 !important;
+                      font-family: 'AvertaDefault', sans-serif !important;
+                    }
+                    .details-modal p, .details-modal li, .details-modal div {
+                      font-family: 'AvertaDefault', sans-serif !important;
+                      font-size: 1.6rem !important;
+                      line-height: 1.6 !important;
+                    }
+                  </style>
+                  {{ product.description }}
+                  
+                  <div style="margin-top: 3rem;">
+                    <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Specifications</h3>
+                    <div style="margin-bottom: 2rem; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+                      <p><strong>Material:</strong> Premium fabric</p>
+                      <p><strong>Fit:</strong> Regular fit</p>
+                      <p><strong>Care:</strong> Machine wash cold</p>
+                      <p><strong>Origin:</strong> Made with care</p>
+                      <p><strong>Weight:</strong> Lightweight</p>
+                      <p><strong>Season:</strong> All season</p>
+                    </div>
+                    
+                    <h3 style="font-size: 1.6rem; font-weight: 800; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Care Instructions</h3>
+                    <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+                      <li style="margin-bottom: 0.5rem;">Machine wash cold with similar colors</li>
+                      <li style="margin-bottom: 0.5rem;">Do not bleach</li>
+                      <li style="margin-bottom: 0.5rem;">Tumble dry low</li>
+                      <li style="margin-bottom: 0.5rem;">Iron on low heat if needed</li>
+                      <li style="margin-bottom: 0;">Do not dry clean</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
 
           <div class="product-accordion__item">
             <button type="button" class="product-accordion__header" data-accordion-toggle>
@@ -1152,6 +1246,67 @@
               <p>Shipping and returns information will be displayed here.</p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for full description -->
+  <div class="details-modal" data-details-modal style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 1); z-index: 99999; display: none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 80rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5;">
+        <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0; font-family: 'AvertaDefault', sans-serif;">Product Details</h3>
+        <button type="button" data-modal-close style="color: #6b7280; background: none; border: none; cursor: pointer; padding: 0.25rem;" onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div style="font-size: 1.6rem; color: #374151; line-height: 1.6; font-family: 'AvertaDefault', sans-serif;">
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; font-weight: 600; margin: 0 0 0.5rem 0; font-family: 'AvertaDefault', sans-serif;">{{ product.title }}</h2>
+          <p style="font-size: 1.4rem; color: #666; margin: 0; font-family: 'AvertaDefault', sans-serif;">SKU: {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}</p>
+        </div>
+        <style>
+          .details-modal h1, .details-modal h2, .details-modal h3, .details-modal h4, .details-modal h5, .details-modal h6 {
+            font-size: 1.4rem !important;
+            font-weight: 600 !important;
+            margin: 1rem 0 0.5rem 0 !important;
+            font-family: 'AvertaDefault', sans-serif !important;
+          }
+          .details-modal p, .details-modal li, .details-modal div {
+            font-family: 'AvertaDefault', sans-serif !important;
+            font-size: 1.6rem !important;
+            line-height: 1.6 !important;
+          }
+          .details-modal .product-description h1:first-child {
+            display: none !important;
+          }
+        </style>
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+        
+        <div style="margin-top: 3rem;">
+          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Specifications</h3>
+          <div style="margin-bottom: 2rem; font-family: 'AvertaDefault', sans-serif; font-size: 1.4rem; line-height: 1.6;">
+            <p><span style="font-weight: 400;">Material:</span> Premium fabric</p>
+            <p><span style="font-weight: 400;">Fit:</span> Regular fit</p>
+            <p><span style="font-weight: 400;">Care:</span> Machine wash cold</p>
+            <p><span style="font-weight: 400;">Origin:</span> Made with care</p>
+            <p><span style="font-weight: 400;">Weight:</span> Lightweight</p>
+            <p><span style="font-weight: 400;">Season:</span> All season</p>
+          </div>
+          
+          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Care Instructions</h3>
+          <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+            <li style="margin-bottom: 0.5rem;">Machine wash cold with similar colors</li>
+            <li style="margin-bottom: 0.5rem;">Do not bleach</li>
+            <li style="margin-bottom: 0.5rem;">Tumble dry low</li>
+            <li style="margin-bottom: 0.5rem;">Iron on low heat if needed</li>
+            <li style="margin-bottom: 0;">Do not dry clean</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1217,9 +1372,50 @@ document.dispatchEvent(
     accordionHeaders.forEach(header => {
       header.addEventListener('click', function() {
         const item = this.closest('.product-accordion__item');
-        item.classList.toggle('is-open');
+        const content = item.querySelector('.product-accordion__content');
+        const icon = this.querySelector('.product-accordion__icon');
+        
+        if (item.classList.contains('is-open')) {
+          // Close
+          item.classList.remove('is-open');
+          content.style.maxHeight = '0';
+          content.style.opacity = '0';
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          // Open
+          item.classList.add('is-open');
+          content.style.maxHeight = content.scrollHeight + 'px';
+          content.style.opacity = '1';
+          icon.style.transform = 'rotate(180deg)';
+        }
       });
     });
+
+    // Read more modal functionality
+    const readMoreBtn = document.querySelector('[data-read-more]');
+    const modal = document.querySelector('[data-details-modal]');
+    const modalClose = document.querySelector('[data-modal-close]');
+
+    if (readMoreBtn && modal) {
+      readMoreBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    if (modalClose && modal) {
+      modalClose.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
 
     // Wishlist functionality - use global wishlist from global.js
     // Store product data in cache for wishlist
