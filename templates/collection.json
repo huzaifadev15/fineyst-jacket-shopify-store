@@ -1,12 +1,108 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "category_carousel": {
       "type": "collection-category-carousel",
+      "blocks": {
+        "category_93AjHi": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_AiCUAK": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-8.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_CmfPmX": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_C3EUjW": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_Xc3rA9": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_kUJKHT": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_wgYYMk": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        },
+        "category_K9B8NE": {
+          "type": "category",
+          "settings": {
+            "title": "Collection 1",
+            "image": "shopify://shop_images/collection-1.webp",
+            "collection_url": "shopify://collections/womens-leather-bomber-jackets",
+            "collection_handle": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_93AjHi",
+        "category_AiCUAK",
+        "category_CmfPmX",
+        "category_C3EUjW",
+        "category_Xc3rA9",
+        "category_kUJKHT",
+        "category_wgYYMk",
+        "category_K9B8NE"
+      ],
       "settings": {}
     },
     "banner": {
       "type": "collection-banner",
-      "settings": {}
+      "settings": {
+        "show_image": true,
+        "show_description": true
+      }
     },
     "main": {
       "type": "main-collection",
@@ -22,4 +118,3 @@
     "main"
   ]
 }
-

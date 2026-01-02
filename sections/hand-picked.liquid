@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     background: white;
-    padding-bottom: 0.5rem;
+    padding: 2rem 0 1rem;
   }
 
   @media (min-width: 640px) {
@@ -15,7 +15,7 @@
 
   @media (min-width: 768px) {
     .hand-picked-section {
-      padding-bottom: 1.5rem;
+      padding: 3rem 0 1.5rem;
     }
   }
 
@@ -25,25 +25,50 @@
     overflow: hidden;
     position: relative;
     margin: 0 auto;
+    padding: 0;
+  }
+  
+  @media (min-width: 1280px) {
+    .hand-picked-section__container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__container {
+      padding: 0;
+    }
   }
 
   .hand-picked-section__title {
-    font-size: 4rem !important;
-    font-weight: 700;
+    font-size: 3.25rem !important;
+    font-family: 'Averta', sans-serif;
+    font-weight: 900;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
     color: #2b2b2b;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 767px) {
+    .hand-picked-section__title {
+      font-size: 2.5rem !important;
+    }
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__title {
-      font-size: 2.5rem;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      padding: 0;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__title {
-      font-size: 3rem;
+      font-size: 3.5rem;
     }
   }
 
@@ -52,18 +77,34 @@
     justify-content: center;
     margin-top: -0.5rem;
     margin-bottom: 1rem;
-    gap: 0.25rem;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 767px) {
+    .hand-picked-section__category-nav {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__category-nav {
+      gap: 0.75rem;
+      padding: 0;
+    }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__category-nav {
       margin-bottom: 1.5rem;
+      gap: 1rem;
     }
   }
 
   .hand-picked-section__category-btn {
-    padding: 0 0.5rem;
-    font-size: 2.25rem;
+    padding: 0 0.75rem;
+    font-size: 1.75rem;
+    font-family: 'Averta', sans-serif;
     font-weight: 500;
     transition: color 0.3s ease;
     color: #374151;
@@ -74,7 +115,8 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__category-btn {
-      font-size: 2.5rem !important;
+      font-size: 2rem !important;
+      padding: 0 0.5rem;
     }
   }
 
@@ -115,18 +157,19 @@
   @media (min-width: 768px) {
     .hand-picked-section__content {
       padding: 0 2rem;
+      overflow: visible;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__content {
-      padding: 0 3rem;
+      padding: 0 2rem;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__content {
-      padding: 0 4rem;
+      padding: 0 2rem;
     }
   }
 
@@ -136,13 +179,29 @@
     min-height: auto;
   }
 
+  @media (min-width: 768px) {
+    .hand-picked-section__carousel-wrapper {
+      overflow: visible;
+    }
+  }
+
   .hand-picked-section__carousel-wrapper--mobile {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    height: 550px;
+    height: 400px;
     overflow: hidden;
+    padding: 0 3.5rem;
+    margin-top: -1rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__carousel-wrapper--mobile {
+      height: 450px;
+      padding: 0 4rem;
+      margin-top: -0.5rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -157,11 +216,16 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__carousel-wrapper--desktop {
       padding: 1.5rem 0 0.75rem;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
@@ -169,47 +233,52 @@
     .hand-picked-section__carousel-wrapper--desktop {
       display: block;
       padding: 2rem 0 1rem;
-    }
-  }
-
-  .hand-picked-section__carousel-track {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    width: max-content;
-    will-change: transform;
-    position: relative;
-  }
-
-  @media (min-width: 640px) {
-    .hand-picked-section__carousel-track {
-      gap: 0.75rem;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .hand-picked-section__carousel-track {
-      gap: 1rem;
+      padding-left: 0;
+      padding-right: 0;
+      min-height: 620px;
     }
   }
 
   @media (min-width: 1024px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      min-height: 720px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hand-picked-section__carousel-wrapper--desktop {
+      min-height: 820px;
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  .hand-picked-section__carousel-track {
+    display: none;
+    position: relative;
+    width: max-content;
+    height: 550px;
+    padding: 0;
+    gap: 0;
+    align-items: center;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__carousel-track {
-      gap: 1.5rem;
+      height: 650px;
+      gap: 0;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__carousel-track {
-      gap: 2rem;
+      height: 720px;
+      gap: 0;
     }
-  }
-
-  /* Hide inactive tracks - both men and women */
-  .hand-picked-section__carousel-track {
-    display: none !important;
   }
 
   .hand-picked-section__carousel-track.is-active {
@@ -219,28 +288,55 @@
   .hand-picked-section__product {
     flex-shrink: 0 !important;
     cursor: pointer;
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
+    width: 335.5px !important;
+    min-width: 335.5px !important;
+    max-width: 335.5px !important;
     position: relative;
     display: flex !important;
     flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                margin 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0s cubic-bezier(0, 0, 0, 0);
+    transform: scale(0.85) translateY(10px);
+    opacity: 0;
+    visibility: hidden;
+    margin: 0;
   }
 
-  @media (min-width: 1024px) {
-    .hand-picked-section__product {
-      width: 240px !important;
-      min-width: 240px !important;
-      max-width: 240px !important;
-    }
+  /* Center product - larger (scale 1.235 = 414.44/335.5) */
+  .hand-picked-section__product.is-center {
+    transform: scale(1.235) translateY(20px);
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    margin: 0 47px;
   }
 
-  @media (min-width: 1280px) {
-    .hand-picked-section__product {
-      width: 260px !important;
-      min-width: 260px !important;
-      max-width: 260px !important;
-    }
+  /* Adjacent products - visible */
+  .hand-picked-section__product.is-adjacent-left,
+  .hand-picked-section__product.is-adjacent-right {
+    transform: scale(0.85) translateY(10px);
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
+    margin: 0 -15px;
+  }
+
+  /* Outer products - visible (2 on each side) */
+  .hand-picked-section__product.is-outer-left,
+  .hand-picked-section__product.is-outer-right {
+    transform: scale(0.85) translateY(10px);
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+    margin: 0 -15px;
+  }
+
+  /* Hidden products - faded out but still visible for smooth transition */
+  .hand-picked-section__product.is-hidden {
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
   }
 
   .hand-picked-section__product-card {
@@ -248,24 +344,24 @@
     overflow: hidden;
     background: #f3f4f6;
     width: 100% !important;
-    height: 330px !important;
-    min-height: 330px !important;
-    max-height: 330px !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: 400px !important;
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__product-card {
-      height: 360px !important;
-      min-height: 360px !important;
-      max-height: 360px !important;
+      height: 480px !important;
+      min-height: 480px !important;
+      max-height: 480px !important;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__product-card {
-      height: 390px !important;
-      min-height: 390px !important;
-      max-height: 390px !important;
+      height: 540px !important;
+      min-height: 540px !important;
+      max-height: 540px !important;
     }
   }
 
@@ -274,6 +370,7 @@
     height: 100% !important;
     object-fit: cover !important;
     display: block !important;
+    transition: transform 0.4s ease-out;
   }
 
   .hand-picked-section__product:hover .hand-picked-section__product-card img {
@@ -308,7 +405,7 @@
 
   .hand-picked-section__product-title {
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 1rem;
     color: black;
     text-transform: uppercase;
     line-height: 1.25;
@@ -323,13 +420,13 @@
 
   @media (min-width: 640px) {
     .hand-picked-section__product-title {
-      font-size: 0.875rem;
+      font-size: 1.125rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__product-title {
-      font-size: 1rem;
+      font-size: 1.25rem;
     }
   }
 
@@ -342,7 +439,7 @@
     justify-content: center;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 1rem;
     flex-wrap: wrap;
     width: 100%;
     box-sizing: border-box;
@@ -351,13 +448,13 @@
   @media (min-width: 640px) {
     .hand-picked-section__product-price {
       gap: 0.5rem;
-      font-size: 0.875rem;
+      font-size: 1.125rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__product-price {
-      font-size: 1rem;
+      font-size: 1.25rem;
     }
   }
 
@@ -374,55 +471,52 @@
 
   .hand-picked-section__nav-btn {
     position: absolute;
-    top: calc(2rem + 165px);
+    top: 50%;
     transform: translateY(-50%);
     background: black;
     color: white;
-    padding: 1rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    padding: 0.75rem;
+    width: 2.5rem;
+    height: 2.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 20;
     border: none;
     cursor: pointer;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  @media (min-width: 640px) {
+    .hand-picked-section__nav-btn {
+      width: 3rem;
+      height: 3rem;
+      padding: 0.75rem;
+    }
+  }
+
   @media (min-width: 768px) {
     .hand-picked-section__nav-btn {
-      width: 4rem;
-      height: 4rem;
-      padding: 1.25rem;
+      top: 45%;
+      width: 3rem;
+      height: 3rem;
+      padding: 0.75rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__nav-btn {
-      top: calc(2rem + 180px);
-      width: 4.5rem;
-      height: 4.5rem;
-      padding: 1.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: 1rem;
     }
   }
 
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn {
-      top: calc(3rem + 195px);
-    }
-  }
-
-  @media (min-width: 768px) {
-    .hand-picked-section__nav-btn {
-      display: flex;
-    }
-  }
-
-  @media (max-width: 1438px) {
-    .hand-picked-section__nav-btn {
-      display: none !important;
+      width: 3.5rem;
+      height: 3.5rem;
     }
   }
 
@@ -431,84 +525,84 @@
   }
 
   .hand-picked-section__nav-btn--prev {
-    left: 0.5rem;
+    left: 0.25rem;
   }
 
   @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--prev {
+      left: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__nav-btn--prev {
       left: 1rem;
     }
   }
 
-  @media (min-width: 768px) {
-    .hand-picked-section__nav-btn--prev {
-      left: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__nav-btn--prev {
-      left: 2rem;
-    }
-  }
-
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--prev {
-      left: 3rem;
+      left: 95px;
     }
   }
 
   .hand-picked-section__nav-btn--next {
-    right: 0.5rem;
+    right: 0.25rem;
   }
 
   @media (min-width: 640px) {
+    .hand-picked-section__nav-btn--next {
+      right: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__nav-btn--next {
+      right: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
     .hand-picked-section__nav-btn--next {
       right: 1rem;
     }
   }
 
-  @media (min-width: 768px) {
-    .hand-picked-section__nav-btn--next {
-      right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hand-picked-section__nav-btn--next {
-      right: 2rem;
-    }
-  }
-
   @media (min-width: 1280px) {
     .hand-picked-section__nav-btn--next {
-      right: 3rem;
+      right: 103px;
     }
   }
 
   .hand-picked-section__nav-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 
   @media (min-width: 640px) {
     .hand-picked-section__nav-icon {
-      width: 2rem;
-      height: 2rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 
   @media (min-width: 768px) {
     .hand-picked-section__nav-icon {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hand-picked-section__nav-icon {
-      width: 3rem;
-      height: 3rem;
+      width: 1.75rem;
+      height: 1.75rem;
     }
   }
 
@@ -526,7 +620,22 @@
 
   .hand-picked-section__empty-text {
     color: #6b7280;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__empty-text {
+      font-size: 1rem;
+      padding: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hand-picked-section__empty-text {
+      font-size: 1.125rem;
+    }
   }
 
   /* Mobile specific styles */
@@ -534,8 +643,9 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 65%;
-    max-width: 280px;
+    width: 60%;
+    max-width: 220px;
+    min-width: 180px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -543,11 +653,20 @@
     opacity: 0;
     transform: translateX(130%) scale(0.7);
     transition: all 0.3s ease;
+    padding: 0 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile {
+      width: 55%;
+      max-width: 240px;
+      padding: 0;
+    }
   }
 
   .hand-picked-section__product-mobile.is-center {
     opacity: 1;
-    transform: translateX(0) scale(1.04);
+    transform: translateX(0) scale(1);
     z-index: 3;
     margin-top: 20px;
   }
@@ -576,6 +695,46 @@
     transform: translateX(130%) scale(0.7);
     opacity: 0;
     z-index: 1;
+  }
+
+  /* Mobile product info styles */
+  .hand-picked-section__product-mobile h3:not(.hand-picked-mobile-title) {
+    font-size: 0.75rem !important;
+    line-height: 1.3;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile h3:not(.hand-picked-mobile-title) {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  .hand-picked-section__product-mobile .product-price-mobile {
+    font-size: 0.75rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .hand-picked-section__product-mobile .product-price-mobile {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hand-picked-section__product-mobile h3.hand-picked-mobile-title {
+      font-size: 1.5rem !important;
+    }
+    
+    .hand-picked-mobile-price {
+      font-size: 1.3rem !important;
+    }
+    
+    .hand-picked-mobile-price > div {
+      font-size: 1.3rem !important;
+    }
+    
+    .hand-picked-mobile-price > div[style*="text-decoration: line-through"] {
+      font-size: 2.3rem !important;
+    }
   }
 {%- endstyle -%}
 
@@ -636,8 +795,8 @@
                       {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
                     {%- endif -%}
                   </a>
-                  <div style="text-align: center; margin-top: 0.75rem; width: 100%; padding: 0 0.25rem;">
-                    <h3 style="font-weight: 600; font-size: 0.75rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <div style="text-align: center; margin-top: 0.75rem; width: 100%; padding: 0 0.25rem;" class="hand-picked-mobile-product-info">
+                    <h3 style="font-weight: 600; font-size: 1.75rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="hand-picked-mobile-title">
                       {%- assign title = product.title -%}
                       {%- if title.size > 38 -%}
                         {{ title | truncate: 38 }}...
@@ -645,7 +804,55 @@
                         {{ title }}
                       {%- endif -%}
                     </h3>
-                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; font-size: 0.875rem; margin-top: 0.25rem;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; font-size: 0.875rem; margin-top: 0.25rem;" class="hand-picked-mobile-price">
+                      {%- if product.compare_at_price > product.price -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                        <div style="color: #6b7280; text-decoration: line-through; font-size: 0.875rem;">
+                          {{ product.compare_at_price | money }}
+                        </div>
+                      {%- else -%}
+                        <div style="color: black; font-weight: 700;">
+                          {{ product.price | money }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+            {%- for product in women_collection.products limit: products_limit -%}
+              <div 
+                class="hand-picked-section__product-mobile is-hidden-right" 
+                data-product-index="{{ forloop.index0 }}"
+                data-gender="women"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                  <a href="{{ product.url }}" style="position: relative; cursor: pointer; overflow: hidden; width: 100%; aspect-ratio: 252.7 / 383.3;">
+                    {%- if product.featured_image -%}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 280 }}"
+                        alt="{{ product.title | escape }}"
+                        width="280"
+                        height="420"
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+                    {%- endif -%}
+                  </a>
+                  <div style="text-align: center; margin-top: 0.75rem; width: 100%; padding: 0 0.25rem;" class="hand-picked-mobile-product-info">
+                    <h3 style="font-weight: 600; font-size: 1.75rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="hand-picked-mobile-title">
+                      {%- assign title = product.title -%}
+                      {%- if title.size > 38 -%}
+                        {{ title | truncate: 38 }}...
+                      {%- else -%}
+                        {{ title }}
+                      {%- endif -%}
+                    </h3>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; font-size: 1.875rem; margin-top: 0.25rem;" class="hand-picked-mobile-price">
                       {%- if product.compare_at_price > product.price -%}
                         <div style="color: black; font-weight: 700;">
                           {{ product.price | money }}
@@ -797,50 +1004,212 @@
       var mobileWrapper = section.querySelector('[data-handpicked-mobile]');
       
       var activeCategory = 'men';
-      var scrollPosition = 0;
       var isTransitioning = false;
+      var mobileCurrentIndex = 0; // Track current center product index for mobile
+      var desktopCurrentIndex = 0; // Track current center product index for desktop
+      var realProductCount = 0; // Track actual product count (without clones)
+      var BUFFER = 3; // Number of products to clone at each end for seamless loop
+      var hasUserInteracted = false; // Track if user has clicked nav buttons
 
-      function updateScrollPosition() {
+
+      // Setup clones for seamless infinite loop - duplicate entire set multiple times
+      function setupInfiniteLoop() {
         tracks.forEach(function(track) {
-          if (!track.classList.contains('is-active')) return;
+          var products = track.querySelectorAll('.hand-picked-section__product:not([data-clone])');
+          if (products.length === 0) return;
           
-          // Apply scroll position
-          track.style.transform = 'translateX(' + scrollPosition + 'px)';
+          realProductCount = products.length;
+          if (realProductCount <= 1) return; // No need for loop if 1 or less products
+          
+          // Check if clones already exist
+          if (track.querySelector('.hand-picked-section__product[data-clone]')) return;
+          
+          // Duplicate entire product set 3 times (before and after) for seamless infinite scrolling
+          // This creates a truly continuous track with no gaps
+          for (var repeat = 0; repeat < 3; repeat++) {
+            // Add copies at the beginning
+            for (var i = 0; i < realProductCount; i++) {
+              var cloneStart = products[i].cloneNode(true);
+              cloneStart.setAttribute('data-clone', 'start-' + repeat);
+              track.insertBefore(cloneStart, products[0]);
+            }
+            // Add copies at the end
+            for (var j = 0; j < realProductCount; j++) {
+              var cloneEnd = products[j].cloneNode(true);
+              cloneEnd.setAttribute('data-clone', 'end-' + repeat);
+              track.appendChild(cloneEnd);
+            }
+          }
         });
       }
 
-      function getScrollAmount() {
+      // Desktop carousel - track-based animation like React (only track moves, products only scale)
+      function getOffsetForIndex(index) {
+        if (isMobileView()) return 0;
+        
         var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-        if (!activeTrack) return 300;
+        if (!activeTrack || !activeTrack.children[index]) return 0;
         
-        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
-        if (products.length === 0) return 300;
+        // Use window width for true centering
+        var viewportWidth = window.innerWidth;
         
-        // Calculate scroll amount based on product width + gap
-        // Scroll by approximately 2-3 products at a time for smooth experience
-        var firstProduct = products[0];
-        if (firstProduct) {
-          var productWidth = firstProduct.offsetWidth;
-          var computedStyle = window.getComputedStyle(activeTrack);
-          var gap = parseFloat(computedStyle.gap) || 8;
-          // Scroll by 2.5 products worth for smooth scrolling
-          return (productWidth + gap) * 2.5;
-        }
-        return 300;
+        // Get the actual DOM element at the current index (could be duplicate or real)
+        var activeCard = activeTrack.children[index];
+        var cardWidth = activeCard.offsetWidth;
+        var cardLeft = activeCard.offsetLeft;
+        
+        // Calculate the center of the card's border box
+        var cardCenter = cardLeft + (cardWidth / 2);
+        
+        // Calculate offset to center the card in the viewport
+        // Only apply -13px adjustment on initial load (before user interacts)
+        var initialAdjustment = hasUserInteracted ? 0 : 17;
+        return (viewportWidth / 2) - cardCenter - initialAdjustment;
       }
 
-      function getMaxScroll() {
+
+      function updateProductClasses() {
         var activeTrack = section.querySelector('[data-handpicked-track].is-active');
-        if (!activeTrack) return 0;
+        if (!activeTrack) return;
         
-        var wrapper = activeTrack.closest('.hand-picked-section__carousel-wrapper--desktop');
-        if (!wrapper) return 0;
+        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+        var totalProducts = products.length;
         
-        var trackWidth = activeTrack.scrollWidth;
-        var wrapperWidth = wrapper.clientWidth;
-        var maxScroll = -(trackWidth - wrapperWidth);
+        // Update scale classes only (no position changes)
+        // Only show 5 products: center + 2 on each side (with circular wrapping)
+        products.forEach(function(product, index) {
+          product.classList.remove('is-center', 'is-adjacent-left', 'is-adjacent-right', 'is-outer-left', 'is-outer-right', 'is-hidden');
+          
+          // Calculate circular distance from center
+          var diff = index - desktopCurrentIndex;
+          // Adjust for circular wrapping
+          if (diff > totalProducts / 2) diff -= totalProducts;
+          if (diff < -totalProducts / 2) diff += totalProducts;
+          
+          if (diff === 0) {
+            // Center product
+            product.classList.add('is-center');
+          } else if (diff === -1) {
+            // Adjacent left
+            product.classList.add('is-adjacent-left');
+          } else if (diff === 1) {
+            // Adjacent right
+            product.classList.add('is-adjacent-right');
+          } else if (diff === -2) {
+            // Outer left
+            product.classList.add('is-outer-left');
+          } else if (diff === 2) {
+            // Outer right
+            product.classList.add('is-outer-right');
+          } else {
+            // Hidden - beyond 2 positions from center
+            product.classList.add('is-hidden');
+          }
+        });
+      }
+
+      function updateDesktopCarousel() {
+        if (isMobileView()) return;
         
-        return maxScroll;
+        var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+        if (!activeTrack) return;
+        
+        var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+        if (products.length === 0) return;
+        
+        var totalProducts = products.length;
+        var realStartIndex = 3 * realProductCount; // Start of real products section
+        var realEndIndex = 4 * realProductCount; // End of real products section
+        
+        // Handle seamless wrapping - when we reach bounds, wrap to adjacent duplicates
+        // This maintains visual continuity without jumps
+        if (desktopCurrentIndex >= totalProducts) {
+          // Past the end - wrap to start duplicates (which continue seamlessly)
+          var productIndex = ((desktopCurrentIndex - realEndIndex) % realProductCount);
+          desktopCurrentIndex = productIndex; // First set of start duplicates
+        } else if (desktopCurrentIndex < 0) {
+          // Before the start - wrap to end duplicates (which continue seamlessly)
+          var productIndex = ((desktopCurrentIndex % realProductCount) + realProductCount) % realProductCount;
+          desktopCurrentIndex = realEndIndex + productIndex; // First set of end duplicates
+        }
+        
+        // Update product classes FIRST (applies margins)
+        updateProductClasses();
+        
+        // Force reflow so margins are computed before calculating offset
+        activeTrack.offsetHeight;
+        
+        // Now calculate and apply the transform
+        requestAnimationFrame(function() {
+          var offset = getOffsetForIndex(desktopCurrentIndex);
+          if (isFinite(offset) && !isNaN(offset)) {
+            activeTrack.style.transform = 'translateX(' + offset + 'px)';
+          }
+        });
+        
+        // Reset transitioning after animation
+        setTimeout(function() {
+          isTransitioning = false;
+        }, 500);
+      }
+
+      // Mobile carousel navigation with infinite loop
+      function updateMobileCarousel() {
+        if (!mobileWrapper || !isMobileView()) return;
+        
+        // Hide all products first, then show only active category
+        var allMobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile');
+        allMobileProducts.forEach(function(product) {
+          var productGender = product.getAttribute('data-gender');
+          if (productGender !== activeCategory) {
+            // Hide products from inactive category
+            product.classList.remove('is-center', 'is-prev', 'is-next', 'is-hidden-left', 'is-hidden-right');
+            product.style.display = 'none';
+            return;
+          } else {
+            product.style.display = 'flex';
+          }
+        });
+        
+        var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+        if (mobileProducts.length === 0) return;
+        
+        var totalProducts = mobileProducts.length;
+        
+        // Wrap index for infinite loop
+        mobileCurrentIndex = ((mobileCurrentIndex % totalProducts) + totalProducts) % totalProducts;
+        
+        // Calculate prev and next indices with wrapping
+        var prevIndex = (mobileCurrentIndex - 1 + totalProducts) % totalProducts;
+        var nextIndex = (mobileCurrentIndex + 1) % totalProducts;
+        
+        mobileProducts.forEach(function(product, index) {
+          // Remove all state classes
+          product.classList.remove('is-center', 'is-prev', 'is-next', 'is-hidden-left', 'is-hidden-right');
+          
+          if (index === mobileCurrentIndex) {
+            product.classList.add('is-center');
+          } else if (index === prevIndex) {
+            product.classList.add('is-prev');
+          } else if (index === nextIndex) {
+            product.classList.add('is-next');
+          } else {
+            // Calculate circular distance to determine hidden direction
+            var diff = index - mobileCurrentIndex;
+            if (diff > totalProducts / 2) diff -= totalProducts;
+            if (diff < -totalProducts / 2) diff += totalProducts;
+            
+            if (diff < 0) {
+              product.classList.add('is-hidden-left');
+            } else {
+              product.classList.add('is-hidden-right');
+            }
+          }
+        });
+      }
+
+      function isMobileView() {
+        return mobileWrapper && window.getComputedStyle(mobileWrapper).display !== 'none';
       }
 
       // Category switching
@@ -850,7 +1219,7 @@
           if (category === activeCategory || isTransitioning) return;
           
           activeCategory = category;
-          scrollPosition = 0; // Reset scroll position
+          mobileCurrentIndex = 0; // Reset mobile carousel index
           isTransitioning = true;
 
           // Update button states
@@ -859,7 +1228,7 @@
             b.setAttribute('aria-pressed', isActive);
           });
 
-          // Show/hide tracks
+          // Show/hide desktop tracks
           tracks.forEach(function(track) {
             if (track.getAttribute('data-gender') === category) {
               track.classList.add('is-active');
@@ -868,31 +1237,61 @@
             }
           });
 
-          // Update scroll position after category switch
+          // Setup clones for new category
+          setupInfiniteLoop();
+
+          // Update carousels after category switch
           setTimeout(function() {
-            updateScrollPosition();
-            isTransitioning = false;
-          }, 50);
+            if (isMobileView()) {
+              updateMobileCarousel();
+            } else {
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack && realProductCount > 0) {
+                desktopCurrentIndex = 3 * realProductCount; // Start at first real product (after duplicates)
+              } else {
+                desktopCurrentIndex = 0;
+              }
+              updateDesktopCarousel();
+            }
+          }, 100);
         });
       });
 
-      // Navigation - Simple horizontal scroll
+      // Navigation - Handle both mobile and desktop with infinite loop
       if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
           if (isTransitioning) return;
           
+          hasUserInteracted = true;
           isTransitioning = true;
-          var scrollAmount = getScrollAmount();
-          var maxScroll = getMaxScroll();
           
-          scrollPosition = Math.min(0, scrollPosition + scrollAmount);
-          updateScrollPosition();
-          
-          setTimeout(function() {
-            isTransitioning = false;
-          }, 500);
+          // Check if we're on mobile view
+          if (isMobileView()) {
+            // Mobile navigation with infinite loop
+            var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+            if (mobileProducts.length > 0) {
+              mobileCurrentIndex = mobileCurrentIndex - 1;
+              if (mobileCurrentIndex < 0) {
+                mobileCurrentIndex = mobileProducts.length - 1; // Loop to last
+              }
+              updateMobileCarousel();
+            }
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 300);
+          } else {
+            // Desktop navigation - move center to previous product
+            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+            if (activeTrack) {
+              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+              if (products.length > 0) {
+                desktopCurrentIndex = desktopCurrentIndex - 1;
+                updateDesktopCarousel();
+              }
+            }
+          }
         });
       }
 
@@ -902,39 +1301,224 @@
           e.stopPropagation();
           if (isTransitioning) return;
           
+          hasUserInteracted = true;
           isTransitioning = true;
-          var scrollAmount = getScrollAmount();
-          var maxScroll = getMaxScroll();
           
-          scrollPosition = Math.max(maxScroll, scrollPosition - scrollAmount);
-          updateScrollPosition();
-          
-          setTimeout(function() {
-            isTransitioning = false;
-          }, 500);
+          // Check if we're on mobile view
+          if (isMobileView()) {
+            // Mobile navigation with infinite loop
+            var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+            if (mobileProducts.length > 0) {
+              mobileCurrentIndex = mobileCurrentIndex + 1;
+              if (mobileCurrentIndex >= mobileProducts.length) {
+                mobileCurrentIndex = 0; // Loop to first
+              }
+              updateMobileCarousel();
+            }
+            setTimeout(function() {
+              isTransitioning = false;
+            }, 300);
+          } else {
+            // Desktop navigation - move center to next product
+            var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+            if (activeTrack) {
+              var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+              if (products.length > 0) {
+                desktopCurrentIndex = desktopCurrentIndex + 1;
+                updateDesktopCarousel();
+              }
+            }
+          }
         });
       }
 
       // Initialize on load
-      setTimeout(function() {
+      function initializeCarousel() {
+        // Setup clones for seamless infinite loop first
+        setupInfiniteLoop();
+        
+        // Always initialize desktop tracks - ensure they're visible
         tracks.forEach(function(track) {
-          if (track.getAttribute('data-gender') === activeCategory) {
+          var trackGender = track.getAttribute('data-gender');
+          if (trackGender === activeCategory) {
             track.classList.add('is-active');
+          } else {
+            track.classList.remove('is-active');
           }
         });
-        scrollPosition = 0;
-        updateScrollPosition();
-      }, 100);
+        
+        // Initialize based on current view
+        if (isMobileView()) {
+          mobileCurrentIndex = 0;
+          updateMobileCarousel();
+        } else {
+          // Start in the middle section (real products)
+          // With 3 duplicates before, real products start at index: 3 * realProductCount
+          var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+          if (activeTrack && realProductCount > 0) {
+            desktopCurrentIndex = 3 * realProductCount; // Start at first real product (after 3 sets of duplicates)
+          } else {
+            desktopCurrentIndex = 0;
+          }
+          // Small delay to ensure DOM is fully rendered before calculating offsets
+          setTimeout(function() {
+            updateDesktopCarousel();
+          }, 150);
+        }
+      }
+      
+      // Initialize after DOM is ready
+      setTimeout(initializeCarousel, 200);
+
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchEndX = 0;
+      var touchEndY = 0;
+      var isDragging = false;
+
+      function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isDragging = false;
+      }
+
+      function handleTouchMove(e) {
+        if (!touchStartX || !touchStartY) return;
+        isDragging = true;
+      }
+
+      function handleTouchEnd(e) {
+        if (!touchStartX || !touchStartY || !isDragging || isTransitioning) return;
+        
+        touchEndX = e.changedTouches[0].clientX;
+        touchEndY = e.changedTouches[0].clientY;
+        
+        var deltaX = touchStartX - touchEndX;
+        var deltaY = touchStartY - touchEndY;
+        var minSwipeDistance = 50; 
+        
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+          e.preventDefault();
+          isTransitioning = true;
+          
+          if (deltaX > 0) {
+            // Swipe left - go to next (infinite loop)
+            if (isMobileView()) {
+              var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+              if (mobileProducts.length > 0) {
+                mobileCurrentIndex = mobileCurrentIndex + 1;
+                if (mobileCurrentIndex >= mobileProducts.length) {
+                  mobileCurrentIndex = 0; // Loop to first
+                }
+                updateMobileCarousel();
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 300);
+            } else {
+              // Desktop swipe with infinite loop
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack) {
+                var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+                if (products.length > 0) {
+                  desktopCurrentIndex = desktopCurrentIndex + 1;
+                  if (desktopCurrentIndex >= products.length) {
+                    desktopCurrentIndex = 0; // Loop to first
+                  }
+                  updateDesktopCarousel();
+                }
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 400);
+            }
+          } else {
+            // Swipe right - go to previous (infinite loop)
+            if (isMobileView()) {
+              // Mobile navigation with infinite loop
+              var mobileProducts = mobileWrapper.querySelectorAll('.hand-picked-section__product-mobile[data-gender="' + activeCategory + '"]');
+              if (mobileProducts.length > 0) {
+                mobileCurrentIndex = mobileCurrentIndex - 1;
+                if (mobileCurrentIndex < 0) {
+                  mobileCurrentIndex = mobileProducts.length - 1; // Loop to last
+                }
+                updateMobileCarousel();
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 300);
+            } else {
+              // Desktop swipe with infinite loop
+              var activeTrack = section.querySelector('[data-handpicked-track].is-active');
+              if (activeTrack) {
+                var products = activeTrack.querySelectorAll('.hand-picked-section__product');
+                if (products.length > 0) {
+                  desktopCurrentIndex = desktopCurrentIndex - 1;
+                  if (desktopCurrentIndex < 0) {
+                    desktopCurrentIndex = products.length - 1; // Loop to last
+                  }
+                  updateDesktopCarousel();
+                }
+              }
+              setTimeout(function() {
+                isTransitioning = false;
+              }, 400);
+            }
+          }
+        }
+        
+        // Reset
+        touchStartX = 0;
+        touchStartY = 0;
+        touchEndX = 0;
+        touchEndY = 0;
+        isDragging = false;
+      }
+
+      // Add touch event listeners to both mobile and desktop carousels
+      // Mobile wrapper - this is the main touch target on mobile devices
+      if (mobileWrapper) {
+        mobileWrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+        mobileWrapper.addEventListener('touchmove', handleTouchMove, { passive: true });
+        mobileWrapper.addEventListener('touchend', handleTouchEnd, { passive: false });
+      }
+      
+      // Desktop wrapper - for desktop touch devices (tablets, etc.)
+      var desktopCarouselWrapper = section.querySelector('.hand-picked-section__carousel-wrapper--desktop');
+      if (desktopCarouselWrapper) {
+        desktopCarouselWrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+        desktopCarouselWrapper.addEventListener('touchmove', handleTouchMove, { passive: true });
+        desktopCarouselWrapper.addEventListener('touchend', handleTouchEnd, { passive: false });
+      }
+      
+      // Also attach to the carousel tracks for desktop
+      tracks.forEach(function(track) {
+        track.addEventListener('touchstart', handleTouchStart, { passive: true });
+        track.addEventListener('touchmove', handleTouchMove, { passive: true });
+        track.addEventListener('touchend', handleTouchEnd, { passive: false });
+      });
 
       // Update on window resize
       var resizeTimer;
       window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
-          // Ensure scroll position is still valid after resize
-          var maxScroll = getMaxScroll();
-          scrollPosition = Math.max(maxScroll, Math.min(0, scrollPosition));
-          updateScrollPosition();
+          // Ensure desktop tracks are properly shown
+          tracks.forEach(function(track) {
+            if (track.getAttribute('data-gender') === activeCategory) {
+              track.classList.add('is-active');
+            } else {
+              track.classList.remove('is-active');
+            }
+          });
+          
+          // Update based on current view
+          if (isMobileView()) {
+            mobileCurrentIndex = 0;
+            updateMobileCarousel();
+          } else {
+            updateDesktopCarousel();
+          }
         }, 250);
       });
     }

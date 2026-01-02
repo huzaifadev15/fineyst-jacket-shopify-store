@@ -7,6 +7,7 @@
     <!-- Header -->
     <div class="cart-sidebar__header">
       <h2 class="cart-sidebar__title">MY SHOPPING CART</h2>
+      <h2 class="cart-sidebar__title-mobile">Your Shopping Cart</h2>
       <div class="cart-sidebar__header-actions">
         <a href="{{ routes.cart_url }}" class="cart-sidebar__details-link">SEE DETAILS</a>
         <button type="button" class="cart-sidebar__close" data-cart-sidebar-close aria-label="Close cart">
@@ -32,6 +33,19 @@
       <!-- Items will be dynamically loaded here -->
     </div>
 
+    <!-- Continue Shopping Link (Mobile) -->
+    <div class="cart-sidebar__continue-shopping">
+      <a href="{{ routes.all_products_collection_url }}" class="cart-sidebar__continue-link">
+        < Continue Shopping
+      </a>
+    </div>
+
+    <!-- Promotional Banner (Mobile) -->
+    <div class="cart-sidebar__promo-banner">
+      <p class="cart-sidebar__promo-text">Add one more item to your cart and get 10% off your entire order!</p>
+      <a href="{{ routes.all_products_collection_url }}" class="cart-sidebar__promo-button">Discover More</a>
+    </div>
+
     <!-- Empty Cart Message -->
     <div class="cart-sidebar__empty" data-cart-sidebar-empty style="display: none;">
       <p>Your cart is empty</p>
@@ -40,15 +54,66 @@
 
     <!-- Order Overview -->
     <div class="cart-sidebar__overview" data-cart-sidebar-overview>
+      <h3 class="cart-sidebar__overview-title">Order Summary</h3>
       <div class="cart-sidebar__overview-row">
         <span>Subtotal</span>
         <span data-cart-sidebar-subtotal>{{ cart.total_price | money }}</span>
       </div>
+      <div class="cart-sidebar__overview-row">
+        <span>Shipping</span>
+        <span>Free</span>
+      </div>
+      <div class="cart-sidebar__overview-row">
+        <span>Estimated Tax</span>
+        <span>$0</span>
+      </div>
+      <div class="cart-sidebar__overview-row cart-sidebar__overview-row--total">
+        <span>Total price</span>
+        <span data-cart-sidebar-total>{{ cart.total_price | money }}</span>
+      </div>
+    </div>
+
+    <!-- Delivery Information (Mobile) -->
+    <div class="cart-sidebar__delivery">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="3" width="15" height="13"></rect>
+        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+        <circle cx="5.5" cy="18.5" r="2.5"></circle>
+        <circle cx="18.5" cy="18.5" r="2.5"></circle>
+      </svg>
+      <span class="cart-sidebar__delivery-text">Delivery approx. January 02 - January 03</span>
+    </div>
+
+    <!-- Discount Code Field -->
+    <div class="cart-sidebar__discount" data-cart-sidebar-discount onclick="event.stopPropagation()">
+      <div class="cart-sidebar__discount-input-wrapper" onclick="event.stopPropagation()">
+        <input 
+          type="text" 
+          class="cart-sidebar__discount-input" 
+          placeholder="Discount code" 
+          data-cart-sidebar-discount-input
+          aria-label="Discount code"
+          onclick="event.stopPropagation()"
+        />
+        <button 
+          type="button" 
+          class="cart-sidebar__discount-apply" 
+          data-cart-sidebar-discount-apply
+          aria-label="Apply discount code"
+          onclick="event.stopPropagation()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-sidebar__discount-message" data-cart-sidebar-discount-message style="display: none;" onclick="event.stopPropagation()"></div>
     </div>
 
     <!-- Checkout Actions -->
     <div class="cart-sidebar__actions">
-      <form action="{{ routes.cart_url }}" method="post" data-cart-sidebar-form>
+      <form action="/checkout" method="post" data-cart-sidebar-form>
         <button type="submit" name="checkout" class="btn btn--primary btn--block cart-sidebar__checkout">
           CHECKOUT
         </button>

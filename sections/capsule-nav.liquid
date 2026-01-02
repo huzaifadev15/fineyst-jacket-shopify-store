@@ -4,7 +4,7 @@
     top: 6rem;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 40;
+    z-index: 50;
     width: 90%;
     max-width: 67rem;
     transition: all 0.3s ease;
@@ -67,8 +67,8 @@
   
   @media (max-width: 768px) {
     .capsule-nav {
-      width: 95%;
-      top: 6rem;
+      width: 56%;
+      z-index: 50;
     }
     
     .capsule-nav__link {
@@ -76,8 +76,11 @@
       font-size: 1.2rem;
     }
   }
+
 {%- endstyle -%}
 
+{%- if template.name != 'product' -%}
+  {%- unless template.name == 'page' and page.handle == 'wishlist' -%}
 <nav class="capsule-nav" id="capsule-nav">
   <div class="capsule-nav__container">
     <ul class="capsule-nav__list">
@@ -87,7 +90,7 @@
         </a>
       </li>
       <li class="capsule-nav__item">
-        <a href="/collections/leather-bomber-jacket-mens" class="capsule-nav__link{% if collection.handle == 'leather-bomber-jacket-mens' %} capsule-nav__link--active{% endif %}">
+        <a href="/collections/mens-leather-jackets" class="capsule-nav__link{% if collection.handle == 'leather-bomber-jacket-mens' %} capsule-nav__link--active{% endif %}">
           LEATHER
         </a>
       </li>
@@ -114,10 +117,14 @@
     </ul>
   </div>
 </nav>
+  {%- endunless -%}
+{%- endif -%}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const capsuleNav = document.getElementById('capsule-nav');
+  if (!capsuleNav) return;
+  
   const navList = capsuleNav.querySelector('.capsule-nav__list');
   let lastScrollY = 0;
   let isVisible = true;

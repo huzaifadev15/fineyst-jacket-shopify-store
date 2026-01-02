@@ -78,39 +78,14 @@
     <div class="product-card__actions">
       <button 
         type="button" 
-        class="product-card__action" 
+        class="product-card__action product-card__wishlist" 
         aria-label="Add to wishlist"
         data-wishlist-add="{{ product.id }}"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </button>
-      <button 
-        type="button" 
-        class="product-card__action" 
-        aria-label="Quick view"
-        data-quick-view="{{ product.handle }}"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-      </button>
-      {%- if product.available -%}
-        <button 
-          type="button" 
-          class="product-card__action" 
-          aria-label="Add to cart"
-          data-add-to-cart="{{ current_variant.id }}"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-        </button>
-      {%- endif -%}
     </div>
   </div>
 
@@ -120,7 +95,7 @@
     {%- endif -%}
     
     <h3 class="product-card__title">
-      <a href="{{ product.url }}">{{ product.title }}</a>
+      <a href="{{ product.url }}">{{ product.title | upcase }}</a>
     </h3>
 
     <div class="product-card__price">
@@ -128,8 +103,69 @@
         <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
         <span class="product-card__price--sale">{{ product.price | money }}</span>
       {%- else -%}
-        {{ product.price | money }}
+        <span class="product-card__price--regular">{{ product.price | money }}</span>
       {%- endif -%}
+    </div>
+
+    {%- assign color_value = null -%}
+    
+    {%- comment -%} Try to find color from options {%- endcomment -%}
+    {%- if product.options_with_values.size > 0 -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+          {%- if option.values.size > 0 -%}
+            {%- assign color_value = option.values.first -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    
+    {%- comment -%} If no color option found, try to get from first variant {%- endcomment -%}
+    {%- if color_value == null and product.variants.size > 0 -%}
+      {%- assign first_variant = product.variants.first -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name_lower = option.name | downcase -%}
+        {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+          {%- assign color_index = forloop.index0 -%}
+          {%- if first_variant.options[color_index] != blank -%}
+            {%- assign color_value = first_variant.options[color_index] -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    
+    {%- comment -%} Default to Black if no color found {%- endcomment -%}
+    {%- if color_value == null or color_value == blank -%}
+      {%- assign color_value = 'Black' -%}
+    {%- endif -%}
+    
+    <div class="product-card__colors">
+      <div class="product-card__color-box">
+        <div class="product-card__color-swatch">
+          {%- assign color_lower = color_value | downcase | strip -%}
+          {%- if color_lower == 'black' or color_lower contains 'black' -%}
+            <span class="product-card__color-dot"></span>
+          {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
+            <span class="product-card__color-dot" style="background: #8B4513;"></span>
+          {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
+            <span class="product-card__color-dot" style="background: #FF0000;"></span>
+          {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
+            <span class="product-card__color-dot" style="background: #0000FF;"></span>
+          {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
+            <span class="product-card__color-dot" style="background: #008000;"></span>
+          {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
+            <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
+          {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
+            <span class="product-card__color-dot" style="background: #808080;"></span>
+          {%- else -%}
+            <span class="product-card__color-dot" style="background: #000;"></span>
+          {%- endif -%}
+        </div>
+        <span class="product-card__color-name">{{ color_value }}</span>
+      </div>
     </div>
   </div>
 </div>
@@ -157,6 +193,123 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
+  }
+
+  .product-card__wishlist {
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: none !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card__wishlist:hover {
+    background: #fff !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-card__wishlist svg {
+    width: 20px;
+    height: 20px;
+    stroke: #000 !important;
+    fill: none !important;
+  }
+
+  .product-card__wishlist.is-active svg {
+    fill: #000 !important;
+    stroke: #000 !important;
+  }
+
+  .product-card__title {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .product-card__title a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .product-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    justify-content: flex-start;
+  }
+
+  .product-card__price--compare {
+    font-size: 1.4rem;
+    color: #666;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+
+  .product-card__price--sale {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .product-card__price--regular {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .product-card__colors {
+    display: flex !important;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .product-card__color-box {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid #000 !important;
+    border-radius: 2px;
+    background: #fff !important;
+    min-width: 100px;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .product-card__color-swatch {
+    width: 20px;
+    height: 20px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .product-card__color-dot {
+    width: 16px;
+    height: 16px;
+    background: #000 !important;
+    border-radius: 50%;
+    display: block !important;
+    flex-shrink: 0;
+  }
+
+  .product-card__color-name {
+    font-size: 1.2rem;
+    color: #666 !important;
+    text-transform: capitalize;
+    font-weight: 400;
+    white-space: nowrap;
+    display: inline-block !important;
   }
 </style>
 

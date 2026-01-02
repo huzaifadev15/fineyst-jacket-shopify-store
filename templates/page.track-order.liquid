@@ -1,0 +1,749 @@
+---
+layout: theme
+---
+
+{%- style -%}
+  .track-order-page {
+    min-height: 100vh;
+    background: #f9fafb;
+    padding: 4rem 0;
+  }
+  
+  .track-order-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    margin-top: 3.5rem;
+  }
+  
+  .track-order-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  .track-order-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  
+  .track-order-header h2 {
+    font-size: 1.8rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  
+  .track-order-header p {
+    color: #6b7280;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  
+  .track-order-form {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    margin-bottom: 4rem;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .form-input-group {
+    flex: 1;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    transition: all 0.2s ease;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .track-btn {
+    padding: 1.5rem 3rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .track-btn:hover {
+    background: #374151;
+  }
+  
+  .track-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid transparent;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    color: #dc2626;
+    font-size: 1.4rem;
+  }
+  
+  .order-details {
+    display: none;
+  }
+  
+  .order-details.show {
+    display: block;
+  }
+  
+  .order-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .order-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+  
+  .order-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  
+  .order-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+  }
+  
+  .status-processing { color: #d97706; }
+  .status-shipped { color: #2563eb; }
+  .status-delivered { color: #059669; }
+  .status-cancelled { color: #dc2626; }
+  
+  .order-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    font-size: 1.4rem;
+  }
+  
+  .order-info-item p:first-child {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .order-info-item p:last-child {
+    font-weight: 600;
+  }
+  
+  .order-items h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  .order-item-info h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .order-item-info p {
+    color: #6b7280;
+    font-size: 1.4rem;
+  }
+  
+  .order-item-price {
+    font-weight: 600;
+  }
+  
+  .shipping-address h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .shipping-address p {
+    color: #374151;
+  }
+  
+  .order-timeline h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 3rem;
+  }
+  
+  .timeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .timeline-icon {
+    flex-shrink: 0;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .timeline-icon.completed {
+    background: #dcfce7;
+    color: #059669;
+  }
+  
+  .timeline-icon.pending {
+    background: #f3f4f6;
+    color: #9ca3af;
+  }
+  
+  .timeline-content {
+    flex: 1;
+  }
+  
+  .timeline-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+  }
+  
+  .timeline-status {
+    font-weight: 600;
+  }
+  
+  .timeline-status.completed {
+    color: #111827;
+  }
+  
+  .timeline-status.pending {
+    color: #6b7280;
+  }
+  
+  .timeline-date {
+    font-size: 1.4rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+  
+  .timeline-description {
+    font-size: 1.4rem;
+  }
+  
+  .timeline-description.completed {
+    color: #6b7280;
+  }
+  
+  .timeline-description.pending {
+    color: #9ca3af;
+  }
+  
+  .related-pages h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  
+  .related-link {
+    display: block;
+    padding: 2rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  .related-link:hover {
+    border-color: #d1d5db;
+  }
+  
+  .related-link h3 {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  
+  .related-link p {
+    font-size: 1.4rem;
+    color: #6b7280;
+  }
+  
+  .faq-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 3rem;
+  }
+  
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  .faq-question {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  
+  .faq-answer {
+    color: #6b7280;
+  }
+  
+  .faq-answer a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  
+  .faq-answer a:hover {
+    text-decoration: underline;
+  }
+  
+  .help-banner {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-top: 4rem;
+  }
+  
+  .help-banner h4 {
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 1rem;
+  }
+  
+  .help-banner p {
+    font-size: 1.4rem;
+    color: #1e3a8a;
+  }
+  
+  @media (min-width: 640px) {
+    .form-row {
+      flex-direction: row;
+    }
+    
+    .order-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .order-header h2 {
+      margin-bottom: 0;
+    }
+    
+    .timeline-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .timeline-date {
+      margin-top: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .order-info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+<div class="track-order-page">
+  <div class="track-order-container">
+    <div class="track-order-header">
+      <h1>Track Your Order</h1>
+      <h2>Real-Time Order Tracking System</h2>
+      <p>Welcome to our comprehensive order tracking system, designed to keep you informed every step of the way. Simply enter your unique order number below to access detailed information about your purchase, including current status, shipping progress, and estimated delivery date.</p>
+      <p>Our advanced tracking technology provides real-time updates from the moment your order is confirmed until it reaches your doorstep. You'll receive detailed information about processing times, shipping carrier details, and precise location updates throughout the delivery journey.</p>
+      <p>For your convenience, we also send automated email notifications at key milestones, including order confirmation, shipping dispatch, and delivery completion. Our customer service team monitors all shipments to ensure timely delivery and can assist with any questions or concerns.</p>
+      <p>Your order number can be found in your confirmation email or account dashboard. If you experience any issues with tracking or need additional assistance, our dedicated support team is available to help ensure your complete satisfaction with your Fineyst shopping experience.</p>
+    </div>
+
+    <div class="track-order-form">
+      <div class="form-row">
+        <div class="form-input-group">
+          <input
+            type="text"
+            id="orderNumber"
+            class="form-input"
+            placeholder="Enter your order number (e.g., ORD-2024-001)"
+          >
+        </div>
+        <button type="button" id="trackBtn" class="track-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          Track Order
+        </button>
+      </div>
+      
+      <div id="errorMessage" class="error-message" style="display: none;"></div>
+    </div>
+
+    <div id="orderDetails" class="order-details">
+      <!-- Order Summary -->
+      <div class="order-card">
+        <div class="order-header">
+          <h2 id="orderTitle">Order #</h2>
+          <div id="orderStatus" class="order-status">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+            <span class="capitalize">Processing</span>
+          </div>
+        </div>
+
+        <div class="order-info-grid">
+          <div class="order-info-item">
+            <p>Order Date</p>
+            <p id="orderDate">-</p>
+          </div>
+          <div class="order-info-item">
+            <p>Estimated Delivery</p>
+            <p id="estimatedDelivery">-</p>
+          </div>
+          <div class="order-info-item" id="trackingNumberSection" style="display: none;">
+            <p>Tracking Number</p>
+            <p id="trackingNumber">-</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-card order-items">
+        <h3>Order Items</h3>
+        <div id="orderItemsList"></div>
+      </div>
+
+      <!-- Shipping Address -->
+      <div class="order-card shipping-address">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Shipping Address
+        </h3>
+        <p id="shippingAddress">-</p>
+      </div>
+
+      <!-- Order Timeline -->
+      <div class="order-card order-timeline">
+        <h3>Order Timeline</h3>
+        <div id="timelineSteps"></div>
+      </div>
+    </div>
+
+    <!-- Related Pages -->
+    <div class="order-card related-pages">
+      <h2>Related Pages</h2>
+      <div class="related-grid">
+        <a href="{{ pages['shipping-policy'].url }}" class="related-link">
+          <h3>Shipping Policy</h3>
+          <p>Learn about our shipping methods and delivery timeframes</p>
+        </a>
+        <a href="{{ pages['refund-policy'].url }}" class="related-link">
+          <h3>Refund Policy</h3>
+          <p>Information about returns, exchanges, and refunds</p>
+        </a>
+        <a href="{{ pages['contact-us'].url }}" class="related-link">
+          <h3>Contact Us</h3>
+          <p>Get help from our customer service team</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- FAQs -->
+    <div class="order-card faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3 class="faq-question">Where can I find my order number?</h3>
+        <p class="faq-answer">Your order number can be found in your confirmation email or on your order confirmation page after completing your purchase.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">How long does shipping take?</h3>
+        <p class="faq-answer">Standard shipping typically takes 3-4 business days. You can view detailed shipping information on our <a href="{{ pages['shipping-policy'].url }}">Shipping Policy</a> page.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What if my order shows as delivered but I haven't received it?</h3>
+        <p class="faq-answer">Please check with neighbors, building management, or other household members. If you still can't locate your package, <a href="{{ pages['contact-us'].url }}">contact our support team</a> within 48 hours.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">Can I change my shipping address after placing an order?</h3>
+        <p class="faq-answer">Address changes are only possible if your order hasn't been processed yet. Please <a href="{{ pages['contact-us'].url }}">contact us immediately</a> if you need to update your shipping address.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-question">What should I do if my tracking shows no updates?</h3>
+        <p class="faq-answer">Tracking information may take 24-48 hours to update after shipping. If there are no updates after this time, please reach out to our <a href="{{ pages['contact-us'].url }}">customer service team</a> for assistance.</p>
+      </div>
+    </div>
+
+    <div class="help-banner">
+      <h4>Need help finding your order?</h4>
+      <p>Your order ID can be found in your confirmation email or on your order confirmation page.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const orderNumberInput = document.getElementById('orderNumber');
+  const trackBtn = document.getElementById('trackBtn');
+  const errorMessage = document.getElementById('errorMessage');
+  const orderDetails = document.getElementById('orderDetails');
+
+  // Mock order data for demonstration
+  const mockOrderData = {
+    'ORD-2024-001': {
+      id: 'ORD-2024-001',
+      status: 'shipped',
+      items: [
+        { name: 'Classic Leather Jacket', quantity: 1, price: 299.99 },
+        { name: 'Vintage Bomber Jacket', quantity: 1, price: 249.99 }
+      ],
+      orderDate: '2024-01-15T10:30:00Z',
+      estimatedDelivery: '2024-01-25T10:30:00Z',
+      trackingNumber: 'TRK123456789',
+      shippingAddress: '123 Main St, New York, NY 10001, USA',
+      timeline: [
+        { status: 'Order Placed', date: '2024-01-15T10:30:00Z', description: 'Your order has been confirmed', completed: true },
+        { status: 'Processing', date: '2024-01-15T10:30:00Z', description: 'Order is being prepared', completed: true },
+        { status: 'Shipped', date: '2024-01-16T14:20:00Z', description: 'Package is on its way', completed: true },
+        { status: 'Out for Delivery', date: '', description: 'Package will be delivered today', completed: false },
+        { status: 'Delivered', date: '', description: 'Package delivered successfully', completed: false }
+      ]
+    },
+    'ORD-2024-002': {
+      id: 'ORD-2024-002',
+      status: 'delivered',
+      items: [
+        { name: 'Premium Leather Jacket', quantity: 1, price: 399.99 }
+      ],
+      orderDate: '2024-01-10T09:15:00Z',
+      estimatedDelivery: '2024-01-20T09:15:00Z',
+      trackingNumber: 'TRK987654321',
+      shippingAddress: '456 Oak Ave, Los Angeles, CA 90210, USA',
+      timeline: [
+        { status: 'Order Placed', date: '2024-01-10T09:15:00Z', description: 'Your order has been confirmed', completed: true },
+        { status: 'Processing', date: '2024-01-10T09:15:00Z', description: 'Order is being prepared', completed: true },
+        { status: 'Shipped', date: '2024-01-11T16:45:00Z', description: 'Package is on its way', completed: true },
+        { status: 'Out for Delivery', date: '2024-01-18T08:30:00Z', description: 'Package will be delivered today', completed: true },
+        { status: 'Delivered', date: '2024-01-18T15:22:00Z', description: 'Package delivered successfully', completed: true }
+      ]
+    }
+  };
+
+  function getStatusColor(status) {
+    switch (status) {
+      case 'processing': return 'status-processing';
+      case 'shipped': return 'status-shipped';
+      case 'delivered': return 'status-delivered';
+      case 'cancelled': return 'status-cancelled';
+      default: return 'status-processing';
+    }
+  }
+
+  function getStatusIcon(status) {
+    switch (status) {
+      case 'processing':
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>';
+      case 'shipped':
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>';
+      case 'delivered':
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>';
+      default:
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
+    }
+  }
+
+  function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString();
+  }
+
+  function displayOrderData(data) {
+    // Update order header
+    document.getElementById('orderTitle').textContent = `Order #${data.id}`;
+    const statusElement = document.getElementById('orderStatus');
+    statusElement.className = `order-status ${getStatusColor(data.status)}`;
+    statusElement.innerHTML = `${getStatusIcon(data.status)}<span class="capitalize">${data.status}</span>`;
+
+    // Update order info
+    document.getElementById('orderDate').textContent = formatDate(data.orderDate);
+    document.getElementById('estimatedDelivery').textContent = formatDate(data.estimatedDelivery);
+    
+    if (data.trackingNumber) {
+      document.getElementById('trackingNumberSection').style.display = 'block';
+      document.getElementById('trackingNumber').textContent = data.trackingNumber;
+    }
+
+    // Update order items
+    const itemsList = document.getElementById('orderItemsList');
+    itemsList.innerHTML = data.items.map(item => `
+      <div class="order-item">
+        <div class="order-item-info">
+          <h4>${item.name}</h4>
+          <p>Quantity: ${item.quantity}</p>
+        </div>
+        <div class="order-item-price">$${item.price.toFixed(2)}</div>
+      </div>
+    `).join('');
+
+    // Update shipping address
+    document.getElementById('shippingAddress').textContent = data.shippingAddress;
+
+    // Update timeline
+    const timelineSteps = document.getElementById('timelineSteps');
+    timelineSteps.innerHTML = data.timeline.map(step => `
+      <div class="timeline-step">
+        <div class="timeline-icon ${step.completed ? 'completed' : 'pending'}">
+          ${step.completed ? 
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>' :
+            '<div style="width: 12px; height: 12px; border-radius: 50%; background: currentColor;"></div>'
+          }
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <h4 class="timeline-status ${step.completed ? 'completed' : 'pending'}">${step.status}</h4>
+            ${step.date ? `<span class="timeline-date">${formatDate(step.date)}</span>` : ''}
+          </div>
+          <p class="timeline-description ${step.completed ? 'completed' : 'pending'}">${step.description}</p>
+        </div>
+      </div>
+    `).join('');
+
+    orderDetails.classList.add('show');
+  }
+
+  function handleTrackOrder() {
+    const orderNumber = orderNumberInput.value.trim();
+    
+    if (!orderNumber) {
+      showError('Please enter an order number');
+      return;
+    }
+
+    // Show loading state
+    trackBtn.innerHTML = '<div class="loading-spinner"></div>Tracking...';
+    trackBtn.disabled = true;
+    errorMessage.style.display = 'none';
+    orderDetails.classList.remove('show');
+
+    // Simulate API call
+    setTimeout(() => {
+      const orderData = mockOrderData[orderNumber.toUpperCase()];
+      
+      if (orderData) {
+        displayOrderData(orderData);
+        errorMessage.style.display = 'none';
+      } else {
+        showError('Order not found. Please verify your order number is correct and try again.');
+        orderDetails.classList.remove('show');
+      }
+
+      // Reset button
+      trackBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        Track Order
+      `;
+      trackBtn.disabled = false;
+    }, 1000);
+  }
+
+  function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+  }
+
+  trackBtn.addEventListener('click', handleTrackOrder);
+  orderNumberInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      handleTrackOrder();
+    }
+  });
+});
+</script>

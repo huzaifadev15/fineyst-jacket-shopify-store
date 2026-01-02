@@ -1,6 +1,6 @@
 {%- style -%}
   .collection-category-carousel-section {
-    padding: 12rem 0 4rem;
+    padding: 8rem 0 4rem;
     background: #fff;
     margin-bottom: 2rem;
     margin-top: 0;
@@ -11,9 +11,9 @@
 
   .collection-category-carousel-section__wrapper {
     position: relative;
-    max-width: 1400px;
+    max-width: 1050px;
     margin: 0 auto;
-    padding: 0 6rem;
+    padding: 0 8rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +22,7 @@
 
   .collection-category-carousel-section__nav {
     position: absolute;
-    top: 50%;
+    top: 42%;
     transform: translateY(-50%);
     z-index: 100;
     width: 4.5rem;
@@ -68,6 +68,23 @@
   .collection-category-carousel-section__track-wrapper {
     overflow: hidden;
     position: relative;
+    width: 100%;
+    max-width: 950px;
+    margin:  auto;
+  }
+
+  @media (max-width: 600px) {
+    .collection-category-carousel-section__track-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .collection-category-carousel-section__track-wrapper::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .collection-category-carousel-section__track {
@@ -79,11 +96,19 @@
     align-items: center;
     box-sizing: border-box;
     will-change: transform;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .collection-category-carousel-section__track {
+      width: max-content;
+      transform: none !important;
+    }
   }
 
   .collection-category-carousel-section__item {
     flex: 0 0 auto;
-    width: 150px;
+    width: 120px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -141,7 +166,7 @@
 
   @media (max-width: 1400px) {
     .collection-category-carousel-section__wrapper {
-      padding: 0 5rem;
+      padding: 0 7rem;
     }
   }
 
@@ -151,11 +176,11 @@
     }
 
     .collection-category-carousel-section__item {
-      width: 120px;
+      width: 100px;
     }
 
     .collection-category-carousel-section__wrapper {
-      padding: 0 4rem;
+      padding: 0 5rem;
     }
 
     .collection-category-carousel-section__track {
@@ -173,22 +198,47 @@
       padding: 8rem 0 2rem;
     }
 
-    .collection-category-carousel-section__item {
-      width: 100px;
+    .collection-category-carousel-section__track-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      position: relative;
     }
 
-    .collection-category-carousel-section__wrapper {
-      padding: 0 4rem;
+    .collection-category-carousel-section__track-wrapper::-webkit-scrollbar {
+      display: none;
     }
 
     .collection-category-carousel-section__track {
       gap: 1.5rem;
-      padding: 0;
+      padding: 0 9px;
+      transform: none !important;
+      display: flex;
+      width: max-content;
+    }
+
+    .collection-category-carousel-section__item {
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .collection-category-carousel-section__item:first-child {
+      position: sticky;
+      left: 1.2rem;
+      z-index: 10;
+      background: #fff;
+    }
+
+    .collection-category-carousel-section__wrapper {
+      padding: 0 5rem;
     }
 
     .collection-category-carousel-section__nav {
       width: 3.5rem;
       height: 3.5rem;
+      display: none !important;
     }
 
     .collection-category-carousel-section__label {
@@ -291,6 +341,10 @@
         let scrollPosition = 0;
         const trackElement = track;
 
+        function isMobile() {
+          return window.innerWidth <= 600;
+        }
+
         function getScrollAmount() {
           // Get the first item to calculate scroll amount
           const firstItem = trackElement.querySelector('.collection-category-carousel-section__item');
@@ -303,6 +357,14 @@
         }
 
         function updateButtons() {
+          // On mobile, hide buttons and don't use transform
+          if (isMobile()) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            trackElement.style.transform = 'none';
+            return;
+          }
+
           const trackWidth = trackElement.scrollWidth;
           const wrapperWidth = wrapper.offsetWidth;
           const maxScroll = Math.max(0, trackWidth - wrapperWidth);
@@ -328,6 +390,16 @@
         }
 
         function scrollCarousel(direction) {
+          // On mobile, use native scrolling
+          if (isMobile()) {
+            const scrollAmount = wrapper.clientWidth * 0.75;
+            wrapper.scrollBy({
+              left: direction === 'next' ? scrollAmount : -scrollAmount,
+              behavior: 'smooth'
+            });
+            return;
+          }
+
           const trackWidth = trackElement.scrollWidth;
           const wrapperWidth = wrapper.offsetWidth;
           const maxScroll = Math.max(0, trackWidth - wrapperWidth);
@@ -396,8 +468,12 @@
         window.addEventListener('resize', function() {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function() {
-            scrollPosition = 0;
-            trackElement.style.transform = 'translateX(0)';
+            if (!isMobile()) {
+              scrollPosition = 0;
+              trackElement.style.transform = 'translateX(0)';
+            } else {
+              trackElement.style.transform = 'none';
+            }
             updateButtons();
           }, 250);
         });

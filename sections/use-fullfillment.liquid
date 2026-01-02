@@ -1,10 +1,10 @@
-<section class="usa-fulfillment-section">
+<section class="usa-fulfillment-section section-carousel-item" data-carousel-index="2">
   <div class="container">
     <div class="usa-fulfillment-section__grid">
       <!-- Left Side - Content -->
       <div class="usa-fulfillment-section__content">
         <div class="usa-fulfillment-section__nav">
-          <button type="button" class="usa-fulfillment-section__nav-btn usa-fulfillment-section__nav-btn--prev" data-fulfillment-prev aria-label="Previous">
+          <button type="button" class="usa-fulfillment-section__nav-btn usa-fulfillment-section__nav-btn--prev section-carousel-prev" aria-label="Previous">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
               <polyline points="15 18 9 12 15 6"/>
             </svg>
@@ -12,18 +12,18 @@
         </div>
 
         {%- if section.settings.title != blank -%}
-          <h2 class="usa-fulfillment-section__title">{{ section.settings.title }}</h2>
+          <h2 class="usa-fulfillment-section__title slider-content-title">{{ section.settings.title }}</h2>
         {%- endif -%}
 
         {%- if section.settings.description != blank -%}
-          <p class="usa-fulfillment-section__description">{{ section.settings.description }}</p>
+          <p class="usa-fulfillment-section__description slider-content-description">{{ section.settings.description }}</p>
         {%- endif -%}
 
         {%- if section.settings.features_heading != blank -%}
           <h3 class="usa-fulfillment-section__features-heading">{{ section.settings.features_heading }}</h3>
         {%- endif -%}
 
-        <ul class="usa-fulfillment-section__features-list">
+        <ul class="usa-fulfillment-section__features-list slider-content-features">
           {%- for block in section.blocks -%}
             {%- if block.type == 'feature' and block.settings.text != blank -%}
               <li class="usa-fulfillment-section__feature" {{ block.shopify_attributes }}>
@@ -34,10 +34,10 @@
         </ul>
 
         <!-- Pagination Dots -->
-        <div class="usa-fulfillment-section__pagination">
-          <span class="usa-fulfillment-section__dot"></span>
-          <span class="usa-fulfillment-section__dot usa-fulfillment-section__dot--active"></span>
-          <span class="usa-fulfillment-section__dot"></span>
+        <div class="usa-fulfillment-section__pagination section-carousel-pagination">
+          <span class="usa-fulfillment-section__dot section-carousel-dot" data-index="0"></span>
+          <span class="usa-fulfillment-section__dot section-carousel-dot" data-index="1"></span>
+          <span class="usa-fulfillment-section__dot section-carousel-dot active" data-index="2"></span>
         </div>
       </div>
 
@@ -46,6 +46,7 @@
         {%- if section.settings.map_image != blank -%}
           <div class="usa-fulfillment-section__map">
             <img
+              class="slider-content-image"
               src="{{ section.settings.map_image | image_url: width: 1200 }}"
               srcset="
                 {{ section.settings.map_image | image_url: width: 800 }} 800w,
@@ -59,6 +60,7 @@
           </div>
         {%- else -%}
           <div class="usa-fulfillment-section__map">
+            <img class="slider-content-image" src="" alt="USA Fulfillment Map" loading="lazy" style="display: none;">
             <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" class="usa-fulfillment-section__map-svg">
               <!-- USA Map Placeholder -->
               <rect width="800" height="500" fill="#1a1a2e"/>
@@ -76,6 +78,14 @@
             >
           </div>
         {%- endif -%}
+        
+        <div class="usa-fulfillment-section__nav-right">
+          <button type="button" class="usa-fulfillment-section__nav-btn usa-fulfillment-section__nav-btn--next section-carousel-next" aria-label="Next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>

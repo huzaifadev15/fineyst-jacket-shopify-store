@@ -1,10 +1,10 @@
-<section class="tailored-fit-section">
+<section class="tailored-fit-section section-carousel-item" data-carousel-index="1">
   <div class="container">
     <div class="tailored-fit-section__grid">
       <!-- Left Side - Content -->
       <div class="tailored-fit-section__content">
         <div class="tailored-fit-section__nav">
-          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--prev" data-tailored-prev aria-label="Previous">
+          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--prev section-carousel-prev" aria-label="Previous">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
               <polyline points="15 18 9 12 15 6"/>
             </svg>
@@ -12,18 +12,18 @@
         </div>
 
         {%- if section.settings.title != blank -%}
-          <h2 class="tailored-fit-section__title">{{ section.settings.title }}</h2>
+          <h2 class="tailored-fit-section__title slider-content-title">{{ section.settings.title }}</h2>
         {%- endif -%}
 
         {%- if section.settings.description != blank -%}
-          <p class="tailored-fit-section__description">{{ section.settings.description }}</p>
+          <p class="tailored-fit-section__description slider-content-description">{{ section.settings.description }}</p>
         {%- endif -%}
 
         {%- if section.settings.features_heading != blank -%}
           <h3 class="tailored-fit-section__features-heading">{{ section.settings.features_heading }}</h3>
         {%- endif -%}
 
-        <ul class="tailored-fit-section__features-list">
+        <ul class="tailored-fit-section__features-list slider-content-features">
           {%- for block in section.blocks -%}
             {%- if block.type == 'feature' and block.settings.text != blank -%}
               <li class="tailored-fit-section__feature" {{ block.shopify_attributes }}>
@@ -34,10 +34,10 @@
         </ul>
 
         <!-- Pagination Dots -->
-        <div class="tailored-fit-section__pagination">
-          <span class="tailored-fit-section__dot tailored-fit-section__dot--active"></span>
-          <span class="tailored-fit-section__dot"></span>
-          <span class="tailored-fit-section__dot"></span>
+        <div class="tailored-fit-section__pagination section-carousel-pagination">
+          <span class="tailored-fit-section__dot section-carousel-dot" data-index="0"></span>
+          <span class="tailored-fit-section__dot section-carousel-dot active" data-index="1"></span>
+          <span class="tailored-fit-section__dot section-carousel-dot" data-index="2"></span>
         </div>
       </div>
 
@@ -46,6 +46,7 @@
         {%- if section.settings.workshop_image != blank -%}
           <div class="tailored-fit-section__image">
             <img
+              class="slider-content-image"
               src="{{ section.settings.workshop_image | image_url: width: 1200 }}"
               srcset="
                 {{ section.settings.workshop_image | image_url: width: 800 }} 800w,
@@ -59,12 +60,12 @@
           </div>
         {%- else -%}
           <div class="tailored-fit-section__image">
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            <img class="slider-content-image" src="{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}" alt="Leather Jacket Workshop" loading="lazy">
           </div>
         {%- endif -%}
 
         <div class="tailored-fit-section__nav-right">
-          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--next" data-tailored-next aria-label="Next">
+          <button type="button" class="tailored-fit-section__nav-btn tailored-fit-section__nav-btn--next section-carousel-next" aria-label="Next">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
               <polyline points="9 18 15 12 9 6"/>
             </svg>

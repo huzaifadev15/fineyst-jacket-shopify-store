@@ -1,0 +1,791 @@
+---
+layout: theme
+---
+
+{%- style -%}
+  .contact-page {
+    background: #fff;
+    padding-bottom: 8rem;
+  }
+  
+  .contact-hero {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+  
+  .contact-hero__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+    background-size: 40px 40px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .contact-hero__content {
+    position: relative;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 8rem;
+    padding-bottom: 12rem;
+    text-align: center;
+  }
+  
+  .contact-hero__title {
+    font-size: clamp(4rem, 5vw, 6rem);
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-hero__description {
+    font-size: clamp(1.8rem, 2vw, 2rem);
+    color: #333;
+    margin-bottom: 3rem;
+  }
+  
+  .contact-hero__features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  
+  .contact-hero__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contact-hero__feature-icon {
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    background: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .contact-hero__feature-icon svg {
+    width: 2.8rem;
+    height: 2.8rem;
+    color: #2b2b2b;
+  }
+  
+  .contact-hero__feature-text {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .contact-content {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    padding-top: 8rem;
+    padding-bottom: 12rem;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+  
+  .contact-info__title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+  }
+  
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  
+  .contact-method {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .contact-method__icon {
+    background: #eaeaea;
+    padding: 1.2rem;
+    border-radius: 50%;
+    margin-right: 2rem;
+    flex-shrink: 0;
+  }
+  
+  .contact-method__icon svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: #2b2b2b;
+  }
+  
+  .contact-method__content h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-method__content p {
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-method__content a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .contact-method__content a:hover {
+    color: #2b2b2b;
+  }
+  
+  .contact-method__content .hours-link {
+    color: #2b2b2b;
+  }
+  
+  .contact-method__content .hours-link:hover {
+    text-decoration: underline;
+  }
+  
+  .social-section {
+    margin-top: 6rem;
+  }
+  
+  .social-section h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .social-link {
+    background: #f6f6f6;
+    padding: 1.2rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .social-link:hover {
+    background: #eaeaea;
+  }
+  
+  .social-link svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: #2b2b2b;
+  }
+  
+  .contact-form {
+    background: #fff;
+    padding: 4rem;
+    border: 1px solid #000;
+    border-bottom: 2px solid #000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+  
+  .contact-form__title {
+    font-size: 3rem;
+    color: #2b2b2b;
+    font-weight: 700;
+    margin-bottom: 3rem;
+  }
+  
+  .contact-form__description {
+    color: #000;
+    margin-bottom: 4rem;
+  }
+  
+  .form-group {
+    margin-bottom: 3rem;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    background: #fff;
+    font-size: 1.6rem;
+  }
+  
+  .form-group textarea {
+    resize: none;
+    min-height: 12rem;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  
+  .checkbox-group input[type="checkbox"] {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: 0.2rem;
+  }
+  
+  .checkbox-group label {
+    font-size: 1.4rem;
+    color: #666;
+    margin-bottom: 0;
+  }
+  
+  .checkbox-group a {
+    color: #2b2b2b;
+    text-decoration: none;
+  }
+  
+  .checkbox-group a:hover {
+    text-decoration: underline;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background: #eaeaea;
+    color: #000;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .submit-btn:hover {
+    background: rgba(234, 234, 234, 0.9);
+  }
+  
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .form-message {
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .form-message--success {
+    background: #f0f9ff;
+    border: 1px solid #bfdbfe;
+    color: #166534;
+  }
+  
+  .form-message--error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  
+  .support-section {
+    background: #eaeaea;
+    padding: 8rem 0;
+  }
+  
+  .support-content {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .support-header {
+    text-align: center;
+    margin-bottom: 6rem;
+  }
+  
+  .support-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+  
+  .support-header p {
+    color: #666;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+  
+  .support-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+  }
+  
+  .support-feature {
+    background: #fff;
+    padding: 4rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  
+  .support-feature__icon {
+    width: 6.4rem;
+    height: 6.4rem;
+    background: #eaeaea;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 3rem;
+  }
+  
+  .support-feature__icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: #2b2b2b;
+  }
+  
+  .support-feature h4 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .support-feature p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .support-feature__metric {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  
+  .support-feature__metric-value {
+    color: #2b2b2b;
+  }
+  
+  @media (max-width: 1024px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    
+    .support-features {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .contact-hero__features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .contact-content {
+      padding-top: 4rem;
+      padding-bottom: 6rem;
+    }
+    
+    .contact-form {
+      padding: 2rem;
+    }
+    
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .social-links {
+      gap: 1rem;
+    }
+    
+    .support-section {
+      padding: 4rem 0;
+    }
+    
+    .support-feature {
+      padding: 2rem;
+    }
+  }
+{%- endstyle -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Us - Fineyst",
+  "description": "Get in touch with our team for any questions, feedback, or support.",
+  "url": "{{ shop.secure_url }}{{ page.url }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Fineyst Jackets",
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+1 (888) 840-0885",
+      "contactType": "customer service",
+      "email": "info@fineystjackets.com",
+      "availableLanguage": "English",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    }
+  ]
+}
+</script>
+
+<div class="contact-page">
+  <!-- Hero Section -->
+  <div class="contact-hero">
+    <div class="contact-hero__grid"></div>
+    <div class="contact-hero__content">
+      <h1 class="contact-hero__title">Get In Touch</h1>
+      <p class="contact-hero__description">We'd love to hear from you. We respond within 24 hours.</p>
+      
+      <div class="contact-hero__features">
+        <div class="contact-hero__feature">
+          <div class="contact-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"/>
+            </svg>
+          </div>
+          <span class="contact-hero__feature-text">Business Hours Support</span>
+        </div>
+        
+        <div class="contact-hero__feature">
+          <div class="contact-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+          </div>
+          <span class="contact-hero__feature-text">Quick Response</span>
+        </div>
+        
+        <div class="contact-hero__feature">
+          <div class="contact-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M21 12c.552 0 1-.448 1-1V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v3c0 .552.448 1 1 1h18z"/>
+              <path d="M21 16c.552 0 1-.448 1-1v-3c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v3c0 .552.448 1 1 1h18z"/>
+            </svg>
+          </div>
+          <span class="contact-hero__feature-text">Expert Help</span>
+        </div>
+        
+        <div class="contact-hero__feature">
+          <div class="contact-hero__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="contact-hero__feature-text">Multiple Channels</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Content -->
+  <div class="contact-content">
+    <div class="contact-grid">
+      <!-- Contact Information -->
+      <div>
+        <h2 class="contact-info__title">Contact Information</h2>
+        
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-method__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+                <path d="M3 9l9 6 9-6"/>
+              </svg>
+            </div>
+            <div class="contact-method__content">
+              <h3>Business Name</h3>
+              <p>Fineyst LLC</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="contact-method__content">
+              <h3>Address</h3>
+              <p>122 Henderson Rd, Sandy Creek, NY 13145, USA</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-method__content">
+              <h3>Email Us</h3>
+              <p><a href="mailto:info@fineystjackets.com">info@fineystjackets.com</a></p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <div class="contact-method__content">
+              <h3>Call Us</h3>
+              <p><a href="tel:+18888400885">+1 (888) 840-0885</a></p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+            </div>
+            <div class="contact-method__content">
+              <h3>Support Hours</h3>
+              <p>Monday - Saturday: 9:00 AM - 6:00 PM CST</p>
+              <p class="hours-link">Sunday: Closed</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Social Links -->
+        <div class="social-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://www.instagram.com/fineystjackets/" target="_blank" rel="noopener noreferrer" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <a href="https://x.com/fineystjackets" target="_blank" rel="noopener noreferrer" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/fineystjackets" target="_blank" rel="noopener noreferrer" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a href="https://www.pinterest.com/fineystjackets/" target="_blank" rel="noopener noreferrer" class="social-link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.219-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.562-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.357-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.001 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h2 class="contact-form__title">Send Us a Message</h2>
+        <p class="contact-form__description">
+          Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+        
+        <div id="form-messages"></div>
+        
+        <form id="contact-form" class="contact-form-element">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="How can we help you?" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us more about your inquiry..." required></textarea>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="privacy" name="agreeToPrivacyPolicy" required>
+            <label for="privacy">
+              I agree to the <a href="{{ pages['privacy-policy'].url }}">Privacy Policy</a>
+            </label>
+          </div>
+          
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Support Section -->
+  <div class="support-section">
+    <div class="support-content">
+      <div class="support-header">
+        <h2>Our Customer Support</h2>
+        <p>We're committed to providing exceptional customer service through multiple support channels.</p>
+      </div>
+      
+      <div class="support-features">
+        <div class="support-feature">
+          <div class="support-feature__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+              <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+            </svg>
+          </div>
+          <h4>Business Hours Support</h4>
+          <p>Support team available during business hours. Emergency email support available 24 or 48 hours.</p>
+          <p class="support-feature__metric">
+            Average response time: <span class="support-feature__metric-value">Under 24 hours</span>
+          </p>
+        </div>
+        
+        <div class="support-feature">
+          <div class="support-feature__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M21 12c.552 0 1-.448 1-1V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v3c0 .552.448 1 1 1h18z"/>
+              <path d="M21 16c.552 0 1-.448 1-1v-3c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v3c0 .552.448 1 1 1h18z"/>
+            </svg>
+          </div>
+          <h4>Satisfaction Guarantee</h4>
+          <p>Not happy with your purchase? Our hassle-free return policy ensures your complete satisfaction.</p>
+          <p class="support-feature__metric">
+            Return window: <span class="support-feature__metric-value">30 days</span>
+          </p>
+        </div>
+        
+        <div class="support-feature">
+          <div class="support-feature__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v6m0 6v6"/>
+              <path d="M21 12h-6m-6 0H3"/>
+            </svg>
+          </div>
+          <h4>Fast Resolution</h4>
+          <p>We pride ourselves on quick issue resolution and personalized attention to every customer inquiry.</p>
+          <p class="support-feature__metric">
+            Resolution rate: <span class="support-feature__metric-value">95% within 24 hours</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('contact-form');
+  const messagesDiv = document.getElementById('form-messages');
+  
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    
+    // Show loading state
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    
+    // Clear previous messages
+    messagesDiv.innerHTML = '';
+    
+    // Get form data
+    const formData = new FormData(form);
+    const data = {
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+      agreeToPrivacyPolicy: formData.get('agreeToPrivacyPolicy') === 'on'
+    };
+    
+    try {
+      // Simulate form submission (replace with actual endpoint)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Show success message
+      messagesDiv.innerHTML = `
+        <div class="form-message form-message--success">
+          <p>Thank you! Your message has been sent successfully. We'll get back to you soon.</p>
+        </div>
+      `;
+      
+      // Reset form
+      form.reset();
+      
+    } catch (error) {
+      // Show error message
+      messagesDiv.innerHTML = `
+        <div class="form-message form-message--error">
+          <p>Sorry, there was an error sending your message. Please try again.</p>
+        </div>
+      `;
+    } finally {
+      // Reset button
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+});
+</script>
