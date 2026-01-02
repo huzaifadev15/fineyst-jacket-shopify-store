@@ -39,12 +39,15 @@ layout: theme
     font-weight: 700;
     color: #000;
     margin-bottom: 2rem;
+    font-family: avertaDefault, sans-serif;
+    padding-top: 4rem;
   }
   
   .about-hero__description {
     font-size: clamp(1.8rem, 2vw, 2rem);
-    color: #333;
+    color: #171717;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .about-hero__features {
@@ -82,6 +85,7 @@ layout: theme
   .about-hero__feature-text {
     font-weight: 500;
     color: #000;
+    font-family: avertaDefault, sans-serif;
   }
   
   .container {
@@ -105,13 +109,15 @@ layout: theme
     font-size: clamp(3rem, 4vw, 4rem);
     font-weight: 700;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .mission-content p {
-    color: #6b7280;
+    color: #171717;
     font-size: 1.8rem;
     margin-bottom: 3rem;
     line-height: 1.6;
+    font-family: avertaDefault, sans-serif;
   }
   
   .mission-buttons {
@@ -122,14 +128,15 @@ layout: theme
   }
   
   .btn {
-    padding: 1.5rem 3rem;
-    font-size: 1.6rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
     font-weight: 500;
     text-decoration: none;
     display: inline-block;
     transition: all 0.2s ease;
     cursor: pointer;
     border: none;
+    font-family: avertaDefault, sans-serif;
   }
   
   .btn--primary {
@@ -171,7 +178,7 @@ layout: theme
   }
   
   .values-header {
-    text-center;
+    text-align: center;
     margin-bottom: 8rem;
   }
   
@@ -179,13 +186,16 @@ layout: theme
     font-size: clamp(3rem, 4vw, 4rem);
     font-weight: 700;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .values-header p {
     color: #6b7280;
     font-size: 1.8rem;
-    max-width: 40rem;
+    max-width: 100%;
     margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
+    white-space: nowrap;
   }
   
   .values-grid {
@@ -215,10 +225,12 @@ layout: theme
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .value-card p {
-    color: #6b7280;
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
   }
   
   .team-section {
@@ -226,7 +238,7 @@ layout: theme
   }
   
   .team-header {
-    text-center;
+    text-align: center;
     margin-bottom: 8rem;
   }
   
@@ -234,13 +246,15 @@ layout: theme
     font-size: clamp(3rem, 4vw, 4rem);
     font-weight: 700;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .team-header p {
-    color: #6b7280;
+    color: #171717;
     font-size: 1.8rem;
     max-width: 40rem;
     margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
   }
   
   .team-grid {
@@ -293,10 +307,12 @@ layout: theme
   .team-member h3 {
     font-size: 2rem;
     font-weight: 700;
+    font-family: avertaDefault, sans-serif;
   }
   
   .team-member p {
-    color: #6b7280;
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
   }
   
   .timeline-section {
@@ -305,7 +321,7 @@ layout: theme
   }
   
   .timeline-header {
-    text-center;
+    text-align: center;
     margin-bottom: 8rem;
   }
   
@@ -313,13 +329,15 @@ layout: theme
     font-size: clamp(3rem, 4vw, 4rem);
     font-weight: 700;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .timeline-header p {
-    color: #6b7280;
+    color: #171717;
     font-size: 1.8rem;
     max-width: 40rem;
     margin: 0 auto;
+    font-family: avertaDefault, sans-serif;
   }
   
   .timeline {
@@ -386,19 +404,22 @@ layout: theme
     background: #eaeaea;
     color: #000;
     border-radius: 2rem;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 1.5rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .timeline__content h3 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .timeline__content p {
-    color: #6b7280;
+    color: #171717;
+    font-family: avertaDefault, sans-serif;
   }
   
   .cta-section {
@@ -410,13 +431,15 @@ layout: theme
     font-size: clamp(3rem, 4vw, 4rem);
     font-weight: 700;
     margin-bottom: 3rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .cta-section p {
-    color: #6b7280;
+    color: #171717;
     font-size: 1.8rem;
     max-width: 40rem;
     margin: 0 auto 4rem;
+    font-family: avertaDefault, sans-serif;
   }
   
   .cta-buttons {
@@ -467,8 +490,17 @@ layout: theme
     }
     
     .mission-buttons {
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 1.2rem 2rem;
+      font-size: 1.2rem;
+      width: auto;
+      max-width: 400px;
+      white-space: nowrap;
     }
     
     .team-grid {
@@ -600,7 +632,7 @@ layout: theme
           <h2>Our Mission</h2>
           <p>At FINEYST, we believe that fashion is more than just clothing—it's a form of self-expression, a statement of identity, and a celebration of individuality.</p>
           <p>Our mission is to provide high-quality, sustainable fashion that empowers people to express themselves authentically while minimizing our environmental footprint.</p>
-          <div class="mission-buttons">
+          <div class="mission-buttons"> 
             <a href="{{ collections.all.url }}" class="btn btn--primary">Shop Collection</a>
             <a href="{{ blog.news.url }}" class="btn btn--secondary">Read Our Blog Articles</a>
           </div>
