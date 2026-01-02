@@ -328,6 +328,14 @@
     transition: border-color 0.3s ease;
     background: transparent;
     padding: 0;
+    display: inline-block;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  a.product-form__color-swatch:hover {
+    border-color: #000;
+    transform: scale(1.05);
   }
 
   .product-form__color-swatch.is-selected {
@@ -903,17 +911,73 @@
         </div>
 
         {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
+          {%- comment -%} Product-Linked Color Swatches from Color Link Metaobject {%- endcomment -%}
+          {%- assign color_links = product.metafields.custom.color_link.value -%}
+          {%- assign has_linked_colors = false -%}
+
+          {%- if color_links != blank and color_links.size > 0 -%}
+            {%- assign has_linked_colors = true -%}
+            
+            {%- comment -%} Find current product's color info from the metaobject list {%- endcomment -%}
+            {%- assign current_color_hex = '#ccc' -%}
+            {%- assign current_color_name = '' -%}
+
+            {%- for link in color_links -%}
+              {%- if link.product.value.id == product.id -%}
+                {%- assign current_color_hex = link.color_hex.value | default: '#ccc' -%}
+                {%- assign current_color_name = link.color_name.value | default: '' -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            <div class="product-form__option">
+              <label class="product-form__label">
+                COLOR: {{ current_color_name | default: product.title | split: ' ' | last | upcase }}
+              </label>
+
+              <div class="product-form__color-swatches">
+                {%- comment -%} Render all color swatches from metaobject {%- endcomment -%}
+                {%- for link in color_links -%}
+                  {%- assign linked_product = link.product.value -%}
+                  {%- assign link_color_hex = link.color_hex.value | default: '#ccc' -%}
+                  {%- assign link_color_name = link.color_name.value | default: 'Color' -%}
+                  {%- assign is_current = false -%}
+                  
+                  {%- if linked_product.id == product.id -%}
+                    {%- assign is_current = true -%}
+                  {%- endif -%}
+                  
+                  <a
+                    href="{{ linked_product.url }}"
+                    class="product-form__color-swatch{% if is_current %} is-selected{% endif %}"
+                    style="--swatch-color: {{ link_color_hex }}"
+                    aria-label="{{ link_color_name }}"
+                    title="{{ link_color_name }}"
+                  ></a>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
           {%- unless product.has_only_default_variant -%}
             {%- for option in product.options_with_values -%}
+              {%- comment -%} Skip Color option if we have product-linked colors {%- endcomment -%}
+              {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                {%- if has_linked_colors -%}
+                  {%- continue -%}
+                {%- endif -%}
+              {%- endif -%}
+
               <div class="product-form__option">
                 <label class="product-form__label" for="Option-{{ option.name | handleize }}">
                   {{ option.name | upcase }}: {{ option.selected_value | upcase }}
                 </label>
                 {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                  {%- comment -%} Fallback: Variant-based color swatches (only if no linked products) {%- endcomment -%}
                   <div class="product-form__color-swatches">
                     {%- for value in option.values -%}
                       {%- assign color_value = value | downcase | handle -%}
-                      {%- assign color_map = 'grey:#808080,black:#000000,white:#ffffff,red:#8b0000,blue:#0000ff,green:#008000,brown:#a52a2a,tan:#d2b48c,beige:#f5f5dc,navy:#000080' | split: ',' -%}
+                      {%- assign color_map = 'grey:#808080,black:#000000,white:#ffffff,red:#8b0000,blue:#0000ff,green:#008000,brown:#a52a2a,tan:#d2b48c,beige:#f5f5dc,navy:#000080,camel:#c19a6b,cognac:#9f381d,burgundy:#800020,olive:#808000,charcoal:#36454f,cream:#fffdd0' | split: ',' -%}
                       {%- assign swatch_color = '#ccc' -%}
                       {%- for color_pair in color_map -%}
                         {%- assign color_data = color_pair | split: ':' -%}
