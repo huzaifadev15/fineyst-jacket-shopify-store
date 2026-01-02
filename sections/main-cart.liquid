@@ -1094,6 +1094,62 @@
     }
   }, true);
 
+  // Discount code functionality
+  const discountInput = document.querySelector('[data-cart-discount-input]');
+  const discountApplyBtn = document.querySelector('[data-cart-discount-apply]');
+  const discountMessage = document.querySelector('[data-cart-discount-message]');
+
+  function showDiscountMessage(message, type = 'info') {
+    if (!discountMessage) return;
+    discountMessage.textContent = message;
+    discountMessage.className = 'cart-summary__discount-message cart-summary__discount-message--' + type;
+    discountMessage.style.display = 'block';
+  }
+
+  function applyDiscountCode() {
+    if (!discountInput) return;
+    
+    const code = discountInput.value.trim();
+    if (!code) {
+      showDiscountMessage('Please enter a discount code', 'error');
+      return;
+    }
+
+    showDiscountMessage('Applying discount code...', 'info');
+    
+    // Create form to submit discount code
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/checkout';
+    form.style.display = 'none';
+    
+    const discountField = document.createElement('input');
+    discountField.type = 'hidden';
+    discountField.name = 'discount';
+    discountField.value = code;
+    form.appendChild(discountField);
+    
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  if (discountApplyBtn) {
+    discountApplyBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      applyDiscountCode();
+    });
+  }
+
+  if (discountInput) {
+    discountInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyDiscountCode();
+      }
+    });
+  }
+
   const cartForm = document.querySelector('[data-cart-form]');
   if (cartForm) {
     cartForm.addEventListener('submit', function(e) {
@@ -1106,6 +1162,21 @@
       );
       
       if (isCheckoutButton) {
+        // If there's a discount code, add it to the checkout
+        if (discountInput && discountInput.value.trim()) {
+          const discountCode = discountInput.value.trim();
+          const form = e.target;
+          
+          // Check if discount field already exists
+          let discountField = form.querySelector('input[name="discount"]');
+          if (!discountField) {
+            discountField = document.createElement('input');
+            discountField.type = 'hidden';
+            discountField.name = 'discount';
+            form.appendChild(discountField);
+          }
+          discountField.value = discountCode;
+        }
         return true;
       }
       
