@@ -953,7 +953,6 @@
       };
 
       const applyDiscount = function(e) {
-        // Prevent default behavior and stop event propagation
         if (e) {
           e.preventDefault();
           e.stopPropagation();
@@ -965,134 +964,19 @@
           return;
         }
 
-        // Show loading state
-        discountApplyBtn.disabled = true;
-        discountApplyBtn.style.opacity = '0.6';
-        discountMessage.style.display = 'none';
-
-        // Get current cart to compare
-        const cartUrl = window.routes.cart_url + '.js';
+        // Create form and submit to checkout with discount
+        const form = document.createElement('form');
+        form.action = '/checkout';
+        form.method = 'get';
         
-        fetch(cartUrl)
-          .then(response => response.json())
-          .then(originalCart => {
-            const originalTotal = parseFloat(originalCart.total_price || 0);
-            const originalDiscounts = originalCart.discount_applications || [];
-            const originalDiscountCodes = originalDiscounts.map(d => (d.code || '').toLowerCase());
-            
-            // Apply discount code using hidden iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.position = 'absolute';
-            iframe.style.left = '-9999px';
-            iframe.style.width = '1px';
-            iframe.style.height = '1px';
-            iframe.style.border = 'none';
-            iframe.name = 'discount-iframe-' + Date.now();
-            
-            const form = document.createElement('form');
-            form.method = 'GET';
-            form.action = '/discount/' + encodeURIComponent(code);
-            form.target = iframe.name;
-            form.style.display = 'none';
-            
-            document.body.appendChild(iframe);
-            document.body.appendChild(form);
-            form.submit();
-            
-            // Function to check if discount was applied
-            const checkDiscountApplied = function(attempt = 1) {
-              return fetch(cartUrl)
-                .then(response => response.json())
-                .then(newCart => {
-                  const newTotal = parseFloat(newCart.total_price || 0);
-                  const newDiscounts = newCart.discount_applications || [];
-                  const newDiscountCodes = newDiscounts.map(d => (d.code || '').toLowerCase());
-                  
-                  // Check if our code is in the discount applications
-                  const codeLower = code.toLowerCase();
-                  const discountCodeApplied = newDiscountCodes.includes(codeLower);
-                  
-                  // Check if total decreased (discount applied)
-                  const totalDecreased = newTotal < originalTotal && Math.abs(originalTotal - newTotal) > 1;
-                  
-                  // Check if new discounts were added
-                  const hasNewDiscount = newDiscounts.length > originalDiscounts.length;
-                  
-                  if (discountCodeApplied || (totalDecreased && hasNewDiscount)) {
-                    // Success!
-                    showDiscountMessage('Discount code applied successfully!', 'success');
-                    discountInput.value = '';
-                    loadCartSidebar();
-                    discountApplyBtn.disabled = false;
-                    discountApplyBtn.style.opacity = '1';
-                    
-                    // Clean up
-                    if (document.body.contains(iframe)) {
-                      document.body.removeChild(iframe);
-                    }
-                    if (document.body.contains(form)) {
-                      document.body.removeChild(form);
-                    }
-                    return true;
-                  } else if (attempt < 3) {
-                    // Try again after a delay
-                    return new Promise(resolve => {
-                      setTimeout(() => {
-                        checkDiscountApplied(attempt + 1).then(resolve);
-                      }, 1000);
-                    });
-                  } else {
-                    // Failed after all attempts
-                    showDiscountMessage('Invalid discount code. Please check and try again.', 'error');
-                    discountApplyBtn.disabled = false;
-                    discountApplyBtn.style.opacity = '1';
-                    
-                    // Clean up
-                    if (document.body.contains(iframe)) {
-                      document.body.removeChild(iframe);
-                    }
-                    if (document.body.contains(form)) {
-                      document.body.removeChild(form);
-                    }
-                    return false;
-                  }
-                })
-                .catch(error => {
-                  console.error('Error checking cart:', error);
-                  if (attempt < 3) {
-                    return new Promise(resolve => {
-                      setTimeout(() => {
-                        checkDiscountApplied(attempt + 1).then(resolve);
-                      }, 1000);
-                    });
-                  } else {
-                    showDiscountMessage('Error applying discount code. Please try again.', 'error');
-                    discountApplyBtn.disabled = false;
-                    discountApplyBtn.style.opacity = '1';
-                    
-                    // Clean up
-                    if (document.body.contains(iframe)) {
-                      document.body.removeChild(iframe);
-                    }
-                    if (document.body.contains(form)) {
-                      document.body.removeChild(form);
-                    }
-                    return false;
-                  }
-                });
-            };
-            
-            // Start checking after a short delay
-            setTimeout(() => {
-              checkDiscountApplied();
-            }, 1500);
-          })
-          .catch(error => {
-            console.error('Error getting original cart:', error);
-            showDiscountMessage('Error applying discount code. Please try again.', 'error');
-            discountApplyBtn.disabled = false;
-            discountApplyBtn.style.opacity = '1';
-          });
+        const discountField = document.createElement('input');
+        discountField.type = 'hidden';
+        discountField.name = 'discount';
+        discountField.value = code;
+        
+        form.appendChild(discountField);
+        document.body.appendChild(form);
+        form.submit();
       };
 
       // Prevent clicks on discount section from closing sidebar
@@ -1172,12 +1056,24 @@
     // Cart will be loaded when sidebar opens
   }
 
+  // Store scroll position when opening sidebar
+  let savedScrollPosition = 0;
+
   function openCartSidebar() {
     const sidebar = document.querySelector('[data-cart-sidebar]');
     if (sidebar) {
+      console.log('Opening cart sidebar');
+      
+      // Save current scroll position
+      savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      
       sidebar.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-      // Cart items should already be loaded before opening (from addToCart response)
+      document.documentElement.classList.add('cart-sidebar-open');
+      document.body.classList.add('cart-sidebar-open');
+      
+      // Fix body position to prevent scroll
+      document.body.style.top = `-${savedScrollPosition}px`;
+      
       // Only load if sidebar items container is empty
       const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
       if (!itemsContainer || itemsContainer.children.length === 0) {
@@ -1185,6 +1081,8 @@
           loadCartSidebar();
         }, 100);
       }
+    } else {
+      console.error('Cart sidebar not found');
     }
   }
 
@@ -1192,7 +1090,12 @@
     const sidebar = document.querySelector('[data-cart-sidebar]');
     if (sidebar) {
       sidebar.classList.remove('is-open');
-      document.body.style.overflow = '';
+      document.documentElement.classList.remove('cart-sidebar-open');
+      document.body.classList.remove('cart-sidebar-open');
+      
+      // Restore scroll position
+      document.body.style.top = '';
+      window.scrollTo(0, savedScrollPosition);
     }
   }
 
@@ -1246,14 +1149,7 @@
       return; // Cart sidebar doesn't exist on this page
     }
     
-    // Show loading state
-    const itemsContainer = sidebar.querySelector('[data-cart-sidebar-items]');
-    if (itemsContainer) {
-      itemsContainer.innerHTML = '<p style="padding: 2rem; text-align: center; color: #999;">Loading cart...</p>';
-    }
-    
     const cartUrl = window.routes.cart_url + '.js';
-    console.log('Loading cart from:', cartUrl);
     
     // Simple fetch without complex error handling
     fetch(cartUrl)
@@ -1279,11 +1175,6 @@
       })
       .catch(error => {
         console.error('Error loading cart:', error);
-        console.error('Error details:', {
-          message: error.message,
-          stack: error.stack,
-          cartUrl: cartUrl
-        });
         
         // Only show error if sidebar is actually open
         const sidebar = document.querySelector('[data-cart-sidebar]');
@@ -1344,26 +1235,52 @@
       let color = '';
       let size = '';
       
-      // Shopify cart API provides variant options in item.variant.options array
-      if (item.variant && item.variant.options) {
-        // Typically: options[0] = option1 (often color), options[1] = option2 (often size), etc.
-        if (item.variant.options.length > 0) {
-          color = item.variant.options[0] || '';
-        }
-        if (item.variant.options.length > 1) {
-          size = item.variant.options[1] || '';
-        }
+      // Method 1: Use options_with_values from Shopify cart API (most reliable)
+      if (item.options_with_values && item.options_with_values.length > 0) {
+        item.options_with_values.forEach(option => {
+          const optionName = option.name ? option.name.toLowerCase() : '';
+          const optionValue = option.value || '';
+          if (optionName.includes('color') || optionName.includes('colour')) {
+            color = optionValue;
+          } else if (optionName.includes('size')) {
+            size = optionValue;
+          }
+        });
       }
       
-      // Fallback to variant title if options not available
-      if (!color && !size && item.variant && item.variant.title && item.variant.title !== 'Default Title') {
-        const variantParts = item.variant.title.split(' / ');
+      // Method 2: Use variant_options array from cart API
+      if ((!color || !size) && item.variant_options && item.variant_options.length > 0) {
+        // variant_options is typically in order: [Color, Size] or depends on product setup
+        item.variant_options.forEach((optValue, index) => {
+          if (optValue && optValue !== 'Default Title') {
+            const colorKeywords = ['black', 'white', 'grey', 'gray', 'navy', 'blue', 'red', 'green', 'brown', 'beige', 'tan', 'yellow', 'orange', 'pink', 'purple', 'leather', 'suede'];
+            const sizeKeywords = ['xs', 'sm', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', '2xl', '3xl', 'small', 'medium', 'large', 'extra'];
+            const valueLower = optValue.toLowerCase();
+            
+            if (!color && colorKeywords.some(keyword => valueLower.includes(keyword))) {
+              color = optValue;
+            } else if (!size && (sizeKeywords.some(keyword => valueLower === keyword || valueLower.includes(keyword)) || /^\d/.test(optValue))) {
+              size = optValue;
+            } else if (index === 0 && !color) {
+              // First option is typically color
+              color = optValue;
+            } else if (index === 1 && !size) {
+              // Second option is typically size
+              size = optValue;
+            }
+          }
+        });
+      }
+      
+      // Method 3: Fallback to variant title parsing
+      if (!color && !size && item.variant_title && item.variant_title !== 'Default Title') {
+        const variantParts = item.variant_title.split(' / ');
         if (variantParts.length >= 2) {
           color = variantParts[0].trim();
           size = variantParts[1].trim();
         } else if (variantParts.length === 1) {
           const value = variantParts[0].trim();
-          const colorKeywords = ['black', 'white', 'grey', 'gray', 'navy', 'blue', 'red', 'green', 'brown', 'beige', 'tan', 'grey', 'leather'];
+          const colorKeywords = ['black', 'white', 'grey', 'gray', 'navy', 'blue', 'red', 'green', 'brown', 'beige', 'tan', 'yellow', 'orange', 'pink', 'purple', 'leather', 'suede'];
           if (colorKeywords.some(keyword => value.toLowerCase().includes(keyword))) {
             color = value;
           } else {
@@ -1372,7 +1289,29 @@
         }
       }
       
-      // Check properties for color/size
+      // Method 4: Check item.variant properties (nested structure)
+      if ((!color || !size) && item.variant) {
+        if (item.variant.option1 && !color) {
+          const opt1 = item.variant.option1;
+          const colorKeywords = ['black', 'white', 'grey', 'gray', 'navy', 'blue', 'red', 'green', 'brown', 'beige', 'tan', 'yellow', 'orange', 'pink', 'purple', 'leather', 'suede'];
+          if (colorKeywords.some(keyword => opt1.toLowerCase().includes(keyword))) {
+            color = opt1;
+          } else if (!size) {
+            size = opt1;
+          }
+        }
+        if (item.variant.option2 && !size) {
+          const opt2 = item.variant.option2;
+          const sizeKeywords = ['xs', 'sm', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', '2xl', '3xl', 'small', 'medium', 'large'];
+          if (sizeKeywords.some(keyword => opt2.toLowerCase() === keyword || opt2.toLowerCase().includes(keyword)) || /^\d/.test(opt2)) {
+            size = opt2;
+          } else if (!color) {
+            color = opt2;
+          }
+        }
+      }
+      
+      // Method 5: Check properties for color/size
       if (item.properties && Object.keys(item.properties).length > 0) {
         Object.keys(item.properties).forEach(key => {
           const lowerKey = key.toLowerCase();
@@ -1385,6 +1324,15 @@
           }
         });
       }
+      
+      // Debug logging
+      console.log('Cart item variant info:', {
+        variant_options: item.variant_options,
+        options_with_values: item.options_with_values,
+        variant_title: item.variant_title,
+        extracted_color: color,
+        extracted_size: size
+      });
 
       // Handle image URL - Shopify cart API returns image as a URL string
       // The image might be a full URL or a relative path
@@ -1436,6 +1384,8 @@
       
       // Use the global escapeHtml function (defined above)
       const productTitle = escapeHtml(item.product ? item.product.title : item.title);
+      // Remove variant info from title if it exists
+      const cleanTitle = productTitle.replace(/ - [^-]*$/, '');
       const itemUrl = item.url || (item.product ? `/products/${item.product.handle}` : '#');
       const colorText = color ? escapeHtml(color) : '';
       const sizeText = size ? escapeHtml(size) : '';
@@ -1455,38 +1405,41 @@
               </svg>
             </button>
           </div>
-          <div class="cart-sidebar-item__content">
-            <div class="cart-sidebar-item__header">
+          <div class="cart-sidebar-item__details">
+            <div class="cart-sidebar-item__info">
               <h3 class="cart-sidebar-item__title">
-                <a href="${escapeHtml(itemUrl)}">${productTitle}</a>
+                <a href="${escapeHtml(itemUrl)}">${cleanTitle}</a>
               </h3>
+              ${(colorText || sizeText) ? `<div class="cart-sidebar-item__variant-info">
+                ${colorText ? `<div class="cart-sidebar-item__variant">Color: <span class="cart-sidebar-item__variant-value">${colorText}</span></div>` : ''}
+                ${sizeText ? `<div class="cart-sidebar-item__variant">Size: <span class="cart-sidebar-item__variant-value">${sizeText}</span></div>` : ''}
+              </div>` : ''}
+              <div class="cart-sidebar-item__quantity">
+                <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-minus="${item.key}">−</button>
+                <input 
+                  type="number" 
+                  class="cart-sidebar-item__quantity-input" 
+                  value="${item.quantity}" 
+                  min="1"
+                  data-cart-quantity-input
+                  readonly
+                >
+                <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-plus="${item.key}">+</button>
+              </div>
+            </div>
+            <div class="cart-sidebar-item__pricing">
               <button type="button" class="cart-sidebar-item__remove" data-cart-remove="${item.key}" aria-label="Remove item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"></polyline>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 </svg>
               </button>
-            </div>
-            ${colorText ? `<p class="cart-sidebar-item__variant">Color: ${colorText}</p>` : ''}
-            ${sizeText ? `<p class="cart-sidebar-item__variant">Size: ${sizeText}</p>` : ''}
-            <div class="cart-sidebar-item__quantity">
-              <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-minus="${item.key}">−</button>
-              <input 
-                type="number" 
-                class="cart-sidebar-item__quantity-input" 
-                value="${item.quantity}" 
-                min="1"
-                data-cart-quantity-input
-                readonly
-              >
-              <button type="button" class="cart-sidebar-item__quantity-btn" data-cart-quantity-plus="${item.key}">+</button>
-            </div>
-            <div class="cart-sidebar-item__pricing">
-              <div class="cart-sidebar-item__unit-price">
-                ${hasComparePrice ? `<span class="cart-sidebar-item__unit-price--compare">${comparePrice}</span>` : ''}
-                <span class="cart-sidebar-item__unit-price--sale">${unitPrice}</span>
+              <div class="cart-sidebar-item__price-info">
+                <div class="cart-sidebar-item__unit-price">Unit Price</div>
+                <div class="cart-sidebar-item__unit-price-value">${unitPrice}</div>
+                <div class="cart-sidebar-item__total-label">Total</div>
+                <div class="cart-sidebar-item__total-price">${totalPrice}</div>
               </div>
-              <div class="cart-sidebar-item__total-price">Total Price: ${totalPrice}</div>
             </div>
           </div>
         </div>
@@ -1609,19 +1562,21 @@
     const plusBtn = cartItem ? cartItem.querySelector('[data-cart-quantity-plus]') : null;
     const totalPriceEl = cartItem ? cartItem.querySelector('.cart-sidebar-item__total-price') : null;
 
-    // Show loading overlay
-    showCartLoadingOverlay();
+    // Show item loading overlay
+    if (cartItem) {
+      let itemOverlay = cartItem.querySelector('.cart-sidebar-item__loading');
+      if (!itemOverlay) {
+        itemOverlay = document.createElement('div');
+        itemOverlay.className = 'cart-sidebar-item__loading';
+        itemOverlay.innerHTML = '<div class="cart-sidebar-item__loading-spinner"></div>';
+        cartItem.appendChild(itemOverlay);
+      }
+      itemOverlay.classList.add('is-visible');
+    }
 
     if (minusBtn) minusBtn.disabled = true;
     if (plusBtn) plusBtn.disabled = true;
     if (input) input.disabled = true;
-
-    if (input) {
-      input.value = '...';
-    }
-    if (totalPriceEl) {
-      totalPriceEl.textContent = 'Updating...';
-    }
 
     const cartUpdateUrl = window.routes.cart_update_url + '.js';
     
@@ -1656,7 +1611,7 @@
         })
         .catch(error => {
           console.error('Error loading cart for update:', error);
-          handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar);
+          handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar, cartItem);
         });
     } else {
       performCartUpdate(cartUpdateUrl, updates, key, quantity, input, totalPriceEl, minusBtn, plusBtn, cartItem, sidebar);
@@ -1740,8 +1695,6 @@
         if (input) input.disabled = false;
       }
 
-      updateCartCount();
-      
       // Hide loading overlay
       hideCartLoadingOverlay();
     })
@@ -1751,9 +1704,14 @@
     });
   }
 
-  function handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar) {
-    // Hide loading overlay
-    hideCartLoadingOverlay();
+  function handleCartSidebarError(error, input, totalPriceEl, minusBtn, plusBtn, sidebar, cartItem) {
+    // Hide item loading overlay
+    if (cartItem) {
+      const itemOverlay = cartItem.querySelector('.cart-sidebar-item__loading');
+      if (itemOverlay) {
+        itemOverlay.classList.remove('is-visible');
+      }
+    }
     
     if (minusBtn) minusBtn.disabled = false;
     if (plusBtn) plusBtn.disabled = false;
@@ -1772,8 +1730,6 @@
   }
 
   function removeCartItem(key) {
-    // Show loading overlay immediately
-    showCartLoadingOverlay();
     updateCartItem(key, 0);
   }
   
@@ -1800,14 +1756,10 @@
   }
   
   function hideCartLoadingOverlay() {
-    const sidebar = document.querySelector('[data-cart-sidebar]');
-    const content = sidebar ? sidebar.querySelector('.cart-sidebar__content') : null;
-    if (!content) return;
-    
-    const overlay = content.querySelector('.cart-loading-overlay');
-    if (overlay) {
+    const overlays = document.querySelectorAll('.cart-loading-overlay');
+    overlays.forEach(overlay => {
       overlay.classList.remove('is-visible');
-    }
+    });
   }
   
   /* Utility: Slide out animation */

@@ -395,6 +395,46 @@
     cursor: pointer;
   }
 
+  .cart-summary__voucher-apply {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cart-summary__voucher-apply:hover svg {
+    stroke: #000;
+  }
+
+  .cart-summary__discount-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  .cart-summary__discount-message--success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .cart-summary__discount-message--error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .cart-summary__discount-message--info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+
   .cart-summary__payment-link {
     display: block;
     margin: 1.5rem 0;
@@ -663,14 +703,29 @@
               <span>Delivery approx. January 03 - January 04</span>
             </div>
 
-            <div class="cart-summary__voucher">
-              <div class="cart-summary__voucher-input">
-                <input type="text" placeholder="Redeem a voucher code" />
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
+            <div class="cart-summary__voucher" data-cart-discount onclick="event.stopPropagation()">
+              <div class="cart-summary__voucher-input" onclick="event.stopPropagation()">
+                <input 
+                  type="text" 
+                  placeholder="Redeem a voucher code" 
+                  data-cart-discount-input
+                  aria-label="Discount code"
+                  onclick="event.stopPropagation()"
+                />
+                <button 
+                  type="button" 
+                  class="cart-summary__voucher-apply" 
+                  data-cart-discount-apply
+                  aria-label="Apply discount code"
+                  onclick="event.stopPropagation()"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
               </div>
+              <div class="cart-summary__discount-message" data-cart-discount-message style="display: none;" onclick="event.stopPropagation()"></div>
             </div>
 
             <a href="#" class="cart-summary__payment-link">Click to see what payment options are available.</a>

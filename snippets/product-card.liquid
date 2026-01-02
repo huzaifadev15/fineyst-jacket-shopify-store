@@ -295,29 +295,90 @@
     {%- endif -%}
     
     <div class="product-card__colors">
-      <div class="product-card__color-box">
-        <div class="product-card__color-swatch">
-          {%- assign color_lower = display_color | downcase | strip -%}
-          {%- if color_lower == 'black' or color_lower contains 'black' -%}
-            <span class="product-card__color-dot"></span>
-          {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
-            <span class="product-card__color-dot" style="background: #8B4513;"></span>
-          {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
-            <span class="product-card__color-dot" style="background: #FF0000;"></span>
-          {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
-            <span class="product-card__color-dot" style="background: #0000FF;"></span>
-          {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
-            <span class="product-card__color-dot" style="background: #008000;"></span>
-          {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
-            <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
-          {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
-            <span class="product-card__color-dot" style="background: #808080;"></span>
-          {%- else -%}
-            <span class="product-card__color-dot" style="background: #000;"></span>
+      {%- comment -%} Check for color variants first {%- endcomment -%}
+      {%- if color_option != null and color_option.values.size > 0 -%}
+        <div class="product-card__color-box">
+          <div class="product-card__color-swatches">
+            {%- for color in color_option.values limit: 2 -%}
+              {%- assign color_lower = color | downcase | strip -%}
+              {%- if color_lower == 'black' or color_lower contains 'black' -%}
+                <span class="product-card__color-dot" style="background: #000;"></span>
+              {%- elsif color_lower == 'brown' or color_lower contains 'brown' -%}
+                <span class="product-card__color-dot" style="background: #8B4513;"></span>
+              {%- elsif color_lower == 'red' or color_lower contains 'red' -%}
+                <span class="product-card__color-dot" style="background: #FF0000;"></span>
+              {%- elsif color_lower == 'blue' or color_lower contains 'blue' -%}
+                <span class="product-card__color-dot" style="background: #0000FF;"></span>
+              {%- elsif color_lower == 'green' or color_lower contains 'green' -%}
+                <span class="product-card__color-dot" style="background: #008000;"></span>
+              {%- elsif color_lower == 'white' or color_lower contains 'white' -%}
+                <span class="product-card__color-dot" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
+              {%- elsif color_lower == 'grey' or color_lower == 'gray' or color_lower contains 'grey' or color_lower contains 'gray' -%}
+                <span class="product-card__color-dot" style="background: #808080;"></span>
+              {%- else -%}
+                <span class="product-card__color-dot" style="background: #000;"></span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <span class="product-card__color-name">{{ color_option.values.first }}</span>
+          {%- if color_option.values.size > 1 -%}
+            <span class="product-card__color-more" data-color-picker-trigger="{{ product.id }}">+{{ color_option.values.size | minus: 1 }} more</span>
           {%- endif -%}
         </div>
-        <span class="product-card__color-name">{{ display_color }}</span>
-      </div>
+      {%- else -%}
+        {%- comment -%} Check for available colors metafield {%- endcomment -%}
+        {%- assign available_colors = product.metafields.custom.available_colors | default: product.metafields.colors.available -%}
+        {%- if available_colors != blank -%}
+          {%- assign colors_list = available_colors | split: ',' -%}
+          <div class="product-card__color-box">
+            <div class="product-card__color-swatches">
+              {%- for color in colors_list limit: 2 -%}
+                {%- assign color_trimmed = color | strip -%}
+                {%- assign color_lower = color_trimmed | downcase -%}
+                {%- if color_lower == 'black' -%}
+                  <span class="product-card__color-dot" style="background: #000;"></span>
+                {%- elsif color_lower == 'brown' -%}
+                  <span class="product-card__color-dot" style="background: #8B4513;"></span>
+                {%- elsif color_lower == 'red' -%}
+                  <span class="product-card__color-dot" style="background: #FF0000;"></span>
+                {%- elsif color_lower == 'grey' or color_lower == 'gray' -%}
+                  <span class="product-card__color-dot" style="background: #808080;"></span>
+                {%- else -%}
+                  <span class="product-card__color-dot" style="background: #000;"></span>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <span class="product-card__color-name">{{ colors_list.first | strip }}</span>
+            {%- if colors_list.size > 1 -%}
+              <span class="product-card__color-more" data-color-picker-trigger="{{ product.id }}">+{{ colors_list.size | minus: 1 }} more</span>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          {%- comment -%} Show only the current product color based on handle {%- endcomment -%}
+          {%- assign current_color = 'Black' -%}
+          {%- if product.handle contains 'brown' -%}
+            {%- assign current_color = 'Brown' -%}
+          {%- elsif product.handle contains 'grey' -%}
+            {%- assign current_color = 'Grey' -%}
+          {%- elsif product.handle contains 'red' -%}
+            {%- assign current_color = 'Red' -%}
+          {%- endif -%}
+          <div class="product-card__color-box">
+            <div class="product-card__color-swatches">
+              {%- if current_color == 'Brown' -%}
+                <span class="product-card__color-dot" style="background: #8B4513;"></span>
+              {%- elsif current_color == 'Grey' -%}
+                <span class="product-card__color-dot" style="background: #808080;"></span>
+              {%- elsif current_color == 'Red' -%}
+                <span class="product-card__color-dot" style="background: #FF0000;"></span>
+              {%- else -%}
+                <span class="product-card__color-dot" style="background: #000;"></span>
+              {%- endif -%}
+            </div>
+            <span class="product-card__color-name">{{ current_color }}</span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
     </div>
   </div>
 
@@ -578,22 +639,37 @@
     display: flex !important;
     justify-content: flex-start;
     align-items: center;
+    gap: 0.5rem;
     margin-top: 0.5rem;
     visibility: visible !important;
     opacity: 1 !important;
+    flex-wrap: wrap;
   }
 
   .product-card__color-box {
     display: inline-flex !important;
     align-items: center;
-    gap: 0.8rem;
-    padding: 0.6rem 1rem;
-    border: 1px solid #000 !important;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ddd !important;
     border-radius: 2px;
     background: #fff !important;
-    min-width: 100px;
+    min-width: auto;
     visibility: visible !important;
     opacity: 1 !important;
+    font-size: 1.1rem;
+  }
+
+  .product-card__color-swatches {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .product-card__color-more {
+    font-size: 1rem;
+    color: #666;
+    margin-left: 0.3rem;
   }
 
   .product-card__color-swatch {
@@ -1529,6 +1605,73 @@
       document.addEventListener('DOMContentLoaded', initQuickAddModal);
     } else {
       initQuickAddModal();
+    }
+    
+    // Color Picker Modal functionality
+    function initColorPickerModal() {
+      // Open color picker modal
+      document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-color-picker-trigger]');
+        if (trigger) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const productId = trigger.getAttribute('data-color-picker-trigger');
+          const modal = document.querySelector(`[data-color-picker-modal="${productId}"]`);
+          
+          if (modal) {
+            // Move modal to body if not already there
+            if (modal.parentElement !== document.body) {
+              document.body.appendChild(modal);
+            }
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+      });
+      
+      // Close color picker modal
+      document.addEventListener('click', function(e) {
+        const closeBtn = e.target.closest('[data-color-picker-close]');
+        if (closeBtn) {
+          const modal = closeBtn.closest('.color-picker-modal');
+          if (modal) {
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+          }
+        }
+      });
+      
+      // Handle color selection
+      document.addEventListener('click', function(e) {
+        const colorBtn = e.target.closest('.color-picker-modal__color');
+        if (colorBtn) {
+          const color = colorBtn.getAttribute('data-color');
+          const modal = colorBtn.closest('.color-picker-modal');
+          
+          if (modal && color) {
+            // Close modal
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+            
+            // Redirect to color-specific product (you can customize this logic)
+            const colorHandle = color.toLowerCase().replace(/\s+/g, '-');
+            const currentUrl = window.location.pathname;
+            const newUrl = currentUrl.replace(/-(black|brown|grey|red)-/, `-${colorHandle}-`);
+            
+            if (newUrl !== currentUrl) {
+              window.location.href = newUrl;
+            }
+          }
+        }
+      });
+    }
+    
+    // Initialize color picker modal
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initColorPickerModal);
+    } else {
+      initColorPickerModal();
     }
     
     // Use event delegation to handle clicks on all size buttons
