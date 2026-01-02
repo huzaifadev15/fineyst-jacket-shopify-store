@@ -1,77 +1,138 @@
 {%- style -%}
+  /* Hide capsule navigation bar on contact page */
+  .capsule-nav {
+    display: none !important;
+  }
+
   .contact-main {
-    padding: 12rem 0 8rem;
+    padding: 8rem 0;
+    background: #f8f9fa;
   }
 
   .contact-main__grid {
+    margin-top : 43px !important;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
   }
 
   .contact-info {
-    padding-right: 4rem;
+    background: #fff;
+    padding: 4rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
   .contact-info__title {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    margin-bottom: 2rem;
-  }
-
-  .contact-info__text {
-    font-size: 1.7rem;
-    line-height: 1.8;
-    color: #555;
-    margin-bottom: 4rem;
+    color: #333;
+    margin-bottom: 3rem;
   }
 
   .contact-info__item {
     display: flex;
     align-items: flex-start;
-    gap: 2rem;
-    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
   }
 
   .contact-info__icon {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
+    background: #f0f0f0;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-primary);
-    color: #fff;
     flex-shrink: 0;
   }
 
   .contact-info__icon svg {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 2rem;
+    height: 2rem;
+    color: #666;
   }
 
-  .contact-info__label {
-    font-size: 1.3rem;
+  .contact-info__content h3 {
+    font-size: 1.6rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #888;
+    color: #333;
     margin-bottom: 0.5rem;
   }
 
-  .contact-info__value {
-    font-size: 1.6rem;
+  .contact-info__content p {
+    font-size: 1.4rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .contact-social {
+    margin-top: 4rem;
+  }
+
+  .contact-social h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-social__links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .contact-social__link {
+    width: 4rem;
+    height: 4rem;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .contact-social__link:hover {
+    background: #555;
+  }
+
+  .contact-social__link svg {
+    width: 2rem;
+    height: 2rem;
   }
 
   .contact-form {
-    background: #f8f8f8;
+    background: #fff;
     padding: 4rem;
+    border: 1px solid black;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
   .contact-form__title {
     font-size: 2.4rem;
-    font-weight: 700;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .contact-form__subtitle {
+    font-size: 1.4rem;
+    color: #666;
     margin-bottom: 3rem;
+  }
+
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
   }
 
   .contact-form__group {
@@ -80,19 +141,19 @@
 
   .contact-form__label {
     display: block;
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #333;
     margin-bottom: 0.8rem;
   }
 
   .contact-form__input,
   .contact-form__textarea {
     width: 100%;
-    padding: 1.4rem 1.6rem;
-    font-size: 1.5rem;
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
     border: 1px solid #ddd;
+    border-radius: 4px;
     background: #fff;
     transition: border-color 0.3s ease;
   }
@@ -100,142 +161,252 @@
   .contact-form__input:focus,
   .contact-form__textarea:focus {
     outline: none;
-    border-color: var(--color-primary);
+    border-color: #333;
   }
 
   .contact-form__textarea {
     resize: vertical;
-    min-height: 15rem;
+    min-height: 12rem;
+  }
+
+  .contact-form__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .contact-form__checkbox input {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .contact-form__checkbox label {
+    font-size: 1.3rem;
+    color: #666;
   }
 
   .contact-form__submit {
     width: 100%;
     padding: 1.6rem;
-    margin-top: 1rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .contact-form__submit:hover {
+    background: #555;
   }
 
   @media (max-width: 900px) {
     .contact-main__grid {
+       margin-top : 43px ;
       grid-template-columns: 1fr;
-      gap: 4rem;
+      gap: 3rem;
     }
 
-    .contact-info {
-      padding-right: 0;
+    .contact-form__row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .contact-info,
+    .contact-form {
+      padding: 3rem 2rem;
     }
   }
 {%- endstyle -%}
 
 <section class="contact-main">
-  <div class="container">
-    <div class="contact-main__grid">
-      <div class="contact-info">
-        <h1 class="contact-info__title">{{ section.settings.title | default: page.title }}</h1>
-        <p class="contact-info__text">{{ section.settings.text | default: "We'd love to hear from you. Send us a message and we'll respond as soon as possible." }}</p>
+  <div class="contact-main__grid">
+    <div class="contact-info">
+      <h1 class="contact-info__title">Contact Information</h1>
 
-        <div class="contact-info__item">
-          <div class="contact-info__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-          </div>
-          <div>
-            <p class="contact-info__label">Address</p>
-            <p class="contact-info__value">{{ section.settings.address | default: '123 Leather Lane, Fashion District, NY 10001' }}</p>
-          </div>
+      <div class="contact-info__item">
+        <div class="contact-info__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
         </div>
-
-        <div class="contact-info__item">
-          <div class="contact-info__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </div>
-          <div>
-            <p class="contact-info__label">Email</p>
-            <p class="contact-info__value">{{ section.settings.email | default: 'support@fineyst.com' }}</p>
-          </div>
-        </div>
-
-        <div class="contact-info__item">
-          <div class="contact-info__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="contact-info__label">Phone</p>
-            <p class="contact-info__value">{{ section.settings.phone | default: '+1 (555) 123-4567' }}</p>
-          </div>
+        <div class="contact-info__content">
+          <h3>Business Name</h3>
+          <p>{{ section.settings.business_name | default: 'Fineyst LLC' }}</p>
         </div>
       </div>
 
-      <div class="contact-form">
-        <h2 class="contact-form__title">Send us a Message</h2>
-        
-        {% form 'contact', class: 'contact-form__inner' %}
-          {%- if form.posted_successfully? -%}
-            <p class="form-success" style="color: green; margin-bottom: 2rem;">
-              Thanks for contacting us. We'll get back to you as soon as possible.
-            </p>
-          {%- endif -%}
+      <div class="contact-info__item">
+        <div class="contact-info__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="contact-info__content">
+          <h3>Address</h3>
+          <p>{{ section.settings.address | default: '122 Henderson Rd, Sandy Creek, NY 13145, USA' }}</p>
+        </div>
+      </div>
 
-          {%- if form.errors -%}
-            <div class="form-errors" style="color: red; margin-bottom: 2rem;">
-              {{ form.errors | default_errors }}
-            </div>
-          {%- endif -%}
+      <div class="contact-info__item">
+        <div class="contact-info__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="contact-info__content">
+          <h3>Email Us</h3>
+          <p>{{ section.settings.email | default: 'info@fineystjackets.com' }}</p>
+        </div>
+      </div>
 
+      <div class="contact-info__item">
+        <div class="contact-info__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div class="contact-info__content">
+          <h3>Call Us</h3>
+          <p>{{ section.settings.phone | default: '+1 (888) 840-0885' }}</p>
+        </div>
+      </div>
+
+      <div class="contact-info__item">
+        <div class="contact-info__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </div>
+        <div class="contact-info__content">
+          <h3>Support Hours</h3>
+          <p>{{ section.settings.hours | default: 'Monday - Saturday: 9:00 AM - 6:00 PM CST<br>Sunday: Closed' }}</p>
+        </div>
+      </div>
+
+      <div class="contact-social">
+        <h3>Follow Us</h3>
+        <div class="contact-social__links">
+          <a href="#" class="contact-social__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="#" class="contact-social__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+            </svg>
+          </a>
+          <a href="#" class="contact-social__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <a href="#" class="contact-social__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M12 1a11 11 0 0 0-11 11 11 11 0 0 0 22 0 11 11 0 0 0-11-11zm5 8h-2a3 3 0 0 0-3-3V4a5 5 0 0 1 5 5z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <h2 class="contact-form__title">Send Us a Message</h2>
+      <p class="contact-form__subtitle">Fill out the form below and we'll get back to you as soon as possible.</p>
+      
+      {% form 'contact', class: 'contact-form__inner' %}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success" style="color: green; margin-bottom: 2rem;">
+            Thanks for contacting us. We'll get back to you as soon as possible.
+          </p>
+        {%- endif -%}
+
+        {%- if form.errors -%}
+          <div class="form-errors" style="color: red; margin-bottom: 2rem;">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="contact-form__row">
           <div class="contact-form__group">
-            <label for="ContactName" class="contact-form__label">Name *</label>
+            <label for="ContactFirstName" class="contact-form__label">First Name</label>
             <input 
               type="text" 
-              id="ContactName" 
-              name="contact[name]" 
+              id="ContactFirstName" 
+              name="contact[first_name]" 
               class="contact-form__input"
-              required
+              placeholder="John"
             >
           </div>
-
           <div class="contact-form__group">
-            <label for="ContactEmail" class="contact-form__label">Email *</label>
+            <label for="ContactLastName" class="contact-form__label">Last Name</label>
             <input 
-              type="email" 
-              id="ContactEmail" 
-              name="contact[email]" 
+              type="text" 
+              id="ContactLastName" 
+              name="contact[last_name]" 
               class="contact-form__input"
-              required
-              autocomplete="email"
+              placeholder="Doe"
             >
           </div>
+        </div>
 
-          <div class="contact-form__group">
-            <label for="ContactPhone" class="contact-form__label">Phone</label>
-            <input 
-              type="tel" 
-              id="ContactPhone" 
-              name="contact[phone]" 
-              class="contact-form__input"
-            >
-          </div>
+        <div class="contact-form__group">
+          <label for="ContactEmail" class="contact-form__label">Email Address</label>
+          <input 
+            type="email" 
+            id="ContactEmail" 
+            name="contact[email]" 
+            class="contact-form__input"
+            placeholder="john.doe@example.com"
+            required
+            autocomplete="email"
+          >
+        </div>
 
-          <div class="contact-form__group">
-            <label for="ContactMessage" class="contact-form__label">Message *</label>
-            <textarea 
-              id="ContactMessage" 
-              name="contact[body]" 
-              class="contact-form__textarea"
-              required
-            ></textarea>
-          </div>
+        <div class="contact-form__group">
+          <label for="ContactSubject" class="contact-form__label">Subject</label>
+          <input 
+            type="text" 
+            id="ContactSubject" 
+            name="contact[subject]" 
+            class="contact-form__input"
+            placeholder="How can we help you?"
+          >
+        </div>
 
-          <button type="submit" class="btn btn--primary contact-form__submit">
-            Send Message
-          </button>
-        {% endform %}
-      </div>
+        <div class="contact-form__group">
+          <label for="ContactMessage" class="contact-form__label">Message</label>
+          <textarea 
+            id="ContactMessage" 
+            name="contact[body]" 
+            class="contact-form__textarea"
+            placeholder="Tell us more about your inquiry..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="contact-form__checkbox">
+          <input type="checkbox" id="ContactPrivacy" required>
+          <label for="ContactPrivacy">I agree to the Privacy Policy</label>
+        </div>
+
+        <button type="submit" class="contact-form__submit">
+          Send Message
+        </button>
+      {% endform %}
     </div>
   </div>
 </section>
@@ -248,33 +419,33 @@
   "settings": [
     {
       "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Get in Touch"
-    },
-    {
-      "type": "textarea",
-      "id": "text",
-      "label": "Introduction text",
-      "default": "We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+      "id": "business_name",
+      "label": "Business Name",
+      "default": "Fineyst LLC"
     },
     {
       "type": "text",
       "id": "address",
       "label": "Address",
-      "default": "123 Leather Lane, Fashion District, NY 10001"
+      "default": "122 Henderson Rd, Sandy Creek, NY 13145, USA"
     },
     {
       "type": "text",
       "id": "email",
       "label": "Email",
-      "default": "support@fineyst.com"
+      "default": "info@fineystjackets.com"
     },
     {
       "type": "text",
       "id": "phone",
       "label": "Phone",
-      "default": "+1 (555) 123-4567"
+      "default": "+1 (888) 840-0885"
+    },
+    {
+      "type": "textarea",
+      "id": "hours",
+      "label": "Support Hours",
+      "default": "Monday - Saturday: 9:00 AM - 6:00 PM CST<br>Sunday: Closed"
     }
   ]
 }
