@@ -12,7 +12,7 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "image": "shopify://shop_images/people-wearing-finysyt-leather-jackets.png",
+        "image": "shopify://shop_images/frame.jpg",
         "height": "full",
         "title": "LEATHER JACKETS",
         "link_1_text": "MEN",
@@ -31,6 +31,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-varsity.webp",
             "title": "VARSITY JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/mens-varsity-jackets",
             "gender": "men"
           }
@@ -38,8 +39,9 @@
         "category_men_1": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Mens-Biker.webp",
+            "image": "shopify://shop_images/Mens-denim.webp",
             "title": "LEATHER JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/leather-bomber-jacket-mens",
             "gender": "men"
           }
@@ -49,6 +51,7 @@
           "settings": {
             "image": "shopify://shop_images/Mens-Puffer.webp",
             "title": "PUFFER JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/mens-puffer-jackets",
             "gender": "men"
           }
@@ -58,15 +61,8 @@
           "settings": {
             "image": "shopify://shop_images/Mens-denim.webp",
             "title": "DENIM JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/mens-denim-jackets",
-            "gender": "men"
-          }
-        },
-        "category_7H8X78": {
-          "type": "category",
-          "settings": {
-            "title": "LEATHER JACKETS",
-            "link_url": "",
             "gender": "men"
           }
         },
@@ -75,6 +71,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-suede.webp",
             "title": "SUEDE JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/suede-jackets",
             "gender": "men"
           }
@@ -84,6 +81,7 @@
           "settings": {
             "image": "shopify://shop_images/mens-aviator.webp",
             "title": "AVIATOR JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/mens-aviator-jackets",
             "gender": "men"
           }
@@ -93,6 +91,7 @@
           "settings": {
             "image": "shopify://shop_images/women-leather.webp",
             "title": "LEATHER JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/womens-leather-bomber-jackets",
             "gender": "women"
           }
@@ -102,6 +101,7 @@
           "settings": {
             "image": "shopify://shop_images/women-puffer.webp",
             "title": "PUFFER JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/womens-puffer-jackets",
             "gender": "women"
           }
@@ -111,6 +111,7 @@
           "settings": {
             "image": "shopify://shop_images/women-denim.webp",
             "title": "DENIM JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/womens-denim-jackets",
             "gender": "women"
           }
@@ -120,6 +121,7 @@
           "settings": {
             "image": "shopify://shop_images/women-suede.webp",
             "title": "SUEDE JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/womens-suede-leather-jackets",
             "gender": "women"
           }
@@ -129,6 +131,7 @@
           "settings": {
             "image": "shopify://shop_images/women-aviator.webp",
             "title": "AVIATOR JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "link_url": "shopify://collections/womens-aviator-jackets",
             "gender": "women"
           }
@@ -139,7 +142,6 @@
         "category_men_1",
         "category_men_2",
         "category_men_3",
-        "category_7H8X78",
         "category_men_4",
         "category_men_5",
         "category_women_1",
@@ -187,6 +189,7 @@
           "type": "color_category",
           "settings": {
             "title": "BLACK JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-1.webp",
             "link": ""
           }
@@ -195,6 +198,7 @@
           "type": "color_category",
           "settings": {
             "title": "BROWN JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-2.webp",
             "link": ""
           }
@@ -203,6 +207,7 @@
           "type": "color_category",
           "settings": {
             "title": "RED JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-3.webp",
             "link": ""
           }
@@ -211,6 +216,7 @@
           "type": "color_category",
           "settings": {
             "title": "WHITE JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-4.webp",
             "link": ""
           }
@@ -219,6 +225,7 @@
           "type": "color_category",
           "settings": {
             "title": "PINK JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-5.webp",
             "link": ""
           }
@@ -227,6 +234,7 @@
           "type": "color_category",
           "settings": {
             "title": "BLUE JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-6.webp",
             "link": ""
           }
@@ -235,6 +243,7 @@
           "type": "color_category",
           "settings": {
             "title": "GREEN JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-7.webp",
             "link": ""
           }
@@ -243,6 +252,7 @@
           "type": "color_category",
           "settings": {
             "title": "YELLOW JACKETS",
+            "description": "Durable and stylish outerwear reimagined for the next generation.",
             "image": "shopify://shop_images/collection-8.webp",
             "link": ""
           }
@@ -312,8 +322,7 @@
       "settings": {
         "title": "PREMIUM MATERIALS",
         "description": "We don't mass-produce. We craft. Every FINEYST jacket starts with ethically sourced full-grain leather, precision cuts, and hours of artisan detail.",
-        "features_heading": "KEY FEATURES:",
-        "image": "shopify://shop_images/premium-materials-banner_93956a80-85d3-47c9-b1e4-c5d575d475d4.png"
+        "features_heading": "KEY FEATURES:"
       }
     },
     "faq": {

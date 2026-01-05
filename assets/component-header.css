@@ -9,7 +9,9 @@
   right: 0;
   z-index: 1000;
   background: var(--color-header-bg);
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .site-header.is-hidden {
@@ -70,16 +72,12 @@
   display: block;
   padding: 1rem 0;
   color: var(--color-header-text);
-  font-family: 'avertaBold', sans-serif;
+  font-family: "avertaBold", sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
   letter-spacing: 0em;
   text-transform: uppercase;
   transition: color 0.3s ease;
-}
-
-.site-header__nav-link:hover {
-  color: var(--color-accent);
 }
 
 /* Dropdown Menu */
@@ -90,7 +88,7 @@
   transform: translateX(-50%);
   min-width: 22rem;
   background: #fff;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -126,13 +124,16 @@
   z-index: 9001;
   background: #1c1c1c;
   border-top: 1px solid #333;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   max-height: 80vh;
   overflow-y: auto;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.3s ease;
 }
 
 .mega-menu.is-active {
@@ -230,7 +231,6 @@
 }
 
 /* Active state for nav link */
-.site-header__nav-item--has-mega-menu:hover .site-header__nav-link,
 .site-header__nav-item--has-mega-menu.is-active .site-header__nav-link {
   border-bottom: 1px solid #fff;
 }
@@ -310,7 +310,7 @@
   gap: 0;
   background: #fff;
   border-radius: 50px;
-  box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
   padding: 0.5rem;
 }
 
@@ -411,22 +411,22 @@
   display: block;
   padding: 1.5rem 0;
   color: var(--color-header-text);
-  font-family: 'avertaBold', sans-serif;
+  font-family: "avertaBold", sans-serif;
   font-weight: 700;
   font-size: 1.6rem;
   letter-spacing: 0em;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobile-menu__sub-nav {
   margin-top: 3rem;
   padding-top: 3rem;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .mobile-menu__sub-title {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 1.2rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -441,7 +441,7 @@
 
 .mobile-menu__sub-link {
   padding: 1rem 2rem;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--color-header-text);
   font-size: 1.3rem;
   font-weight: 500;
@@ -452,7 +452,7 @@
 }
 
 .mobile-menu__sub-link:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Responsive */
@@ -538,4 +538,3 @@
     margin-left: auto;
   }
 }
-

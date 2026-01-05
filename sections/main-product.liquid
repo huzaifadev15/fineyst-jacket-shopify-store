@@ -279,7 +279,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0em;
     line-height: 1.2;
   }
 
@@ -307,7 +307,7 @@
     font-size: 1.3rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0em;
     margin-bottom: 1rem;
     color: #000;
   }
@@ -407,7 +407,7 @@
     font-size: 1.4rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0em;
     background: #000;
     color: #fff;
     border: none;
@@ -443,7 +443,7 @@
     gap: 1rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0em;
   }
 
   .product-info__box-icon {
@@ -489,9 +489,10 @@
     font-size: 1.4rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0em;
     width: 100%;
     color: #333;
+    font-family: 'avertaDefault', sans-serif;
   }
 
   .product-accordion__header > span:first-child {
@@ -645,7 +646,7 @@
       visibility: visible !important;
       opacity: 1 !important;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0em;
       color: #666;
     }
 
@@ -760,6 +761,7 @@
     .product-accordion__header {
       font-size: 1.2rem;
       gap: 1rem;
+      font-family: 'avertaDefault', sans-serif;
     }
 
     .product-accordion__content {
@@ -1103,8 +1105,9 @@
                   <style>
                     .product-description h1, .product-description h2, .product-description h3, .product-description h4, .product-description h5, .product-description h6 {
                       font-size: 1.4rem !important;
-                      font-weight: 600 !important;
+                      font-weight: 400 !important;
                       margin: 0.5rem 0 !important;
+                      font-family: 'avertaDefault', sans-serif !important;
                     }
                   </style>
                   {{ first_paragraph }}
@@ -1148,9 +1151,9 @@
           {%- if rest_description != blank -%}
             <!-- Modal for full description -->
             <div class="details-modal" data-details-modal style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 1); z-index: 99999; display: none; align-items: center; justify-content: center;">
-              <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 80rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5;">
-                  <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0; font-family: 'AvertaDefault', sans-serif;">Product Details</h3>
+              <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 67rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5; margin-left: -3rem; margin-right: -3rem; padding-left: 3rem; padding-right: 3rem;">
+                  <h3 style="font-size: 1.7rem !important; font-weight: 600; margin: 0; font-family: 'avertaDefault', sans-serif; color: #2b2b2b;">Product Details</h3>
                   <button type="button" data-modal-close style="color: #6b7280; background: none; border: none; cursor: pointer; padding: 0.25rem;" onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1175,8 +1178,8 @@
                   {{ product.description }}
                   
                   <div style="margin-top: 3rem;">
-                    <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Specifications</h3>
-                    <div style="margin-bottom: 2rem; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+                    <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'avertaDefault', sans-serif;">Specifications</h3>
+                    <div style="margin-bottom: 2rem; font-family: 'avertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
                       <p><strong>Material:</strong> Premium fabric</p>
                       <p><strong>Fit:</strong> Regular fit</p>
                       <p><strong>Care:</strong> Machine wash cold</p>
@@ -1185,8 +1188,8 @@
                       <p><strong>Season:</strong> All season</p>
                     </div>
                     
-                    <h3 style="font-size: 1.6rem; font-weight: 800; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Care Instructions</h3>
-                    <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+                    <h3 style="font-size: 1.6rem; font-weight: 800; margin: 0 0 1rem 0; font-family: 'avertaDefault', sans-serif;">Care Instructions</h3>
+                    <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'avertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
                       <li style="margin-bottom: 0.5rem;">Machine wash cold with similar colors</li>
                       <li style="margin-bottom: 0.5rem;">Do not bleach</li>
                       <li style="margin-bottom: 0.5rem;">Tumble dry low</li>
@@ -1253,9 +1256,9 @@
 
   <!-- Modal for full description -->
   <div class="details-modal" data-details-modal style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 1); z-index: 99999; display: none; align-items: center; justify-content: center;">
-    <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 80rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5;">
-        <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0; font-family: 'AvertaDefault', sans-serif;">Product Details</h3>
+    <div class="modal-content" style="background: white; border-radius: 0.5rem; max-width: 70rem; width: 95%; margin: 0 1rem; padding: 3rem; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5; margin-left: -3rem; margin-right: -3rem; padding-left: 3rem; padding-right: 3rem;">
+        <h3 style="font-size: 7rem !important; font-weight: 600; margin: 0; font-family: 'avertaDefault', sans-serif; color: #2b2b2b;">Product Details</h3>
         <button type="button" data-modal-close style="color: #6b7280; background: none; border: none; cursor: pointer; padding: 0.25rem;" onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1265,18 +1268,19 @@
       </div>
       <div style="font-size: 1.6rem; color: #374151; line-height: 1.6; font-family: 'AvertaDefault', sans-serif;">
         <div style="margin-bottom: 2rem;">
-          <h2 style="font-size: 1.8rem; font-weight: 600; margin: 0 0 0.5rem 0; font-family: 'AvertaDefault', sans-serif;">{{ product.title }}</h2>
-          <p style="font-size: 1.4rem; color: #666; margin: 0; font-family: 'AvertaDefault', sans-serif;">SKU: {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}</p>
+          <h2 style="font-size: 1.8rem; letter-spacing: 0em; font-weight: 100; margin: 0 0 0.5rem 0; font-family: 'avertaDefault', sans-serif; color: #171717;">{{ product.title }}</h2>
+          <p style="font-size: 1.4rem; color: #666; margin: 0; font-family: 'avertaDefault', sans-serif;">SKU: {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}</p>
         </div>
         <style>
           .details-modal h1, .details-modal h2, .details-modal h3, .details-modal h4, .details-modal h5, .details-modal h6 {
             font-size: 1.4rem !important;
             font-weight: 600 !important;
             margin: 1rem 0 0.5rem 0 !important;
-            font-family: 'AvertaDefault', sans-serif !important;
+            font-family: 'avertaDefault', sans-serif !important;
+            color: #2b2b2b !important;
           }
           .details-modal p, .details-modal li, .details-modal div {
-            font-family: 'AvertaDefault', sans-serif !important;
+            font-family: 'avertaDefault', sans-serif !important;
             font-size: 1.6rem !important;
             line-height: 1.6 !important;
           }
@@ -1289,8 +1293,8 @@
         </div>
         
         <div style="margin-top: 3rem;">
-          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Specifications</h3>
-          <div style="margin-bottom: 2rem; font-family: 'AvertaDefault', sans-serif; font-size: 1.4rem; line-height: 1.6;">
+          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'avertaDefault', sans-serif;">Specifications</h3>
+          <div style="margin-bottom: 2rem; font-family: 'avertaDefault', sans-serif; font-size: 1.4rem; line-height: 1.6;">
             <p><span style="font-weight: 400;">Material:</span> Premium fabric</p>
             <p><span style="font-weight: 400;">Fit:</span> Regular fit</p>
             <p><span style="font-weight: 400;">Care:</span> Machine wash cold</p>
@@ -1299,8 +1303,8 @@
             <p><span style="font-weight: 400;">Season:</span> All season</p>
           </div>
           
-          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'AvertaDefault', sans-serif;">Care Instructions</h3>
-          <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'AvertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
+          <h3 style="font-size: 1.6rem; font-weight: 600; margin: 0 0 1rem 0; font-family: 'avertaDefault', sans-serif;">Care Instructions</h3>
+          <ul style="list-style-type: disc; padding-left: 2rem; margin: 0; font-family: 'avertaDefault', sans-serif; font-size: 1.6rem; line-height: 1.6;">
             <li style="margin-bottom: 0.5rem;">Machine wash cold with similar colors</li>
             <li style="margin-bottom: 0.5rem;">Do not bleach</li>
             <li style="margin-bottom: 0.5rem;">Tumble dry low</li>

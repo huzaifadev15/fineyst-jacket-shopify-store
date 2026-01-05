@@ -10,6 +10,7 @@
 {
   "current": {
     "logo": "shopify://shop_images/logo.avif",
+    "logo_width": 200,
     "color_primary": "#1a1a1a",
     "color_secondary": "#8B4513",
     "color_accent": "#c9a962",
@@ -33,18 +34,6 @@
         "settings": {}
       }
     },
-    "content_for_index": [],
-    "blocks": {
-      "16160716078332068383": {
-        "type": "shopify://apps/rubik-variant-images/blocks/rubik-variant-images/e684282e-1343-4a60-8fa2-6393aded15f6",
-        "disabled": false,
-        "settings": {}
-      },
-      "1900631457097698167": {
-        "type": "shopify://apps/rubik-variant-images/blocks/rubik-swatch/e684282e-1343-4a60-8fa2-6393aded15f6",
-        "disabled": false,
-        "settings": {}
-      }
-    }
+    "content_for_index": []
   }
 }
